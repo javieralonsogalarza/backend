@@ -13,6 +13,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
+use App\Models\Comunidad;
+use App\Models\Categoria;
+use App\Models\Ranking;
+use App\Models\RankingDetalle;
+
 
 class ReporteController extends Controller
 {
@@ -32,9 +38,10 @@ class ReporteController extends Controller
         $Torneos = Torneo::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)->get();
 
         $HistorialTorneos = [];
-
+        $categoriaSimpleIds = [];
+        $categoriaSimpleComplete = [];
         if($Jugador != null && count($Torneos) > 0)
-        {
+        {       
             foreach ($Torneos as $q)
             {
                 $Partido =  Partido::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)->where('torneo_id', $q->id)
@@ -52,10 +59,246 @@ class ReporteController extends Controller
                         'Fase' => $Partido->fase == null ? "Fase de Grupos" : ($Partido->fase == 16 ? "Deciseisavo de Final" : ($Partido->fase == 8 ? "Octavos de Final" : ($Partido->fase == 4 ? "Cuartos de Final" : ($Partido->fase == 2 ? "Semifinal" : ($Partido->fase == 1 ? ((in_array($Jugador->id, [$Partido->jugador_ganador_uno_id, $Partido->jugador_ganador_dos_id]) ? "Campeón" : "Finalista") ) : "-"))))),
                         'Estado' => $q->estado_texto
                     ];
+                    if (isset($Partido->torneoCategoria->categoria_simple_id)) {
+                        if (!in_array($Partido->torneoCategoria->categoria_simple_id, $categoriaSimpleIds)) {
+                            $categoriaSimpleIds[] = $Partido->torneoCategoria->categoria_simple_id;
+                            $categoriaSimpleComplete[] = $Partido->torneoCategoria->categoriaSimple; 
+
+                        }
+                    }
                 }
             }
+     
+
+       
+
         }
-        return view('auth'.'.'.$this->viewName.'.ajax.jugador.partialView', ['Jugador' => $Jugador, 'HistorialTorneos' => $HistorialTorneos]);
+
+        $rankingByCategoryAndPlayerTotal= [];    
+        if ($request->filter_jugador) {
+            $rankingByCategoryAndPlayer =[ ];
+            foreach ($categoriaSimpleComplete as $q) {
+                $rankings = $this->rankingsByCategoryId($q['id']);
+                if (!empty($rankings)) {
+                    $rankings = $rankings['Rankings'] ?? [];
+            
+                    // Convertir rankings a una colección para usar firstWhere
+                    $rankingsCollection = collect($rankings);
+            
+                    // Filtrar los rankings específicos para los jugadores locales y rivales
+                    $rankingByCategoryAndPlayer = $rankingsCollection->firstWhere('id', $request->filter_jugador);
+            
+                    // Agregar al arreglo $categoriaSimpleIds si no está vacío
+                    if ($rankingByCategoryAndPlayer) {
+                        $rankingByCategoryAndPlayerTotal[] = [
+                            'id' => $q['id'],
+                            'categoria_name' => $q['nombre'],
+                            'countRepeat' => $rankingByCategoryAndPlayer['countRepeat'],
+                        ];
+                    }
+                }
+            }
+            return view('auth' . '.' . $this->viewName . '.ajax.jugador.partialView', [
+                'Jugador' => $Jugador,
+                'HistorialTorneos' => $HistorialTorneos,
+                'categoriasYRankings' => $rankingByCategoryAndPlayerTotal
+            ]);
+        }
+        // return $Jugador;
+        return view('auth' . '.' . $this->viewName . '.ajax.jugador.partialView', ['Jugador' => $Jugador, 'HistorialTorneos' => $HistorialTorneos]);
+    }
+
+
+
+    public function rankingsByCategoryId($filter_categoria)
+    {
+        $filter_anio = null;
+
+        $Model = Comunidad::where('principal', true)->first();
+
+        if ($Model != null) {
+            $Rankings = Ranking::where('comunidad_id', $Model->id)->get();
+
+            $Torneos = Torneo::whereIn('id', array_values(array_unique(array_filter($Rankings->pluck('torneo_id')->toArray()))))
+                ->where(function ($q) use ($filter_anio) {
+                    if ($filter_anio) {
+                        $q->where(DB::raw('YEAR(fecha_inicio)'), '=', $filter_anio);
+                    }
+                })->where('rankeado', true)->orderBy('fecha_final', 'desc')->get();
+
+            $Anios = $filter_anio == null ? array_values(array_unique($Torneos->pluck('fecha_inicio')->map(function ($date) {
+                return Carbon::parse($date)->format('Y');
+            })->toArray())) : [];
+
+            $TorneoCategorias = TorneoCategoria::whereIn('id', array_values(array_unique(array_filter($Rankings->pluck('torneo_categoria_id')->toArray()))))->orderBy('id', 'desc')->get();
+           
+           
+            $Categorias = Categoria::whereIn('id', array_values(array_unique(array_filter($TorneoCategorias->pluck('categoria_simple_id')->toArray()))))
+                ->where('visible', true)->where('id', '!=', 3)->where('orden', '>', '0')
+                ->where(function ($q) use ($filter_categoria) {
+                    if ($filter_categoria) {
+                        $q->where('id', $filter_categoria);
+                    }
+                })->orderBy('id', 'desc')->get();
+
+            $RankingsResult = [];
+            foreach ($Categorias as $q) {
+                $Object = [];
+                $JugadoresIds = [];
+                $TorneoCategoria = TorneoCategoria::where('categoria_simple_id', $q->id)->get();
+
+                $Object['categoria_id'] = $q->id;
+                $Object['multiple'] = $q->dupla;
+                foreach ($TorneoCategoria as $q2) {
+                    foreach ($Rankings->where('torneo_categoria_id', $q2->id) as $q3) {
+                        if ($q3->detalles != null && count($q3->detalles) > 0) {
+                            foreach ($q3->detalles as $q4) {
+                                $Id = $q->dupla ? ($q4->jugadorSimple->id . '-' . $q4->jugadorDupla->id) : $q4->jugadorSimple->id;
+                                if (!in_array($Id, $JugadoresIds)) {
+                                    $ObjectJugador = [];
+                                    $Puntos = 0;
+                                    $ObjectJugador['id'] = $Id;
+                                    $ObjectJugador['nombre'] = $q->dupla ? ($q4->jugadorSimple->nombre_completo . ' + ' . $q4->jugadorDupla->nombre_completo) : $q4->jugadorSimple->nombre_completo;
+
+                                    foreach ($Torneos as $q5) {
+                                        $ObjectTorneo = [];
+                                        $ObjectTorneo['id'] = $q5->id;
+                                        $ObjectTorneo['anio'] = Carbon::parse($q5->fecha_inicio)->format('Y');
+                                        $ObjectTorneo['nombre'] = $q5->nombre;
+
+                                        if (count($TorneoCategoria->where('torneo_id', $q5->id)) > 0) {
+                                            foreach ($TorneoCategoria->where('torneo_id', $q5->id) as $q9) {
+                                                $ObjectTorneoCategoria = [];
+
+                                                $rankingDetalle = RankingDetalle::whereHas('ranking', function ($query) use ($q9, $q5) {
+                                                    $query->where('torneo_id', $q5->id);
+                                                    $query->where('torneo_categoria_id', $q9->id);
+                                                })->where(function ($query) use ($q, $q4) {
+                                                    $query->where('jugador_simple_id', $q4->jugador_simple_id);
+                                                    if ($q->dupla) {
+                                                        $query->where('jugador_dupla_id', $q4->jugadorDupla->id);
+                                                    }
+                                                })->first();
+
+                                                $Puntos += $rankingDetalle != null ? $rankingDetalle->puntos : 0;
+
+                                                $ObjectTorneoCategoria['torneo_categoria_id'] = $q9->id;
+                                                $ObjectTorneoCategoria['multiple'] = $q9->multiple;
+                                                $ObjectTorneoCategoria['categoria_simple_id'] = $q9->categoria_simple_id;
+                                                $ObjectTorneoCategoria['categoria_dupla_id'] = $q9->categoria_dupla_id;
+
+                                                $ObjectTorneoCategoria['ranking_id'] = $rankingDetalle != null ? $rankingDetalle->ranking_id : null;
+                                                $ObjectTorneoCategoria['puntos'] = $rankingDetalle != null ? $rankingDetalle->puntos : 0;
+
+                                                $ObjectTorneo['categorias'][] = (object) $ObjectTorneoCategoria;
+                                            }
+                                        } else {
+                                            $ObjectTorneo['categorias'] = [];
+                                        }
+
+                                        $ObjectJugador['torneos'][] = (object) $ObjectTorneo;
+                                    }
+
+                                    $ObjectJugador['puntos'] = $Puntos;
+                                    $Object['jugadores'][] = $ObjectJugador;
+
+                                    $JugadoresIds[] = $Id;
+                                }
+                            }
+                        }
+                    }
+                }
+                $RankingsResult[] = (object) $Object;
+            }
+
+            $RankingsResultYear = null;
+
+            if ($filter_anio == null) {
+                $RankingsResultYear = [];
+
+                foreach ($RankingsResult as $q) {
+                    $ResultYear = [];
+                    $ResultYear['categoria_id'] = $q->categoria_id;
+                    $ResultYear['multiple'] = $q->multiple;
+
+                    foreach ($q->jugadores as $q2) {
+                        $ResultYearJugador = [];
+                        $Puntos = 0;
+                        $ResultYearJugador['nombre'] = $q2['nombre'];
+
+                        foreach ($Anios as $q3) {
+                            $ResultYearJugadorAnio = [];
+                            $ResultYearJugadorAnio['anio'] = $q3;
+                            $ResultYearJugadorAnio['puntos'] = 0;
+
+                            $TorneosPuntos = collect($q2['torneos'])->where('anio', $q3)->whereNotNull('categorias')->pluck('categorias');
+
+                            foreach ($TorneosPuntos as $q4) {
+                                $ResultYearJugadorAnio['puntos'] += count($q4) > 0 ? $q4[0]->puntos : 0;
+                            }
+
+                            $ResultYearJugador['anios'][] = (object) $ResultYearJugadorAnio;
+
+                            $Puntos += $ResultYearJugadorAnio['puntos'];
+                        }
+
+                        $ResultYearJugador['puntos'] = $Puntos;
+
+                        $ResultYear['jugadores'][] = $ResultYearJugador;
+                    }
+
+                    $RankingsResultYear[] = (object) $ResultYear;
+                }
+            }
+
+            $result = [];
+
+            
+
+            foreach ($RankingsResult as $q2) {
+                $countSingle = 0;
+                $countRepeat = 1;
+                $pointBefore = 0;
+                $next = false;
+        
+                $jugadoresOrdenados = App::multiPropertySort(collect($q2->jugadores), [['column' => 'puntos', 'order' => 'desc']]);
+        
+                foreach ($jugadoresOrdenados as $key => $q3) {
+                    if ($q3['puntos'] > 0) {
+                        $countSingle += 1;
+                        $pointBefore = $q3['puntos'];
+                        $countRepeat = $next ? $countRepeat : $countSingle;
+                        
+                        
+        
+                        $result[] = [
+                            'countRepeat' => $countRepeat,
+                            'nombre' => $q3['nombre'],
+                            'puntos' => $q3['puntos'],
+                            'id' => $q3['id']
+                        ];
+        
+                        if (count(collect($q2->jugadores)->where('puntos', '>', '0')) > ($key + 1)) {
+                            if ($q3['puntos'] != $jugadoresOrdenados[$key + 1]['puntos']) {
+                                $countRepeat += 1;
+                                $next = false;
+                            } else {
+                                $next = true;
+                            }
+                        }
+                    }
+                }
+            }
+        
+
+            return [
+                'Rankings' => collect( $result),
+
+            ];
+
+        } else {
+            abort(404);
+        }
     }
 
     public function jugadorPartidosPartialView(Request $request)

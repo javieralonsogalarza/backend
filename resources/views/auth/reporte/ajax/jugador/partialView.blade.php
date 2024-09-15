@@ -55,6 +55,37 @@
                         </div>
                     @endif
                 </div>
+                <div class="row">
+                    <div class="col-md-12 mt-4">
+                        <h5>Categorías y Rankings</h5>
+                    </div>
+                    @if($categoriasYRankings != null && count($categoriasYRankings) > 0)
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Categoría</th>
+                                        <th class="text-center">Ranking</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($categoriasYRankings as $categoria)
+                                        <tr>
+                                            <td class="text-center">{{ $categoria['categoria_name'] }}</td>
+                                            <td class="text-center">{{ $categoria['countRepeat'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @else
+                        <div class="col-md-12 text-center">
+                            <p class="m-0">Este jugador aún no presenta categorías y rankings.</p>
+                        </div>
+                    @endif
+                </div>
             @else
                 <div class="row">
                     <div class="col-md-12 text-center">
