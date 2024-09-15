@@ -37,6 +37,29 @@ class Jugador extends Authenticatable
     {
         return $this->sexo != null ? ($this->sexo == "F" ? "Femenino" : "Masculino") : "Ninguno";
     }
+    // Mutador para nombre_completo
+    public function setNombreCompletoAttribute($value)
+    {
+        $names = explode(' ', $value, 2);
+        $this->attributes['nombres'] = $names[0];
+        $this->attributes['apellidos'] = isset($names[1]) ? $names[1] : '';
+    }
+
+   // Método adicional para construir el nombre completo con datos adicionales sin modificar la base de datos
+   public function setNombreCompletoConDatosAdicionales($datosAdicionales = [])
+   {
+       $this->attributes['nombre_completo_temporal'] = $this->nombres . " " . $this->apellidos;
+
+       foreach ($datosAdicionales as $dato) {
+           $this->attributes['nombre_completo_temporal'] .= " ({$dato})";
+       }
+   }
+
+   // Accesor para nombre_completo_temporal
+   public function getNombreCompletoTemporalAttribute()
+   {
+       return $this->attributes['nombre_completo_temporal'] ?? $this->nombre_completo;
+   }
 
     public function comunidad()
     {
