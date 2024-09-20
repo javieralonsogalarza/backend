@@ -12,7 +12,7 @@ class Jugador extends Authenticatable
     protected $guard = 'players';
 
     protected $fillable = ['comunidad_id', 'categoria_id', 'imagen_path', 'nombres', 'apellidos', 'tipo_documento_id', 'nro_documento',
-    'email', 'password', 'isAccount', 'isFirstSession', 'edad', 'sexo', 'telefono', 'celular', 'altura', 'peso', 'user_create_id', 'user_update_id'];
+    'email', 'password', 'isAccount', 'isFirstSession', 'edad', 'sexo', 'telefono', 'celular', 'altura', 'peso', 'user_create_id', 'user_update_id','nombre_completo_temporal'];
 
     protected $appends = ['nombre_completo', 'sexo_completo'];
 
@@ -45,7 +45,7 @@ class Jugador extends Authenticatable
         $this->attributes['apellidos'] = isset($names[1]) ? $names[1] : '';
     }
 
-   // Método adicional para construir el nombre completo con datos adicionales sin modificar la base de datos
+   // Mï¿½todo adicional para construir el nombre completo con datos adicionales sin modificar la base de datos
    public function setNombreCompletoConDatosAdicionales($datosAdicionales = [])
    {
        $this->attributes['nombre_completo_temporal'] = $this->nombres . " " . $this->apellidos;

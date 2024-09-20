@@ -21,6 +21,7 @@ use App\Models\TorneoJugador;
 use App\Models\TorneoZona;
 use App\Models\Zona;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -701,7 +702,7 @@ class TorneoController extends Controller
                         return [
                             'jugador_simple_id' => $q->jugadorSimple->id,
                             'jugador_dupla_id' => $TorneoCategoria->multiple ? $q->jugadorDupla->id : null,
-                            'nombres' => $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo." + ".$q->jugadorDupla->nombre_completo) : $q->jugadorSimple->nombre_completo
+                            'nombres' => $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo." + ".$q->jugadorDupla->nombre_completo) : $q->jugadorSimple->nombre_completo_temporal
                         ];
                     });
 
@@ -2534,7 +2535,7 @@ class TorneoController extends Controller
         return view('auth'.'.'.$this->viewName.'.ajax.final.partialView', ['Model' => $entity, 'Position' => $position, 'ViewName' => ucfirst($this->viewName)]);
     }
 
-    public function rankingsByCategoryId($filter_categoria)
+    public function rankingsByCategoryId($filter_categoria,$changeAll = false)
     {
         $filter_anio = null;
 
@@ -2713,6 +2714,23 @@ class TorneoController extends Controller
                     }
                 }
             }
+
+
+            foreach ($result as $key => $q) {
+
+                // Obtener el modelo Jugador
+                $jugador = Jugador::find($q['id']);
+
+                if ($jugador) {
+
+                    // Llamar al método en el modelo Jugador
+                    $jugador->setNombreCompletoConDatosAdicionales([$result[$key]['countRepeat']]);
+                    $jugador->save();
+                }
+
+            }
+            
+           
         
 
             return [
@@ -3442,6 +3460,10 @@ class TorneoController extends Controller
 
     public function faseFinalMapaPartialView($torneo, $torneo_categoria_id, $landing=false)
     {
+
+    
+
+
         $Comunidad = $landing ? Comunidad::where('principal', true)->first() : Auth::guard('web')->user()->comunidad;
 
         $ComunidadId = $Comunidad->id;
@@ -3526,7 +3548,15 @@ class TorneoController extends Controller
             $entity = Torneo::where('comunidad_id', $ComunidadId)->where('id', $id)->first();
             if($torneo_categoria_id == null || $torneo_categoria_id == 0) $torneo_categoria_id = $entity->torneoCategorias()->where('torneo_id', $id)->orderBy('orden')->first()->id;
         }
+        $torneoCategoria = $entity->torneoCategorias()->where('id', operator: $torneo_categoria_id)->with('categoriaSimple')->orderBy('orden')->first();
+       
+        //actualizar todos lo jugadores la columna nombre_completo_temporal
 
+        $affectedRows = Jugador::query()->update(values: ['nombre_completo_temporal' => DB::raw('NULL')]);
+
+         $this->rankingsByCategoryId($torneoCategoria->categoria_simple_id,true);
+
+   
         return view('auth'.'.'.$this->viewName.'.ajax.grupo.index', ['Model' => $entity, 'TorneoCategoriaId' => $torneo_categoria_id, 'ViewName' => ucfirst($this->viewName), 'Fase' => ($fase == null || $fase == 0 ? null : $fase) ,'landing' => filter_var($landing, FILTER_VALIDATE_BOOLEAN)]);
     }
 
@@ -3563,13 +3593,15 @@ class TorneoController extends Controller
 
         if($TorneoCategoria != null)
         {
+
+       
             //JUGADORES DEL GRUPO
             $Jugadores = TorneoGrupo::where('torneo_categoria_id', $torneo_categoria_id)
             ->where('grupo_id', $grupo_id)->get()->map(function ($q) use ($TorneoCategoria){
                 return [
                     'jugador_simple_id' => $q->jugadorSimple->id,
                     'jugador_dupla_id' => $TorneoCategoria->multiple ? $q->jugadorDupla->id : null,
-                    'nombres' => $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo." + ".$q->jugadorDupla->nombre_completo) : $q->jugadorSimple->nombre_completo
+                    'nombres' => $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo." + ".$q->jugadorDupla->nombre_completo) : $q->jugadorSimple->nombre_completo_temporal
                 ];
             });
 
@@ -5866,7 +5898,7 @@ class TorneoController extends Controller
                         $PuntuacionesResult[] = [
                             'jugador_simple_id' => $q->jugadorSimple->id,
                             'jugador_dupla_id' => $TorneoCategoria->multiple ? $q->jugadorDupla->id : null,
-                            'nombres' => $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo." + ".$q->jugadorDupla->nombre_completo) : $q->jugadorSimple->nombre_completo,
+                            'nombres' => $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo." + ".$q->jugadorDupla->nombre_completo) : $q->jugadorSimple->nombre_completo_temporal,
                             'puntos' => $q->puntos
                         ];
                     }
@@ -6627,8 +6659,10 @@ class TorneoController extends Controller
                 {
                     //$model->jugadores[] = $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo.' + '.$q->jugadorDupla->nombre_completo) : $q->jugadorSimple->nombre_completo;
 
-                    $Jugadores['nombres'] = $TorneoCategoria->multiple ? ($q->jugadorSimple->nombres.' + '.$q->jugadorDupla->nombres) : $q->jugadorSimple->nombres;
-                    $Jugadores['apellidos'] = $TorneoCategoria->multiple ? ($q->jugadorSimple->apellidos.' + '.$q->jugadorDupla->apellidos) : $q->jugadorSimple->apellidos;
+                    $Jugadores['nombresv1'] = $TorneoCategoria->multiple ? ($q->jugadorSimple->nombres): $q->jugadorSimple->nombres;
+                    $Jugadores['apellidosv1'] = $TorneoCategoria->multiple ? ($q->jugadorSimple->apellidos) : $q->jugadorSimple->apellidos;
+                    $Jugadores['nombresv2'] = $TorneoCategoria->multiple ? ($q->jugadorDupla->nombres) : null;
+                    $Jugadores['apellidosv2'] = $TorneoCategoria->multiple ? ($q->jugadorDupla->apellidos) : null;
 
                     $model->jugadores[] =  $Jugadores;
                 }
@@ -6679,8 +6713,11 @@ class TorneoController extends Controller
                     $model->grupos[$key]['nombre'] = $q->nombre_grupo;
                     foreach ($TorneoGrupos->where('grupo_id', $q->grupo_id) as $q2){
 
-                        $Jugadores['nombres'] = $TorneoCategoria->multiple ? ($q2->jugadorSimple->nombres.' + '.$q2->jugadorDupla->nombres) : $q2->jugadorSimple->nombres;
-                        $Jugadores['apellidos'] = $TorneoCategoria->multiple ? ($q2->jugadorSimple->apellidos.' + '.$q2->jugadorDupla->apellidos) : $q2->jugadorSimple->apellidos;
+                        $Jugadores['nombresv1'] = $TorneoCategoria->multiple ? ($q2->jugadorSimple->nombres) : $q2->jugadorSimple->nombres;
+                        $Jugadores['apellidosv1'] = $TorneoCategoria->multiple ? ($q2->jugadorSimple->apellidos) : $q2->jugadorSimple->apellidos;
+                        $Jugadores['nombresv2'] = $TorneoCategoria->multiple ? ($q2->jugadorDupla->nombres) :null;
+                        $Jugadores['apellidosv2'] = $TorneoCategoria->multiple ? ($q2->jugadorDupla->apellidos) : null;
+
 
                         $model->grupos[$key]['jugadores'][] =  $Jugadores;
 
