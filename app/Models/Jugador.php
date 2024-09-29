@@ -12,7 +12,8 @@ class Jugador extends Authenticatable
     protected $guard = 'players';
 
     protected $fillable = ['comunidad_id', 'categoria_id', 'imagen_path', 'nombres', 'apellidos', 'tipo_documento_id', 'nro_documento',
-    'email', 'password', 'isAccount', 'isFirstSession', 'edad', 'sexo', 'telefono', 'celular', 'altura', 'peso', 'user_create_id', 'user_update_id','nombre_completo_temporal'];
+    'email', 'password', 'isAccount', 'isFirstSession', 'edad', 'sexo', 'telefono', 'celular', 'altura', 'peso', 'user_create_id', 'user_update_id','nombre_completo_temporal'
+    , 'mano_habil', 'fecha_nacimiento', 'marca_raqueta'];
 
     protected $appends = ['nombre_completo', 'sexo_completo'];
 

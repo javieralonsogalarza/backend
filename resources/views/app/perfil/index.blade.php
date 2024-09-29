@@ -20,7 +20,7 @@
                             <label for="imagen">Foto<span class="text-danger text-small">(180px × 160px)</span></label>
                             <div class="image_preview_content" style="height: 230px">
                                 <div class="image_preview">
-                                    <img src="{{ ($Auth::guard('players')->user()->imagen_path != null && $Auth::guard('players')->user()->imagen_path != "") ? ('/img/'.$Auth::guard('players')->user()->imagen_path) : "/upload/image/default.png" }}" alt="Logo">
+                                    <img src="{{ ($Auth::guard('players')->user()->imagen_path != null && $Auth::guard('players')->user()->imagen_path != "") ? ('/img/' . $Auth::guard('players')->user()->imagen_path) : "/upload/image/default.png" }}" alt="Logo">
                                 </div>
                             </div>
                             <input type="file" class="preview form-control" name="imagen" id="imagen" accept="image/jpeg, image/png">
@@ -95,16 +95,38 @@
                                     </select>
                                     <span data-valmsg-for="sexo"></span>
                                 </div>
+                       
                                 <div class="col-md-4">
-                                    <label for="celular">Celular: </label>
-                                    <input type="text" name="celular" id="celular" maxlength="15" class="form-control" value="{{ $Auth::guard('players')->user()->celular }}" autocomplete="off" >
-                                    <span data-valmsg-for="celular"></span>
+                                    <label for="fecha_nacimiento">Fecha de Nacimiento: </label>
+                                    <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control"
+                                        value="{{ $Auth::guard('players')->user()->fecha_nacimiento }}" autocomplete="off">
+                                    <span data-valmsg-for="fecha_nacimiento"></span>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="edad">Edad: </label>
-                                    <input type="text" name="edad" id="edad" class="form-control numeric" value="{{ $Auth::guard('players')->user()->edad }}" autocomplete="off" >
-                                    <span data-valmsg-for="edad"></span>
-                                </div>
+                                    <label for="marca_raqueta">Marca de Raqueta: </label>
+                                    <div class="input-group">
+                                        <select name="marca_raqueta" id="marca_raqueta" class="form-control">
+                                            <option value="">Seleccione una marca</option>
+                                            <option value="Wilson" {{ $Auth::guard('players')->user()->marca_raqueta == 'Wilson' ? 'selected' : '' }}>
+                                                Wilson</option>
+                                            <option value="Babolat" {{ $Auth::guard('players')->user()->marca_raqueta == 'Babolat' ? 'selected' : '' }}>
+                                                Babolat</option>
+                                            <option value="Head" {{ $Auth::guard('players')->user()->marca_raqueta == 'Head' ? 'selected' : '' }}>Head
+                                            </option>
+                                            <option value="Yonex" {{ $Auth::guard('players')->user()->marca_raqueta == 'Yonex' ? 'selected' : '' }}>Yonex
+                                            </option>
+                                            <option value="Prince" {{ $Auth::guard('players')->user()->marca_raqueta == 'Prince' ? 'selected' : '' }}>
+                                                Prince</option>
+                                            <option value="Dunlop" {{ $Auth::guard('players')->user()->marca_raqueta == 'Dunlop' ? 'selected' : '' }}>
+                                                Dunlop</option>
+                                            <option value="Tecnifibre" {{ $Auth::guard('players')->user()->marca_raqueta == 'Tecnifibre' ? 'selected' : '' }}>Tecnifibre</option>
+                                            <option value="Otros" {{ $Auth::guard('players')->user()->marca_raqueta == 'Otros' ? 'selected' : '' }}>Otros
+                                            </option>
+                                        </select>
+                                      
+                                    </div>
+                                    <span data-valmsg-for="marca_raqueta"></span>
+                                </div>  
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-4">
@@ -116,6 +138,19 @@
                                     <label for="peso">Peso (kg): </label>
                                     <input type="text" name="peso" id="peso" class="form-control decimal-weight" value="{{ $Auth::guard('players')->user()->peso }}" autocomplete="off" >
                                     <span data-valmsg-for="peso"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="mano_habil">Mano Hábil: </label>
+                                    <select name="mano_habil" id="mano_habil" class="form-control">
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="Diestra" {{ $Auth::guard('players')->user()->mano_habil == 'Diestra' ? 'selected' : '' }}>Diestra
+                                        </option>
+                                        <option value="Zurda" {{ $Auth::guard('players')->user()->mano_habil == 'Zurda' ? 'selected' : '' }}>Zurda
+                                        </option>
+                                        <option value="Ambidiestra" {{ $Auth::guard('players')->user()->mano_habil == 'Ambidiestra' ? 'selected' : '' }}>
+                                            Ambidiestra</option>
+                                    </select>
+                                    <span data-valmsg-for="mano_habil"></span>
                                 </div>
                             </div>
                         </div>

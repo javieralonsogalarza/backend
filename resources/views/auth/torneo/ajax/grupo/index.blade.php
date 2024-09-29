@@ -168,8 +168,12 @@
                                         </div>
                                     @elseif(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) <= 0)
                                         <div class="row mt-3">
+                                       
+
                                             <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
-                                                @if(count($Model->torneoJugadors->where('torneo_categoria_id', $q->id)->where('after', true)) && !$q->first_final)
+                                            <h5 class="col-md-10 text-left">Listado de Grupos</h5>  
+
+                                            @if(count($Model->torneoJugadors->where('torneo_categoria_id', $q->id)->where('after', true)) && !$q->first_final)
                                                     <li class="mr-2"><button type="button" class="btn btn-primary btn-add-groups" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Agregar grupos</button></li>
                                                 @endif
                                                 @if($q->first_final)
@@ -184,7 +188,10 @@
 
                                 @if(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) > 0 && $Model->torneoGrupos()->where('torneo_categoria_id', $q->id)->count() > 0)
                                     <div class="row mt-3">
-                                        <div class="col-md-12 text-right">
+                                    <div class="col-md-6 text-left">
+                                    <h5>Listado de Grupos</h5></div>
+
+                                        <div class="col-md-6 text-right">
                                             <button type="button" class="btn btn-primary btn-generate-json-grupo" data-category="{{ $q->id }}">Generar Json</button>
                                         </div>
                                     </div>
