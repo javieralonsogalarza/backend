@@ -112,7 +112,7 @@ class ReporteController extends Controller
 
     public function rankingsByCategoryId($filter_categoria)
     {
-        $filter_anio = Carbon::now()->year;
+        $filter_anio = null;
 
         $Model = Comunidad::where('principal', true)->first();
 

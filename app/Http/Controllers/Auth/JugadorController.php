@@ -125,7 +125,7 @@ class JugadorController extends Controller
 
                     if($entity != null) {
                         $request->merge(['user_update_id' =>  Auth::guard('web')->user()->id]);
-                        $entity->update($request->only('categoria_id', 'imagen_path', 'nombres', 'apellidos', 'tipo_documento_id', 'nro_documento', 'edad', 'sexo', 'telefono', 'celular', 'altura', 'peso'));
+                        $entity->update($request->only('categoria_id', 'imagen_path', 'nombres', 'apellidos', 'tipo_documento_id', 'nro_documento', 'sexo', 'altura', 'peso', 'mano_habil', 'fecha_nacimiento', 'marca_raqueta'));
                     }else{
                         $request->merge(['email' => $request->isAccount ? $request->email : null,  'user_create_id' =>  Auth::guard('web')->user()->id]);
                         Jugador::create($request->all());
