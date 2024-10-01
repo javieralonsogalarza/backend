@@ -6607,7 +6607,10 @@ class TorneoController extends Controller
                     }
                 }
             }
-            $content = json_encode($model);
+            $content = json_decode(json_encode($model), true);
+            $content = $this->reorderBlocks($content);
+            $content = json_encode($content);
+            return $content;
         }
 
         Storage::disk('public')->put('public/uploads/keys/json.txt', $content);
@@ -6626,6 +6629,20 @@ class TorneoController extends Controller
         ];
         // make a response, with the content, a 200 response code and the headers
         return response($content)->withHeaders($headers);*/
+    }
+
+    function reorderBlocks($data) {
+        $order = ['bloque_uno', 'bloque_tres', 'bloque_dos', 'bloque_cuatro'];
+        foreach ($data['llaves'] as $round => $blocks) {
+            $reorderedBlocks = [];
+            foreach ($order as $block) {
+                if (isset($blocks[$block])) {
+                    $reorderedBlocks[$block] = $blocks[$block];
+                }
+            }
+            $data['llaves'][$round] = $reorderedBlocks;
+        }
+        return $data;
     }
 
     public function exportJugadorJson(Request $request)
