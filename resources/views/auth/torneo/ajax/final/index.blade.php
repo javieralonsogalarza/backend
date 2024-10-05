@@ -55,6 +55,7 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
             <div class="row mt-3">
                 <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
                     <li class="mr-1"><button type="button" class="btn btn-primary btn-add-three-players-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="0"><i class="fa fa-users"></i> ¿Agregar Mejores 3ros?</button></li>
+                    <li class="mr-1"><button type="button" class="btn btn-primary btn-add-four-players-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="0"><i class="fa fa-users"></i> ¿Agregar Mejores 4tos?</button></li>
                     <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-manual-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="0"><i class="fa fa-key"></i> Generar llaves</button></li>
                     <!--<li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-random-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}"><i class="fa fa-key"></i> Keys aleatorias</button></li>
                     <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}"><i class="fa fa-key"></i> Keys por puesto</button></li>-->
@@ -64,6 +65,7 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
             <div class="row mt-3">
                 <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
                     <li class="mr-1"><button type="button" class="btn btn-primary btn-add-three-players-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="0"><i class="fa fa-users"></i> ¿Agregar Mejores 3ros?</button></li>
+                    <li class="mr-1"><button type="button" class="btn btn-primary btn-add-four-players-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="0"><i class="fa fa-users"></i> ¿Agregar Mejores 4tos?</button></li>
                     <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-manual-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="1"><i class="fa fa-sync"></i> Volver a generar llaves</button></li>
                 </ul>
             </div>
@@ -155,6 +157,21 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
         const $btnAddThreePlayersFinal = $(".btn-add-three-players-final");
         $btnAddThreePlayersFinal.on("click", function (){
             invocarModal(`/auth/{{strtolower($ViewName)}}/fase-final/players/terceros/{{$TorneoFaseFinal->TorneoCategoria->torneo->id}}/{{$TorneoFaseFinal->TorneoCategoria->id}}`,
+                function ($modal) {
+                if ($modal.attr("data-reload") === "true"){
+                    invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}/{{ $TorneoFaseFinal->TorneoCategoria->id }}/2`, function(data){
+                        $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
+                        invocarVista(`/auth/{{strtolower($ViewName)}}/fase-final-final/{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}/{{ $TorneoFaseFinal->TorneoCategoria->id }}`, function(data){
+                            $("#partialViewFinal{{ $TorneoFaseFinal->TorneoCategoria->id }}").html("").append(data);
+                        });
+                    });
+                }
+            });
+        });
+
+        const $btnAddFourPlayersFinal = $(".btn-add-four-players-final");
+        $btnAddFourPlayersFinal.on("click", function (){
+            invocarModal(`/auth/{{strtolower($ViewName)}}/fase-final/players/cuartos/{{$TorneoFaseFinal->TorneoCategoria->torneo->id}}/{{$TorneoFaseFinal->TorneoCategoria->id}}`,
                 function ($modal) {
                 if ($modal.attr("data-reload") === "true"){
                     invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}/{{ $TorneoFaseFinal->TorneoCategoria->id }}/2`, function(data){

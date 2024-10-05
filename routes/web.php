@@ -129,6 +129,10 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::get('fase-final/players/terceros/{torneo}/{torneo_categoria_id}', [Auth\TorneoController::class, 'faseFinalPlayerTerceros'])->name('faseFinalPlayerTerceros');
                             Route::post('fase-final/players/terceros', [Auth\TorneoController::class, 'faseFinalPlayerTercerosStore'])->name('faseFinalPlayerTercerosStore');
 
+                            Route::get('fase-final/players/cuartos/{torneo}/{torneo_categoria_id}', [Auth\TorneoController::class, 'faseFinalPlayerCuartos'])->name('faseFinalPlayerCuartos');
+                            Route::post('fase-final/players/cuartos', [Auth\TorneoController::class, 'faseFinalPlayerCuartosStore'])->name('faseFinalPlayerCuartosStore');
+
+
                             Route::get('fase-final/players/changes/{torneo}/{torneo_categoria_id}', [Auth\TorneoController::class, 'faseFinalPlayersChanges'])->name('faseFinalPlayersChanges');
 
                             //Route::get('fase-final/{torneo}/{torneo_categoria_id}/{landing?}', [Auth\TorneoController::class, 'faseFinal'])->name('faseFinal');

@@ -9,7 +9,7 @@ class TorneoCategoria extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['torneo_id', 'categoria_simple_id', 'categoria_dupla_id', 'imagen_path', 'color_rotulos', 'color_participantes', 'sector', 'orden', 'multiple', 'aleatorio', 'manual', 'first_final',  'clasificados', 'clasificados_terceros', 'estado_id', 'user_create_id', 'user_update_id'];
+    protected $fillable = ['torneo_id', 'categoria_simple_id', 'categoria_dupla_id', 'imagen_path', 'color_rotulos', 'color_participantes', 'sector', 'orden', 'multiple', 'aleatorio', 'manual', 'first_final',  'clasificados', 'clasificados_terceros', 'estado_id', 'user_create_id', 'user_update_id','clasificados_terceros'];
 
     protected $appends = ['imagen'];
 

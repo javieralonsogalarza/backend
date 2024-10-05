@@ -1,0 +1,108 @@
+{
+    "torneo": "Dynamo Tennis Cup 2024",
+    "formato": "Round Robin Flexible",
+    "ronda": 16,
+    "categoria": "5ta B",
+    "fecha_inicio": "2024-01-08",
+    "fecha_final": "2024-03-03",
+    "ganador": "Joseph Araujo",
+    "llaves": {
+        "octavos": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Renato Bailly",
+                    "jugador_rival": "José Luis Fernandez",
+                    "resultado": "6-0/6-3"
+                },
+                {
+                    "jugador_local": "Miguel Lopez Torres",
+                    "jugador_rival": "Joshua Gave",
+                    "resultado": "6-3/6-2"
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Eduardo Andia",
+                    "jugador_rival": "Isabel Mundaca",
+                    "resultado": "6-3/6-2"
+                },
+                {
+                    "jugador_local": "Max Salamanca",
+                    "jugador_rival": "Carlos Higa",
+                    "resultado": "7-5/7-6"
+                }
+            ],
+            "bloque_tres": [
+                {
+                    "jugador_local": "Joseph Araujo",
+                    "jugador_rival": "Diego Lara",
+                    "resultado": "6-3/6-4"
+                },
+                {
+                    "jugador_local": "Victor Monteverde",
+                    "jugador_rival": "Kevin Gave",
+                    "resultado": "6-3/6-3"
+                }
+            ],
+            "bloque_cuatro": [
+                {
+                    "jugador_local": "Carlos Desposorio",
+                    "jugador_rival": "Salvador Linares",
+                    "resultado": "6-3/2-6/10-3"
+                },
+                {
+                    "jugador_local": "Carlos Euscate",
+                    "jugador_rival": "Roberto Sarmiento",
+                    "resultado": "6-3/6-0"
+                }
+            ]
+        },
+        "cuartos": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Renato Bailly",
+                    "jugador_rival": "Miguel Lopez Torres",
+                    "resultado": "WO"
+                },
+                {
+                    "jugador_local": "Eduardo Andia",
+                    "jugador_rival": "Max Salamanca",
+                    "resultado": "7-6/7-6"
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Joseph Araujo",
+                    "jugador_rival": "Kevin Gave",
+                    "resultado": "6-3/6-1"
+                },
+                {
+                    "jugador_local": "Carlos Desposorio",
+                    "jugador_rival": "Carlos Euscate",
+                    "resultado": "6-0/6-2"
+                }
+            ]
+        },
+        "semifinal": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Renato Bailly",
+                    "jugador_rival": "Eduardo Andia",
+                    "resultado": "6-3/6-2"
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Joseph Araujo",
+                    "jugador_rival": "Carlos Desposorio",
+                    "resultado": "6-2/6-2"
+                }
+            ]
+        },
+        "final": {
+            "jugador_local": "Renato Bailly",
+            "jugador_rival": "Joseph Araujo",
+            "resultado": "6-0/6-2"
+        }
+    }
+}
