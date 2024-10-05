@@ -1,0 +1,14 @@
+{
+  "titulo": "La Confraternidad del Tenis",
+  "torneo": "Copa de La Confraternidad 2024",
+  "formato": "Round Robin Flexible",
+  "grupo": "Grupo 7",
+  "ronda": "Fase de grupos",
+  "categoria": "4ta",
+  "jugador_ganador_uno": "Paul Chavez",
+  "jugador_ganador_dos": null,
+  "jugador_rival_uno": "Luis Juarez",
+  "jugador_rival_dos": null,
+  "resultado_ganador": "6/6/10",
+  "resultado_rival": "7/1/8"
+}

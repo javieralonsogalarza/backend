@@ -1,0 +1,202 @@
+{
+    "torneo": "La Confraternidad de Tenis",
+    "formato": "Copa Level Up 2024",
+    "ronda": 32,
+    "categoria": "Dobles 5ta Damas (Doble)",
+    "fecha_inicio": "2024-01-08",
+    "fecha_final": "2024-03-03",
+    "ganador": null,
+    "llaves": {
+        "ronda32": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Gabriela Toledo + Margot Rua",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Tamara Ruiz + Betty Burgos",
+                    "jugador_rival": "Silvana Grados + Angela Panta",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Varinia Moreno + Stephanie Melendez",
+                    "jugador_rival": "Alexandra Bueno + Vanessa Bueno",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Katherine Cornejo + Cinthia Navarro",
+                    "jugador_rival": "Milagros Taquiri + Susan Romero",
+                    "resultado": null
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Candy Acero + Silvia de la Mata",
+                    "jugador_rival": "Lisset Contreras + Milagros Morales",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Natalia Torres + Katya Torres",
+                    "jugador_rival": "Marieta Loza + Claudia Malarín",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Ruth Campoverde + Fiorella Godoy",
+                    "jugador_rival": "Valeria Muro + Colleen Gifford",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Maggie Zignago + Heirol Lee",
+                    "resultado": null
+                }
+            ],
+            "bloque_tres": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ],
+            "bloque_cuatro": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ]
+        },
+        "octavos": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ],
+            "bloque_tres": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ],
+            "bloque_cuatro": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                },
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ]
+        },
+        "cuartos": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ],
+            "bloque_tres": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ],
+            "bloque_cuatro": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ]
+        },
+        "semifinal": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+                    "resultado": null
+                }
+            ]
+        },
+        "final": {
+            "jugador_local": "Elizabeth Orbegoso + Bertha Fernandez",
+            "jugador_rival": "Elizabeth Orbegoso + Bertha Fernandez",
+            "resultado": null
+        }
+    }
+}

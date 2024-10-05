@@ -1,0 +1,95 @@
+{
+    "titulo": "La Confraternidad del Tenis",
+    "torneo": "Copa de La Confraternidad - Damas",
+    "formato": "Round Robin Flexible",
+    "multiple": false,
+    "categoria": "5ta B Damas",
+    "fecha_inicio": "2024-07-01",
+    "fecha_final": "2024-08-11",
+    "grupos": [
+      {
+        "nombre": "Grupo A",
+        "jugadores": [
+          {
+            "nombres": "Elizabeth",
+            "apellidos": "Orbegoso"
+          },
+          {
+            "nombres": "Katherine",
+            "apellidos": "Cornejo"
+          },
+          {
+            "nombres": "Cinthia",
+            "apellidos": "Navarro"
+          },
+          {
+            "nombres": "Vanessa",
+            "apellidos": "Valdiviezo"
+          }
+        ]
+      },
+      {
+        "nombre": "Grupo B",
+        "jugadores": [
+          {
+            "nombres": "Alexandra",
+            "apellidos": "Bueno"
+          },
+          {
+            "nombres": "Lisset",
+            "apellidos": "Contreras"
+          },
+          {
+            "nombres": "Victoria",
+            "apellidos": "Rebaza"
+          },
+          {
+            "nombres": "Rosa",
+            "apellidos": "Rouillón"
+          }
+        ]
+      },
+      {
+        "nombre": "Grupo C",
+        "jugadores": [
+          {
+            "nombres": "Katya",
+            "apellidos": "Torres"
+          },
+          {
+            "nombres": "Milagros",
+            "apellidos": "Morales"
+          },
+          {
+            "nombres": "Ximena",
+            "apellidos": "Umeres"
+          },
+          {
+            "nombres": "Melissa",
+            "apellidos": "Córdova"
+          }
+        ]
+      },
+      {
+        "nombre": "Grupo D",
+        "jugadores": [
+          {
+            "nombres": "Yesenia",
+            "apellidos": "Cuzcano"
+          },
+          {
+            "nombres": "Fernanda",
+            "apellidos": "Lancho"
+          },
+          {
+            "nombres": "Melcy",
+            "apellidos": "Saldivar"
+          },
+          {
+            "nombres": "Maria Alejandra",
+            "apellidos": "Flores"
+          }
+        ]
+      }
+    ]
+}

@@ -1,0 +1,1697 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'PrimaryFont';
+    src: url(../font/Anton.ttf);
+}
+
+// canvas{display: none;}
+
+$line: #3c3c3c;
+$colorText: #5c5b5b;
+
+
+.w-100{width: 100%;}
+.h-100{height: 100%;}
+
+.wh-100{
+    @extend .w-100;
+    @extend .h-100;
+}
+.wh-100vh{
+    @extend .w-100;
+    height: 100vh;
+}
+
+.absolute{
+    position: absolute;
+}
+
+.d-none{
+    display: none !important;
+}
+
+@mixin fullWH{
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    overflow: hidden;
+}
+
+.social-login-icons {
+    display: flex;
+    align-items: center;
+    margin-top: 14vh;
+    @media (max-width: 1200px){
+        margin-top: 8vh;
+    }
+    @media (max-width: 1000px){
+        margin-top: 3rem;
+    }
+    svg{
+        width: 40px;
+    }
+}
+
+.social-login-icons svg,
+.social-login-icons button > *{
+    pointer-events: none;
+}
+  
+.social-icon-1,
+.social-icon-2,
+.social-icon-3,
+.social-icon-4 {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.socialcontainer {
+    height: 50px;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;
+}
+.social-icon-1 {
+    transition-duration: 0.4s;
+    background-color: rgb(0, 0, 0);
+}
+.socialcontainer:hover .social-icon-1 {
+    transform: translateY(-50px);
+}
+.social-icon-2 {
+    transition-duration: 0.4s;
+    background: linear-gradient(72.44deg,#ff7a00 11.92%,#ff0169 51.56%,#d300c5 85.69%);
+}
+.socialcontainer:hover .social-icon-2 {
+    transform: translateY(-50px);
+}
+.social-icon-3 {
+    transition-duration: 0.4s;
+    background: #316ff6;
+}  
+.socialcontainer:hover .social-icon-3 {
+    transform: translateY(-50px);
+}
+.social-icon-4 {
+    transition-duration: 0.4s;
+    background: linear-gradient(180deg,rgba(129, 34, 144, 1) 0%,rgba(77, 34, 124, 1) 91%);
+} 
+.socialcontainer:hover .social-icon-4 {
+    transform: translateY(-50px);
+}
+
+
+
+.custom-select{
+    width: 100%;
+    margin-top: 30px;
+    position: relative;
+    select{
+        appearance: none;
+        width: 100%;
+        outline: none;
+        font-size: 15px;
+        padding: 0.675em 1em;
+        background-color: #fff;
+        border: 1px solid #caced1;
+        border-radius: 0;
+        color: #000;
+        cursor: pointer;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    &::before, &::after{
+        --size: 0.3rem;
+        content: "";
+        position: absolute;
+        right: 1rem;
+        pointer-events: none;
+    }
+    &::before {
+        border-left: var(--size) solid transparent;
+        border-right: var(--size) solid transparent;
+        border-bottom: var(--size) solid black;
+        top: 40%;
+    }
+    &::after {
+        border-left: var(--size) solid transparent;
+        border-right: var(--size) solid transparent;
+        border-top: var(--size) solid black;
+        top: 55%;
+    }
+}
+
+%width_height_button{
+    width: 100%;
+    height: 46px;
+}
+
+.hero_view{
+    // display: none !important;
+    
+    position: fixed;
+    inset: 0;
+    background: #FFF;
+    z-index: 5;
+
+    @media (max-width: 1000px){
+        height: auto !important;
+        min-height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    &-grid{
+        display: grid;
+        @media (min-width: 1000px){
+            @include fullWH;
+        }
+        @media (min-width: 1200px){
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @media (max-width: 1200px){
+            grid-template-columns: 45% 55%;
+        }
+        @media (max-width: 1000px){
+            grid-template-columns: 100%;
+            width: 100%;
+            min-height: 100vh;
+            height: auto;
+        }
+        &>*{
+            @extend .w-100;
+            height: 100vh;
+
+            @media (max-width: 1000px){
+                height: auto !important;
+                min-height: 100vh;
+            }
+        }
+    }
+    h1{
+        font-family: 'PrimaryFont';
+        font-weight: 400;
+        letter-spacing: .3px;
+        text-transform: uppercase;
+    }
+    &-content{
+        display: flex;
+        align-items: flex-start;
+        padding: 3rem 5%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        flex-direction: column;
+        justify-content: flex-start;
+        @media (max-width: 1000px){
+            padding: 2rem 4%;
+        }
+        &::-webkit-scrollbar{
+            width: 6px;
+        }
+        &::-webkit-scrollbar-thumb{
+            background: #1f1e1e;
+            border-radius: 50px;
+        }
+        &::-webkit-scrollbar-track{
+            background: #cccccc81;
+        }
+    }
+    &-image{
+        overflow: hidden;
+        @media (max-width: 1000px){
+            display: none;
+        }
+        img{
+            @include fullWH;
+            object-fit: cover;
+            object-position: center;
+            transition: all .3s ease;
+        }
+        &:hover{
+            img{
+                transform: scale(1.1);
+            }
+        }
+    }
+    &-selectable,
+    &-button-generate{
+        width: min(100%, 250px);
+        position: relative;
+    }
+    &-selectable{
+        p{
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            font-size: 11.6px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            text-align: left;
+            width: max-content;
+        }
+    }
+    &-test{
+        margin-top: 4vh;
+        li{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            ul{
+                width: 100%;
+                margin-left: 1.6rem;
+            }
+            &:not(:last-child){
+                margin-bottom: 4px;
+            }
+            svg{
+                width: 17px;
+                height: 17px;
+                &.check{
+                    color: #27ae60;
+                }
+                &.uncheck{
+                    color: #c0392b;
+                }
+            }
+            p{
+                font-size: 14px;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                max-width: 333px;
+            }
+        }
+    }
+    &-for_bg{
+        margin-top: 50px;
+        position: relative;
+        width: 250px;
+        height: 190px;
+        border: 2px dashed #ccc;
+        .remove_bg{
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: calc(100% + 10px);
+            transition: all .3s ease;
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            opacity: 0;
+            pointer-events: none;
+            aspect-ratio: 1/1;
+            border-radius: 4px;
+            border: 2px solid red;
+            background: none;
+            svg{
+                @include fullWH;
+                padding: 5px;
+                pointer-events: none;
+                color: red;
+            }
+        }
+        .input{
+            position: absolute;
+            inset: 0;
+            @include fullWH();
+            z-index: 4;
+            cursor: pointer;
+            opacity: 0;
+        }  
+        .labelFile{
+            pointer-events: none;
+            @include fullWH();
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 5px;
+            color: #404040;
+            cursor: pointer;
+        }      
+        p{
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 12px;
+            max-width: 215px;
+        }
+
+        &.filled{
+            border-color: #27ae60;
+            path{
+                fill: #27ae60 !important;
+            }
+            p{
+                color: #27ae60;
+                font-weight: 600;
+            }
+            .remove_bg{
+                opacity: 1;
+                pointer-events: all;
+            }
+        }
+    }
+    &-button-generate{
+        margin-top: 14px;
+        .btn-file{
+            display: grid;
+            grid-template-columns: 46px 1fr;
+            width: 100%;
+            transition: all .3s ease;
+            height: 48px;
+            grid-gap: 6px;
+            &>*{
+                overflow: hidden;
+                border-radius: 4px;
+                border: 2px solid #2ecc71;
+                position: relative;
+                @extend %width_height_button;
+                cursor: pointer;
+            }
+            svg, path{
+                pointer-events: none;
+            }
+            svg{
+                @include fullWH;
+                color: #2ecc71;
+            }
+            &>div{
+                padding: 9px;
+                background: white;
+            }
+            [type="file"]{
+                cursor: pointer;
+                position: absolute;
+                @include fullWH;
+                inset: 0;
+                opacity: 0;
+                z-index: 4;
+            }
+            [type="button"]{
+                background: #2ecc71;
+                border: none;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                font-size: 16px;
+                color: white;
+            }
+
+            &.disabled{
+                opacity: 0.6;
+                cursor: not-allowed;
+                input, svg, div, path, &>*{
+                    cursor: not-allowed;
+                }
+                input{
+                    pointer-events: none;
+                }
+            }
+        }
+        button{
+            display: inline-block;
+            border-radius: 4px;
+            background-color: #3d405b;
+            border: none;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 17px;
+            padding: 16px;
+            width: 160px;
+            transition: all 0.5s;
+            cursor: pointer;
+            margin: 0;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            span {
+                cursor: pointer;
+                display: inline-block;
+                position: relative;
+                transition: 0.5s;
+                &::after{
+                    content: '»';
+                    position: absolute;
+                    opacity: 0;
+                    top: 0;
+                    right: -15px;
+                    transition: 0.5s;
+                }
+            }
+            &:hover{
+                span{
+                    padding-right: 15px;
+                    &::after{
+                        opacity: 1;
+                        right: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.toggle{
+    &:not(.active){
+        display: none;
+    }
+}
+
+@mixin centerX($x: -50%){
+    left: 50%;
+    transform: translateX($x);
+}
+
+.canvas{
+    position: relative;
+    background: url(../images/full2.jpeg);
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    display: grid;
+
+    &_cat, &_format, &_tournament{
+        @include centerX();
+        // @include centerX(-51.2%);
+        width: fit-content;
+        text-align: center;
+        text-shadow: 0 3px 3px rgba($color: #000000, $alpha: 0.6);
+        font-family: 'PrimaryFont';
+        font-style: italic;
+        color: white;
+        z-index: 3;
+    }
+
+    &_scroll{
+        padding-bottom: 30px;
+        overflow-x: scroll;
+
+        pointer-events: none;
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+    }
+    
+    &.ig{
+        padding: 5em 6em;
+        // padding: 1.5% 1.8%;
+        width: 5176px;
+        height: 3235px;
+        // width: 5400px;
+        // height: 3375px;
+        // width: 2160px;
+        // height: 1350px;
+        font-size: 1rem;
+        grid-gap: 78px;
+    }
+    &.fb{
+        padding: 38px 52px;
+        // padding: 1.5% 1.8%;
+        width: 5000px;
+        height: 2625px;
+        // width: 1200px;
+        // height: 630px;
+        font-size: .925rem;
+        grid-gap: 58px;
+    }
+
+    &_logo, &_trophy, &_winner, &_cat{
+        display: block;
+        position: absolute;
+        @include centerX();
+    }
+    &_winner{
+        width: 555px;
+        z-index: 4;
+        p{
+            font-family: 'PrimaryFont';
+            letter-spacing: 0.45px;
+            text-align: center;
+            text-shadow: 0 3px 3px rgba($color: #000000, $alpha: 0.6);
+            margin: 0;
+            font-style: italic;
+            color: white;
+        }
+        small{
+            display: block;
+            text-align: center;
+            margin: 6px auto 0;
+        }
+        img{
+            display: block;
+            margin: 0 auto 16px;
+        }
+    }
+
+    &.doubles{
+        .match_player{
+            padding-inline: 3%;
+        }
+    }
+
+    &.ig{
+        .canvas{
+            &_tournament{
+                top: 1.9%;
+                font-size: 8em;
+            }
+            &_format{
+                top: 8%;
+                font-size: 4.5em;
+            }
+            &_cat{
+                top: 10.2%;
+                font-size: 3.75em;   
+            }
+            &_information{
+                &>p{
+                    font-size: 4.5em;
+                }
+            }
+            &_winner{
+                top: 59%;
+                p{
+                    font-size: 5em;
+                }
+            }
+            &_logo{
+                top: 19%;
+                width: 12%;
+            }
+            &_trophy{
+                top: 28%;
+                width: 10%;
+            }
+            &_final{
+                font-size: 1.2rem;
+            }
+        }
+    }
+    &.fb{
+        .canvas{
+            &_tournament{
+                top: 2.5%;
+                font-size: 8em;
+            }
+            &_format{
+                top: 9.3%;
+                font-size: 4.5em;
+            }
+            &_cat{
+                top: 13.05%;
+                font-size: 3.75em;   
+            }
+            &_information{
+                &>p{
+                    font-size: 4em;
+                }
+            }
+            &_winner{
+                top: 60%;
+                p{
+                    font-size: 5.3em;
+                }
+            }
+            &_logo{
+                top: 20%;
+                width: 11%;
+            }
+            &_trophy{
+                top: 25%;
+                width: 9%;
+            }
+            &_final{
+                font-size: 1.1rem;
+            }
+        }
+    }
+
+    &_photos{
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        z-index: 2;
+        top: 0;
+        &.izq{
+            left: 0;
+        }
+        &.der{
+            right: 0;
+        }
+    }
+    
+    &[data-first-round="8"]{
+        // grid-template-columns: repeat(9, 1fr);
+        grid-template-columns: 1fr 1fr 1fr 1fr 1.12fr 1fr 1fr 1fr 1fr;
+        .canvas{
+            &_col{
+                &-8{
+                    &:nth-child(even){
+                        grid-column: -1/-2;
+                    }
+                }
+                &-4{
+                    &:nth-child(even){
+                        grid-column: -2/-3;
+                    }
+                }
+                &-2{
+                    &:nth-child(even){
+                        grid-column: -3/-4;
+                    }
+                }
+                &-1{
+                    &:nth-child(even){
+                        grid-column: -4/-5;
+                    }
+                }
+            }
+        }
+    }
+    &[data-first-round="4"]{
+        grid-template-columns: 1fr 1fr 1fr 1.12fr 1fr 1fr 1fr;
+        .canvas{
+            &_col{
+                &-4{
+                    &:nth-child(even){
+                        grid-column: -1/-2;
+                    }
+                }
+                &-2{
+                    &:nth-child(even){
+                        grid-column: -2/-3;
+                    }
+                }
+                &-1{
+                    &:nth-child(even){
+                        grid-column: -3/-4;
+                    }
+                }
+            }
+        }
+        &.ig{
+            .canvas{
+                &_tournament{
+                    top: 1.9%;
+                    font-size: 7em;
+                }
+                &_format{
+                    top: 8%;
+                    font-size: 4em;
+                }
+                &_winner{
+                    top: 60%;
+                    p{
+                        font-size: 5.25em;
+                    }
+                }
+            }
+        }
+        &.fb{
+            .canvas{
+                &_tournament{
+                    top: 2.5%;
+                    font-size: 7em;
+                }
+                &_format{
+                    top: 9.3%;
+                    font-size: 4em;
+                }
+                &_winner{
+                    top: 62%;
+                    p{
+                        font-size: 5.2em;
+                    }
+                }
+            }
+        }
+        .match{
+            height: 16em;
+        }
+    }
+    &[data-first-round="2"]{
+        grid-template-columns: 1fr 1fr 1.12fr 1fr 1fr;
+        &.ig{
+            padding-inline: 12em;
+        }
+        &.fb{
+            padding-inline: 6.6em;
+        }
+        .canvas{
+            &_col{
+                &-2{
+                    &:nth-child(even){
+                        grid-column: -1/-2;
+                    }
+                }
+                &-1{
+                    &:nth-child(even){
+                        grid-column: 4/5;
+                    }
+                }
+            }
+        }
+        &.ig{
+            .canvas{
+                &_tournament{
+                    top: 1.9%;
+                    font-size: 10em;
+                }
+                &_format{
+                    top: 9%;
+                    font-size: 6.5em;
+                }
+                &_cat{
+                    top: 12%;
+                    font-size: 4.75em;
+                }
+                &_winner{
+                    width: 1100px;
+                    top: 60%;
+                    p{
+                        font-size: 7em;
+                    }
+                }
+            }
+        }
+        &.fb{
+            .canvas{
+                &_tournament{
+                    top: 1.2%;
+                    font-size: 8em;
+                }
+                &_format{
+                    top: 9%;
+                    font-size: 5.25em;
+                }
+                &_cat{
+                    top: 13.5%;
+                    font-size: 4.75em;
+                }
+                &_winner{
+                    width: 1100px;
+                    top: 65%;
+                    p{
+                        font-size: 5.8em;
+                    }
+                }
+            }
+        }
+        .match{
+            height: 24em;
+        }
+    }
+
+    &[data-first-round="1"]{
+        grid-template-columns: 1fr 1.2fr 1fr;
+        grid-gap: 5%;
+        padding-inline: 4%;
+        .match{
+            height: 24em;
+            &_result{
+                p{
+                    font-size: 3.9em;
+                }
+            }
+            &_player{
+                padding: 10px 5%;
+            }
+        }
+        .last_format_round{
+            .match{
+                &_player{
+                    height: 100%;
+                    &::before{
+                        display: none !important;
+                    }
+                }
+            }
+        }
+        .canvas{
+            &_final{
+                grid-column: 2/3;
+
+                .match::before{
+                    position: absolute;
+                    content: '';
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    height: 1px;
+                    background: black;
+                }
+            }
+            &_col-2{
+                &:nth-child(odd) .match::after{
+                    left: 0 !important;
+                }
+                &:nth-child(even) .match::after{
+                    right: 0 !important;
+                }
+            }
+        }
+        &.ig{
+            .canvas{
+                &_tournament{
+                    top: 1.9%;
+                    font-size: 10em;
+                }
+                &_format{
+                    top: 9%;
+                    font-size: 6.5em;
+                }
+                &_cat{
+                    top: 12%;
+                    font-size: 4.75em;
+                }
+                &_winner{
+                    width: 1100px;
+                    top: 63%;
+                    p{
+                        font-size: 7em;
+                    }
+                }
+                &_final{
+                    .match::before{
+                        width: calc(100% + 20%);
+                    }
+                }
+                &_col-2{
+                    &:nth-child(even) .match:nth-child(odd)::before{
+                        right: calc(100% + 78px);
+                    }
+                    &:nth-child(odd) .match:nth-child(odd)::before{
+                        left: calc(100% + 78px);
+                    }
+                }
+            }
+            .match_player p{
+                font-size: 4.5em;
+            }
+        }
+        &.fb{
+            .canvas{
+                &_tournament{
+                    top: 1.2%;
+                    font-size: 8em;
+                }
+                &_format{
+                    top: 9%;
+                    font-size: 5.25em;
+                }
+                &_cat{
+                    top: 13.5%;
+                    font-size: 4.75em;
+                }
+                &_winner{
+                    width: 1100px;
+                    top: 66%;
+                    p{
+                        font-size: 5.8em;
+                    }
+                }
+                &_final{
+                    .match::before{
+                        width: calc(100% + 22%);
+                    }
+                }
+                &_col-2{
+                    &:nth-child(even) .match:nth-child(odd)::before{
+                        right: calc(100% + 58px);
+                    }
+                    &:nth-child(odd) .match:nth-child(odd)::before{
+                        left: calc(100% + 58px);
+                    }
+                }
+            }
+            .match_player p{
+                font-size: 4.25em;
+            }
+        }
+    }
+
+    &>*:not(.canvas_winner, .canvas_tournament, .canvas_format, .canvas_photos, .canvas_logo, .canvas_trophy, .canvas_information){
+        grid-row: 1/2;
+        display: grid;
+        width: 100%;
+        align-items: center;
+    }
+
+    .match{
+        width: 100%;
+        position: relative;
+        z-index: 2;
+        height: 14em;
+        &::before, &::after{
+            background: $line;
+        }
+        p{
+            margin: 0;
+            font-family: 'PrimaryFont';
+            letter-spacing: 0.2px;
+            color: $colorText;
+        }
+        &_result{
+            position: absolute;
+            top: calc(100% + 2px);
+            right: 0;
+            width: 100%;
+            p{
+                font-size: 2.3em;
+                text-align: center;
+                text-transform: uppercase;
+                font-weight: 100;
+                color: white;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        }
+        &_table{
+            @include fullWH;
+            background: white;
+            position: relative;
+            z-index: 2;
+        }
+        &_player{
+            width: 100%;
+            height: 50%;
+            display: grid;
+            place-content: center;
+            position: relative;
+            p{
+                font-size: 2.55em;
+                line-height: 1.25em;
+                text-align: center;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            &:first-child{
+                &::before{
+                    position: absolute;
+                    content: '';
+                    width: 90%;
+                    height: 1px;
+                    top: calc(100% - 1px);
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: #3D3D3D;
+                }
+            }
+        }
+    }
+
+    &_col{
+        &-8{
+            .match{
+                &::after{
+                    position: absolute;
+                    content: '';
+                    top: 50%;
+                    transform: translateY(-50%);
+                    height: 1px;
+                }
+                &:nth-child(odd)::before{
+                    position: absolute;
+                    content: '';
+                    top: 50%;
+                    width: 1px;
+                    z-index: 1;
+                }
+                &:nth-child(odd){
+                    .match::after{
+                        left: 100%;
+                    }
+                }
+                &:nth-child(even){
+                    .match::after{
+                        right: 100%;
+                    }
+                }
+            }
+        }
+        &-4{
+            .match{
+                &::after{
+                    position: absolute;
+                    content: '';
+                    top: 50%;
+                    transform: translateY(-50%);
+                    height: 1px;
+                }
+                &:nth-child(odd)::before{
+                    position: absolute;
+                    content: '';
+                    top: 50%;
+                    width: 1px;
+                    z-index: 1;
+                }
+                &:nth-child(odd){
+                    .match::after{
+                        left: 100%;
+                    }
+                }
+                &:nth-child(even){
+                    .match::after{
+                        right: 100%;
+                    }
+                }
+            }
+        }
+        &-2{
+            .match{
+                &::after{
+                    position: absolute;
+                    content: '';
+                    top: 50%;
+                    transform: translateY(-50%);
+                    height: 1px;
+                }
+                &:nth-child(odd)::before{
+                    position: absolute;
+                    content: '';
+                    top: 50%;
+                    width: 1px;
+                    z-index: 1;
+                }
+                &:nth-child(odd){
+                    .match::after{
+                        left: 100%;
+                    }
+                }
+                &:nth-child(even){
+                    .match::after{
+                        right: 100%;
+                    }
+                }
+            }
+        }
+        &-1{
+            .match{
+                &::after{
+                    position: absolute;
+                    content: '';
+                    top: 50%;
+                    transform: translateY(-50%);
+                    z-index: 1;
+                    width: calc(100% + 200px);
+                    height: 1px;
+                }
+            }
+        }
+    }
+
+    &.ig{
+        .canvas{
+            &_col{
+                &-8{
+                    &:nth-child(odd){
+                        .match{
+                            &::after{
+                                width: 39px;
+                                left: 100%;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 396px;
+                                left: calc(100% + 39px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    left: calc(100% + 39px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    right: calc(100% + 39px);
+                                }
+                            }
+                        }
+                    }
+                    &:nth-child(even){
+                        .match{
+                            &::after{
+                                right: 100%;
+                                width: 39px;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 396px;
+                                right: calc(100% + 39px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    right: calc(100% + 39px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    left: calc(100% + 39px);
+                                }
+                            }
+                        }
+                    }
+                }
+                &-4{
+                    &:nth-child(odd){
+                        .match{
+                            &::after{
+                                width: calc(100% + 78px);
+                                left: -39px;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 789px;
+                                left: calc(100% + 39px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    left: calc(100% + 39px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    right: calc(100% + 39px);
+                                }
+                            }
+                        }
+                    }
+                    &:nth-child(even){
+                        .match{
+                            &::after{
+                                width: calc(100% + 78px);
+                                right: -39px;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 789px;
+                                right: calc(100% + 39px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    right: calc(100% + 39px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    left: calc(100% + 39px);
+                                }
+                            }
+                        }
+                    }
+                }
+                &-2{
+                    &:nth-child(odd){
+                        .match{
+                            &::after{
+                                width: calc(100% + 78px);
+                                left: -39px;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 1577px;
+                                left: calc(100% + 39px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    left: calc(100% + 39px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    right: calc(100% + 39px);
+                                }
+                            }
+                        }
+                    }
+                    &:nth-child(even){
+                        .match{
+                            &::after{
+                                width: calc(100% + 78px);
+                                right: -39px;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 1577px;
+                                right: calc(100% + 39px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    right: calc(100% + 39px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    left: calc(100% + 39px);
+                                }
+                            }
+                        }
+                    }
+                }
+                &-1{
+                    &:nth-child(odd){
+                        .match{
+                            &::after{
+                                left: -39px;
+                            }
+                        }
+                    }
+                    &:nth-child(even){
+                        .match{
+                            &::after{
+                                right: -39px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &[data-first-round="4"]{
+            .canvas{
+                &_col{
+                    &-4{
+                        &:nth-child(odd){
+                            .match::after{
+                                left: 0;
+                                width: calc(100% + 39px);
+                            }
+                        }
+                        &:nth-child(even){
+                            .match::after{
+                                right: 0;
+                                width: calc(100% + 39px);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &[data-first-round="2"]{
+            .match{
+                &_player{
+                    p{
+                        font-size: 3.9em;
+                    }
+                }
+                &_result{
+                    p{
+                        font-size: 3.5em;
+                    }
+                }
+            }
+        }
+        &[data-first-round="2"]{
+            .canvas{
+                &_col{
+                    &-2{
+                        &:nth-child(odd){
+                            .match::after{
+                                left: 0;
+                                width: calc(100% + 39px);
+                            }
+                            .match:nth-child(odd)::before{
+                                height: 1569px;
+                            }
+                        }
+                        &:nth-child(even){
+                            .match::after{
+                                right: 0;
+                                width: calc(100% + 39px);
+                            }
+                            .match:nth-child(odd)::before{
+                                height: 1569px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    &.fb{
+        .canvas{
+            &_col{
+                &-8{
+                    &:nth-child(odd){
+                        .match{
+                            &::after{
+                                width: 29px;
+                                left: 100%;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 325px;
+                                left: calc(100% + 29px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    left: calc(100% + 29px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    right: calc(100% + 29px);
+                                }
+                            }
+                        }
+                    }
+                    &:nth-child(even){
+                        .match{
+                            &::after{
+                                right: 100%;
+                                width: 29px;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 325px;
+                                right: calc(100% + 29px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    right: calc(100% + 29px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    left: calc(100% + 29px);
+                                }
+                            }
+                        }
+                    }
+                }
+                &-4{
+                    &:nth-child(odd){
+                        .match{
+                            &::after{
+                                width: calc(100% + 58px);
+                                left: -29px;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 648px;
+                                left: calc(100% + 29px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    left: calc(100% + 29px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    right: calc(100% + 29px);
+                                }
+                            }
+                        }
+                    }
+                    &:nth-child(even){
+                        .match{
+                            &::after{
+                                width: calc(100% + 58px);
+                                right: -29px;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 648px;
+                                right: calc(100% + 29px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    right: calc(100% + 29px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    left: calc(100% + 29px);
+                                }
+                            }
+                        }
+                    }
+                }
+                &-2{
+                    &:nth-child(odd){
+                        .match{
+                            &::after{
+                                width: calc(100% + 58px);
+                                left: -29px;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 1298px;
+                                left: calc(100% + 29px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    left: calc(100% + 29px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    right: calc(100% + 29px);
+                                }
+                            }
+                        }
+                    }
+                    &:nth-child(even){
+                        .match{
+                            &::after{
+                                width: calc(100% + 58px);
+                                right: -29px;
+                            }
+                            &:nth-child(odd)::before{
+                                height: 1298px;
+                                right: calc(100% + 29px);
+                            }
+                            &:nth-child(odd){
+                                .match::before{
+                                    right: calc(100% + 29px);
+                                }
+                            }
+                            &:nth-child(even){
+                                .match::before{
+                                    left: calc(100% + 29px);
+                                }
+                            }
+                        }
+                    }
+                }
+                &-1{
+                    &:nth-child(odd){
+                        .match{
+                            &::after{
+                                left: -29px;
+                            }
+                        }
+                    }
+                    &:nth-child(even){
+                        .match{
+                            &::after{
+                                right: -29px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        &[data-first-round="8"]{
+            .match{
+                &_player{
+                    p{
+                        font-size: 2.9em;
+                    }
+                }
+                &_result{
+                    p{
+                        font-size: 2.55em;
+                    }
+                }
+            }
+        }
+        &[data-first-round="4"]{
+            .match{
+                &_player{
+                    p{
+                        font-size: 3.225em;
+                    }
+                }
+                &_result{
+                    p{
+                        font-size: 2.75em;
+                    }
+                }
+            }
+        }
+        &[data-first-round="4"]{
+            .canvas{
+                &_col{
+                    &-4{
+                        &:nth-child(odd){
+                            .match::after{
+                                left: 0;
+                                width: calc(100% + 29px);
+                            }
+                        }
+                        &:nth-child(even){
+                            .match::after{
+                                right: 0;
+                                width: calc(100% + 29px);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &[data-first-round="2"]{
+            .match{
+                &_player{
+                    p{
+                        font-size: 3.9em;
+                    }
+                }
+                &_result{
+                    p{
+                        font-size: 3.5em;
+                    }
+                }
+            }
+        }
+        &[data-first-round="2"]{
+            .canvas{
+                &_col{
+                    &-2{
+                        &:nth-child(odd){
+                            .match::after{
+                                left: 0;
+                                width: calc(100% + 29px);
+                            }
+                        }
+                        &:nth-child(even){
+                            .match::after{
+                                right: 0;
+                                width: calc(100% + 29px);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &_final{
+        .match{
+            &_table{
+                background: white;
+            }
+            p{
+                // color: white;
+            }
+            &_player{
+                &:first-child::before{
+                    // background: white;
+                }
+            }
+            &_result{
+                
+            }
+        }
+    }
+
+    &.ig{
+        &>*:not(.canvas_winner, .canvas_tournament, .canvas_format, .canvas_photos, .canvas_logo, .canvas_trophy, .canvas_information){
+            row-gap: 79px;
+        }
+    }
+
+    &.fb{
+        &>*:not(.canvas_winner, .canvas_tournament, .canvas_format, .canvas_photos, .canvas_logo, .canvas_trophy, .canvas_information){
+            row-gap: 45px;
+        }
+        .match::before{
+            width: 2px;
+            background: #000;
+        }
+        .match::after{
+            height: 2px;
+            background: #000;
+        }
+    }
+
+    &[data-first-round="4"]{
+        &.fb{
+            font-size: 1.05rem;
+            .canvas{
+                &_information{
+                    &>p{
+                        font-size: 4.75em;
+                    }
+                }
+                &_final{
+                    font-size: 1.175rem;
+                }
+            }
+        }
+        &.ig{
+            font-size: 1.1rem;
+            .canvas{
+                &_information{
+                    &>p{
+                        font-size: 5.05em;
+                    }
+                }
+                &_trophy{
+                    top: 27%;
+                }
+                &_final{
+                    font-size: 1.3rem;
+                }
+            }
+        }
+    }
+    &[data-first-round="2"]{
+        &.fb{
+            font-size: 1.06rem;
+        }
+        &.ig{
+            font-size: 1.11rem;
+        }
+    }
+
+
+
+    //doubles{
+    &[data-first-round="8"]{
+        &.doubles{
+            &.ig{
+                .match_player p{font-size: 2.15em;}
+            }
+            &.fb{
+                .match_player p{font-size: 2.3em;}
+            }
+        }
+    }
+    &[data-first-round="4"]{
+        &.doubles{
+            &.ig{
+                .match_player p{font-size: 2.3em;}
+            }
+            &.fb{
+                .match_player p{font-size: 2.55em;}
+            }
+        }
+    }
+    &[data-first-round="2"]{
+        &.doubles{
+            &.ig{
+                .match_player p{font-size: 3.2em;}
+            }
+            &.fb{
+                .match_player p{font-size: 3.35em;}
+            }
+        }
+    }
+    /*&[data-first-round="1"]{
+        &.doubles{
+            &.ig{
+                .match_player p{font-size: 3.85em;}
+            }
+            &.fb{
+                .match_player p{font-size: 4.05em;}
+            }
+        }
+    }*/
+}

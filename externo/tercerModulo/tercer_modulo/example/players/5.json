@@ -1,0 +1,41 @@
+{
+    "titulo": "La Confraternidad del Tenis",
+    "torneo": "Level Up Tennis Cup 2024",
+    "formato": "Round Robin Flexible",
+    "multiple": true,
+    "categoria": "Dobles Sta Libre",
+    "fecha_inicio": "2024-06-03",
+    "fecha_final": "2024-07-28",
+    "jugadores": [
+      {
+        "nombresv1": "Alejandro",
+        "apellidosv1": "Galliani",
+        "nombresv2": "Santiago",
+        "apellidosv2": "Vich"
+      },
+      {
+        "nombresv1": "Luis",
+        "apellidosv1": "Velásquez",
+        "nombresv2": "Luis",
+        "apellidosv2": "Aspilicueta"
+      },
+      {
+        "nombresv1": "Víctor",
+        "apellidosv1": "Arteaga",
+        "nombresv2": "Claudio",
+        "apellidosv2": "Castañeda"
+      },
+      {
+        "nombresv1": "Gustavo",
+        "apellidosv1": "Melquiades",
+        "nombresv2": "Juan Carlos",
+        "apellidosv2": "Melquiades"
+      },
+      {
+        "nombresv1": "Ricardo",
+        "apellidosv1": "Ugarte",
+        "nombresv2": "Juan Diego",
+        "apellidosv2": "Gonzales"
+      }
+    ]
+}  

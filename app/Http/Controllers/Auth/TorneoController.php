@@ -501,6 +501,22 @@ class TorneoController extends Controller
         return null;
     }
 
+
+    public function faseFinalPlayerCuartos($torneo, $torneo_categoria_id)
+    {
+        $TorneoCategoria = TorneoCategoria::where('id', $torneo_categoria_id)->where('torneo_id', $torneo)
+        ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
+
+        if($TorneoCategoria != null)
+        {
+            $TorneoGrupos = TorneoGrupo::where('torneo_categoria_id', $TorneoCategoria->id)->select(['nombre_grupo', 'grupo_id'])->groupBy(['nombre_grupo', 'grupo_id'])
+            ->orderBy(DB::raw('LENGTH(nombre_grupo)'))->orderBy('nombre_grupo')->get();
+
+            return view('auth'.'.'.$this->viewName.'.ajax.final.jugador.partialViewCuartos', ['TorneoCategoria' => $TorneoCategoria, 'Cuartos' => $TorneoGrupos->count(), 'ViewName' => ucfirst($this->viewName)]);
+        }
+
+        return null;
+    }
     public function faseFinalPlayersChanges($torneo, $torneo_categoria_id)
     {
         $TorneoCategoria = TorneoCategoria::where('id', $torneo_categoria_id)->where('torneo_id', $torneo)
@@ -562,6 +578,53 @@ class TorneoController extends Controller
         return response()->json($Result);
     }
 
+
+    public function faseFinalPlayerCuartosStore(Request $request)
+    {
+        $Result = (object)['Success' => false, 'Message' => null];
+
+        try {
+
+            DB::beginTransaction();
+
+            if($request->jugadores_cuartos % 2 == 0)
+            {
+                $TorneoCategoria = TorneoCategoria::where('id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
+                ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
+
+                if($TorneoCategoria != null)
+                {
+                    $TorneoGrupos = TorneoGrupo::where('torneo_categoria_id', $TorneoCategoria->id)->select(['nombre_grupo', 'grupo_id'])->groupBy(['nombre_grupo', 'grupo_id'])
+                    ->orderBy(DB::raw('LENGTH(nombre_grupo)'))->orderBy('nombre_grupo')->get();
+
+                    if($TorneoGrupos->count() >= $request->jugadores_cuartos)
+                    {
+                        $TorneoCategoria->clasificados_cuartos = $request->jugadores_cuartos;
+                        if($TorneoCategoria->save())
+                        {
+                            DB::commit();
+                            $Result->Success = true;
+                        }
+
+                    }else{
+                        $Result->Message = "Por favor, ingrese una cantidad de válida, solo puede ingresar máximo ".$TorneoGrupos->count()." cuartos.";
+                    }
+                }else{
+                    $Result->Message = "El torneo categoria que intenta modificar, ya no se encuentra disponible.";
+                }
+
+            }else{
+                $Result->Message = "Por favor, ingrese una cantidad de jugadores par.";
+            }
+
+        }catch (\Exception $e)
+        {
+            DB::rollBack();
+            $Result->Message = $e->getMessage();
+        }
+
+        return response()->json($Result);
+    }
 
     /*TORNEO FASE FINAL - PRIMERA ETAPA*/
     public function faseFinalFirstStore(Request $request)
@@ -6607,7 +6670,10 @@ class TorneoController extends Controller
                     }
                 }
             }
-            $content = json_encode($model);
+            $content = json_decode(json_encode($model), true);
+            $content = $this->reorderBlocks($content);
+            $content = json_encode($content);
+            return $content;
         }
 
         Storage::disk('public')->put('public/uploads/keys/json.txt', $content);
@@ -6626,6 +6692,20 @@ class TorneoController extends Controller
         ];
         // make a response, with the content, a 200 response code and the headers
         return response($content)->withHeaders($headers);*/
+    }
+
+    function reorderBlocks($data) {
+        $order = ['bloque_uno', 'bloque_tres', 'bloque_dos', 'bloque_cuatro'];
+        foreach ($data['llaves'] as $round => $blocks) {
+            $reorderedBlocks = [];
+            foreach ($order as $block) {
+                if (isset($blocks[$block])) {
+                    $reorderedBlocks[$block] = $blocks[$block];
+                }
+            }
+            $data['llaves'][$round] = $reorderedBlocks;
+        }
+        return $data;
     }
 
     public function exportJugadorJson(Request $request)
