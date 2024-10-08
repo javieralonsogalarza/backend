@@ -79,7 +79,7 @@
 
 @if(count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->whereNotNull('fase')) > 0)
     <div class="d-flex align-items-center justify-content-between mb-2">
-        <div><h5>Mapa del Campeonato</h5></div>
+        <div><h5>Cuadro Principal del Campeonato</h5></div>
     </div>
         <?php $bloque1A = 1; $bloque2A = 1; $bloque3A = 1; $bloque4A = 1; $bloque1B = 1; $bloque2B = 1; $bloque3B = 1; $bloque4B = 1; ?>
     <div class="grid grid-mapa-content"

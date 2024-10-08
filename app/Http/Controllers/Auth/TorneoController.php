@@ -538,11 +538,10 @@ class TorneoController extends Controller
         try {
 
             DB::beginTransaction();
+            $TorneoCategoria = TorneoCategoria::where('id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
+            ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
 
-            if($request->jugadores_terceros % 2 == 0)
-            {
-                $TorneoCategoria = TorneoCategoria::where('id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
-                ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
+      
 
                 if($TorneoCategoria != null)
                 {
@@ -565,9 +564,7 @@ class TorneoController extends Controller
                     $Result->Message = "El torneo categoria que intenta modificar, ya no se encuentra disponible.";
                 }
 
-            }else{
-                $Result->Message = "Por favor, ingrese una cantidad de jugadores par.";
-            }
+        
 
         }catch (\Exception $e)
         {
@@ -586,11 +583,10 @@ class TorneoController extends Controller
         try {
 
             DB::beginTransaction();
+            $TorneoCategoria = TorneoCategoria::where('id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
+            ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
 
-            if($request->jugadores_cuartos % 2 == 0)
-            {
-                $TorneoCategoria = TorneoCategoria::where('id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
-                ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
+      
 
                 if($TorneoCategoria != null)
                 {
@@ -613,9 +609,7 @@ class TorneoController extends Controller
                     $Result->Message = "El torneo categoria que intenta modificar, ya no se encuentra disponible.";
                 }
 
-            }else{
-                $Result->Message = "Por favor, ingrese una cantidad de jugadores par.";
-            }
+            
 
         }catch (\Exception $e)
         {
@@ -754,8 +748,14 @@ class TorneoController extends Controller
             $TorneoGrupos = $TorneoCategoria->torneo->torneoGrupos()->where('torneo_categoria_id', $TorneoCategoria->id)->select('grupo_id')->groupBy('grupo_id')->get();
 
             $JugadoresClasificados = [];
-
-            $Clasifican = $TorneoCategoria->clasificados_terceros > 0 ? 3 : $TorneoCategoria->clasificados;
+            
+            if ($TorneoCategoria->clasificados_cuartos > 0) {
+                $Clasifican = 4;
+            } elseif ($TorneoCategoria->clasificados_terceros > 0) {
+                $Clasifican = 3;
+            } else {
+                $Clasifican = $TorneoCategoria->clasificados;
+            }
 
             foreach ($TorneoGrupos as $key => $q)
             {
@@ -900,43 +900,149 @@ class TorneoController extends Controller
             }
 
             //CLASIFICADOS POR CÁLCULO
-            $PrimerosLugares = [];  $SegundoLugares = [];  $TercerosLugares = [];
+           // Inicializar arrays para almacenar los lugares
+$PrimerosLugares = [];
+$SegundoLugares = [];
+$TercerosLugares = [];
+$CuartosLugares = [];
 
-            foreach ($JugadoresClasificados as $key => $value)
-            {
-                if($Clasifican == 1) $PrimerosLugares[] = $value['Clasificados']->first();
-                else if($Clasifican == 2) {
-                    $PrimerosLugares[] = $value['Clasificados']->first();
-                    $SegundoLugares[] = $value['Clasificados']->last();
-                }else{
-                    $PrimerosLugares[] = $value['Clasificados']->first();
-                    $TercerosLugares[] = $value['Clasificados']->last();
-                }
-            }
-
-            if($Clasifican == 3)
-            {
-                $Clasificados = array_merge(collect($PrimerosLugares)->pluck('key')->toArray(), collect($TercerosLugares)->pluck('key')->toArray());
-                foreach (collect($JugadoresClasificados)->pluck('Clasificados') as $key => $value){
-                    foreach ($value as $ke2 => $value2){
-                        if(!in_array($value2['key'], $Clasificados)) $SegundoLugares[] = $value2;
-                    }
-                }
-                $TercerosLugares = App::multiPropertySort(collect($TercerosLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->take($TorneoCategoria->clasificados_terceros)->toArray();
-            }
-
-            $PrimerosLugares = App::multiPropertySort(collect($PrimerosLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']]);
-            $SegundoLugares = App::multiPropertySort(collect($SegundoLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']]);
-            $TercerosLugares = App::multiPropertySort(collect($TercerosLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']]);
-
-            $JugadoresClasificadosMerge = $PrimerosLugares->merge($SegundoLugares)->merge($TercerosLugares);
-
-            $TorneoFaseFinal = (object)['TorneoCategoria' => $TorneoCategoria, 'JugadoresClasificados' => App::multiPropertySort(collect($JugadoresClasificadosMerge), [['column' => 'puntos', 'order' => 'desc'], ['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])];
-
-            return view('auth'.'.'.$this->viewName.'.ajax.final.index', ['TorneoFaseFinal' => $TorneoFaseFinal, 'ViewName' => ucfirst($this->viewName), 'landing' => filter_var($landing, FILTER_VALIDATE_BOOLEAN)]);
+// Clasificar jugadores en primeros, segundos, terceros y cuartos lugares
+foreach ($JugadoresClasificados as $key => $value) {
+    if ($Clasifican == 1) {
+        $PrimerosLugares[] = $value['Clasificados']->first();
+    } elseif ($Clasifican == 2) {
+        $PrimerosLugares[] = $value['Clasificados']->first();
+        $SegundoLugares[] = $value['Clasificados']->last();
+    } elseif ($Clasifican == 3) {
+        $PrimerosLugares[] = $value['Clasificados']->first();
+        if (isset($value['Clasificados'][1])) {
+            $SegundoLugares[] = $value['Clasificados'][1];
         }
+        $TercerosLugares[] = $value['Clasificados']->last();
+    } elseif ($Clasifican == 4) {
+        $PrimerosLugares[] = $value['Clasificados']->first();
+        if (isset($value['Clasificados'][1])) {
+            $SegundoLugares[] = $value['Clasificados'][1];
+        }
+        if (isset($value['Clasificados'][2])) {
+            $TercerosLugares[] = $value['Clasificados'][2];
+        }
+        $CuartosLugares[] = $value['Clasificados']->last();
+    }
+}
 
-        return null;
+
+
+
+// Eliminar duplicados
+$PrimerosLugares = collect($PrimerosLugares)->unique('key')->values()->all();
+$SegundoLugares = collect($SegundoLugares)->unique('key')->values()->all();
+$TercerosLugares = collect($TercerosLugares)->unique('key')->values()->all();
+$CuartosLugares = collect($CuartosLugares)->unique('key')->values()->all();
+
+
+    $TercerosLugares = App::multiPropertySort(
+        collect($TercerosLugares),
+        [
+            ['column' => 'puntos', 'order' => 'desc'],
+            ['column' => 'setsDiferencias', 'order' => 'desc'],
+            ['column' => 'gamesDiferencias', 'order' => 'desc'],
+            ['column' => 'setsGanados', 'order' => 'desc'],
+            ['column' => 'gamesGanados', 'order' => 'desc']
+        ]
+    )->take($TorneoCategoria->clasificados_terceros)->toArray();
+
+
+
+
+
+    $CuartosLugares = App::multiPropertySort(
+        collect($CuartosLugares),
+        [
+            ['column' => 'puntos', 'order' => 'desc'],
+            ['column' => 'setsDiferencias', 'order' => 'desc'],
+            ['column' => 'gamesDiferencias', 'order' => 'desc'],
+            ['column' => 'setsGanados', 'order' => 'desc'],
+            ['column' => 'gamesGanados', 'order' => 'desc']
+        ]
+    )->take($TorneoCategoria->clasificados_cuartos)->toArray();
+
+
+
+
+// Ordenar los lugares
+$PrimerosLugares = App::multiPropertySort(
+    collect($PrimerosLugares),
+    [
+        ['column' => 'puntos', 'order' => 'desc'],
+        ['column' => 'setsDiferencias', 'order' => 'desc'],
+        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+        ['column' => 'setsGanados', 'order' => 'desc'],
+        ['column' => 'gamesGanados', 'order' => 'desc']
+    ]
+);
+$SegundoLugares = App::multiPropertySort(
+    collect($SegundoLugares),
+    [
+        ['column' => 'puntos', 'order' => 'desc'],
+        ['column' => 'setsDiferencias', 'order' => 'desc'],
+        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+        ['column' => 'setsGanados', 'order' => 'desc'],
+        ['column' => 'gamesGanados', 'order' => 'desc']
+    ]
+);
+$TercerosLugares = App::multiPropertySort(
+    collect($TercerosLugares),
+    [
+        ['column' => 'puntos', 'order' => 'desc'],
+        ['column' => 'setsDiferencias', 'order' => 'desc'],
+        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+        ['column' => 'setsGanados', 'order' => 'desc'],
+        ['column' => 'gamesGanados', 'order' => 'desc']
+    ]
+);
+$CuartosLugares = App::multiPropertySort(
+    collect($CuartosLugares),
+    [
+        ['column' => 'puntos', 'order' => 'desc'],
+        ['column' => 'setsDiferencias', 'order' => 'desc'],
+        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+        ['column' => 'setsGanados', 'order' => 'desc'],
+        ['column' => 'gamesGanados', 'order' => 'desc']
+    ]
+);
+
+// Combinar todos los lugares
+$JugadoresClasificadosMerge = collect($PrimerosLugares)
+    ->merge($SegundoLugares)
+    ->merge($TercerosLugares)
+    ->merge($CuartosLugares)
+    ->unique('key')
+    ->values()
+    ->all();
+
+// Crear el objeto TorneoFaseFinal
+$TorneoFaseFinal = (object)[
+    'TorneoCategoria' => $TorneoCategoria,
+    'JugadoresClasificados' => App::multiPropertySort(
+        collect($JugadoresClasificadosMerge),
+        [
+            ['column' => 'puntos', 'order' => 'desc'],
+            ['column' => 'setsDiferencias', 'order' => 'desc'],
+            ['column' => 'gamesDiferencias', 'order' => 'desc'],
+            ['column' => 'setsGanados', 'order' => 'desc'],
+            ['column' => 'gamesGanados', 'order' => 'desc']
+        ]
+    )
+];
+
+// Retornar la vista con los datos del TorneoFaseFinal
+return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
+    'TorneoFaseFinal' => $TorneoFaseFinal,
+    'ViewName' => ucfirst($this->viewName),
+    'landing' => filter_var($landing, FILTER_VALIDATE_BOOLEAN)
+]);
+        }
     }
 
     public function faseFinalStore(Request $request)
@@ -949,6 +1055,8 @@ class TorneoController extends Controller
 
             $TorneoCategoria = TorneoCategoria::where('id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
             ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
+
+            if(($TorneoCategoria->clasificados_cuartos+$TorneoCategoria->clasificados_terceros) % 2 == 0) {
 
             if($TorneoCategoria != null)
             {
@@ -965,8 +1073,13 @@ class TorneoController extends Controller
 
                 $JugadoresClasificados = [];
 
-                $Clasifican = $TorneoCategoria->clasificados_terceros > 0 ? 3 :$TorneoCategoria->clasificados;
-
+                if ($TorneoCategoria->clasificados_cuartos > 0) {
+                    $Clasifican = 4;
+                } elseif ($TorneoCategoria->clasificados_terceros > 0) {
+                    $Clasifican = 3;
+                } else {
+                    $Clasifican = $TorneoCategoria->clasificados;
+                }
                 foreach ($TorneoGrupos as $key => $q)
                 {
                     //TODOS LOS JUGADORES DEL GRUPO
@@ -1185,41 +1298,142 @@ class TorneoController extends Controller
                     $JugadoresClasificados[] = ['Grupo' => $q->grupo->nombre, 'Clasificados' => App::multiPropertySort(collect($TablePositions), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->take($Clasifican)];
                 }
 
+                // cambie esto
                 //SOLO JUGADORES CLASIFICADOS POR CANTIDAD DE CLASIFICADOS PERMIDOS
-                $PrimerosLugares = [];  $SegundoLugares = [];  $TercerosLugares = [];
-                foreach ($JugadoresClasificados as $key => $value)
-                {
-                    if($Clasifican == 1) $PrimerosLugares[] = $value['Clasificados']->first();
-                    else if($Clasifican == 2) {
-                        $PrimerosLugares[] = $value['Clasificados']->first();
-                        $SegundoLugares[] = $value['Clasificados']->last();
-                    }else{
-                        $PrimerosLugares[] = $value['Clasificados']->first();
-                        $TercerosLugares[] = $value['Clasificados']->last();
-                    }
-                }
+       //CLASIFICADOS POR CÁLCULO
+           // Inicializar arrays para almacenar los lugares
+                    $PrimerosLugares = [];
+                    $SegundoLugares = [];
+                    $TercerosLugares = [];
+                    $CuartosLugares = [];
 
-                if($Clasifican == 3)
-                {
-                    $Clasificados = array_merge(collect($PrimerosLugares)->pluck('key')->toArray(), collect($TercerosLugares)->pluck('key')->toArray());
-                    foreach (collect($JugadoresClasificados)->pluck('Clasificados') as $key => $value){
-                        foreach ($value as $ke2 => $value2){
-                            if(!in_array($value2['key'], $Clasificados)) $SegundoLugares[] = $value2;
+                    // Clasificar jugadores en primeros, segundos, terceros y cuartos lugares
+                    foreach ($JugadoresClasificados as $key => $value) {
+                        if ($Clasifican == 1) {
+                            $PrimerosLugares[] = $value['Clasificados']->first();
+                        } elseif ($Clasifican == 2) {
+                            $PrimerosLugares[] = $value['Clasificados']->first();
+                            $SegundoLugares[] = $value['Clasificados']->last();
+                        } elseif ($Clasifican == 3) {
+                            $PrimerosLugares[] = $value['Clasificados']->first();
+                            if (isset($value['Clasificados'][1])) {
+                                $SegundoLugares[] = $value['Clasificados'][1];
+                            }
+                            $TercerosLugares[] = $value['Clasificados']->last();
+                        } elseif ($Clasifican == 4) {
+                            $PrimerosLugares[] = $value['Clasificados']->first();
+                            if (isset($value['Clasificados'][1])) {
+                                $SegundoLugares[] = $value['Clasificados'][1];
+                            }
+                            if (isset($value['Clasificados'][2])) {
+                                $TercerosLugares[] = $value['Clasificados'][2];
+                            }
+                            $CuartosLugares[] = $value['Clasificados']->last();
                         }
                     }
-                    $TercerosLugares = App::multiPropertySort(collect($TercerosLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->take($TorneoCategoria->clasificados_terceros)->toArray();
-                }
 
-                //$PrimerosLugares = App::multiPropertySort(collect($PrimerosLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->toArray();
-                //$SegundoLugares = App::multiPropertySort(collect($SegundoLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->toArray();
 
-                $JugadoresClasificadosMerge = array_filter(array_merge($PrimerosLugares, $SegundoLugares, $TercerosLugares));
+
+
+                    // Eliminar duplicados
+                    $PrimerosLugares = collect($PrimerosLugares)->unique('key')->values()->all();
+                    $SegundoLugares = collect($SegundoLugares)->unique('key')->values()->all();
+                    $TercerosLugares = collect($TercerosLugares)->unique('key')->values()->all();
+                    $CuartosLugares = collect($CuartosLugares)->unique('key')->values()->all();
+
+
+                        $TercerosLugares = App::multiPropertySort(
+                            collect($TercerosLugares),
+                            [
+                                ['column' => 'puntos', 'order' => 'desc'],
+                                ['column' => 'setsDiferencias', 'order' => 'desc'],
+                                ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                                ['column' => 'setsGanados', 'order' => 'desc'],
+                                ['column' => 'gamesGanados', 'order' => 'desc']
+                            ]
+                        )->take($TorneoCategoria->clasificados_terceros)->toArray();
+
+
+
+
+
+                        $CuartosLugares = App::multiPropertySort(
+                            collect($CuartosLugares),
+                            [
+                                ['column' => 'puntos', 'order' => 'desc'],
+                                ['column' => 'setsDiferencias', 'order' => 'desc'],
+                                ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                                ['column' => 'setsGanados', 'order' => 'desc'],
+                                ['column' => 'gamesGanados', 'order' => 'desc']
+                            ]
+                        )->take($TorneoCategoria->clasificados_cuartos)->toArray();
+
+
+
+
+                    // Ordenar los lugares
+                    $PrimerosLugares = App::multiPropertySort(
+                        collect($PrimerosLugares),
+                        [
+                            ['column' => 'puntos', 'order' => 'desc'],
+                            ['column' => 'setsDiferencias', 'order' => 'desc'],
+                            ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                            ['column' => 'setsGanados', 'order' => 'desc'],
+                            ['column' => 'gamesGanados', 'order' => 'desc']
+                        ]
+                    );
+                    $SegundoLugares = App::multiPropertySort(
+                        collect($SegundoLugares),
+                        [
+                            ['column' => 'puntos', 'order' => 'desc'],
+                            ['column' => 'setsDiferencias', 'order' => 'desc'],
+                            ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                            ['column' => 'setsGanados', 'order' => 'desc'],
+                            ['column' => 'gamesGanados', 'order' => 'desc']
+                        ]
+                    );
+                    $TercerosLugares = App::multiPropertySort(
+                        collect($TercerosLugares),
+                        [
+                            ['column' => 'puntos', 'order' => 'desc'],
+                            ['column' => 'setsDiferencias', 'order' => 'desc'],
+                            ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                            ['column' => 'setsGanados', 'order' => 'desc'],
+                            ['column' => 'gamesGanados', 'order' => 'desc']
+                        ]
+                    );
+                    $CuartosLugares = App::multiPropertySort(
+                        collect($CuartosLugares),
+                        [
+                            ['column' => 'puntos', 'order' => 'desc'],
+                            ['column' => 'setsDiferencias', 'order' => 'desc'],
+                            ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                            ['column' => 'setsGanados', 'order' => 'desc'],
+                            ['column' => 'gamesGanados', 'order' => 'desc']
+                        ]
+                    );
+
+                    // Combinar todos los lugares
+                    $JugadoresClasificadosMerge = collect($PrimerosLugares)
+                        ->merge($SegundoLugares)
+                        ->merge($TercerosLugares)
+                        ->merge($CuartosLugares)
+                        ->unique('key')
+                        ->values()
+                        ->all();
+
+
+
+                ///acacaca
 
                 if(count($JugadoresClasificadosMerge) > 32){
                     $JugadoresClasificadosMerge = App::multiPropertySort(collect($JugadoresClasificadosMerge), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->take(32);
                 }else{
                     $JugadoresClasificadosMerge = App::multiPropertySort(collect($JugadoresClasificadosMerge), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']]);
                 }
+
+
+                //cambie esto para arriba
 
                 $PartidosFaseFinal = [];
 
@@ -1625,6 +1839,10 @@ class TorneoController extends Controller
             }else{
                 $Result->Message = "El torneo categoria que intenta modificar, ya no se encuentra disponible";
             }
+            }else{
+                $Result->Message = "Por favor, ingrese una cantidad de jugadores par.";
+            }
+
         } catch (\Exception $e) {
             $Result->Message = $e->getMessage();
             DB::rollBack();
@@ -1646,8 +1864,13 @@ class TorneoController extends Controller
             {
                 $TorneoGrupos = $TorneoCategoria->torneo->torneoGrupos()->where('torneo_categoria_id', $TorneoCategoria->id)->select('grupo_id')->groupBy('grupo_id')->get();
 
-                $Clasifican = $TorneoCategoria->clasificados_terceros > 0 ? 3 : $TorneoCategoria->clasificados;
-
+                if ($TorneoCategoria->clasificados_cuartos > 0) {
+                    $Clasifican = 4;
+                } elseif ($TorneoCategoria->clasificados_terceros > 0) {
+                    $Clasifican = 3;
+                } else {
+                    $Clasifican = $TorneoCategoria->clasificados;
+                }
                 foreach ($TorneoGrupos as $key => $q)
                 {
                     //TODOS LOS JUGADORES DEL GRUPO
@@ -1792,36 +2015,131 @@ class TorneoController extends Controller
                 }
 
                 //CLASIFICADOS POR CÁLCULO
-                $PrimerosLugares = [];  $SegundoLugares = [];  $TercerosLugares = [];
+                //aca/aca
+                $PrimerosLugares = [];
+                $SegundoLugares = [];
+                $TercerosLugares = [];
+                $CuartosLugares = [];
 
-                foreach ($JugadoresClasificados as $key => $value)
-                {
-                    if($Clasifican == 1) $PrimerosLugares[] = $value['Clasificados']->first();
-                    else if($Clasifican == 2) {
+                // Clasificar jugadores en primeros, segundos, terceros y cuartos lugares
+                foreach ($JugadoresClasificados as $key => $value) {
+                    if ($Clasifican == 1) {
+                        $PrimerosLugares[] = $value['Clasificados']->first();
+                    } elseif ($Clasifican == 2) {
                         $PrimerosLugares[] = $value['Clasificados']->first();
                         $SegundoLugares[] = $value['Clasificados']->last();
-                    }else{
+                    } elseif ($Clasifican == 3) {
                         $PrimerosLugares[] = $value['Clasificados']->first();
-                        $TercerosLugares[] = $value['Clasificados']->last();
-                    }
-                }
-
-                if($Clasifican == 3)
-                {
-                    $Clasificados = array_merge(collect($PrimerosLugares)->pluck('key')->toArray(), collect($TercerosLugares)->pluck('key')->toArray());
-                    foreach (collect($JugadoresClasificados)->pluck('Clasificados') as $key => $value){
-                        foreach ($value as $ke2 => $value2){
-                            if(!in_array($value2['key'], $Clasificados)) $SegundoLugares[] = $value2;
+                        if (isset($value['Clasificados'][1])) {
+                            $SegundoLugares[] = $value['Clasificados'][1];
                         }
+                        $TercerosLugares[] = $value['Clasificados']->last();
+                    } elseif ($Clasifican == 4) {
+                        $PrimerosLugares[] = $value['Clasificados']->first();
+                        if (isset($value['Clasificados'][1])) {
+                            $SegundoLugares[] = $value['Clasificados'][1];
+                        }
+                        if (isset($value['Clasificados'][2])) {
+                            $TercerosLugares[] = $value['Clasificados'][2];
+                        }
+                        $CuartosLugares[] = $value['Clasificados']->last();
                     }
-                    $TercerosLugares = App::multiPropertySort(collect($TercerosLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->take($TorneoCategoria->clasificados_terceros)->toArray();
                 }
 
-                $PrimerosLugares = App::multiPropertySort(collect($PrimerosLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']]);
-                $SegundoLugares = App::multiPropertySort(collect($SegundoLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']]);
-                $TercerosLugares = App::multiPropertySort(collect($TercerosLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']]);
 
-                $JugadoresClasificadosMerge = $PrimerosLugares->merge($SegundoLugares)->merge($TercerosLugares);
+
+
+                // Eliminar duplicados
+                $PrimerosLugares = collect($PrimerosLugares)->unique('key')->values()->all();
+                $SegundoLugares = collect($SegundoLugares)->unique('key')->values()->all();
+                $TercerosLugares = collect($TercerosLugares)->unique('key')->values()->all();
+                $CuartosLugares = collect($CuartosLugares)->unique('key')->values()->all();
+
+
+                    $TercerosLugares = App::multiPropertySort(
+                        collect($TercerosLugares),
+                        [
+                            ['column' => 'puntos', 'order' => 'desc'],
+                            ['column' => 'setsDiferencias', 'order' => 'desc'],
+                            ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                            ['column' => 'setsGanados', 'order' => 'desc'],
+                            ['column' => 'gamesGanados', 'order' => 'desc']
+                        ]
+                    )->take($TorneoCategoria->clasificados_terceros)->toArray();
+
+
+
+
+
+                    $CuartosLugares = App::multiPropertySort(
+                        collect($CuartosLugares),
+                        [
+                            ['column' => 'puntos', 'order' => 'desc'],
+                            ['column' => 'setsDiferencias', 'order' => 'desc'],
+                            ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                            ['column' => 'setsGanados', 'order' => 'desc'],
+                            ['column' => 'gamesGanados', 'order' => 'desc']
+                        ]
+                    )->take($TorneoCategoria->clasificados_cuartos)->toArray();
+
+
+
+
+                // Ordenar los lugares
+                $PrimerosLugares = App::multiPropertySort(
+                    collect($PrimerosLugares),
+                    [
+                        ['column' => 'puntos', 'order' => 'desc'],
+                        ['column' => 'setsDiferencias', 'order' => 'desc'],
+                        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                        ['column' => 'setsGanados', 'order' => 'desc'],
+                        ['column' => 'gamesGanados', 'order' => 'desc']
+                    ]
+                );
+                $SegundoLugares = App::multiPropertySort(
+                    collect($SegundoLugares),
+                    [
+                        ['column' => 'puntos', 'order' => 'desc'],
+                        ['column' => 'setsDiferencias', 'order' => 'desc'],
+                        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                        ['column' => 'setsGanados', 'order' => 'desc'],
+                        ['column' => 'gamesGanados', 'order' => 'desc']
+                    ]
+                );
+                $TercerosLugares = App::multiPropertySort(
+                    collect($TercerosLugares),
+                    [
+                        ['column' => 'puntos', 'order' => 'desc'],
+                        ['column' => 'setsDiferencias', 'order' => 'desc'],
+                        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                        ['column' => 'setsGanados', 'order' => 'desc'],
+                        ['column' => 'gamesGanados', 'order' => 'desc']
+                    ]
+                );
+                $CuartosLugares = App::multiPropertySort(
+                    collect($CuartosLugares),
+                    [
+                        ['column' => 'puntos', 'order' => 'desc'],
+                        ['column' => 'setsDiferencias', 'order' => 'desc'],
+                        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                        ['column' => 'setsGanados', 'order' => 'desc'],
+                        ['column' => 'gamesGanados', 'order' => 'desc']
+                    ]
+                );
+
+                // Combinar todos los lugares
+                $JugadoresClasificadosMerge = collect($PrimerosLugares)
+                    ->merge($SegundoLugares)
+                    ->merge($TercerosLugares)
+                    ->merge($CuartosLugares)
+                    ->unique('key')
+                    ->values()
+                    ->all();
+
+
+
+
+                /// aca
 
                 $Partidos = Partido::where('torneo_categoria_id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
                 ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})
@@ -3019,7 +3337,8 @@ class TorneoController extends Controller
                 ->where('id', $request->torneo_categoria_id)
                 ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
 
-            if($TorneoCategoria != null)
+            if(($TorneoCategoria->clasificados_cuartos+$TorneoCategoria->clasificados_terceros) % 2 == 0) {
+                    if($TorneoCategoria != null)
             {
                 Partido::where('torneo_categoria_id', $TorneoCategoria->id)->where('torneo_id', $TorneoCategoria->torneo_id)->whereNotNull('fase')->delete();
 
@@ -3033,8 +3352,13 @@ class TorneoController extends Controller
 
                 $JugadoresClasificados = [];
 
-                $Clasifican = $TorneoCategoria->clasificados_terceros > 0 ? 3 : $TorneoCategoria->clasificados;
-
+                if ($TorneoCategoria->clasificados_cuartos > 0) {
+                    $Clasifican = 4;
+                } elseif ($TorneoCategoria->clasificados_terceros > 0) {
+                    $Clasifican = 3;
+                } else {
+                    $Clasifican = $TorneoCategoria->clasificados;
+                }
                 foreach ($TorneoGrupos as $key => $q)
                 {
                     //TODOS LOS JUGADORES DEL GRUPO
@@ -3133,29 +3457,129 @@ class TorneoController extends Controller
                 }
 
                 //SOLO JUGADORES CLASIFICADOS POR CANTIDAD DE CLASIFICADOS PERMIDOS
-                $PrimerosLugares = [];  $SegundoLugares = [];  $TercerosLugares = [];
-                foreach ($JugadoresClasificados as $key => $value)
-                {
-                    if($Clasifican == 1) $PrimerosLugares[] = $value['Clasificados']->first();
-                    else if($Clasifican == 2) {
+                //aca
+                $PrimerosLugares = [];
+                $SegundoLugares = [];
+                $TercerosLugares = [];
+                $CuartosLugares = [];
+
+                // Clasificar jugadores en primeros, segundos, terceros y cuartos lugares
+                foreach ($JugadoresClasificados as $key => $value) {
+                    if ($Clasifican == 1) {
+                        $PrimerosLugares[] = $value['Clasificados']->first();
+                    } elseif ($Clasifican == 2) {
                         $PrimerosLugares[] = $value['Clasificados']->first();
                         $SegundoLugares[] = $value['Clasificados']->last();
-                    }else{
+                    } elseif ($Clasifican == 3) {
                         $PrimerosLugares[] = $value['Clasificados']->first();
-                        $TercerosLugares[] = $value['Clasificados']->last();
-                    }
-                }
-                if($Clasifican == 3)
-                {
-                    $Clasificados = array_merge(collect($PrimerosLugares)->pluck('key')->toArray(), collect($TercerosLugares)->pluck('key')->toArray());
-                    foreach (collect($JugadoresClasificados)->pluck('Clasificados') as $key => $value){
-                        foreach ($value as $ke2 => $value2){
-                            if(!in_array($value2['key'], $Clasificados)) $SegundoLugares[] = $value2;
+                        if (isset($value['Clasificados'][1])) {
+                            $SegundoLugares[] = $value['Clasificados'][1];
                         }
+                        $TercerosLugares[] = $value['Clasificados']->last();
+                    } elseif ($Clasifican == 4) {
+                        $PrimerosLugares[] = $value['Clasificados']->first();
+                        if (isset($value['Clasificados'][1])) {
+                            $SegundoLugares[] = $value['Clasificados'][1];
+                        }
+                        if (isset($value['Clasificados'][2])) {
+                            $TercerosLugares[] = $value['Clasificados'][2];
+                        }
+                        $CuartosLugares[] = $value['Clasificados']->last();
                     }
-                    $TercerosLugares = App::multiPropertySort(collect($TercerosLugares), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->take($TorneoCategoria->clasificados_terceros)->toArray();
                 }
-                $JugadoresClasificadosMerge = array_filter(array_merge($PrimerosLugares, $SegundoLugares, $TercerosLugares));
+
+
+
+
+                // Eliminar duplicados
+                $PrimerosLugares = collect($PrimerosLugares)->unique('key')->values()->all();
+                $SegundoLugares = collect($SegundoLugares)->unique('key')->values()->all();
+                $TercerosLugares = collect($TercerosLugares)->unique('key')->values()->all();
+                $CuartosLugares = collect($CuartosLugares)->unique('key')->values()->all();
+
+
+                    $TercerosLugares = App::multiPropertySort(
+                        collect($TercerosLugares),
+                        [
+                            ['column' => 'puntos', 'order' => 'desc'],
+                            ['column' => 'setsDiferencias', 'order' => 'desc'],
+                            ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                            ['column' => 'setsGanados', 'order' => 'desc'],
+                            ['column' => 'gamesGanados', 'order' => 'desc']
+                        ]
+                    )->take($TorneoCategoria->clasificados_terceros)->toArray();
+
+
+
+
+
+                    $CuartosLugares = App::multiPropertySort(
+                        collect($CuartosLugares),
+                        [
+                            ['column' => 'puntos', 'order' => 'desc'],
+                            ['column' => 'setsDiferencias', 'order' => 'desc'],
+                            ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                            ['column' => 'setsGanados', 'order' => 'desc'],
+                            ['column' => 'gamesGanados', 'order' => 'desc']
+                        ]
+                    )->take($TorneoCategoria->clasificados_cuartos)->toArray();
+
+
+
+
+                // Ordenar los lugares
+                $PrimerosLugares = App::multiPropertySort(
+                    collect($PrimerosLugares),
+                    [
+                        ['column' => 'puntos', 'order' => 'desc'],
+                        ['column' => 'setsDiferencias', 'order' => 'desc'],
+                        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                        ['column' => 'setsGanados', 'order' => 'desc'],
+                        ['column' => 'gamesGanados', 'order' => 'desc']
+                    ]
+                );
+                $SegundoLugares = App::multiPropertySort(
+                    collect($SegundoLugares),
+                    [
+                        ['column' => 'puntos', 'order' => 'desc'],
+                        ['column' => 'setsDiferencias', 'order' => 'desc'],
+                        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                        ['column' => 'setsGanados', 'order' => 'desc'],
+                        ['column' => 'gamesGanados', 'order' => 'desc']
+                    ]
+                );
+                $TercerosLugares = App::multiPropertySort(
+                    collect($TercerosLugares),
+                    [
+                        ['column' => 'puntos', 'order' => 'desc'],
+                        ['column' => 'setsDiferencias', 'order' => 'desc'],
+                        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                        ['column' => 'setsGanados', 'order' => 'desc'],
+                        ['column' => 'gamesGanados', 'order' => 'desc']
+                    ]
+                );
+                $CuartosLugares = App::multiPropertySort(
+                    collect($CuartosLugares),
+                    [
+                        ['column' => 'puntos', 'order' => 'desc'],
+                        ['column' => 'setsDiferencias', 'order' => 'desc'],
+                        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                        ['column' => 'setsGanados', 'order' => 'desc'],
+                        ['column' => 'gamesGanados', 'order' => 'desc']
+                    ]
+                );
+
+                // Combinar todos los lugares
+                $JugadoresClasificadosMerge = collect($PrimerosLugares)
+                    ->merge($SegundoLugares)
+                    ->merge($TercerosLugares)
+                    ->merge($CuartosLugares)
+                    ->unique('key')
+                    ->values()
+                    ->all();
+
+
+            //aca
 
                 $PartidosFaseFinal = [];
 
@@ -3511,6 +3935,10 @@ class TorneoController extends Controller
 
             }else{
                 $Result->Message = "Las llaves generadas que intenta modificar, ya no se encuentra disponible";
+            }
+            }
+            else{
+                $Result->Message = "Por favor, ingrese una cantidad de jugadores par.";
             }
 
         }catch (\Exception $e){
