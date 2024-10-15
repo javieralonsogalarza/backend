@@ -1192,7 +1192,33 @@
             });
 
         @endif
+        $(document).ready(function() {
+    $(document).on("change", "select[id^='jugador_local_id_']", function () {
+        const selectedValue = $(this).val();
+        const rivalSelect = $(this).closest('tr').find("select[id^='jugador_rival_id_']");
+        rivalSelect.find("option").each(function () {
+            if ($(this).val() !== selectedValue) {
+                $(this).prop("selected", true);
+            } else {
+                $(this).prop("selected", false);
+            }
+        });
+    });
 
+    $(document).on("change", "select[id^='jugador_rival_id_']", function () {
+        const selectedValue = $(this).val();
+        const localSelect = $(this).closest('tr').find("select[id^='jugador_local_id_']");
+        localSelect.find("option").each(function () {
+            if ($(this).val() !== selectedValue) {
+                $(this).prop("selected", true);
+            } else {
+                $(this).prop("selected", false);
+            }
+        });
+    });
+});
+
+      
         OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}"));
         OnFailure{{$ViewName}} = () => onFailureForm();
     });
