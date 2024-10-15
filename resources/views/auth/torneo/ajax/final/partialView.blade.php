@@ -163,6 +163,30 @@
             }
         });
 
+
+
+        $("#jugador_local_id").on("change", function () {
+            const selectedValue = $(this).val();
+            $("#jugador_rival_id option").each(function () {
+                if ($(this).val() !== selectedValue) {
+                    $(this).prop("selected", true);
+                } else {
+                    $(this).prop("selected", false);
+                }
+            });
+        });
+
+        $("#jugador_rival_id").on("change", function () {
+            const selectedValue = $(this).val();
+            $("#jugador_local_id option").each(function () {
+                if ($(this).val() !== selectedValue) {
+                    $(this).prop("selected", true);
+                } else {
+                    $(this).prop("selected", false);
+                }
+            });
+        });
+
         $("button[type=submit]").on("click", function (){ const $this = $(this); $("#estado_id").val($this.attr("data-id"));  })
 
         OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}FinalPartido"), $modal);
