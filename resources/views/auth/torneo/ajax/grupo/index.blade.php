@@ -380,6 +380,25 @@
     $(function (){
         setTimeout(function (){ $("form").find("input[type=text]").first().focus().select(); }, 500);
 
+
+        $(document).ready(function () {
+            // Cargar datos desde localStorage al cargar la página
+            const generateKeysData = localStorage.getItem('generateKeysData');
+                console.log(generateKeysData);
+                if (generateKeysData) {
+                    const parsedData = JSON.parse(generateKeysData);
+                    const id = parsedData.id; // Extraer el id de los datos guardados en localStorage
+                    const viewName = parsedData.viewName;
+                    const modelId = parsedData.modelId;
+                    const tipoGrupo = parsedData.tipoGrupo;
+                    const data = parsedData.data; // Extraer el data de los datos guardados en localStorage
+
+                    invocarVista(`/auth/${viewName}/grupo/manual/partialView/${modelId}/${id ? id : 0}/${tipoGrupo}`, function (data) {
+                        $("#partialViewManual" + id).html("").append(data);
+                    });
+                }
+            });
+
         /*$('.result-input').on('change', function (){
             const $this = $(this);
             const $tr = $this.closest('tr');
@@ -665,6 +684,11 @@
                     formData.append('_token', $("meta[name=csrf-token]").attr("content"));
                     formData.append('torneo_id', {{ $Model->id }});
                     formData.append('categoria_id', id);
+
+                 
+
+
+
                     actionAjax(`/auth/{{strtolower($ViewName)}}/grupo/validacionGrupo`, formData, 'POST', function (data) {
                         if (data.Success) {
                             Swal.fire({
@@ -678,6 +702,7 @@
                                 showCancelButton: true, closeOnConfirm: false, showLoaderOnConfirm: true
                             }).then((result) => {
                                 if (result.isConfirmed) {
+
                                     invocarModal(`/auth/{{strtolower($ViewName)}}/grupo/partialView/{{ $Model->id }}/${id ? id : 0}/${$("#tipo_grupo").val()}`, function ($modal) {
                                         if ($modal.attr("data-reload") === "true") {
                                             invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${id}`, function (data) {
@@ -754,6 +779,8 @@
                     formData.append('_token', $("meta[name=csrf-token]").attr("content"));
                     formData.append('torneo_id', {{ $Model->id }});
                     formData.append('categoria_id', id);
+                    
+
                     actionAjax(`/auth/{{strtolower($ViewName)}}/grupo/validacionGrupo`, formData, 'POST', function (data){
                         if(data.Success){
                             Swal.fire({
@@ -767,7 +794,28 @@
                                 showCancelButton: true, closeOnConfirm: false, showLoaderOnConfirm: true
                             }).then((result) => {
                                 if (result.isConfirmed) {
+
                                     invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/manual/partialView/{{ $Model->id }}/${id ? id : 0}/${$("#tipo_grupo").val()}`, function (data){
+                                      
+                                        const id = $this.attr("data-id");
+                                    const viewName = '{{ strtolower($ViewName) }}';
+                                    const modelId = '{{ $Model->id }}';
+                                    const tipoGrupo = $("#tipo_grupo").val();
+                                    console.log(id)
+                                    console.log(viewName)
+                                    console.log(modelId)
+                                    console.log(tipoGrupo)
+          
+                                    // Asegúrate de que 'data' está definido en el contexto
+
+                                    // Guardar datos en localStorage
+                                    localStorage.setItem('generateKeysData', JSON.stringify({
+                                        id: id,
+                                        viewName: viewName,
+                                        modelId: modelId,
+                                        tipoGrupo: tipoGrupo,
+                                        data: data
+                                    }));
                                         $("#partialViewManual"+$this.attr("data-id")).html("").append(data);
                                     });
                                 }
@@ -1192,33 +1240,7 @@
             });
 
         @endif
-        $(document).ready(function() {
-    $(document).on("change", "select[id^='jugador_local_id_']", function () {
-        const selectedValue = $(this).val();
-        const rivalSelect = $(this).closest('tr').find("select[id^='jugador_rival_id_']");
-        rivalSelect.find("option").each(function () {
-            if ($(this).val() !== selectedValue) {
-                $(this).prop("selected", true);
-            } else {
-                $(this).prop("selected", false);
-            }
-        });
-    });
 
-    $(document).on("change", "select[id^='jugador_rival_id_']", function () {
-        const selectedValue = $(this).val();
-        const localSelect = $(this).closest('tr').find("select[id^='jugador_local_id_']");
-        localSelect.find("option").each(function () {
-            if ($(this).val() !== selectedValue) {
-                $(this).prop("selected", true);
-            } else {
-                $(this).prop("selected", false);
-            }
-        });
-    });
-});
-
-      
         OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}"));
         OnFailure{{$ViewName}} = () => onFailureForm();
     });

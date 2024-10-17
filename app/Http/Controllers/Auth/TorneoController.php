@@ -4041,7 +4041,6 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
          $this->rankingsByCategoryId($torneoCategoria->categoria_simple_id,true);
 
-   
         return view('auth'.'.'.$this->viewName.'.ajax.grupo.index', ['Model' => $entity, 'TorneoCategoriaId' => $torneo_categoria_id, 'ViewName' => ucfirst($this->viewName), 'Fase' => ($fase == null || $fase == 0 ? null : $fase) ,'landing' => filter_var($landing, FILTER_VALIDATE_BOOLEAN)]);
     }
 
