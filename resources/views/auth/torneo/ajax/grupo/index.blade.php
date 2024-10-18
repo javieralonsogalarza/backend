@@ -382,9 +382,11 @@
 
 
         $(document).ready(function () {
-            // Cargar datos desde localStorage al cargar la página
-            const generateKeysData = localStorage.getItem('generateKeysData');
-                console.log(generateKeysData);
+            const $this = $(this);
+            const $TorneoCategoriaIdData = {{ $TorneoCategoriaId  }};
+
+            const generateKeysData = localStorage.getItem(`generateKeysData_${$TorneoCategoriaIdData}`);
+
                 if (generateKeysData) {
                     const parsedData = JSON.parse(generateKeysData);
                     const id = parsedData.id; // Extraer el id de los datos guardados en localStorage
@@ -393,9 +395,11 @@
                     const tipoGrupo = parsedData.tipoGrupo;
                     const data = parsedData.data; // Extraer el data de los datos guardados en localStorage
 
+                   
                     invocarVista(`/auth/${viewName}/grupo/manual/partialView/${modelId}/${id ? id : 0}/${tipoGrupo}`, function (data) {
                         $("#partialViewManual" + id).html("").append(data);
                     });
+                  
                 }
             });
 
@@ -809,13 +813,16 @@
                                     // Asegúrate de que 'data' está definido en el contexto
 
                                     // Guardar datos en localStorage
-                                    localStorage.setItem('generateKeysData', JSON.stringify({
-                                        id: id,
-                                        viewName: viewName,
-                                        modelId: modelId,
-                                        tipoGrupo: tipoGrupo,
-                                        data: data
-                                    }));
+
+                                localStorage.setItem(`generateKeysData_${id}`, JSON.stringify({
+                                    id: id,
+                                    viewName: viewName,
+                                    modelId: modelId,
+                                    tipoGrupo: tipoGrupo,
+                                    data: data
+                                }));
+
+
                                         $("#partialViewManual"+$this.attr("data-id")).html("").append(data);
                                     });
                                 }

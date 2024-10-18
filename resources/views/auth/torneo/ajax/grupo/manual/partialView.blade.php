@@ -88,7 +88,19 @@
         // Inicializar select2 y cargar datos desde localStorage
         $table.find("select").each(function() {
             const selectId = $(this).attr('id');
-            const savedValue = localStorage.getItem(selectId);
+            const savedValue = localStorage.getItem(`${selectId}_${{{ $Categoria }}}`);
+
+            if (savedValue) {
+     const parsedValue = JSON.parse(savedValue);
+    const categoriaActual = '{{ $Categoria }}'; // Asegúrate de que la categoría actual está disponible en el contexto
+
+    if (parsedValue.categoria != categoriaActual) {
+       this.savedValue = false;
+        }
+    }
+
+
+
 
             $(this).select2({
                 placeholder: "Seleccione Jugador",
@@ -126,9 +138,9 @@
             const selectedValue = $(this).val();
             const selectedText = $(this).find('option:selected').text();
             if (selectedValue) {
-                localStorage.setItem(selectId, JSON.stringify({ id: selectedValue, text: selectedText }));
+                localStorage.setItem(`${selectId}_${{{ $Categoria }}}`, JSON.stringify({ id: selectedValue, text: selectedText }));
             } else {
-                localStorage.removeItem(selectId);
+                localStorage.removeItem(`${selectId}_${{{ $Categoria }}}`);
             }
         });
 
@@ -151,11 +163,13 @@
                 Swal.fire({icon: 'warning', title: 'Algunos jugadores que acaba de asignar ya se enfrentaron con anterioridad en el torneo anterior en la fase de grupos.'});
             }
             //eliminar datos del localStorage y elkey generateKeysData
+            const categoria = '{{ $Categoria }}'; // Asegúrate de que la categoría está disponible en el contexto
+
             $table.find("select").each(function() {
                 const selectId = $(this).attr('id');
-                localStorage.removeItem(selectId);
+                localStorage.removeItem(`${selectId}_${{{ $Categoria }}}`);
             });
-            localStorage.removeItem('generateKeysData');
+            localStorage.removeItem(`generateKeysData_${{{ $Categoria }}}`);
             invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Torneo }}/{{ $Categoria }}`, function (data) {
                 $("#main").addClass("hidden");
                 $("#info").removeClass("hidden").html("").append(data);
