@@ -224,6 +224,10 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
         $("#mapaCampeonato{{ $TorneoFaseFinal->TorneoCategoria->id }}").on("click", ".btn-download-cup", function (){
             window.open(`/auth/{{strtolower($ViewName)}}/export/mapa/json?type=full&torneo={{ $TorneoFaseFinal->TorneoCategoria->torneo->id  }}&categoria={{ $TorneoFaseFinal->TorneoCategoria->id }}`);
         });
+        
+         $("#mapaCampeonato{{ $TorneoFaseFinal->TorneoCategoria->id }}").on("click", ".btn-download-cup-cuartos", function (){
+            window.open(`/auth/{{strtolower($ViewName)}}/export/mapa/figuras/json?type=full&torneo={{ $TorneoFaseFinal->TorneoCategoria->torneo->id  }}&categoria={{ $TorneoFaseFinal->TorneoCategoria->id }}`);
+        });
 
         $("#mapaCampeonato{{ $TorneoFaseFinal->TorneoCategoria->id }}").on("click", ".btn-export-pdf-cup-left", function (){
             /*const $this = $(this);

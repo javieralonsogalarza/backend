@@ -538,8 +538,8 @@ class TorneoController extends Controller
         try {
 
             DB::beginTransaction();
-            $TorneoCategoria = TorneoCategoria::where('id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
-            ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
+                $TorneoCategoria = TorneoCategoria::where('id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
+                ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
 
       
 
@@ -602,12 +602,12 @@ class TorneoController extends Controller
                             $Result->Success = true;
                         }
 
-                    }else{
+            }else{
                         $Result->Message = "Por favor, ingrese una cantidad de válida, solo puede ingresar máximo ".$TorneoGrupos->count()." cuartos.";
                     }
                 }else{
                     $Result->Message = "El torneo categoria que intenta modificar, ya no se encuentra disponible.";
-                }
+            }
 
             
 
@@ -624,7 +624,8 @@ class TorneoController extends Controller
     public function faseFinalFirstStore(Request $request)
     {
         $Result = (object)['Success' => false, 'Message' => null];
-
+        
+        
         try {
 
             DB::beginTransaction();
@@ -748,7 +749,7 @@ class TorneoController extends Controller
             $TorneoGrupos = $TorneoCategoria->torneo->torneoGrupos()->where('torneo_categoria_id', $TorneoCategoria->id)->select('grupo_id')->groupBy('grupo_id')->get();
 
             $JugadoresClasificados = [];
-            
+
             if ($TorneoCategoria->clasificados_cuartos > 0) {
                 $Clasifican = 4;
             } elseif ($TorneoCategoria->clasificados_terceros > 0) {
@@ -911,25 +912,25 @@ foreach ($JugadoresClasificados as $key => $value) {
     if ($Clasifican == 1) {
         $PrimerosLugares[] = $value['Clasificados']->first();
     } elseif ($Clasifican == 2) {
-        $PrimerosLugares[] = $value['Clasificados']->first();
-        $SegundoLugares[] = $value['Clasificados']->last();
+                    $PrimerosLugares[] = $value['Clasificados']->first();
+                    $SegundoLugares[] = $value['Clasificados']->last();
     } elseif ($Clasifican == 3) {
-        $PrimerosLugares[] = $value['Clasificados']->first();
+                    $PrimerosLugares[] = $value['Clasificados']->first();
         if (isset($value['Clasificados'][1])) {
             $SegundoLugares[] = $value['Clasificados'][1];
         }
-        $TercerosLugares[] = $value['Clasificados']->last();
+                    $TercerosLugares[] = $value['Clasificados']->last();
     } elseif ($Clasifican == 4) {
         $PrimerosLugares[] = $value['Clasificados']->first();
         if (isset($value['Clasificados'][1])) {
             $SegundoLugares[] = $value['Clasificados'][1];
-        }
+                }
         if (isset($value['Clasificados'][2])) {
             $TercerosLugares[] = $value['Clasificados'][2];
-        }
+            }
         $CuartosLugares[] = $value['Clasificados']->last();
-    }
-}
+                    }
+                }
 
 
 
@@ -1312,22 +1313,22 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                         if ($Clasifican == 1) {
                             $PrimerosLugares[] = $value['Clasificados']->first();
                         } elseif ($Clasifican == 2) {
-                            $PrimerosLugares[] = $value['Clasificados']->first();
-                            $SegundoLugares[] = $value['Clasificados']->last();
+                        $PrimerosLugares[] = $value['Clasificados']->first();
+                        $SegundoLugares[] = $value['Clasificados']->last();
                         } elseif ($Clasifican == 3) {
-                            $PrimerosLugares[] = $value['Clasificados']->first();
+                        $PrimerosLugares[] = $value['Clasificados']->first();
                             if (isset($value['Clasificados'][1])) {
                                 $SegundoLugares[] = $value['Clasificados'][1];
                             }
-                            $TercerosLugares[] = $value['Clasificados']->last();
+                        $TercerosLugares[] = $value['Clasificados']->last();
                         } elseif ($Clasifican == 4) {
                             $PrimerosLugares[] = $value['Clasificados']->first();
                             if (isset($value['Clasificados'][1])) {
                                 $SegundoLugares[] = $value['Clasificados'][1];
-                            }
+                    }
                             if (isset($value['Clasificados'][2])) {
                                 $TercerosLugares[] = $value['Clasificados'][2];
-                            }
+                }
                             $CuartosLugares[] = $value['Clasificados']->last();
                         }
                     }
@@ -2038,13 +2039,13 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                         $PrimerosLugares[] = $value['Clasificados']->first();
                         if (isset($value['Clasificados'][1])) {
                             $SegundoLugares[] = $value['Clasificados'][1];
-                        }
+                    }
                         if (isset($value['Clasificados'][2])) {
                             $TercerosLugares[] = $value['Clasificados'][2];
-                        }
-                        $CuartosLugares[] = $value['Clasificados']->last();
-                    }
                 }
+                        $CuartosLugares[] = $value['Clasificados']->last();
+                        }
+                    }
 
 
 
@@ -2264,8 +2265,71 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
             $JugadoresClasificados[$key]['text'] = $JugadoresClasificados[$key]['text'] . ' - ' . $JugadoresClasificados[$key]['grupo_nombre'] . ' - Posición: ' . $this->numeroOrdinal($JugadoresClasificados[$key]['posicion']);
 
-        }    
+        }   
         }
+        
+        if($TorneoCategoria->multiple){
+
+            
+            // Obtener el grupo del jugador local
+            $grupos = DB::table('torneo_grupos')
+            ->where('torneo_categoria_id', $request->torneo_categoria_id)
+            ->select('grupo_id', 'nombre_grupo', 'torneo_id', 'jugador_simple_id')
+            ->get();
+        
+            $gruposAssociativeArray = [];
+            
+            foreach ($grupos as $grupo) {
+                $jugadorId = $grupo->jugador_simple_id;
+                $grupoId = $grupo->grupo_id;
+                $nombreGrupo = $grupo->nombre_grupo;
+            
+                $gruposAssociativeArray[$jugadorId] = [
+                    'grupo_id' => $grupoId,
+                    'nombre_grupo' => $nombreGrupo,
+                    'torneo_id' => $grupo->torneo_id
+                ];
+            }
+
+            foreach ($JugadoresClasificados as $key => $value) {
+
+                $idEspecifico = $value['id'];
+                list($id1, $id2) = explode('-', $idEspecifico);
+
+                $JugadoresClasificados[$key]['grupo_nombre'] = $gruposAssociativeArray[$id1]['nombre_grupo'] ?? '';
+                $JugadoresClasificados[$key]['grupo_nombre2'] = $gruposAssociativeArray[$id2]['nombre_grupo'] ?? '';
+
+
+                $JugadoresClasificados[$key]['grupo_id'] = $gruposAssociativeArray[$id1]['grupo_id'] ?? '';
+                $JugadoresClasificados[$key]['grupo_id2'] = $gruposAssociativeArray[$id2]['grupo_id'] ?? '';
+
+                $JugadoresClasificados[$key]['torneo_id'] = $gruposAssociativeArray[$id1]['torneo_id'] ?? '';
+                $JugadoresClasificados[$key]['torneo_id2'] = $gruposAssociativeArray[$id2]['torneo_id'] ?? '';
+                // Llamada a la función grupoTablaPosicion
+                $resultado = $this->grupoTablaPosicion($JugadoresClasificados[$key]['torneo_id'], $request->torneo_categoria_id, $JugadoresClasificados[$key]['grupo_id']);          
+
+                // Filtrar el resultado para obtener el objeto donde jugador_simple_id sea igual a idEspecifico
+                $jugadorFiltradoKeys = array_keys(array_filter($resultado->toArray(), function($jugador) use ($id1) {
+                    return $jugador['jugador_simple_id'] == $id1;
+                }));
+
+                $jugadorFiltradoKeys2 = array_keys(array_filter($resultado->toArray(), function($jugador) use ($id2) {
+                    return $jugador['jugador_simple_id'] == $id2;
+                }));
+    
+                // Obtener el primer elemento del resultado filtrado
+                $jugadorFiltrado = reset($jugadorFiltradoKeys);
+                $jugadorFiltrado2 = reset($jugadorFiltradoKeys2);
+
+    
+                $JugadoresClasificados[$key]['posicion'] =  $jugadorFiltrado+1;
+                $JugadoresClasificados[$key]['posicion1'] =  $jugadorFiltrado2+1;
+    
+                $JugadoresClasificados[$key]['text'] = $JugadoresClasificados[$key]['text'] . ' - ' . $JugadoresClasificados[$key]['grupo_nombre'] . ' - Posición: ' . $this->numeroOrdinal($JugadoresClasificados[$key]['posicion']);
+    
+            }    
+        }
+        
         return response()->json(['data' => array_values($JugadoresClasificados)]);
     }
 
@@ -2594,7 +2658,8 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
     public function faseFinalPrePartidoPartialView($torneo_id, $torneo_categoria_id, $id, $position, $bracket)
     {
         //observado
-
+        
+        
       
         $TorneoCategoria = TorneoCategoria::where('id', $torneo_categoria_id)->where('torneo_id', $torneo_id)
         ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
@@ -2867,7 +2932,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
     {
         //modificado
         $entity = null;
-
+    
         if($id != 0){
             $entity = Partido::with('jugadorLocalUno')->with('jugadorRivalUno')->with('torneoCategoria')->where('comunidad_id', Auth::guard('web')->user()->comunidad_id)->where('id', $id)->first();
 
@@ -2906,7 +2971,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
 
 
-
+            
         return view('auth'.'.'.$this->viewName.'.ajax.final.partialView', ['Model' => $entity, 'Position' => $position, 'ViewName' => ucfirst($this->viewName)]);
     }
 
@@ -3100,6 +3165,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
                     // Llamar al método en el modelo Jugador
                     $jugador->setNombreCompletoConDatosAdicionales([$result[$key]['countRepeat']]);
+                    $jugador->ranking_temporal = $result[$key]['countRepeat'];
                     $jugador->save();
                 }
 
@@ -3332,7 +3398,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                 ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
 
             if(($TorneoCategoria->clasificados_cuartos+$TorneoCategoria->clasificados_terceros) % 2 == 0) {
-                    if($TorneoCategoria != null)
+            if($TorneoCategoria != null)
             {
                 Partido::where('torneo_categoria_id', $TorneoCategoria->id)->where('torneo_id', $TorneoCategoria->torneo_id)->whereNotNull('fase')->delete();
 
@@ -3474,13 +3540,13 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                         $PrimerosLugares[] = $value['Clasificados']->first();
                         if (isset($value['Clasificados'][1])) {
                             $SegundoLugares[] = $value['Clasificados'][1];
-                        }
+                    }
                         if (isset($value['Clasificados'][2])) {
                             $TercerosLugares[] = $value['Clasificados'][2];
-                        }
-                        $CuartosLugares[] = $value['Clasificados']->last();
-                    }
                 }
+                        $CuartosLugares[] = $value['Clasificados']->last();
+                        }
+                    }
 
 
 
@@ -4041,8 +4107,12 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
          $this->rankingsByCategoryId($torneoCategoria->categoria_simple_id,true);
 
-        return view('auth'.'.'.$this->viewName.'.ajax.grupo.index', ['Model' => $entity, 'TorneoCategoriaId' => $torneo_categoria_id, 'ViewName' => ucfirst($this->viewName), 'Fase' => ($fase == null || $fase == 0 ? null : $fase) ,'landing' => filter_var($landing, FILTER_VALIDATE_BOOLEAN)]);
+   
+        $hasFase = Partido::where('torneo_categoria_id', $torneoCategoria->id)->whereNotNull('fase')->count() > 0;
+
+        return view('auth'.'.'.$this->viewName.'.ajax.grupo.index', ['Model' => $entity, 'TorneoCategoriaId' => $torneo_categoria_id, 'ViewName' => ucfirst($this->viewName), 'Fase' => ($fase == null || $fase == 0 ? null : $fase) ,'landing' => filter_var($landing, FILTER_VALIDATE_BOOLEAN), 'hasFase' => $hasFase]);
     }
+
 
     public function grupoPartialView($torneo_id, $categoria_id, $tipo = null)
     {
@@ -5185,7 +5255,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                 ->whereNotIn('jugador_simple_id', $JugadoresNoDisponibles)
                 ->whereHas('jugadorSimple', function ($q) use($request){
                     if($request->nombre){ $q->where(DB::raw("CONCAT(jugadors.nombres,' ',jugadors.apellidos)"), 'like', '%'.$request->nombre.'%'); }
-                })->get()->map(function ($q){return ['id' => $q->jugador_simple_id, 'text' => $q->jugadorSimple->nombre_completo];});
+                })->get()->map(function ($q){return ['id' => $q->jugador_simple_id, 'text' => $q->jugadorSimple->nombre_completo_temporal];});
             }
         }
 
@@ -6109,16 +6179,31 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
                       if($Partido->save())
                       {
-                          DB::commit();
+                         
                           $Result->Success = true;
 
                           if(filter_var($request->fase_inicial, FILTER_VALIDATE_BOOLEAN))
                           {
                               if(Partido::where('torneo_categoria_id', $TorneoCategoria->id)->whereNotNull('fase')->count() > 0)
                               {
+                                  
+                                                                  if(TorneoCategoria::where('torneo_id', $request->torneo_id)->where('comunidad_id', Auth::guard('web')->user()->comunidad_id, 'manual',1)){
+                                    $partidosAsociadosAlJugador = Partido::where('torneo_id', $request->torneo_id)
+                                    ->where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+                                    ->where('torneo_categoria_id', $request->torneo_categoria_id)
+                                    ->where('estado_id', App::$ESTADO_PENDIENTE)
+                                    ->where(function($query) use ($request) {
+                                        $query->where('jugador_local_uno_id', $request->jugador_local_id)
+                                            ->orWhere('jugador_rival_uno_id', $request->jugador_local_id)
+                                            ->orWhere('jugador_local_uno_id', $request->jugador_rival_id)
+                                            ->orWhere('jugador_rival_uno_id', $request->jugador_rival_id);
+                                    })
+                                    ->update(['jugador_local_uno_id' => null, 'jugador_rival_uno_id' => null]);
+                                } 
                                   $Result->Message = "Se ha realizado la modificación del partido seleccionado, por favor valide que las llaves esten correctamente agrupadas.";
                               }
                           }
+                           DB::commit();
 
                       }else{
                           $Result->Message = "Algo salió mal, hubo un error al guardar.";
@@ -6311,6 +6396,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
         $content = "";
 
         $Partido = Partido::find($request->id);
+        
 
         if($Partido != null)
         {
@@ -6361,7 +6447,6 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
     /* TORNEO RANKING */
     public function ranking($torneo, $torneo_categoria_id, $landing=false)
     {
-        //aqui
         $PuntuacionesResult = [];
 
         $ComunidadId = $landing ? Comunidad::where('principal', true)->first()->id : Auth::guard('web')->user()->comunidad_id;
@@ -6385,7 +6470,6 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                             'jugador_dupla_id' => $TorneoCategoria->multiple ? $q->jugadorDupla->id : null,
                             'nombres' => $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo." + ".$q->jugadorDupla->nombre_completo) : $q->jugadorSimple->nombre_completo_temporal,
                             'puntos' => $q->puntos
-                            
                         ];
                     }
                 }
@@ -6575,7 +6659,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                     $PuntuacionesResult[] = ['jugador_simple_id' => $ranking['jugador_simple_id'], 'jugador_dupla_id' => $ranking['jugador_dupla_id'], 'nombres' => $ranking['nombres'], 'puntos' => $Puntuaciones[$i]['puntos']];
                     $i++;
                 }
-                //traerme torneocategoria 
+            //traerme torneocategoria 
                 $Puntuacionesv2 = Puntuacion::where('comunidad_id', $ComunidadId)->where('type',1)->get()->toArray();
                 $puntosMap = [];
                 foreach ($Puntuacionesv2 as $puntuacion) {
@@ -6666,6 +6750,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
         return view('auth'.'.'.$this->viewName.'.ajax.ranking.index', ['TorneoCategoria' => $TorneoCategoria, 'TablePositions' => collect($PuntuacionesResult), 'ViewName' => ucfirst($this->viewName)]);
     }
 
+
     public function exportMapaJson(Request $request)
     {
         $TorneoCategoria = TorneoCategoria::where('id', $request->categoria)->where('torneo_id', $request->torneo)
@@ -6686,7 +6771,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                 'categoria' => $TorneoCategoria->multiple && ($TorneoCategoria->categoriaSimple->id !== $TorneoCategoria->categoriaDupla->id) ? ($TorneoCategoria->categoriaSimple->nombre." + ".$TorneoCategoria->categoriaDupla->nombre) : ($TorneoCategoria->categoriaSimple->nombre)."".($TorneoCategoria->multiple ? "" : ""),
                 'fecha_inicio' => Carbon::parse($TorneoCategoria->torneo->fecha_inicio)->format('Y-m-d'),
                 'fecha_final' => Carbon::parse($TorneoCategoria->torneo->fecha_final)->format('Y-m-d'),
-                'ganador' => $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first() != null ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->multiple ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->jugadorGanadorUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->jugadorGanadorDos->nombre_completo_temporal) : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->jugadorGanadorUno->nombre_completo_temporal : null,
+                'ganador' => $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first() != null ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->multiple ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->jugadorGanadorUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->jugadorGanadorDos->nombre_completo) : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->jugadorGanadorUno->nombre_completo_temporal : null,
                 'llaves' => []
             ];
 
@@ -6703,8 +6788,8 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                     foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 1) as $q)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
-                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo_temporal : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
                         $bloque['resultado'] = $q->resultado;
                         $model->llaves['ronda32']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }
@@ -6712,8 +6797,8 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                     foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 2) as $q)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
-                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo_temporal : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
                         $bloque['resultado'] = $q->resultado;
                         $model->llaves['ronda32']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }
@@ -6722,7 +6807,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                     {
                         $bloque = [];
                         $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
-                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo_temporal : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
                         $bloque['resultado'] = $q->resultado;
                         $model->llaves['ronda32']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }
@@ -6731,7 +6816,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                     {
                         $bloque = [];
                         $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
-                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo_temporal : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
                         $bloque['resultado'] = $q->resultado;
                         $model->llaves['ronda32']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }
@@ -6744,8 +6829,8 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->resultado ;
                         $model->llaves['octavos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -6759,8 +6844,8 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->resultado ;
                         $model->llaves['octavos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -6774,8 +6859,8 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->resultado ;
                         $model->llaves['octavos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -6799,12 +6884,12 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                             $partido->jugadorLocalUno != null ? (
                                 $partido->multiple ? 
                                     $partido->jugadorLocalUno->nombre_completo_temporal . ' + ' . 
-                                    ($partido->jugadorLocalDos ? $partido->jugadorLocalDos->nombre_completo_temporal : '-') 
+                                    ($partido->jugadorLocalDos ? $partido->jugadorLocalDos->nombre_completo : '-') 
                                     : $partido->jugadorLocalUno->nombre_completo_temporal
                             ) : "-"
                         );
                       //  $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalDos != null ? . '$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalDos->nombre_completo_temporal: '-') : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->resultado ;
                         $model->llaves['octavos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -6819,10 +6904,10 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
-                        $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->resultado ;
-                        $model->llaves['octavos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : '';
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->resultado ;
+                        $model->llaves['octavos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
                     $bloque = [
                     'jugador_local' => '',
@@ -6834,7 +6919,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first() != null){
                         $bloque = [];
-                      //  $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      //  $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
                     
                     $partido = $TorneoCategoria->torneo->partidos
     ->where('torneo_categoria_id', $TorneoCategoria->id)
@@ -6859,9 +6944,9 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
         $bloque['jugador_local'] = "-";
     }
 }
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->resultado ;
-                        $model->llaves['octavos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : '';
+                        $model->llaves['octavos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
                     
                       $bloque = [
@@ -6875,8 +6960,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->resultado ;
                         $model->llaves['octavos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -6890,8 +6975,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->resultado ;
                         $model->llaves['octavos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -6912,8 +6997,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->resultado;
                         $model->llaves['cuartos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -6928,8 +7013,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
                         $model->llaves['cuartos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -6944,8 +7029,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->resultado;
                         $model->llaves['cuartos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -6960,8 +7045,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
                         $model->llaves['cuartos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -6980,8 +7065,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;
                         $model->llaves['semifinal']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -6996,8 +7081,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;
                         $model->llaves['semifinal']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -7014,8 +7099,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->resultado;
                         $model->llaves['final'] = (object)$bloque;
                     }else{
@@ -7038,8 +7123,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1) as $q)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
-                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo_temporal : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
                         $bloque['resultado'] = $q->resultado;
                         $model->llaves['octavos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }
@@ -7047,8 +7132,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2) as $q)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
-                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo_temporal : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
                         $bloque['resultado'] = $q->resultado;
                         $model->llaves['octavos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }
@@ -7056,8 +7141,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3) as $q)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
-                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo_temporal : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
                         $bloque['resultado'] = $q->resultado;
                         $model->llaves['octavos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }
@@ -7065,8 +7150,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4) as $q)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
-                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo_temporal : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                        $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                        $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-").' + '.($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
                         $bloque['resultado'] = $q->resultado;
                         $model->llaves['octavos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }
@@ -7080,8 +7165,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->resultado;
                         $model->llaves['cuartos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -7096,8 +7181,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
                         $model->llaves['cuartos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -7112,8 +7197,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->resultado;
                         $model->llaves['cuartos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -7128,8 +7213,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
                         $model->llaves['cuartos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -7148,8 +7233,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;
                         $model->llaves['semifinal']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -7164,8 +7249,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;
                         $model->llaves['semifinal']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -7182,8 +7267,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->resultado;
                         $model->llaves['final'] = (object)$bloque;
                     }else{
@@ -7206,8 +7291,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->resultado;
                         $model->llaves['cuartos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -7222,8 +7307,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
                         $model->llaves['cuartos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -7238,8 +7323,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->resultado;
                         $model->llaves['cuartos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -7254,8 +7339,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
                         $model->llaves['cuartos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -7274,8 +7359,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;
                         $model->llaves['semifinal']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -7290,8 +7375,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;
                         $model->llaves['semifinal']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -7308,8 +7393,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->resultado;
                         $model->llaves['final'] = (object)$bloque;
                     }else{
@@ -7330,8 +7415,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;
                         $model->llaves['semifinal']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }else{
@@ -7346,8 +7431,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;
                         $model->llaves['semifinal']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }else{
@@ -7364,8 +7449,8 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     if(count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)) > 0)
                     {
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
-                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->resultado;
                         $model->llaves['final'] = (object)$bloque;
                     }else{
@@ -7378,7 +7463,14 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                     }
                 }
             }
+            
+            
+            
+          
             $content = json_decode(json_encode($model), true);
+            
+            
+           
             $content = $this->reorderBlocks($content);
             $content = json_encode($content);
         }
@@ -7405,48 +7497,3934 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
     
     
     
-    function reorderBlocks($data) {
-        $order = ['bloque_uno', 'bloque_tres', 'bloque_dos', 'bloque_cuatro'];
-        foreach ($data['llaves'] as $round => $blocks) {
-            // Inicializar bloques nulos como un array vacío
-            if ($blocks === null) {
-                $blocks = [];
-            }
-            
-            $reorderedBlocks = [];
-            foreach ($order as $block) {
-                if (isset($blocks[$block])) {
-                    $reorderedBlocks[$block] = $blocks[$block];
-                    
-                    
-                    
-                } else {
-                    // Asegurar que el bloque esté presente aunque esté vacío
-                    $reorderedBlocks[$block] = [];
-                }
-            }
-            $data['llaves'][$round] = $reorderedBlocks;
-            
+    
+    
+function reorderBlocks($data) {
+    $order = ['bloque_uno', 'bloque_tres', 'bloque_dos', 'bloque_cuatro'];
+    foreach ($data['llaves'] as $round => $blocks) {
+        // Inicializar bloques nulos como un array vacío
+        if ($blocks === null) {
+            $blocks = [];
         }
-        return $data;
+
+        $reorderedBlocks = [];
+        foreach ($order as $block) {
+            if (isset($blocks[$block])) {
+                $reorderedBlocks[$block] = $blocks[$block];
+            } else {
+                // Asegurar que el bloque esté presente aunque esté vacío
+                $reorderedBlocks[$block] = [];
+            }
+        }
+
+        // Agregar todos los bloques que no están en el orden y no son 'final'
+        foreach ($blocks as $key => $value) {
+            if (!in_array($key, $order) && $key !== 'final') {
+                $reorderedBlocks[$key] = $value;
+            }
+        }
+
+        // Agregar el bloque 'final' si existe
+        if (isset($blocks['final'])) {
+            $reorderedBlocks['final'] = $blocks['final'];
+        }
+
+        $data['llaves'][$round] = $reorderedBlocks;
     }
-    
-            function allValuesAreNull($array) {
-            foreach ($array as $value) {
-                if (!is_null($value)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    
-    
+    return $data;
+}
+
+
+
+      
+  public function exportMapaJsonFiguras(Request $request)
+  {
+      $TorneoCategoria = TorneoCategoria::where('id', $request->categoria)->where('torneo_id', $request->torneo)
+          ->whereHas('torneo', function ($q) {
+              $q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);
+          })
+          ->first();
+
+      $content = "";
+
+      if ($TorneoCategoria != null && $TorneoCategoria->torneo != null) {
+          $model = (object) [
+              'titulo' => 'La Confraternidad del Tenis',
+              'torneo' => $TorneoCategoria->torneo->nombre,
+              'formato' => $TorneoCategoria->torneo->formato != null ? $TorneoCategoria->torneo->formato->nombre : null,
+              'ronda' => $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->whereNotNull('fase')->first()->fase * 2,
+              'multiple' => $TorneoCategoria->multiple ? true : false,
+              'damas' => str_contains(strtolower(($TorneoCategoria->multiple && ($TorneoCategoria->categoriaSimple->id !== $TorneoCategoria->categoriaDupla->id) ? ($TorneoCategoria->categoriaSimple->nombre . " + " . $TorneoCategoria->categoriaDupla->nombre) : ($TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoCategoria->multiple ? "" : ""))), 'damas') ? true : false,
+              'categoria' => $TorneoCategoria->multiple && ($TorneoCategoria->categoriaSimple->id !== $TorneoCategoria->categoriaDupla->id) ? ($TorneoCategoria->categoriaSimple->nombre . " + " . $TorneoCategoria->categoriaDupla->nombre) : ($TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoCategoria->multiple ? "" : ""),
+              'fecha_inicio' => Carbon::parse($TorneoCategoria->torneo->fecha_inicio)->format('Y-m-d'),
+              'fecha_final' => Carbon::parse($TorneoCategoria->torneo->fecha_final)->format('Y-m-d'),
+              'ganador' => $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first() != null ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->multiple ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->jugadorGanadorUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->jugadorGanadorDos->nombre_completo) : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->whereNotNull('jugador_ganador_uno_id')->first()->jugadorGanadorUno->nombre_completo_temporal : null,
+              'llaves' => []
+          ];
+
+          if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->whereNotNull('fase')) > 0) {
+              if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->whereNotNull('fase')->first()->fase == 16) {
+                  $model->llaves['ronda32'] = [];
+                  $model->llaves['ronda32']['bloque_uno'] = [];
+                  $model->llaves['ronda32']['bloque_dos'] = [];
+                  $model->llaves['ronda32']['bloque_tres'] = [];
+                  $model->llaves['ronda32']['bloque_cuatro'] = [];
+
+                  foreach ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 1) as $q) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                      $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                      $bloque['resultado'] = $q->resultado;
+
+
+                      $jugador_local_uno_id = $q->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $q->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      // Comprobar si las imágenes existen en Storage
+                      $jugador_ganador_uno_id = $q->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      
+
+
+
+                      $model->llaves['ronda32']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  }
+
+                  foreach ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 2) as $q) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                      $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                      $bloque['resultado'] = $q->resultado;
+
+                      $jugador_local_uno_id = $q->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $q->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      // Comprobar si las imágenes existen en Storage
+                      $jugador_ganador_uno_id = $q->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['ronda32']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  }
+
+                  foreach ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 3) as $q) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                      $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                      $bloque['resultado'] = $q->resultado;
+
+                      $jugador_local_uno_id = $q->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $q->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      // Comprobar si las imágenes existen en Storage
+                      $jugador_ganador_uno_id = $q->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['ronda32']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  }
+
+                  foreach ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 4) as $q) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                      $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                      $bloque['resultado'] = $q->resultado;
+
+                      $jugador_local_uno_id = $q->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $q->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      // Comprobar si las imágenes existen en Storage
+                      $jugador_ganador_uno_id = $q->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['ronda32']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  }
+
+                  $model->llaves['octavos'] = [];
+                  $model->llaves['octavos']['bloque_uno'] = [];
+                  $model->llaves['octavos']['bloque_dos'] = [];
+                  $model->llaves['octavos']['bloque_tres'] = [];
+                  $model->llaves['octavos']['bloque_cuatro'] = [];
+
+                  if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first() != null) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->resultado;
+                      
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+                      
+                      // Comprobar si las imágenes existen en Storage
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['octavos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['octavos']['bloque_uno'][] = (object) $bloque;
+                  }
+
+                  if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first() != null) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['octavos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['octavos']['bloque_uno'][] = (object) $bloque;
+                  }
+
+                  if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first() != null) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = Storage::url("imagenes/hombre.png");
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['octavos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+
+
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['octavos']['bloque_dos'][] = (object) $bloque;
+                  }
+
+                  if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first() != null) {
+                      $bloque = [];
+                      $partido = $TorneoCategoria->torneo->partidos
+                          ->where('torneo_categoria_id', $TorneoCategoria->id)
+                          ->where('fase', 8)
+                          ->where('bloque', 2)
+                          ->where('position', 2)
+                          ->first();
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $partido->buy_all ? "BYE" : (
+                          $partido->jugadorLocalUno != null ? (
+                              $partido->multiple ?
+                              $partido->jugadorLocalUno->nombre_completo_temporal . ' + ' .
+                              ($partido->jugadorLocalDos ? $partido->jugadorLocalDos->nombre_completo : '-')
+                              : $partido->jugadorLocalUno->nombre_completo_temporal
+                          ) : "-"
+                      );
+                      //  $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal.' + ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalDos != null ? . '$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalDos->nombre_completo_temporal: '-') : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->resultado;
+                     
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+                     
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['octavos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  } else {
+
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['octavos']['bloque_dos'][] = (object) $bloque;
+                  }
+
+                  if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first() != null) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['octavos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['octavos']['bloque_tres'][] = (object) $bloque;
+                  }
+
+                  if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first() != null) {
+                      $bloque = [];
+                      //  $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+
+                      $partido = $TorneoCategoria->torneo->partidos
+                          ->where('torneo_categoria_id', $TorneoCategoria->id)
+                          ->where('fase', 8)
+                          ->where('bloque', 3)
+                          ->where('position', 2)
+                          ->first();
+
+                      if (!$TorneoCategoria->manual && $partido->buy_all) {
+                          $bloque['jugador_local'] = "BYE";
+                      } else {
+                          $jugadorLocalUno = $partido->jugadorLocalUno;
+                          $jugadorLocalDos = $partido->jugadorLocalDos;
+
+                          if ($jugadorLocalUno != null) {
+                              if ($partido->multiple && $jugadorLocalDos != null) {
+                                  $bloque['jugador_local'] = $jugadorLocalUno->nombre_completo_temporal . ' + ' . $jugadorLocalDos->nombre_completo_temporal;
+                              } else {
+                                  $bloque['jugador_local'] = $jugadorLocalUno->nombre_completo_temporal;
+                              }
+                          } else {
+                              $bloque['jugador_local'] = "-";
+                          }
+                      }
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['octavos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  } else {
+
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+
+                      $model->llaves['octavos']['bloque_tres'][] = (object) $bloque;
+                  }
+
+                  if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first() != null) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['octavos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['octavos']['bloque_cuatro'][] = (object) $bloque;
+                  }
+
+                  if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first() != null) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['octavos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['octavos']['bloque_cuatro'][] = (object) $bloque;
+                  }
+
+                  $model->llaves['cuartos'] = [];
+                  $model->llaves['cuartos']['bloque_uno'] = [];
+                  $model->llaves['cuartos']['bloque_dos'] = [];
+                  $model->llaves['cuartos']['bloque_tres'] = [];
+                  $model->llaves['cuartos']['bloque_cuatro'] = [];
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['cuartos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_uno'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['cuartos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_dos'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->resultado;
+                     
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['cuartos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_tres'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['cuartos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_cuatro'][] = (object) $bloque;
+                  }
+
+                  $model->llaves['semifinal'] = [];
+                  $model->llaves['semifinal']['bloque_uno'] = [];
+                  $model->llaves['semifinal']['bloque_dos'] = [];
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;
+                 
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->resultado;
+                      $bloque['resultado_anterior_bloque2'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque3'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->resultado;
+                      $bloque['resultado_anterior_bloque4'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->resultado;
+                      $bloque['resultado_anterior_bloque2'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque3'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->resultado;
+                      $bloque['resultado_anterior_bloque4'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+
+
+                      $model->llaves['semifinal']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['semifinal']['bloque_uno'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque3'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['semifinal']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['semifinal']['bloque_dos'][] = (object) $bloque;
+                  }
+
+                  $model->llaves['final'] = [];
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->resultado;
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;                      
+                      $bloque['resultado_anterior_bloque2'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;  
+
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['final'] = (object) $bloque;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['final'][] = (object) $bloque;
+                  }
+
+              } else if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->whereNotNull('fase')->first()->fase == 8) {
+                  $model->llaves['octavos'] = [];
+                  $model->llaves['octavos']['bloque_uno'] = [];
+                  $model->llaves['octavos']['bloque_dos'] = [];
+                  $model->llaves['octavos']['bloque_tres'] = [];
+                  $model->llaves['octavos']['bloque_cuatro'] = [];
+
+                  foreach ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1) as $q) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                      $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                      $bloque['resultado'] = $q->resultado;
+
+                      $jugador_local_uno_id = $q->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $q->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $q->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['octavos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  }
+
+                  foreach ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2) as $q) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                      $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                      $bloque['resultado'] = $q->resultado;
+
+                      $jugador_local_uno_id = $q->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $q->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $q->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['octavos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  }
+
+                  foreach ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3) as $q) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                      $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                      $bloque['resultado'] = $q->resultado;
+
+
+                      $jugador_local_uno_id = $q->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $q->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $q->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['octavos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  }
+
+                  foreach ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4) as $q) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
+                      $bloque['jugador_rival'] = $q->jugadorRivalUno != null ? (!$TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-");
+                      $bloque['resultado'] = $q->resultado;
+
+
+                      $jugador_local_uno_id = $q->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $q->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $q->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['octavos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  }
+
+                  $model->llaves['cuartos'] = [];
+                  $model->llaves['cuartos']['bloque_uno'] = [];
+                  $model->llaves['cuartos']['bloque_dos'] = [];
+                  $model->llaves['cuartos']['bloque_tres'] = [];
+                  $model->llaves['cuartos']['bloque_cuatro'] = [];
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['cuartos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_uno'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['cuartos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_dos'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->resultado;
+                     
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+                     
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['cuartos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+
+
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_tres'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['cuartos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_cuatro'][] = (object) $bloque;
+                  }
+
+                  $model->llaves['semifinal'] = [];
+                  $model->llaves['semifinal']['bloque_uno'] = [];
+                  $model->llaves['semifinal']['bloque_dos'] = [];
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;
+
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->resultado;
+                      $bloque['resultado_anterior_bloque2'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque3'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->resultado;
+                      $bloque['resultado_anterior_bloque4'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['semifinal']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['semifinal']['bloque_uno'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque3'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+                   
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['semifinal']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['semifinal']['bloque_dos'][] = (object) $bloque;
+                  }
+
+                  $model->llaves['final'] = [];
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->resultado;
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;                      
+                      $bloque['resultado_anterior_bloque2'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;  
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['final'] = (object) $bloque;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['final'][] = (object) $bloque;
+                  }
+
+              } else if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->whereNotNull('fase')->first()->fase == 4) {
+                  $model->llaves['cuartos'] = [];
+                  $model->llaves['cuartos']['bloque_uno'] = [];
+                  $model->llaves['cuartos']['bloque_dos'] = [];
+                  $model->llaves['cuartos']['bloque_tres'] = [];
+                  $model->llaves['cuartos']['bloque_cuatro'] = [];
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['cuartos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_uno'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['cuartos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_dos'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['cuartos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_tres'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['cuartos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['cuartos']['bloque_cuatro'][] = (object) $bloque;
+                  }
+
+                  $model->llaves['semifinal'] = [];
+                  $model->llaves['semifinal']['bloque_uno'] = [];
+                  $model->llaves['semifinal']['bloque_dos'] = [];
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;
+
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->resultado;
+                      $bloque['resultado_anterior_bloque2'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque3'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->resultado;
+                      $bloque['resultado_anterior_bloque4'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['semifinal']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['semifinal']['bloque_uno'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque3'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+                   
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['semifinal']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['semifinal']['bloque_dos'][] = (object) $bloque;
+                  }
+
+                  $model->llaves['final'] = [];
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->resultado;
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;                      
+                      $bloque['resultado_anterior_bloque2'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;  
+
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['final'] = (object) $bloque;
+
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['final'][] = (object) $bloque;
+                  }
+
+              } else if ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->whereNotNull('fase')->first()->fase == 2) {
+                  $model->llaves['semifinal'] = [];
+                  $model->llaves['semifinal']['bloque_uno'] = [];
+                  $model->llaves['semifinal']['bloque_dos'] = [];
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;
+
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->resultado;
+                      $bloque['resultado_anterior_bloque2'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque3'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->resultado;
+                      $bloque['resultado_anterior_bloque4'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+                      $model->llaves['semifinal']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object) $bloque : null;
+
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['semifinal']['bloque_uno'][] = (object) $bloque;
+                  }
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->resultado;
+                      $bloque['resultado_anterior_bloque3'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->resultado;
+                   
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['semifinal']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object) $bloque : null;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['semifinal']['bloque_dos'][] = (object) $bloque;
+                  }
+
+                  $model->llaves['final'] = [];
+
+                  if (count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)) > 0) {
+                      $bloque = [];
+                      $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                      $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
+                      $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->resultado;
+                      $bloque['resultado_anterior_bloque1'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->resultado;                      
+                      $bloque['resultado_anterior_bloque2'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado;  
+
+                      $jugador_local_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_local_uno_id;
+                      $jugador_local_imagen = "";
+                      if($jugador_local_uno_id) {
+                          $jugador = Jugador::find($jugador_local_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_local_uno_id}.png")) {
+                                  $jugador_local_imagen = Storage::url("uploads/img/jugador_{$jugador_local_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_local_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_local_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_local_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_local_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_local_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_local_imagen'] = $jugador_local_imagen;
+                      $bloque['jugador_local_uno_id'] = $jugador_local_uno_id;
+
+                      $jugador_rival_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_rival_uno_id;
+                      $jugador_rival_imagen = "";
+                      if($jugador_rival_uno_id) {
+                          $jugador = Jugador::find($jugador_rival_uno_id);
+                          if($jugador) {
+                              if(Storage::disk('public')->exists("uploads/img/jugador_{$jugador_rival_uno_id}.png")) {
+                                  $jugador_rival_imagen = Storage::url("uploads/img/jugador_{$jugador_rival_uno_id}.png");
+                              } else {
+                                  if($jugador->sexo == 'M') {
+                                      $jugador_rival_imagen = "images/hombre.png";
+                                  } else if($jugador->sexo == 'F') {
+                                      $jugador_rival_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_rival_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_rival_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_rival_imagen = "images/incognito.png";
+                      }
+
+                      $bloque['jugador_rival_imagen'] = $jugador_rival_imagen;
+                      $bloque['jugador_rival_uno_id'] = $jugador_rival_uno_id;
+
+
+                      $jugador_ganador_uno_id = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 1)->first()->jugador_ganador_uno_id;
+                      $jugador_ganador_imagen = "";
+                      if ($jugador_ganador_uno_id) {
+                          $jugador = Jugador::find($jugador_ganador_uno_id);
+                          if ($jugador) {
+                              if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_ganador_uno_id}.png")) {
+                                  $jugador_ganador_imagen = Storage::url("uploads/img/jugador_{$jugador_ganador_uno_id}.png");
+                              } else {
+                                  if ($jugador->sexo == 'M') {
+                                      $jugador_ganador_imagen = "images/hombre.png";
+                                  } else if ($jugador->sexo == 'F') {
+                                      $jugador_ganador_imagen = "images/mujer.png";
+                                  } else {
+                                      $jugador_ganador_imagen = "images/incognito.png";
+                                  }
+                              }
+                          } else {
+                              $jugador_ganador_imagen = "images/incognito.png";
+                          }
+                      } else {
+                          $jugador_ganador_imagen = "images/incognito.png";
+                      }
+                      $bloque['jugador_ganador_imagen'] = $jugador_ganador_imagen;
+                      $bloque['jugador_ganador_uno_id'] = $jugador_ganador_uno_id;
+
+                      $model->llaves['final'] = (object) $bloque;
+                  } else {
+                      $bloque = [
+                          'jugador_local' => '',
+                          'jugador_rival' => '',
+                          'resultado' => null
+                      ];
+                      $model->llaves['final'][] = (object) $bloque;
+                  }
+              }
+          }
+
+
+
+
+          $content = json_decode(json_encode($model), true);
+
+
+
+          $content = $this->reorderBlocks($content);
+          $content = json_encode($content);
+      }
+
+      Storage::disk('public')->put('public/uploads/keys/json.txt', $content);
+
+      return redirect(App::$URL_JSON_MAP_FIGURAS . '?json=' . env('APP_URL') . '/storage/public/uploads/keys/json.txt');
+
+  }
     
 
 
     
 
-    public function exportJugadorJson(Request $request)
+   public function exportJugadorJson(Request $request)
     {
         $TorneoCategoria = TorneoCategoria::where('id', $request->categoria)->where('torneo_id', $request->torneo)
             ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})
@@ -7479,7 +11457,7 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                 {
                     //$model->jugadores[] = $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo_temporal.' + '.$q->jugadorDupla->nombre_completo_temporal) : $q->jugadorSimple->nombre_completo_temporal;
 
-                    $Jugadores['nombresv1'] = $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo): $q->jugadorSimple->nombres;
+                    $Jugadores['nombresv1'] = $TorneoCategoria->multiple ? ($q->jugadorSimple->nombres): $q->jugadorSimple->nombres;
                     $Jugadores['apellidosv1'] = $TorneoCategoria->multiple ? ($q->jugadorSimple->apellidos): $q->jugadorSimple->apellidos . (preg_match('/\(([^)]+)\)/', $q->jugadorSimple->nombre_completo_temporal, $matches) ? ' (' . $matches[1] . ')' : '');
                     $Jugadores['nombresv2'] = $TorneoCategoria->multiple ? ($q->jugadorDupla->nombres) : null;
                     $Jugadores['apellidosv2'] = $TorneoCategoria->multiple ? ($q->jugadorDupla->apellidos) : null;
@@ -7498,10 +11476,12 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
 
     public function exportGrupoJson(Request $request)
     {
+        
+           
         $TorneoCategoria = TorneoCategoria::where('id', $request->categoria)->where('torneo_id', $request->torneo)
             ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})
             ->first();
-
+        
         $content = "";
 
         if($TorneoCategoria != null)
@@ -7550,9 +11530,654 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
                 $content = json_encode($model);
             }
         }
-
+    
+    
         Storage::disk('public')->put('public/uploads/groups/json.txt', $content);
 
         return redirect(App::$URL_JSON_GROUPS.'?json='.env('APP_URL').'/storage/public/uploads/groups/json.txt');
     }
+    
+    
+    public function getFase($numero)
+    {
+        if (is_null($numero)) {
+            return 'Fase de grupos';
+        }
+
+        $fases = [
+            1 => 'Final',
+            2 => 'Semifinal',
+            4 => 'Cuartos de final',
+            8 => 'Octavos de final',
+            16 => '1/16 de final'
+        ];
+
+        return $fases[$numero] ?? 'Fase desconocida';
+    }
+    
+    
+    public function h2h(Request $request){
+
+      $jugador_local_uno_id = $request->jugador_local_uno_id;
+      $jugador_rival_uno_id = $request->jugador_rival_uno_id;
+      $torneo_categoria_id = $request->torneo_categoria_id;
+      $jugadorDatosLocal = Jugador::where('id', $jugador_local_uno_id)->first();
+      $jugadorDatosRival = Jugador::where('id', $jugador_rival_uno_id)->first();
+      $categoria_simple_id = TorneoCategoria::where('id', $torneo_categoria_id)->first()->categoria_simple_id;
+      $jugador_local_edad = Carbon::parse($jugadorDatosLocal->fecha_nacimiento)->age;
+      $jugador_rival_edad = Carbon::parse($jugadorDatosRival->fecha_nacimiento)->age;
+      $torneo = Torneo::where('id', TorneoCategoria::where('id', $torneo_categoria_id)->first()->torneo_id)->first()->nombre;
+      $categoria = Categoria::where('id', $categoria_simple_id)->first()->nombre;
+
+      
+    // Ruta de imágenes
+    $folderPath = 'uploads/img';
+    $jugador_local_imagen = null;
+    $jugador_rival_imagen = null;
+
+    // Comprobar si las imágenes existen en Storage
+    if (Storage::disk('public')->exists("{$folderPath}/jugador_{$jugador_local_uno_id}.png")) {
+        $jugador_local_imagen = Storage::url("{$folderPath}/jugador_{$jugador_local_uno_id}.png");
+    }
+
+    if (Storage::disk('public')->exists("{$folderPath}/jugador_{$jugador_rival_uno_id}.png")) {
+        $jugador_rival_imagen = Storage::url("{$folderPath}/jugador_{$jugador_rival_uno_id}.png");
+    }
+      
+
+      $resultados_vs =[];
+
+      $Partidos = Partido::where(function ($query) use ($jugador_local_uno_id) {
+        $query->where('jugador_local_uno_id', $jugador_local_uno_id)
+              ->orWhere('jugador_rival_uno_id', $jugador_local_uno_id);
+    })
+    ->join('jugadors as jugador_local', 'partidos.jugador_local_uno_id', '=', 'jugador_local.id')
+    ->join('jugadors as jugador_rival', 'partidos.jugador_rival_uno_id', '=', 'jugador_rival.id')
+    ->join('torneos', 'partidos.torneo_id', '=', 'torneos.id')
+    ->join('torneo_categorias', 'partidos.torneo_categoria_id', '=', 'torneo_categorias.id') // Join con la tabla torneo_categoria
+    ->join('categorias', 'torneo_categorias.categoria_simple_id', '=', 'categorias.id') // Join con la tabla categorias
+    ->select(
+        'partidos.*',
+        DB::raw("CONCAT(jugador_local.nombres, ' ', jugador_local.apellidos) as nombre_local"),
+        DB::raw("CONCAT(jugador_rival.nombres, ' ', jugador_rival.apellidos) as nombre_rival"),
+        'torneos.nombre as nombre_torneo',
+        'torneos.fecha_inicio as fecha_inicio_torneo',
+        'torneos.fecha_final as fecha_final_torneo',
+        'categorias.nombre as nombre_categoria', // Seleccionar el nombre de la categoría
+        'categorias.id as categoria_id', // Seleccionar el id de la categoría
+        'jugador_local.mano_habil as mano_habil_local',
+        'jugador_rival.mano_habil as mano_habil_rival',
+        DB::raw("TIMESTAMPDIFF(YEAR, jugador_local.fecha_nacimiento, CURDATE()) as edad_local"),
+        DB::raw("TIMESTAMPDIFF(YEAR, jugador_rival.fecha_nacimiento, CURDATE()) as edad_rival"),
+        'jugador_local.altura as tamano_local',
+        'jugador_rival.altura as tamano_rival',
+
+        
+    )
+    ->whereNotNull('partidos.resultado')
+    ->where(function ($query) {
+       $query->whereRaw("LOWER(partidos.resultado) NOT LIKE '%wo%'");
+    })   // ->where('torneo_categorias.id',$torneo_categoria_id)
+    ->where('partidos.multiple',0)
+    ->where('resultado', '<>', '-')
+    ->orderBy('partidos.fecha_final', 'desc')
+    ->take(5)
+    ->get();
+
+
+    $Partidos_rival = Partido::where(function ($query) use ($jugador_rival_uno_id) {
+        $query->where('jugador_local_uno_id', $jugador_rival_uno_id)
+              ->orWhere('jugador_rival_uno_id', $jugador_rival_uno_id);
+    })
+    ->join('jugadors as jugador_local', 'partidos.jugador_local_uno_id', '=', 'jugador_local.id')
+    ->join('jugadors as jugador_rival', 'partidos.jugador_rival_uno_id', '=', 'jugador_rival.id')
+    ->join('torneos', 'partidos.torneo_id', '=', 'torneos.id')
+    ->join('torneo_categorias', 'partidos.torneo_categoria_id', '=', 'torneo_categorias.id') // Join con la tabla torneo_categoria
+    ->join('categorias', 'torneo_categorias.categoria_simple_id', '=', 'categorias.id') // Join con la tabla categorias
+    ->select(
+        'partidos.*',
+        DB::raw("CONCAT(jugador_local.nombres, ' ', jugador_local.apellidos) as nombre_local"),
+        DB::raw("CONCAT(jugador_rival.nombres, ' ', jugador_rival.apellidos) as nombre_rival"),
+        'torneos.nombre as nombre_torneo',
+        'torneos.fecha_inicio as fecha_inicio_torneo',
+        'torneos.fecha_final as fecha_final_torneo',
+        'categorias.nombre as nombre_categoria', // Seleccionar el nombre de la categoría
+        'categorias.id as categoria_id', // Seleccionar el id de la categoría
+        'jugador_local.mano_habil as mano_habil_local',
+        'jugador_rival.mano_habil as mano_habil_rival',
+        DB::raw("TIMESTAMPDIFF(YEAR, jugador_local.fecha_nacimiento, CURDATE()) as edad_local"),
+        DB::raw("TIMESTAMPDIFF(YEAR, jugador_rival.fecha_nacimiento, CURDATE()) as edad_rival"),
+        'jugador_local.altura as tamano_local',
+        'jugador_rival.altura as tamano_rival',
+
+        
+    )
+    ->whereNotNull('partidos.resultado')
+    ->where(function ($query) {
+        $query->whereRaw("LOWER(partidos.resultado) NOT LIKE '%wo%'");
+    })
+    ->where('partidos.multiple',0)
+    ->where('resultado', '<>', '-')
+  //  ->where('torneo_categorias.id',$torneo_categoria_id)
+    ->orderBy('partidos.fecha_final', 'desc')
+    ->take(5)
+    ->get();
+
+
+
+    
+    
+    $Partidos_vs = Partido::where(function ($query) use ($jugador_local_uno_id, $jugador_rival_uno_id) {
+        $query->where(function ($query) use ($jugador_local_uno_id, $jugador_rival_uno_id) {
+            $query->where('jugador_local_uno_id', $jugador_local_uno_id)
+                  ->where('jugador_rival_uno_id', $jugador_rival_uno_id);
+        })->orWhere(function ($query) use ($jugador_local_uno_id, $jugador_rival_uno_id) {
+            $query->where('jugador_local_uno_id', $jugador_rival_uno_id)
+                  ->where('jugador_rival_uno_id', $jugador_local_uno_id);
+        });
+    })
+    ->join('jugadors as jugador_local', 'partidos.jugador_local_uno_id', '=', 'jugador_local.id')
+    ->join('jugadors as jugador_rival', 'partidos.jugador_rival_uno_id', '=', 'jugador_rival.id')
+    ->join('torneos', 'partidos.torneo_id', '=', 'torneos.id')
+    ->join('torneo_categorias', 'partidos.torneo_categoria_id', '=', 'torneo_categorias.id') // Join con la tabla torneo_categoria
+    ->join('categorias', 'torneo_categorias.categoria_simple_id', '=', 'categorias.id') // Join con la tabla categorias
+    ->select(
+        'partidos.*',
+        DB::raw("CONCAT(jugador_local.nombres, ' ', jugador_local.apellidos) as nombre_local"),
+        DB::raw("CONCAT(jugador_rival.nombres, ' ', jugador_rival.apellidos) as nombre_rival"),
+        'torneos.nombre as nombre_torneo',
+        'torneos.fecha_inicio as fecha_inicio_torneo',
+        'torneos.fecha_final as fecha_final_torneo',
+        'categorias.nombre as nombre_categoria', // Seleccionar el nombre de la categoría
+        'categorias.id as categoria_id', // Seleccionar el id de la categoría
+        'jugador_local.mano_habil as mano_habil_local',
+        'jugador_rival.mano_habil as mano_habil_rival',
+        DB::raw("TIMESTAMPDIFF(YEAR, jugador_local.fecha_nacimiento, CURDATE()) as edad_local"),
+        DB::raw("TIMESTAMPDIFF(YEAR, jugador_rival.fecha_nacimiento, CURDATE()) as edad_rival"),
+        'jugador_local.altura as tamano_local',
+        'jugador_rival.altura as tamano_rival',
+
+        
+    )
+    ->whereNotNull('partidos.resultado')
+    ->where('resultado', '<>', '-')
+    ->where('partidos.multiple',0)
+   // ->where('torneo_categorias.id',$torneo_categoria_id)
+    ->orderBy('partidos.fecha_final', 'desc')
+    ->get();
+    
+    $victorias_local_vs = 0;
+    $victorias_rival_vs = 0;
+
+    $this->rankingsByCategoryId($categoria_simple_id,true);
+
+        $content = "";
+
+        if($Partidos != null)
+        {
+            foreach ($Partidos as $partido) {
+                $resultado = [
+                    'jugador_local' => $partido->jugador_ganador_uno_id == $partido->jugador_local_uno_id ? $partido->nombre_local : $partido->nombre_rival,
+                    'jugador_rival' => $partido->jugador_ganador_uno_id != $partido->jugador_rival_uno_id ? $partido->nombre_rival : $partido->nombre_local,
+                    'jugador_local_id' => $partido->jugador_local_uno_id,
+                    'jugador_rival_id' => $partido->jugador_rival_uno_id,
+                    'torneo' => $partido->nombre_torneo,
+                    'fecha' => $partido->fecha_inicio_torneo . ' - ' . $partido->fecha_final_torneo,
+                    'fecha_final'   => $partido->fecha_final_torneo,
+                    'fecha_inicio'   => $partido->fecha_inicio_torneo,
+                    'resultado' => $partido->resultado, // Asumiendo que hay un campo resultado en la tabla partidos
+                    'jugador_local_set' => $partido->jugador_local_set,
+                    'jugador_rival_set' => $partido->jugador_rival_set,
+                    'gano' => $partido->jugador_ganador_uno_id == $jugador_local_uno_id ? 'Ganó' : 'Perdió',
+                    'categoria' => $partido->nombre_categoria,
+                    'jugador_local_mano_habil' => $partido->mano_habil_local,
+                    'jugador_rival_mano_habil' => $partido->mano_habil_rival,
+                    'jugador_local_edad' => $partido->edad_local,
+                    'jugador_rival_edad' => $partido->edad_rival,
+                    'jugador_local_tamano' => $partido->tamano_local,
+                    'jugador_rival_tamano' => $partido->tamano_rival,
+                ];
+        
+                $resultados[] = $resultado;
+            }
+
+            foreach ($Partidos_vs as $partido) {
+                $resultado_vs = [
+                  'jugador_local' => $partido->jugador_ganador_uno_id == $partido->jugador_local_uno_id ? $partido->nombre_local : $partido->nombre_rival,
+                    'jugador_rival' => $partido->jugador_ganador_uno_id != $partido->jugador_rival_uno_id ? $partido->nombre_rival : $partido->nombre_local,
+                    'jugador_local_id' => $partido->jugador_local_uno_id,
+                    'jugador_rival_id' => $partido->jugador_rival_uno_id,
+                    'torneo' => $partido->nombre_torneo,
+                    'fecha' => $partido->fecha_inicio_torneo . ' - ' . $partido->fecha_final_torneo,
+                    'fecha_final'   => $partido->fecha_final_torneo,
+                    'fecha_inicio'   => $partido->fecha_inicio_torneo,
+                    'resultado' => $partido->resultado, // Asumiendo que hay un campo resultado en la tabla partidos
+                    'jugador_local_set' => $partido->jugador_local_set,
+                    'jugador_rival_set' => $partido->jugador_rival_set,
+                    'gano' => $partido->jugador_ganador_uno_id == $jugador_local_uno_id ? 'Ganó' : 'Perdió',
+                    'categoria' => $partido->nombre_categoria,
+                    'jugador_local_mano_habil' => $partido->mano_habil_local,
+                    'jugador_rival_mano_habil' => $partido->mano_habil_rival,
+                    'jugador_local_edad' => $partido->edad_local,
+                    'jugador_rival_edad' => $partido->edad_rival,
+                    'jugador_local_tamano' => $partido->tamano_local,
+                    'jugador_rival_tamano' => $partido->tamano_rival,
+                    'fase'=> $this->getFase($partido->fase),
+                ];
+        
+                    // Contar las victorias del jugador local y del jugador rival
+                    if ($partido->jugador_ganador_uno_id == $jugador_local_uno_id) {
+                        $victorias_local_vs++;
+                    } elseif ($partido->jugador_ganador_uno_id == $jugador_rival_uno_id) {
+                        $victorias_rival_vs++;
+                    }
+
+                $resultados_vs[] = $resultado_vs;
+            }
+
+            foreach ($Partidos_rival as $partido) {
+                $resultado_rival = [
+                    'jugador_local' => $partido->jugador_ganador_uno_id == $partido->jugador_local_uno_id ? $partido->nombre_local : $partido->nombre_rival,
+                    'jugador_rival' => $partido->jugador_ganador_uno_id != $partido->jugador_rival_uno_id ? $partido->nombre_rival : $partido->nombre_local,
+                    'jugador_local_id' => $partido->jugador_local_uno_id,
+                    'jugador_rival_id' => $partido->jugador_rival_uno_id,
+                    'torneo' => $partido->nombre_torneo,
+                    'fecha' => $partido->fecha_inicio_torneo . ' - ' . $partido->fecha_final_torneo,
+                    'fecha_final'   => $partido->fecha_final_torneo,
+                    'fecha_inicio'   => $partido->fecha_inicio_torneo,
+                    'resultado' => $partido->resultado, // Asumiendo que hay un campo resultado en la tabla partidos
+                    'jugador_local_set' => $partido->jugador_local_set,
+                    'jugador_rival_set' => $partido->jugador_rival_set,
+                    'gano' => $partido->jugador_ganador_uno_id == $jugador_rival_uno_id ? 'Ganó' : 'Perdió',
+                    'categoria' => $partido->nombre_categoria,
+                    'jugador_local_mano_habil' => $partido->mano_habil_local,
+                    'jugador_rival_mano_habil' => $partido->mano_habil_rival,
+                    'jugador_local_edad' => $partido->edad_local,
+                    'jugador_rival_edad' => $partido->edad_rival,
+                    'jugador_local_tamano' => $partido->tamano_local,
+                    'jugador_rival_tamano' => $partido->tamano_rival,
+                ];
+        
+                $resultados_rival[] = $resultado_rival;
+            }
+        
+            $content = [
+                'jugador_local' => $jugadorDatosLocal->nombres . ' ' . $jugadorDatosLocal->apellidos,
+                'jugador_rival' => $jugadorDatosRival->nombres . ' ' . $jugadorDatosRival->apellidos,
+                'jugador_local_id' => $jugadorDatosLocal->id,
+                'jugador_rival_id' => $jugadorDatosRival->id,
+                'ranking_local' => $jugadorDatosLocal->ranking_temporal,
+                'ranking_rival' => $jugadorDatosRival->ranking_temporal,
+                 'jugador_local_mano_habil' => $jugadorDatosLocal->mano_habil,
+                'jugador_rival_mano_habil' => $jugadorDatosRival->mano_habil,
+                'jugador_local_edad' => $jugador_local_edad,
+                'jugador_rival_edad' => $jugador_rival_edad,
+                'jugador_local_tamano' => $jugadorDatosLocal->altura,
+                'jugador_rival_tamano' => $jugadorDatosRival->altura,
+                'jugador_local_peso' => $jugadorDatosLocal->peso,
+                'jugador_rival_peso' => $jugadorDatosRival->peso,
+                'jugador_local_sexo' => $jugadorDatosLocal->sexo,
+                'jugador_rival_sexo' => $jugadorDatosRival->sexo,
+                'victorias_local_vs' => $victorias_local_vs,
+                'victorias_rival_vs' => $victorias_rival_vs,
+                'jugador_local_imagen' => $jugador_local_imagen,
+                'jugador_rival_imagen' => $jugador_rival_imagen,
+                'torneo' => $torneo,
+                'categoria' => $categoria,
+                'partidos_local' => $resultados,
+                'partidos_rival' => $resultados_rival,
+                'partido_vs' => $resultados_vs,
+
+            ];
+        }
+
+            $content = json_encode($content);
+
+       
+        Storage::disk('public')->put('public/uploads/h2h/json.txt', $content);
+        
+        return redirect(App::$URL_JSON_VS.'?json='.env('APP_URL').'/storage/public/uploads/h2h/json.txt');
+    }
+    
+    
+    public function jugadorListJsonValidate(Request $request)
+    {
+
+        $torneo = $request->torneo_id;
+        $torneo_categoria_id = $request->torneo_categoria_id;
+        $landing = false;
+        $ComunidadId = $landing ? Comunidad::where('principal', true)->first()->id : Auth::guard('web')->user()->comunidad_id;
+
+        $TorneoCategoria = TorneoCategoria::where('id', $torneo_categoria_id)->where('torneo_id', $torneo)
+            ->whereHas('torneo', function ($q) use ($ComunidadId) {
+                $q->where('comunidad_id', $ComunidadId);
+            })->first();
+
+        if ($TorneoCategoria != null) {
+            $TorneoGrupos = $TorneoCategoria->torneo->torneoGrupos()->where('torneo_categoria_id', $TorneoCategoria->id)->select('grupo_id')->groupBy('grupo_id')->get();
+
+            $JugadoresClasificados = [];
+
+            if ($TorneoCategoria->clasificados_cuartos > 0) {
+                $Clasifican = 4;
+            } elseif ($TorneoCategoria->clasificados_terceros > 0) {
+                $Clasifican = 3;
+            } else {
+                $Clasifican = $TorneoCategoria->clasificados;
+            }
+
+            foreach ($TorneoGrupos as $key => $q) {
+                //JUGADORES DEL GRUPO
+                $Jugadores = $TorneoCategoria->torneo->torneoGrupos()->where('torneo_categoria_id', $TorneoCategoria->id)
+                    ->where('grupo_id', $q->grupo_id)->get()->map(function ($q) use ($TorneoCategoria) {
+                        return [
+                            'jugador_simple_id' => $q->jugadorSimple->id,
+                            'jugador_dupla_id' => $TorneoCategoria->multiple ? $q->jugadorDupla->id : null,
+                            'nombres' => $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo . " + " . $q->jugadorDupla->nombre_completo) : $q->jugadorSimple->nombre_completo_temporal
+                        ];
+                    });
+
+                //JUGADORES CALISIFICADOS POR GRUPO
+                $TablePositions = [];
+                foreach ($Jugadores as $key2 => $q2) {
+                    if ($TorneoCategoria->multiple) {
+                        $PartidosComoLocal = collect($TorneoCategoria->torneo->partidos()->where('torneo_categoria_id', $TorneoCategoria->id)
+                            ->where('grupo_id', $q->grupo_id)->where('jugador_local_uno_id', $q2['jugador_simple_id'])
+                            ->where('jugador_local_dos_id', $q2['jugador_dupla_id'])->whereNull('fase')->get());
+
+                        $PartidosComoRival = collect($TorneoCategoria->torneo->partidos()->where('torneo_categoria_id', $TorneoCategoria->id)
+                            ->where('grupo_id', $q->grupo_id)->where('jugador_rival_uno_id', $q2['jugador_simple_id'])
+                            ->where('jugador_rival_dos_id', $q2['jugador_dupla_id'])->whereNull('fase')->get());
+
+                        $SetsGanados = 0;
+                        $SetsPerdidos = 0;
+                        $GamesGanados = 0;
+                        $GamesPerdidos = 0;
+                        $Puntos = 0;
+
+                        foreach ($PartidosComoLocal as $p) {
+                            if ($p->jugador_ganador_uno_id == $q2['jugador_simple_id']) {   //NO Rival
+                                $SetsGanados += $p->jugador_local_set;
+                                $SetsPerdidos += $p->jugador_rival_set;
+                                $GamesGanados += $p->jugador_local_juego;
+                                $GamesPerdidos += $p->jugador_rival_juego;
+                                $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set <= 0 ? 5 : 4));
+                            } else {
+                                //Rival
+                                $SetsGanados += $p->jugador_rival_set;
+                                $SetsPerdidos += $p->jugador_local_set;
+                                $GamesGanados += $p->jugador_rival_juego;
+                                $GamesPerdidos += $p->jugador_local_juego;
+                                $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : (in_array($p->resultado, ["wo", "w.o", "WO", "W.O"]) ? 0 : ($p->jugador_rival_set == 0 ? 1 : 2)));
+                            }
+                        }
+
+                        foreach ($PartidosComoRival as $p) {
+                            if ($p->jugador_ganador_uno_id == $q2['jugador_simple_id']) {   //NO Rival
+                                $SetsGanados += $p->jugador_local_set;
+                                $SetsPerdidos += $p->jugador_rival_set;
+                                $GamesGanados += $p->jugador_local_juego;
+                                $GamesPerdidos += $p->jugador_rival_juego;
+                                $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set <= 0 ? 5 : 4));
+                            } else {
+                                //Rival
+                                $SetsGanados += $p->jugador_rival_set;
+                                $SetsPerdidos += $p->jugador_local_set;
+                                $GamesGanados += $p->jugador_rival_juego;
+                                $GamesPerdidos += $p->jugador_local_juego;
+                                $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : (in_array($p->resultado, ["wo", "w.o", "WO", "W.O"]) ? 0 : ($p->jugador_rival_set == 0 ? 1 : 2)));
+                            }
+                        }
+
+                        $SetsDiferencias = $SetsGanados - $SetsPerdidos;
+
+                        $GamesDiferencias = $GamesGanados - $GamesPerdidos;
+
+                        $Puntos = $Puntos * $TorneoCategoria->torneo->valor_set;
+
+                        $TablePositions[] = [
+                            'key' => ($key . '-' . $key2),
+                            'grupo_id' => $q->grupo->id,
+                            'grupo' => $q->grupo->nombre,
+                            'jugador_simple_id' => $q2['jugador_simple_id'],
+                            'jugador_dupla_id' => $q2['jugador_dupla_id'],
+                            'nombres' => $q2['nombres'],
+                            'setsGanados' => $SetsGanados,
+                            'setsPerdidos' => $SetsPerdidos,
+                            'setsDiferencias' => $SetsDiferencias,
+                            'gamesGanados' => $GamesGanados,
+                            'gamesPerdidos' => $GamesPerdidos,
+                            'gamesDiferencias' => $GamesDiferencias,
+                            'puntos' => $Puntos
+                        ];
+
+                    } else {
+
+                        $PartidosComoLocal = collect($TorneoCategoria->torneo->partidos()->where('torneo_categoria_id', $TorneoCategoria->id)
+                            ->where('grupo_id', $q->grupo_id)->where('jugador_local_uno_id', $q2['jugador_simple_id'])->whereNull('fase')->get());
+
+                        $PartidosComoRival = collect($TorneoCategoria->torneo->partidos()->where('torneo_categoria_id', $TorneoCategoria->id)
+                            ->where('grupo_id', $q->grupo_id)->where('jugador_rival_uno_id', $q2['jugador_simple_id'])->whereNull('fase')->get());
+
+                        $SetsGanados = 0;
+                        $SetsPerdidos = 0;
+                        $GamesGanados = 0;
+                        $GamesPerdidos = 0;
+                        $Puntos = 0;
+
+                        foreach ($PartidosComoLocal as $p) {
+                            if ($p->jugador_ganador_uno_id == $q2['jugador_simple_id']) {   //NO Rival
+                                $SetsGanados += $p->jugador_local_set;
+                                $SetsPerdidos += $p->jugador_rival_set;
+                                $GamesGanados += $p->jugador_local_juego;
+                                $GamesPerdidos += $p->jugador_rival_juego;
+                                $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set <= 0 ? 5 : 4));
+                            } else {
+                                //Rival
+                                $SetsGanados += $p->jugador_rival_set;
+                                $SetsPerdidos += $p->jugador_local_set;
+                                $GamesGanados += $p->jugador_rival_juego;
+                                $GamesPerdidos += $p->jugador_local_juego;
+                                $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : (in_array($p->resultado, ["wo", "w.o", "WO", "W.O"]) ? 0 : ($p->jugador_rival_set == 0 ? 1 : 2)));
+                            }
+                        }
+
+                        foreach ($PartidosComoRival as $p) {
+                            if ($p->jugador_ganador_uno_id == $q2['jugador_simple_id']) {   //NO Rival
+                                $SetsGanados += $p->jugador_local_set;
+                                $SetsPerdidos += $p->jugador_rival_set;
+                                $GamesGanados += $p->jugador_local_juego;
+                                $GamesPerdidos += $p->jugador_rival_juego;
+                                $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set <= 0 ? 5 : 4));
+                            } else {
+                                //Rival
+                                $SetsGanados += $p->jugador_rival_set;
+                                $SetsPerdidos += $p->jugador_local_set;
+                                $GamesGanados += $p->jugador_rival_juego;
+                                $GamesPerdidos += $p->jugador_local_juego;
+                                $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : (in_array($p->resultado, ["wo", "w.o", "WO", "W.O"]) ? 0 : ($p->jugador_rival_set == 0 ? 1 : 2)));
+                            }
+                        }
+
+                        $SetsDiferencias = $SetsGanados - $SetsPerdidos;
+
+                        $GamesDiferencias = $GamesGanados - $GamesPerdidos;
+
+                        $Puntos = $Puntos * $TorneoCategoria->torneo->valor_set;
+
+                        $TablePositions[] = [
+                            'key' => ($key . '-' . $key2),
+                            'grupo_id' => $q->grupo->id,
+                            'grupo' => $q->grupo->nombre,
+                            'jugador_simple_id' => $q2['jugador_simple_id'],
+                            'jugador_dupla_id' => null,
+                            'nombres' => $q2['nombres'],
+                            'setsGanados' => $SetsGanados,
+                            'setsPerdidos' => $SetsPerdidos,
+                            'setsDiferencias' => $SetsDiferencias,
+                            'gamesGanados' => $GamesGanados,
+                            'gamesPerdidos' => $GamesPerdidos,
+                            'gamesDiferencias' => $GamesDiferencias,
+                            'puntos' => $Puntos,
+                        ];
+                    }
+                }
+                $JugadoresClasificados[] = ['Grupo' => $q->grupo->nombre, 'Clasificados' => App::multiPropertySort(collect($TablePositions), [['column' => 'puntos', 'order' => 'desc'], ['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->take($Clasifican)];
+            }
+
+            //CLASIFICADOS POR CÁLCULO
+            // Inicializar arrays para almacenar los lugares
+            $PrimerosLugares = [];
+            $SegundoLugares = [];
+            $TercerosLugares = [];
+            $CuartosLugares = [];
+
+            // Clasificar jugadores en primeros, segundos, terceros y cuartos lugares
+            foreach ($JugadoresClasificados as $key => $value) {
+                if ($Clasifican == 1) {
+                    $PrimerosLugares[] = $value['Clasificados']->first();
+                } elseif ($Clasifican == 2) {
+                    $PrimerosLugares[] = $value['Clasificados']->first();
+                    $SegundoLugares[] = $value['Clasificados']->last();
+                } elseif ($Clasifican == 3) {
+                    $PrimerosLugares[] = $value['Clasificados']->first();
+                    if (isset($value['Clasificados'][1])) {
+                        $SegundoLugares[] = $value['Clasificados'][1];
+                    }
+                    $TercerosLugares[] = $value['Clasificados']->last();
+                } elseif ($Clasifican == 4) {
+                    $PrimerosLugares[] = $value['Clasificados']->first();
+                    if (isset($value['Clasificados'][1])) {
+                        $SegundoLugares[] = $value['Clasificados'][1];
+                    }
+                    if (isset($value['Clasificados'][2])) {
+                        $TercerosLugares[] = $value['Clasificados'][2];
+                    }
+                    $CuartosLugares[] = $value['Clasificados']->last();
+                }
+            }
+
+
+
+
+            // Eliminar duplicados
+            $PrimerosLugares = collect($PrimerosLugares)->unique('key')->values()->all();
+            $SegundoLugares = collect($SegundoLugares)->unique('key')->values()->all();
+            $TercerosLugares = collect($TercerosLugares)->unique('key')->values()->all();
+            $CuartosLugares = collect($CuartosLugares)->unique('key')->values()->all();
+
+
+            $TercerosLugares = App::multiPropertySort(
+                collect($TercerosLugares),
+                [
+                    ['column' => 'puntos', 'order' => 'desc'],
+                    ['column' => 'setsDiferencias', 'order' => 'desc'],
+                    ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                    ['column' => 'setsGanados', 'order' => 'desc'],
+                    ['column' => 'gamesGanados', 'order' => 'desc']
+                ]
+            )->take($TorneoCategoria->clasificados_terceros)->toArray();
+
+
+
+
+
+            $CuartosLugares = App::multiPropertySort(
+                collect($CuartosLugares),
+                [
+                    ['column' => 'puntos', 'order' => 'desc'],
+                    ['column' => 'setsDiferencias', 'order' => 'desc'],
+                    ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                    ['column' => 'setsGanados', 'order' => 'desc'],
+                    ['column' => 'gamesGanados', 'order' => 'desc']
+                ]
+            )->take($TorneoCategoria->clasificados_cuartos)->toArray();
+
+
+
+
+            // Ordenar los lugares
+            $PrimerosLugares = App::multiPropertySort(
+                collect($PrimerosLugares),
+                [
+                    ['column' => 'puntos', 'order' => 'desc'],
+                    ['column' => 'setsDiferencias', 'order' => 'desc'],
+                    ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                    ['column' => 'setsGanados', 'order' => 'desc'],
+                    ['column' => 'gamesGanados', 'order' => 'desc']
+                ]
+            );
+            $SegundoLugares = App::multiPropertySort(
+                collect($SegundoLugares),
+                [
+                    ['column' => 'puntos', 'order' => 'desc'],
+                    ['column' => 'setsDiferencias', 'order' => 'desc'],
+                    ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                    ['column' => 'setsGanados', 'order' => 'desc'],
+                    ['column' => 'gamesGanados', 'order' => 'desc']
+                ]
+            );
+            $TercerosLugares = App::multiPropertySort(
+                collect($TercerosLugares),
+                [
+                    ['column' => 'puntos', 'order' => 'desc'],
+                    ['column' => 'setsDiferencias', 'order' => 'desc'],
+                    ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                    ['column' => 'setsGanados', 'order' => 'desc'],
+                    ['column' => 'gamesGanados', 'order' => 'desc']
+                ]
+            );
+            $CuartosLugares = App::multiPropertySort(
+                collect($CuartosLugares),
+                [
+                    ['column' => 'puntos', 'order' => 'desc'],
+                    ['column' => 'setsDiferencias', 'order' => 'desc'],
+                    ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                    ['column' => 'setsGanados', 'order' => 'desc'],
+                    ['column' => 'gamesGanados', 'order' => 'desc']
+                ]
+            );
+
+            // Combinar todos los lugares
+            $JugadoresClasificadosMerge = collect($PrimerosLugares)
+                ->merge($SegundoLugares)
+                ->merge($TercerosLugares)
+                ->merge($CuartosLugares)
+                ->unique('key')
+                ->values()
+                ->all();
+
+            // Crear el objeto TorneoFaseFinal
+            $TorneoFaseFinal = (object) [
+                'TorneoCategoria' => $TorneoCategoria,
+                'JugadoresClasificados' => App::multiPropertySort(
+                    collect($JugadoresClasificadosMerge),
+                    [
+                        ['column' => 'puntos', 'order' => 'desc'],
+                        ['column' => 'setsDiferencias', 'order' => 'desc'],
+                        ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                        ['column' => 'setsGanados', 'order' => 'desc'],
+                        ['column' => 'gamesGanados', 'order' => 'desc']
+                    ]
+                )
+            ];
+
+
+            $data = App::multiPropertySort(
+                collect($JugadoresClasificadosMerge),
+                [
+                    ['column' => 'puntos', 'order' => 'desc'],
+                    ['column' => 'setsDiferencias', 'order' => 'desc'],
+                    ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                    ['column' => 'setsGanados', 'order' => 'desc'],
+                    ['column' => 'gamesGanados', 'order' => 'desc']
+                ]
+            );
+
+
+            return response()->json(['data' => $data]);
+        }
+    }
+    
+   
 }

@@ -14,12 +14,28 @@ class Partido extends Model
     'jugador_rival_uno_id', 'jugador_rival_dos_id', 'jugador_rival_set', 'jugador_rival_juego',
     'jugador_ganador_uno_id', 'jugador_ganador_dos_id',
     'fecha_inicio', 'fecha_final', 'hora_inicio', 'hora_final', 'bloque', 'position', 'bracket', 'fase',
-    'buy', 'buy_all', 'resultado', 'perdio', 'estado_id', 'user_create_id', 'user_update_id'];
+    'buy', 'buy_all', 'resultado', 'perdio', 'estado_id', 'user_create_id', 'user_update_id','resultado_timestamp'];
 
     protected $appends = ['permitir_edicion'];
 
     protected $dates = ['deleted_at'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            if ($model->isDirty('resultado')) {
+                $model->resultado_timestamp = now();
+            }
+        });
+        static::updating(function ($model) {
+            if ($model->isDirty('resultado')) {
+                $model->resultado_timestamp = now();
+            }
+        });
+    }
+    
     public function torneo()
     {
         return $this->belongsTo(Torneo::class);

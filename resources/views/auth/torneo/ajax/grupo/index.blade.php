@@ -15,8 +15,8 @@
 
         <div class="row report-not-view">
             <div class="col-md-12 text-center pt-3 pb-3">
-                <h3 class="html-view" style="color: black !important;">Torneo {{ $Model->nombre }}</h3>
-                <h3 class="report-view hidden">Torneo {{ $Model->nombre }}<span id="textCategoria"></span></h3>
+                <h3 class="html-view" style="color: black !important;"> {{ $Model->nombre }}</h3>
+                <h3 class="report-view hidden"> {{ $Model->nombre }}<span id="textCategoria"></span></h3>
                 <p style="font-size: 17px;margin-bottom: 0.5rem">Desde: {{ \Carbon\Carbon::parse($Model->fecha_inicio)->format('d M Y') }} - Hasta: {{ \Carbon\Carbon::parse($Model->fecha_final)->format('d M Y') }}</p>
                 <p style="font-size: 17px;margin-bottom: 0.5rem">Formato: {{ $Model->formato != null ? $Model->formato->nombre : "-" }}</p>
                 <button type="button" class="close close-view" aria-label="Close">
@@ -160,7 +160,13 @@
                                     @if(count($Model->partidos->where('torneo_categoria_id', $q->id)) <= 0)
                                         <div class="row mt-3">
                                             <ul class="w-100 content-button-first-fase d-flex align-content-center justify-content-end list-unstyled p-0">
-                                                <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-final" data-reload="0" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Keys de Eliminación</button></li>
+                                                 @if($Model->formato->nombre=='Eliminación Directa Flexible')
+    <li class="mr-1">
+        <button type="button" class="btn btn-primary btn-generate-keys-final" data-reload="0" data-id="{{ $q->id }}">
+            <i class="fa fa-key"></i> Keys de Eliminación
+        </button>
+    </li>
+@endif
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-random" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos Aleatorias</button></li>
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos con Siembra</button></li>
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-manual-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos Manuales</button></li>
@@ -180,7 +186,7 @@
                                                     <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-final" data-id="{{ $q->id }}" data-reload="1"><i class="fa fa-sync"></i> Volver a generar llaves</button></li>
                                                 @endif
                                                 <li class="mr-1"><button type="button" class="btn btn-danger btn-delete-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Eliminar keys generados</button></li>
-                                                <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-json-grupo" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Generar Json</button></li>
+                                                <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-json-grupo" data-id="{{ $q->id }}" data-category="{{ $q->id }}><i class="fa fa-key"></i> Generar Json</button></li>
                                             </ul>
                                         </div>
                                     @endif
@@ -274,7 +280,17 @@
                                                                     <tbody>
                                                                     @foreach($Model->partidos->where('torneo_categoria_id', $q->id)->where('grupo_id', $q4->grupo_id) as $q6)
                                                                         <tr class="content-tr-{{ $q6->id }} {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disable" : "enable" }}" data-id="{{ $q6->id }}" data-category="{{ $q->id }}" data-group="{{ $q4->grupo_id }}">
-                                                                            <td class="text-center">{{ $q->multiple ? $q6->jugadorLocalUno->nombre_completo.' + '.$q6->jugadorLocalDos->nombre_completo : $q6->jugadorLocalUno->nombre_completo_temporal }} vs {{ $q->multiple ? $q6->jugadorRivalUno->nombre_completo.' + '.$q6->jugadorRivalDos->nombre_completo : $q6->jugadorRivalUno->nombre_completo_temporal }}</td>
+                                                                            
+                                                                              <td class="text-center td-jugador-info-h2h" 
+                                                                            data-jugador-local-id="{{ $q6->jugador_local_uno_id }}" 
+                                                                            data-jugador-rival-id="{{ $q6->jugador_rival_uno_id }}" 
+                                                                            data-torneo-categoria-id="{{ $q->id }}" 
+                                                                            style="cursor: pointer;">
+                                                                            {{ $q->multiple ? $q6->jugadorLocalUno->nombre_completo.' + '.$q6->jugadorLocalDos->nombre_completo : $q6->jugadorLocalUno->nombre_completo_temporal }} 
+                                                                            vs 
+                                                                            {{ $q->multiple ? $q6->jugadorRivalUno->nombre_completo.' + '.$q6->jugadorRivalDos->nombre_completo : $q6->jugadorRivalUno->nombre_completo_temporal }}
+                                                                        </td>  
+                                                                            
                                                                             <td><input type="date" value="{{ \Carbon\Carbon::parse($q6->fecha_inicio)->format('Y-m-d') }}" class="form-input" id="fecha_inicio_{{$q6->id}}" name="fecha_inicio_{{$q6->id}}" {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disabled" : "" }}></td>
                                                                             <td><input type="date" value="{{ \Carbon\Carbon::parse($q6->fecha_final)->format('Y-m-d') }}" class="form-input" id="fecha_final_{{$q6->id}}" name="fecha_final_{{$q6->id}}" {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disabled" : "" }}></td>
                                                                             <td width="100"><input value="{{ $q6->resultado }}" type="text" id="resultado_{{$q6->id}}" name="resultado_{{$q6->id}}" class="form-input result-input" {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disabled" : "" }}></td>
@@ -311,7 +327,7 @@
                                                                                         <li><a href="javascript:void(0);" data-id="{{ $q6->id }}" data-category="{{ $q->id }}" class="dropdown-item btn-generate-json dropdown-item-send">Generar Json</a></li>
                                                                                     </ul>
                                                                                 </div>
-                                                                                <button type="button" data-id="{{ $q6->id }}" data-category="{{ $q->id }}" data-multiple="{{ $q->multiple }}" data-group="{{ $q4->grupo_id }}"
+                                                                                <button type="button" data-id="{{ $q6->id }}" data-category="{{ $q->id }}" data-multiple="{{ $q->multiple }}" data-group="{{ $q4->grupo_id }}" data-manual="{{ $q->manual }}" data-hasFase="{{ $hasFase }}"
                                                                                 data-local="{{ $q6->jugador_local_uno_id }}" data-local-multiple="{{ $q6->jugador_local_dos_id }}"
                                                                                 data-rival="{{ $q6->jugador_rival_uno_id }}" data-rival-multiple="{{ $q6->jugador_rival_dos_id }}" class="btn btn-primary btn-finish-play btn-xs w-100 mt-1 {{ $q6->estado_id == $App::$ESTADO_PENDIENTE ? "" : "hidden" }}">Finalizar</button>
                                                                             </td>
@@ -330,6 +346,7 @@
                                                     @if(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('grupo_id', $q4->grupo_id)->where('estado_id', $App::$ESTADO_PENDIENTE)->whereNull('fase')) > 0)
                                                         <div class="row mt-2">
                                                             <div class="col-md-12 text-right">
+                                                                 <button class="btn btn-primary btn-copiar-tabla" data-category="{{ $q->id }}" data-id="{{ $q4->grupo_id }}">Copiar Tabla</button>
                                                                 <button type="button" data-id="{{ $q4->grupo_id }}" data-name="{{ $q4->nombre_grupo }}" data-category="{{ $q->id }}" class="btn btn-primary btn-export-pdf pull-right"><i class="fa fa-file-pdf"></i> Exportar PDF </button>
                                                                 <!--<button type="button" data-id="{{ $q4->grupo_id }}" data-name="{{ $q4->nombre_grupo }}" data-category="{{ $q->id }}" class="btn btn-primary btn-finish-all-plays pull-right"><i class="fa fa-save"></i> Finalizar Partidos </button>-->
                                                             </div>
@@ -337,6 +354,9 @@
                                                     @else
                                                         <div class="row mt-2">
                                                             <div class="col-md-12 text-right">
+                                                                        <button class="btn btn-primary btn-copiar-tabla" data-category="{{ $q->id }}" data-id="{{ $q4->grupo_id }}">Copiar Tabla</button>
+
+
                                                                 <button type="button" data-id="{{ $q4->grupo_id }}" data-name="{{ $q4->nombre_grupo }}" data-category="{{ $q->id }}" class="btn btn-danger btn-export-pdf pull-right"><i class="fa fa-file-pdf"></i> Exportar PDF </button>
                                                             </div>
                                                         </div>
@@ -401,6 +421,21 @@
                     });
                   
                 }
+                
+                      $('.td-jugador-info-h2h').on('click', function(event) {
+            event.preventDefault(); // Prevenir la acción por defecto del enlace
+
+            // Obtener los datos del atributo data
+            var jugadorLocalId = $(this).data('jugador-local-id');
+            var jugadorRivalId = $(this).data('jugador-rival-id');
+            var torneoCategoriaId = $(this).data('torneo-categoria-id');
+
+            // Construir la URL con los parámetros
+            var url = `/auth/torneo/h2h/${jugadorLocalId}/${jugadorRivalId}/${torneoCategoriaId}/json`;
+
+            // Redirigir a la URL
+            window.open(url, '_blank');
+        });
             });
 
         /*$('.result-input').on('change', function (){
@@ -519,7 +554,47 @@
                         refrescarTablaPosiciones($this.closest("tr").attr("data-category"), $this.closest("tr").attr("data-group"));
                     }
                 });
-            }else{
+            }
+            else if ($this.val().toLowerCase().includes("ret")) {
+                const cleanedValue = $this.val().toLowerCase().replace(/(\(ret\)|ret)/gi, "").trim();
+                const sets = cleanedValue.split('/');
+                console.log(sets,'aa')
+                let setsLocalnew = 0; let gamesLocal = 0; let setsRivalew = 0; let gamesRival = 0;
+
+                if(sets.length > 0){
+                    $.each(sets, function (i, v){
+                        const games = v.split('-');
+                        let $GameLeft = parseInt(games[0].match(/\d+/)[0]);
+                        let $GameRight = parseInt(games[1].match(/\d+/)[0]);
+                        if(i <= 1){
+                            console.log("sets.length",sets.length)
+                            if(i == 1 && sets.length != 3){
+                            if (games.includes('6')) 
+                            {
+                                console.log("entro",games)
+                                $GameLeft = 7
+                            }else{
+                                $GameLeft = 6
+                            }
+                              
+                            }
+                            gamesLocal += $GameLeft;
+                            gamesRival += $GameRight;
+
+                           
+                        }
+                        if($GameLeft > $GameRight) setsLocalnew+=1;
+                        else if($GameRight > $GameLeft)  setsRivalew+=1;
+                    });
+                  
+
+                }
+                $this.closest("tr").find("input.set-local").val(setsLocalnew);
+                $this.closest("tr").find("input.game-local").val(gamesLocal);
+                $this.closest("tr").find("input.set-rival").val(setsRivalew);
+                $this.closest("tr").find("input.game-rival").val(gamesRival);
+            }
+            else{
                 const sets = $this.val().split('/');
                 if(sets.length > 0){
                     let setsLocal = 0; let gamesLocal = 0; let setsRival = 0; let gamesRival = 0;
@@ -753,9 +828,7 @@
                         formData.append('tipo_grupo_id', $("#tipo_grupo").val());
                         actionAjax(`/auth/{{strtolower($ViewName)}}/grupo/store`, formData, `POST`, function (data){
                             if(data.Success){
-                                if(data.Repeat){
-                                    Swal.fire({icon: 'warning', title: 'Algunos jugadores que acaba de asignar ya se enfrentaron con anterioridad en el torneo anterior en la fase de grupos.'});
-                                }
+                               
                                 invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${id}`, function(data){
                                     $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
                                 });
@@ -951,7 +1024,7 @@
         $closeView.on("click", function (){ $("body").removeClass("sidebar-collapse"); $("#main").removeClass("hidden");$("#info").html("").addClass("hidden");});
 
         const $btnFinishPlay = $("button.btn-finish-play");
-        $btnFinishPlay.on("click", function (){
+       $btnFinishPlay.on("click", function () {
             const $this = $(this);
             const id = $this.attr("data-id");
             const formData = new FormData();
@@ -959,19 +1032,20 @@
             formData.append('torneo_id', {{ $Model->id }});
             formData.append('torneo_categoria_id', $this.attr("data-category"));
             formData.append('partido_id', id);
-            formData.append('fecha_inicio', $("#fecha_inicio_"+id).val());
-            formData.append('fecha_final', $("#fecha_final_"+id).val());
-            formData.append('resultado', $("#resultado_"+id).val());
-            formData.append('jugador_local_id', $("#jugador_local_id_"+id).val());
-            formData.append('jugador_local_set', $("#jugador_local_set_"+id).val());
-            formData.append('jugador_local_juego', $("#jugador_local_juego_"+id).val());
-            formData.append('jugador_rival_id', $("#jugador_rival_id_"+id).val());
-            formData.append('jugador_rival_set', $("#jugador_rival_set_"+id).val());
-            formData.append('jugador_rival_juego', $("#jugador_rival_juego_"+id).val());
+            formData.append('fecha_inicio', $("#fecha_inicio_" + id).val());
+            formData.append('fecha_final', $("#fecha_final_" + id).val());
+            formData.append('resultado', $("#resultado_" + id).val());
+            formData.append('jugador_local_id', $("#jugador_local_id_" + id).val());
+            formData.append('jugador_local_set', $("#jugador_local_set_" + id).val());
+            formData.append('jugador_local_juego', $("#jugador_local_juego_" + id).val());
+            formData.append('jugador_rival_id', $("#jugador_rival_id_" + id).val());
+            formData.append('jugador_rival_set', $("#jugador_rival_set_" + id).val());
+            formData.append('jugador_rival_juego', $("#jugador_rival_juego_" + id).val());
             formData.append('fase_inicial', '1');
-            actionAjax(`/auth/{{strtolower($ViewName)}}/partido/store`, formData, `POST`, function (data){
-                if(data.Success){
-                    Toast.fire({icon: data.Message ? 'warning' : 'success', title: data.Message ? data.Message : 'Proceso realizado Correctamente'});
+
+            const handleResponse = function(data) {
+                if (data.Success) {
+                    Toast.fire({ icon: data.Message ? 'warning' : 'success', title: data.Message ? data.Message : 'Proceso realizado Correctamente' });
                     $this.addClass("hidden");
                     $this.closest("td").find("button.btn-edit-play").closest('div.btn-group').removeClass("hidden");
                     $this.closest("tr").find("input, select").prop("disabled", true);
@@ -980,44 +1054,59 @@
                     const $idLocal = parseInt($this.attr("data-multiple")) === 0 ? [$this.attr("data-local")] : [$this.attr("data-local"), $this.attr("data-local-multiple")];
                     const $idRival = parseInt($this.attr("data-multiple")) === 0 ? [$this.attr("data-rival")] : [$this.attr("data-rival"), $this.attr("data-rival-multiple")];
 
-                    $("button#btnChangePlayer_"+$this.attr("data-category")+"_"+$idLocal[0]+"_"+($idLocal.length > 1 ? $idLocal[1] : "")).remove();
-                    $("button#btnChangePlayer_"+$this.attr("data-category")+"_"+$idRival[0]+"_"+($idRival.length > 1 ? $idRival[1] : "")).remove();
+                    $("button#btnChangePlayer_" + $this.attr("data-category") + "_" + $idLocal[0] + "_" + ($idLocal.length > 1 ? $idLocal[1] : "")).remove();
+                    $("button#btnChangePlayer_" + $this.attr("data-category") + "_" + $idRival[0] + "_" + ($idRival.length > 1 ? $idRival[1] : "")).remove();
 
-                    if(["-"].includes($("#resultado_"+id).val())){
+                    if (["-"].includes($("#resultado_" + id).val())) {
                         $this.closest("tr").find("select").val("");
                     }
 
                     refrescarTablaPosiciones($this.attr("data-category"), $this.attr("data-group"));
-                }else{
+                    refrescarMapaTorneo($this.attr("data-category"));
+                } else {
                     if (data.Errors) {
                         const $arregloErros = [];
-                        $.each(data.Errors, function (i, v){$arregloErros.push(v);});
-                        if($arregloErros.length > 0) Toast.fire({icon: 'error', title: $arregloErros[0]});
-                        else Toast.fire({icon: 'error', title: data.Message != null ? data.Message: "Algo salió mal, por favor verifique los campos ingresados."});
-                    }else{
-                        Toast.fire({icon: 'error', title: data.Message != null ? data.Message: "Algo salió mal, por favor verifique los campos ingresados."});
+                        $.each(data.Errors, function (i, v) { $arregloErros.push(v); });
+                        if ($arregloErros.length > 0) Toast.fire({ icon: 'error', title: $arregloErros[0] });
+                        else Toast.fire({ icon: 'error', title: data.Message != null ? data.Message : "Algo salió mal, por favor verifique los campos ingresados." });
+                    } else {
+                        Toast.fire({ icon: 'error', title: data.Message != null ? data.Message : "Algo salió mal, por favor verifique los campos ingresados." });
                     }
                 }
-            });
-
-            /*confirmAjax(`/auth/{{strtolower($ViewName)}}/partido/store`, formData, `POST`, `¿Está seguro de finalizar este partido ?`, null, function (data){
-                if(data.Success){
-                    invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${$this.attr("data-category")}`, function(data){
-                        $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
-                    });
-                }else Toast.fire({icon: 'error', title: 'Algo salió mal, hubo un error al guardar.'});
-            }, function (data){
-                if (data.Errors) {
-                    const $arregloErros = [];
-                    $.each(data.Errors, function (i, v){$arregloErros.push(v);});
-                    if($arregloErros.length > 0) Toast.fire({icon: 'error', title: $arregloErros[0]});
-                    else Toast.fire({icon: 'error', title: data.Message != null ? data.Message: "Algo salió mal, por favor verifique los campos ingresados."});
-                }else{
-                    Toast.fire({icon: 'error', title: data.Message != null ? data.Message: "Algo salió mal, por favor verifique los campos ingresados."});
-                }
-            });*/
+            };
 
 
+           
+            const torneoId = {{ $Model->id }}; // Reemplaza con el valor dinámico si es necesario
+            const jugadorSelectedId = ''; // Reemplaza con el valor dinámico si es necesario
+            const torneoCategoriaId =  $this.attr("data-category"); // Reemplaza con el valor dinámico si es necesario
+            actionAjax(`/auth/torneo/jugador/list-json-validate?torneo_id=${torneoId}&torneo_categoria_id=${torneoCategoriaId}&landing=false&completo=true`, null, "GET", function (data) {
+    console.log(data.data);
+    const jugador_local_id = $("#jugador_local_id_" + id).val();
+    const jugador_rival_id = $("#jugador_rival_id_" + id).val();
+
+    // Verificar si el ID del jugador en data.data coincide con el ID del jugador local o del rival
+    const jugadorEnData = data.data.some(jugador => jugador.jugador_simple_id == jugador_local_id || jugador.jugador_simple_id == jugador_rival_id);
+    console.log(jugadorEnData);
+
+    if (jugadorEnData) {
+        console.log('mmm');
+        if ($this.attr("data-manual") === '0' && $this.attr("data-hasFase")) {
+            formData.append('tipo', 'manual');
+            formData.append('reload', 1);
+            
+            confirmAjax(`/auth/torneo/fase-final/store`, formData, 'POST', `¿Está seguro de que quiere editar? Las llaves se volverán a generar eliminando los resultados.`, null, handleResponse, null, true);
+        } else {
+            actionAjax(`/auth/{{ strtolower($ViewName) }}/partido/store`, formData, 'POST', handleResponse);
+        }
+    } else {
+        actionAjax(`/auth/{{ strtolower($ViewName) }}/partido/store`, formData, 'POST', handleResponse);
+    }
+});
+          
+
+
+          
         });
 
         const $btnEditPlay = $("button.btn-edit-play");
@@ -1131,6 +1220,11 @@
             const $this = $(this);
             window.open(`/auth/{{strtolower($ViewName)}}/export/mapa/json?type=full&torneo={{ $Model->id  }}&categoria=${$this.attr("data-id")}`);
         });
+        
+         $firstPanel.on("click", ".btn-download-cup-cuartos", function (){
+            const $this = $(this);
+            window.open(`/auth/{{strtolower($ViewName)}}/export/mapa/figuras/json?type=full&torneo={{ $Model->id  }}&categoria=${$this.attr("data-id")}`);
+        });
 
         $firstPanel.on("click", ".btn-export-pdf-cup-left", function (){
             const $this = $(this);
@@ -1140,13 +1234,33 @@
             window.print();
         });
 
-        $firstPanel.on("click", ".btn-export-pdf-cup-right", function (){
-            const $this = $(this);
-            $("#textCategoria").text(', Categoría "'+$this.attr("data-category")+'"');
-            $(".has-map-bg").removeClass("is-half-left").addClass("is-half-right");
-            $(".grid.grid-mapa-content").removeClass("is-half-left").addClass("is-half-right");
-            window.print();
+      $firstPanel.on("click", ".btn-copiar-tabla", function () {
+    const categoryId = this.getAttribute("data-category");
+    const groupId = this.getAttribute("data-id");
+    const tableId = `partialViewTablaGrupo${categoryId}${groupId}`;
+    const tableElement = document.getElementById(tableId);
+
+    if (tableElement) {
+        html2canvas(tableElement).then(canvas => {
+            const link = document.createElement("a");
+            link.href = canvas.toDataURL("image/png");
+            link.download = `tabla_${categoryId}_${groupId}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            console.log("Imagen PNG descargada exitosamente.");
+        }).catch(err => {
+            console.error("Error al renderizar el elemento con html2canvas: ", err);
         });
+    } else {
+        console.error("No se encontró el elemento HTML especificado.");
+    }
+});
+
+
+
+
+
 
         $firstPanel.on("click", ".btn-finish-keys-final", function (){
             const $this = $(this);
@@ -1201,6 +1315,12 @@
                 $(`#mapaCampeonato${torneo_category}`).html(data);
             });
         }
+        
+       function refrescarMapaTorneo(){
+            invocarVista(`/auth/torneo/fase-final/mapa/partialView/{{$Model->id}}/${torneo_category}/{{ $landing }}`, function(data){
+                $(`#mapaCampeonato${torneo_category}`).html(data);
+            });
+        }
 
         @if(!$landing)
             const $tdJugadorInfo = $("td.td-jugador-info");
@@ -1247,8 +1367,40 @@
             });
 
         @endif
+        
+        $(document).ready(function() {
+            $(document).on("change", "select[id^='jugador_local_id_']", function () {
+                const selectedValue = $(this).val();
+                const rivalSelect = $(this).closest('tr').find("select[id^='jugador_rival_id_']");
+                rivalSelect.find("option").each(function () {
+                    if ($(this).val() !== selectedValue) {
+                        $(this).prop("selected", true);
+                    } else {
+                        $(this).prop("selected", false);
+                    }
+                });
+            });
+            $(document).on("change", "select[id^='jugador_rival_id_']", function () {
+                const selectedValue = $(this).val();
+                const localSelect = $(this).closest('tr').find("select[id^='jugador_local_id_']");
+                localSelect.find("option").each(function () {
+                    if ($(this).val() !== selectedValue) {
+                        $(this).prop("selected", true);
+                    } else {
+                        $(this).prop("selected", false);
+                    }
+                });
+            });
+        });
 
         OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}"));
         OnFailure{{$ViewName}} = () => onFailureForm();
     });
 </script>
+
+
+
+<!-- Incluir html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+

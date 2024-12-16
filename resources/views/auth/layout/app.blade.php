@@ -65,7 +65,7 @@
                             Bienvenido, {{ $Auth::guard('web')->user()->nombre }}.
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="javascript:void(0);" onclick="event.preventDefault();localStorage.setItem('cliente_id','');document.getElementById('logout-form').submit();" class="dropdown-item dropdown-footer"><i class="fa fa-power-off"></i> {{ __('Cerrar Sesión') }}</a>
+                            <a href="javascript:void(0);" onclick="event.preventDefault();localStorage.setItem('cliente_id','');localStorage.clear();document.getElementById('logout-form').submit();" class="dropdown-item dropdown-footer"><i class="fa fa-power-off"></i> {{ __('Cerrar Sesión') }}</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
@@ -77,7 +77,7 @@
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0);" onclick="event.preventDefault();localStorage.setItem('cliente_id','');document.getElementById('logout-form').submit();">
+                <a class="nav-link" href="javascript:void(0);" onclick="event.preventDefault();localStorage.setItem('cliente_id','');localStorage.clear();document.getElementById('logout-form').submit();">
                 <i class="fa fa-door-open"></i> {{ __('Cerrar sesión') }}</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf

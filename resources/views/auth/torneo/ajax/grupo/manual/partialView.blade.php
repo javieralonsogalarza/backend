@@ -155,13 +155,12 @@
         }
 
         $form.on("click", ".btn-close-view", function (){
+            localStorage.removeItem(`generateKeysData_${ {{$Categoria}} }`);
             $("#partialViewManual{{$Categoria}}").html("");
         });
 
         OnSuccess{{$ViewName}}{{$Categoria}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}{{$Categoria}}"), null, function (data){
-            if(data.Repeat){
-                Swal.fire({icon: 'warning', title: 'Algunos jugadores que acaba de asignar ya se enfrentaron con anterioridad en el torneo anterior en la fase de grupos.'});
-            }
+           
             //eliminar datos del localStorage y elkey generateKeysData
             const categoria = '{{ $Categoria }}'; // Asegúrate de que la categoría está disponible en el contexto
 
@@ -169,7 +168,8 @@
                 const selectId = $(this).attr('id');
                 localStorage.removeItem(`${selectId}_${{{ $Categoria }}}`);
             });
-            localStorage.removeItem(`generateKeysData_${{{ $Categoria }}}`);
+            localStorage.removeItem(`generateKeysData_${categoria}`);
+
             invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Torneo }}/{{ $Categoria }}`, function (data) {
                 $("#main").addClass("hidden");
                 $("#info").removeClass("hidden").html("").append(data);

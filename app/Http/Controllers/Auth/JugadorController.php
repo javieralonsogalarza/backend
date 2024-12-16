@@ -55,6 +55,14 @@ class JugadorController extends Controller
             if($request->filter_sexo){ $q->where('sexo', $request->filter_sexo); }
         })
         ->whereNotIn('id', $JugadoresNoDisponibles)
+        ->select('jugadors.*', DB::raw('
+        (SELECT COUNT(*) 
+         FROM torneo_jugadors 
+         WHERE torneo_jugadors.jugador_simple_id = jugadors.id 
+            OR torneo_jugadors.jugador_dupla_id = jugadors.id
+            and torneo_jugadors.deleted_at IS NULL
+        ) as en_torneo_jugadors
+        '))
         ->get();
 
         return response()->json(['data' => $data]);

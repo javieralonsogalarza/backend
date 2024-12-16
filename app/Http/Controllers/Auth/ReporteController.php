@@ -42,34 +42,50 @@ class ReporteController extends Controller
         $categoriaSimpleComplete = [];
         if($Jugador != null && count($Torneos) > 0)
         {       
-            foreach ($Torneos as $q)
-            {
-                $Partido =  Partido::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)->where('torneo_id', $q->id)
-                ->where(function ($q) use ($Jugador){$q->where('jugador_local_uno_id', $Jugador->id)->orWhere('jugador_local_dos_id', $Jugador->id)->orWhere('jugador_local_dos_id', $Jugador->id)->orWhere('jugador_rival_uno_id', $Jugador->id)->orWhere('jugador_rival_dos_id', $Jugador->id);})
-                ->orderBy('id', 'desc')->first();
-
-                if($Partido != null)
-                {
+              foreach ($Torneos as $q) {
+                $Partidos = Partido::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+                    ->where('torneo_id', $q->id)
+                    ->where(function ($query) use ($Jugador) {
+                        $query->where('jugador_local_uno_id', $Jugador->id)
+                            ->orWhere('jugador_local_dos_id', $Jugador->id)
+                            ->orWhere('jugador_rival_uno_id', $Jugador->id)
+                            ->orWhere('jugador_rival_dos_id', $Jugador->id);
+                    })
+                    ->orderBy('id', 'desc')
+                    ->get();
+            
+                foreach ($Partidos as $Partido) {
                     $HistorialTorneos[] = [
                         'id' => $q->id,
                         'Torneo' => $q->nombre,
                         'TorneoCategoria' => $Partido->torneoCategoria,
-                        'Periodo' => ($q->fecha_inicio_texto." - ".$q->fecha_final_texto),
-                        'Categoria' => $q->multiple && ($Partido->torneoCategoria->categoria_simple_id !== $Partido->torneoCategoria->categoria_dupla_id) ? (($Partido->torneoCategoria->categoriaSimple != null ? $Partido->torneoCategoria->categoriaSimple->nombre : "-")." + ".($Partido->torneoCategoria->categoriaDupla != null ? $Partido->torneoCategoria->categoriaDupla->nombre : "-")) : ($Partido->torneoCategoria->categoriaSimple != null ? $Partido->torneoCategoria->categoriaSimple->nombre : "-")."".($q->multiple ? " (Doble) " : ""),
-                        'Fase' => $Partido->fase == null ? "Fase de Grupos" : ($Partido->fase == 16 ? "Deciseisavo de Final" : ($Partido->fase == 8 ? "Octavos de Final" : ($Partido->fase == 4 ? "Cuartos de Final" : ($Partido->fase == 2 ? "Semifinal" : ($Partido->fase == 1 ? ((in_array($Jugador->id, [$Partido->jugador_ganador_uno_id, $Partido->jugador_ganador_dos_id]) ? "Campe贸n" : "Finalista") ) : "-"))))),
+                        'Periodo' => ($q->fecha_inicio_texto . " - " . $q->fecha_final_texto),
+                        'Categoria' => $q->multiple && ($Partido->torneoCategoria->categoria_simple_id !== $Partido->torneoCategoria->categoria_dupla_id) ? (($Partido->torneoCategoria->categoriaSimple != null ? $Partido->torneoCategoria->categoriaSimple->nombre : "-") . " + " . ($Partido->torneoCategoria->categoriaDupla != null ? $Partido->torneoCategoria->categoriaDupla->nombre : "-")) : ($Partido->torneoCategoria->categoriaSimple != null ? $Partido->torneoCategoria->categoriaSimple->nombre : "-") . "" . ($q->multiple ? " (Doble) " : ""),
+                        'Fase' => $Partido->fase == null ? "Fase de Grupos" : ($Partido->fase == 16 ? "Deciseisavo de Final" : ($Partido->fase == 8 ? "Octavos de Final" : ($Partido->fase == 4 ? "Cuartos de Final" : ($Partido->fase == 2 ? "Semifinal" : ($Partido->fase == 1 ? ((in_array($Jugador->id, [$Partido->jugador_ganador_uno_id, $Partido->jugador_ganador_dos_id]) ? "Campeón" : "Finalista")) : "-"))))),
                         'Estado' => $q->estado_texto
                     ];
+            
                     if (isset($Partido->torneoCategoria->categoria_simple_id)) {
                         if (!in_array($Partido->torneoCategoria->categoria_simple_id, $categoriaSimpleIds)) {
                             $categoriaSimpleIds[] = $Partido->torneoCategoria->categoria_simple_id;
-                            $categoriaSimpleComplete[] = $Partido->torneoCategoria->categoriaSimple; 
-
+                            $categoriaSimpleComplete[] = $Partido->torneoCategoria->categoriaSimple;
                         }
                     }
                 }
-            }
-     
+            }   
+            
+            $ultimosPartidosPorCategoria = [];
 
+foreach ($HistorialTorneos as $partido) {
+    $categoriaId = $partido['TorneoCategoria']['id'];
+    if (!isset($ultimosPartidosPorCategoria[$categoriaId]) || strtotime($partido['Periodo']) > strtotime($ultimosPartidosPorCategoria[$categoriaId]['Periodo'])) {
+        $ultimosPartidosPorCategoria[$categoriaId] = $partido;
+    }
+}
+
+// Convertir el array asociativo a un array indexado
+$ultimosPartidosPorCategoria = array_values($ultimosPartidosPorCategoria);
+        $HistorialTorneos = $ultimosPartidosPorCategoria;
        
 
         }
@@ -82,13 +98,13 @@ class ReporteController extends Controller
                 if (!empty($rankings)) {
                     $rankings = $rankings['Rankings'] ?? [];
             
-                    // Convertir rankings a una colecci贸n para usar firstWhere
+                    // Convertir rankings a una colección para usar firstWhere
                     $rankingsCollection = collect($rankings);
             
-                    // Filtrar los rankings espec铆ficos para los jugadores locales y rivales
+                    // Filtrar los rankings específicos para los jugadores locales y rivales
                     $rankingByCategoryAndPlayer = $rankingsCollection->firstWhere('id', $request->filter_jugador);
             
-                    // Agregar al arreglo $categoriaSimpleIds si no est谩 vac铆o
+                    // Agregar al arreglo $categoriaSimpleIds si no está vacío
                     if ($rankingByCategoryAndPlayer) {
                         $rankingByCategoryAndPlayerTotal[] = [
                             'id' => $q['id'],
@@ -546,7 +562,7 @@ class ReporteController extends Controller
                 $JugadoresClasificados[] = ['Grupo' => $q->grupo->nombre, 'Clasificados' => App::multiPropertySort(collect($TablePositions), [['column' => 'puntos', 'order' => 'desc'], ['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->take($Clasifican)];
             }
 
-            //CLASIFICADOS POR C脕LCULO
+            //CLASIFICADOS POR CÁLCULO
             $PrimerosLugares = [];
             $SegundoLugares = [];
             $TercerosLugares = [];

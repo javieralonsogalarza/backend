@@ -1480,7 +1480,7 @@
                                     </tr>
                                 </table>
                                 <small class="text-bold color-rotulos position-absolute w-100" style="bottom:auto;left:0">
-                                    <a href="/auth/torneo/partido/export/json?id={{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado }}"
+                                    <a href="/auth/torneo/partido/export/json?id={{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->id }}"
                                         target="_blank">
                                         {{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->resultado }}
                                     </a>
@@ -1828,16 +1828,17 @@
                         <!--<li class="mr-1"><button data-category="{{ $TorneoFaseFinal->TorneoCategoria->id }}" type="button" class="btn btnSubirFondo btn-success"><i class="fa fa-edit"></i> Editar Fondo y Textos</button></li>-->
                         <!--<li class="mr-1"><button type="button" class="btn btn-danger btn-export-pdf-cup-left" data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre)."".($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}" data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-file-pdf"></i> Exportar A</button></li>
                                     <li class="mr-1"><button type="button" class="btn btn-danger btn-export-pdf-cup-right" data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre)."".($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}" data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-file-pdf"></i> Exportar B</button></li>-->
-                        <li class="mr-1"><button type="button" class="btn btn-danger btn-export-pdf-cup"
-                                data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}"
-                                data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}"
-                                data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-file-pdf"></i> Exportar
-                                PDF</button></li>
+                       
                         <li class="mr-1"><button type="button" class="btn btn-success btn-download-cup"
                                 data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}"
                                 data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}"
                                 data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-image"></i> Descargar
                                 Llaves</button></li>
+                         <li class="mr-1"><button type="button" class="btn btn-primary btn-download-cup-cuartos"
+                                data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}"
+                                data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}"
+                                data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-image"></i> Descargar
+                                Reporte 1/4 de final</button></li>
                         <li class="mr-1"><button type="button" class="btn btn-primary btn-finish-keys-final"
                                 data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}"
                                 data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-save"></i> Finalizar
@@ -1852,11 +1853,12 @@
                         <!--<li class="mr-1"><button data-category="{{ $TorneoFaseFinal->TorneoCategoria->id }}" type="button" class="btn btnSubirFondo btn-success"><i class="fa fa-edit"></i> Editar Fondo y Textos</button></li>-->
                         <!--<li class="mr-1"><button type="button" class="btn btn-danger btn-export-pdf-cup-left" data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre)."".($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}" data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-file-pdf"></i> Exportar A</button></li>
                                     <li class="mr-1"><button type="button" class="btn btn-danger btn-export-pdf-cup-right" data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre)."".($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}" data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-file-pdf"></i> Exportar B</button></li>-->
-                        <li class="mr-1"><button type="button" class="btn btn-danger btn-export-pdf-cup"
+                       
+                         <li class="mr-1"><button type="button" class="btn btn-primary btn-download-cup-cuartos"
                                 data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}"
                                 data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}"
-                                data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-file-pdf"></i> Exportar
-                                PDF</button></li>
+                                data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-image"></i> Descargar
+                                Reporte 1/4 de final</button></li>
                         <li class="mr-1"><button type="button" class="btn btn-success btn-download-cup"
                                 data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}"
                                 data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}"
