@@ -13,9 +13,9 @@ class TorneoJugador extends Model
 
     protected $dates = ['deleted_at'];
 
-    public function zona()
+    public function zonas()
     {
-        return $this->belongsTo(Zona::class);
+        return $this->belongsToMany(Zona::class);
     }
 
     public function torneo()

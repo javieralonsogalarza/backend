@@ -4624,6 +4624,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                                 $Result->Message = "El tipo ingresado no es vàlido, por favor seleccione uno válido";
                                 return response()->json($Result);
                             }
+                            
 
                             $OriginalOrder = $Torneo->torneoGrupos->where('grupo_id', $Grupos->first()->id)->pluck('id')->toArray();
                             $RandomOrder = TorneoGrupo::where('torneo_id', $TorneoCategoria->torneo_id)->where('torneo_categoria_id', $TorneoCategoria->id)->where('grupo_id', $Grupos->first()->id)->inRandomOrder()->pluck('id')->toArray();
@@ -5438,7 +5439,9 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
         $Zonas = collect(array_values(array_filter($ToneosZonas)));
 
-        return view('auth'.'.'.$this->viewName.'.ajax.jugador.partialViewZona', ['Model' => $Entity, 'Zonas' => $Zonas, 'ViewName' => ucfirst($this->viewName)]);
+        $selectedZonas = $Entity->zonas ? $Entity->zonas->pluck('id')->toArray() : [];
+
+        return view('auth'.'.'.$this->viewName.'.ajax.jugador.partialViewZona', ['Model' => $Entity, 'Zonas' => $Zonas, 'ViewName' => ucfirst($this->viewName), 'selectedZonas' => $selectedZonas]);
     }
 
     public function jugadorZonaStore(Request $request)
@@ -5468,7 +5471,12 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
                 if ($entity != null) {
                     $request->merge(['user_update_id' => Auth::guard('web')->user()->id]);
-                    $entity->update($request->only('zona_id', 'pago', 'monto', 'user_update_id'));
+                    $entity->update($request->only('pago', 'monto', 'user_update_id'));
+
+                    // Sync the zonas
+                    $entity->zonas()->sync($request->zonas);
+
+            
 
                     DB::commit();
                     $Result->Success = true;

@@ -20,16 +20,20 @@
                 <input type="hidden" id="id" name="id" value="{{ $Model != null ? $Model->id : 0 }}">
                 <div class="modal-body">
                     <div class="form-group row">
-                        <div class="col-md-12">
-                            <label for="zona_id">Zonas: </label>
-                            <select name="zona_id" id="zona_id" class="form-control" style="width: 100% !important;">
-                                <option value="">Seleccione</option>
-                                @foreach($Zonas as $q)
-                                    <option value="{{$q->id}}" data-info="{{ $q->nombre }}" {{ $Model != null && $Model->zona_id == $q->id ? "selected" : "" }}>{{ $q->nombre }}</option>
-                                @endforeach
-                            </select>
-                            <span data-valmsg-for="zona_id"></span>
-                        </div>
+                    <div class="col-md-12">
+            <label for="zonas">Zonas: <span class="text-danger">(*)</span></label>
+            <div class="input-group">
+                <div style="width:calc(100% - 42px) !important;">
+                    <select name="zonas[]" id="zonas" class="form-control select2" style="width: 100% !important;" multiple="multiple">
+                        @foreach($Zonas as $zona)
+                            <option value="{{ $zona->id }}" {{ in_array($zona->id, $selectedZonas) ? 'selected' : '' }}>{{ $zona->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <span data-valmsg-for="zonas"></span>
+        </div>
+
                     </div>
                     <div class="form-group row mt-3 align-items-center">
                         <div class="col-sm-6">
@@ -57,7 +61,7 @@
 <script type="text/javascript" src="{{ asset('auth/adminlte3/plugins/select2/js/select2.js') }}"></script>
 <script type="text/javascript">
     $(function(){
-        const $modal = $("#modal{{$ViewName}}JugadorZona"); const $zona_id = $("#zona_id");
+        const $modal = $("#modal{{$ViewName}}JugadorZona"); const $zona_id = $("#zonas");
         $("input.decimal").inputmask("decimal", { min: 0, max: 9999.99, rightAlign: true, groupSeparator: ".", removeMaskOnSubmit: false, digits: 2, autoGroup: true});
         $zona_id.select2({ allowClear : true, placeholder: 'Buscar...' });
 

@@ -127,8 +127,8 @@
                                                                             @endif
                                                                         </td>
                                                                         <td width="40" align="center" data-jugador-info="{{ $q3->id }}">
-                                                                            @if($q3->zona != null)
-                                                                                <i class="fa fa-map-marker" title="{{ $q3->zona->nombre }}" style="color: #b61616;cursor: pointer"></i>
+                                                                            @if($q3->zonas != null)
+                                                                                <i class="fa fa-map-marker" title="{{ $q3->zonas }}" style="color: #b61616;cursor: pointer"></i>
                                                                             @endif
                                                                         </td>
                                                                         <td width="40" align="center" class="align-middle text-center">
