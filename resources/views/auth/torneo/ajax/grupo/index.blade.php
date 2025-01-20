@@ -127,9 +127,9 @@
                                                                             @endif
                                                                         </td>
                                                                         <td width="40" align="center" data-jugador-info="{{ $q3->id }}">
-                                                                            @if($q3->zonas != null)
-                                                                                <i class="fa fa-map-marker" title="{{ $q3->zonas }}" style="color: #b61616;cursor: pointer"></i>
-                                                                            @endif
+                                                                        @if($q3->zonas != null && count($q3->zonas) > 0)
+                                                                            <i class="fa fa-map-marker" title="{{ implode(', ', $q3->zonas->pluck('nombre')->toArray()) }}" style="color: #b61616;cursor: pointer"></i>
+                                                                        @endif
                                                                         </td>
                                                                         <td width="40" align="center" class="align-middle text-center">
                                                                             @if(count($Model->partidos()->where('torneo_categoria_id', $q->id)->where('buy', false)->where('estado_id', $App::$ESTADO_FINALIZADO)->where(function($o) use($q3){
@@ -166,7 +166,8 @@
             <i class="fa fa-key"></i> Keys de Eliminación
         </button>
     </li>
-@endif
+@endif                                               
+                                                <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-zonas" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos por Zonas</button></li>
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-random" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos Aleatorias</button></li>
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos con Siembra</button></li>
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-manual-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos Manuales</button></li>
@@ -751,7 +752,7 @@
         });
 
         const $btnGenerateKeys = $(".btn-generate-keys"), $btnGenerateKeysRandom = $(".btn-generate-keys-random"),
-        $btnManualKeys = $(".btn-manual-keys"), $btnDeleteKeys = $(".btn-delete-keys");
+        $btnManualKeys = $(".btn-manual-keys"), $btnDeleteKeys = $(".btn-delete-keys"), $btnGenerateKeysZonas = $(".btn-generate-keys-zonas");
 
         $btnGenerateKeys.on("click", function (){
             const $this = $(this);
@@ -825,6 +826,113 @@
                         formData.append('torneo_id', {{ $Model->id }});
                         formData.append('torneo_categoria_id', id);
                         formData.append('tipo', 'random');
+                        formData.append('tipo_grupo_id', $("#tipo_grupo").val());
+                        actionAjax(`/auth/{{strtolower($ViewName)}}/grupo/store`, formData, `POST`, function (data){
+                            if(data.Success){
+                               
+                                invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${id}`, function(data){
+                                    $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
+                                });
+                            }else Toast.fire({icon: 'error', title: 'Algo salió mal, hubo un error al guardar.'});
+                        }, true);
+
+
+
+                        /*confirmAjax(`/auth/{{strtolower($ViewName)}}/grupo/store`, formData, `POST`,
+                        `¿Está seguro de generar las llaves de manera aleatoria para los ${$table.find("tbody tr").length} jugadores ?`, null, function (data){
+
+                        });*/
+                    }
+                });
+            }else Toast.fire({icon: 'error', title: 'No existen jugadores disponibles para generar las llaves'});
+        });
+
+        $btnManualKeys.on("click", function (){
+            const $this = $(this);
+            const id = $this.attr("data-id");
+            const $table = $(`table.table-players-${id}`);
+            if($table.find("tbody tr").length > 0) {
+                if ($table.find("tbody tr").length >= 8 && $table.find("tbody tr").length <= 64) { //72
+                    const formData = new FormData();
+                    formData.append('_token', $("meta[name=csrf-token]").attr("content"));
+                    formData.append('torneo_id', {{ $Model->id }});
+                    formData.append('categoria_id', id);
+                    
+
+                    actionAjax(`/auth/{{strtolower($ViewName)}}/grupo/validacionGrupo`, formData, 'POST', function (data){
+                        if(data.Success){
+                            Swal.fire({
+                                icon: 'question', title: "Confirmación",
+                                html: "<label for='tipo_grupo' style='font-weight: 400'>¿Cómo desea genear los grupos?</label>" +
+                                    "<select id='tipo_grupo' class='form-control'>" +
+                                    "<option value='1'>Letras</option>" +
+                                    "<option value='2'>Números</option>" +
+                                    "</select>",
+                                confirmButtonColor: '#d33', confirmButtonText: 'Si, Confirmar', cancelButtonText: 'Cancelar',
+                                showCancelButton: true, closeOnConfirm: false, showLoaderOnConfirm: true
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+
+                                    invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/manual/partialView/{{ $Model->id }}/${id ? id : 0}/${$("#tipo_grupo").val()}`, function (data){
+                                      
+                                        const id = $this.attr("data-id");
+                                    const viewName = '{{ strtolower($ViewName) }}';
+                                    const modelId = '{{ $Model->id }}';
+                                    const tipoGrupo = $("#tipo_grupo").val();
+                                    console.log(id)
+                                    console.log(viewName)
+                                    console.log(modelId)
+                                    console.log(tipoGrupo)
+          
+                                    // Asegúrate de que 'data' está definido en el contexto
+
+                                    // Guardar datos en localStorage
+
+                                localStorage.setItem(`generateKeysData_${id}`, JSON.stringify({
+                                    id: id,
+                                    viewName: viewName,
+                                    modelId: modelId,
+                                    tipoGrupo: tipoGrupo,
+                                    data: data
+                                }));
+
+
+                                        $("#partialViewManual"+$this.attr("data-id")).html("").append(data);
+                                    });
+                                }
+                            });
+                        }else{
+                            Toast.fire({icon: 'error', title: data.Message});
+                        }
+                    });
+                } else {
+                    if ($table.find("tbody tr").length < 8) Toast.fire({icon: 'error', title: `Por favor, registre al menos ${(8 - $table.find("tbody tr").length)} jugadores más para generar las llaves`});
+                    else if ($table.find("tbody tr").length > 64) Toast.fire({icon: 'error', title: `Por favor, solo puede registrar como máximo 64 jugadores para generar las llaves`});
+                }
+            }else Toast.fire({icon: 'error', title: 'No existen jugadores disponibles para generar las llaves'});
+        });
+
+        $btnGenerateKeysZonas.on("click", function (){
+            const $this = $(this);
+            const id = $this.attr("data-id");
+            const $table = $(`table.table-players-${id}`);
+            if($table.find("tbody tr").length > 0){
+                Swal.fire({
+                    icon: 'question', title: "Confirmación",
+                    html: `<label for='tipo_grupo' style='font-weight: 400'>¿Está seguro de generar las llaves de manera aleatoria para los ${$table.find("tbody tr").length} jugadores ?. ¿Cómo desea genear los grupos?</label>` +
+                        "<select id='tipo_grupo' class='form-control'>" +
+                        "<option value='1'>Letras</option>" +
+                        "<option value='2'>Números</option>" +
+                        "</select>",
+                    confirmButtonColor: '#d33', confirmButtonText: 'Si, Confirmar', cancelButtonText: 'Cancelar',
+                    showCancelButton: true, closeOnConfirm: false, showLoaderOnConfirm: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const formData = new FormData();
+                        formData.append('_token', $("meta[name=csrf-token]").attr("content"));
+                        formData.append('torneo_id', {{ $Model->id }});
+                        formData.append('torneo_categoria_id', id);
+                        formData.append('tipo', 'zonas');
                         formData.append('tipo_grupo_id', $("#tipo_grupo").val());
                         actionAjax(`/auth/{{strtolower($ViewName)}}/grupo/store`, formData, `POST`, function (data){
                             if(data.Success){
