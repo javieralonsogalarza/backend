@@ -24,7 +24,7 @@
             <label for="zonas">Zonas: <span class="text-danger">(*)</span></label>
             <div class="input-group">
                 <div style="width:calc(100% - 42px) !important;">
-                    <select name="zonas[]" id="zonas" class="form-control select2" style="width: 100% !important;" multiple="multiple">
+                    <select name="zonas[]" id="zonas" class="form-control select2 custom-select" style="width: 100% !important;  background-color: #007bff; background: #007bff; " multiple="multiple">
                         @foreach($Zonas as $zona)
                             <option value="{{ $zona->id }}" {{ in_array($zona->id, $selectedZonas) ? 'selected' : '' }}>{{ $zona->nombre }}</option>
                         @endforeach
@@ -79,4 +79,19 @@
         OnFailure{{$ViewName}} = () => onFailureForm();
     })
 </script>
+<style>
+      .custom-select {
+        background-color: #007bff !important;
+        color: white; /* Optional: to change the text color */
+    }
+
+    .select2-selection__choice {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+
+    .select2-selection__choice__remove {
+        color: white !important;
+    }
+</style>
 

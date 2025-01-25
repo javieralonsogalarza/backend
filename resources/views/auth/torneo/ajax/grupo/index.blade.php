@@ -160,13 +160,13 @@
                                     @if(count($Model->partidos->where('torneo_categoria_id', $q->id)) <= 0)
                                         <div class="row mt-3">
                                             <ul class="w-100 content-button-first-fase d-flex align-content-center justify-content-end list-unstyled p-0">
-                                                 @if($Model->formato->nombre=='Eliminación Directa Flexible')
+                                              
     <li class="mr-1">
         <button type="button" class="btn btn-primary btn-generate-keys-final" data-reload="0" data-id="{{ $q->id }}">
             <i class="fa fa-key"></i> Keys de Eliminación
         </button>
     </li>
-@endif                                               
+                                              
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-zonas" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos por Zonas</button></li>
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-random" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos Aleatorias</button></li>
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos con Siembra</button></li>
