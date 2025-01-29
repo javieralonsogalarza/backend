@@ -85,7 +85,7 @@
                                                     @endif
                                                     <div><button type="button" class="btn btn-primary btn-players" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Asignar Jugadores</button></div>
                                                 </div>
-                                            @elseif(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) <= 0)
+                                            @elseif(count(value: $Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) > 0)
                                                 <div class="d-flex justify-content-end align-items-center">
                                                     <div><button type="button" class="btn btn-primary btn-players" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Asignar Jugadores</button></div>
                                                 </div>
@@ -184,9 +184,12 @@
 
                                 @if(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) > 0 && $Model->torneoGrupos()->where('torneo_categoria_id', $q->id)->count() > 0)
                                     <div class="row mt-3">
-                                        <div class="col-md-12 text-right">
+                                    <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
+                                    @if(count($Model->torneoJugadors->where('torneo_categoria_id', $q->id)->where('after', true)) )
+                                                    <li class="mr-2"><button type="button" class="btn btn-primary btn-add-groups" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Agregar grupos</button></li>
+                                         @endif
                                             <button type="button" class="btn btn-primary btn-generate-json-grupo" data-category="{{ $q->id }}">Generar Json</button>
-                                        </div>
+                                            </ul>
                                     </div>
                                 @endif
 
@@ -806,12 +809,10 @@
                     actionAjax(`/auth/{{strtolower($ViewName)}}/grupo/validacionGrupo`, formData, 'POST', function (data){
                         if(data.Success){
                             invocarModal(`/auth/{{strtolower($ViewName)}}/grupos/agregar/partialView/{{ $Model->id }}/${id ? id : 0}`, function ($modal) {
-                                if ($modal.attr("data-reload") === "true") {
-                                    invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${id}`, function (data) {
+                                invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${id}`, function (data) {
                                         $("#main").addClass("hidden");
                                         $("#info").removeClass("hidden").html("").append(data);
                                     });
-                                }
                             });
                         }else{
                             Toast.fire({icon: 'error', title: data.Message});

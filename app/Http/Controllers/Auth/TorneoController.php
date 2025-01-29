@@ -3777,24 +3777,76 @@ class TorneoController extends Controller
 
         return response()->json($Result);
     }
-
+    
     public function grupoValidacionGrupo(Request $request)
     {
         $Result = (object)['Success' => false, 'Message' => null, 'Errors' => null];
-
-        $Jugadores = TorneoJugador::whereHas('torneo',
-            function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})
-            ->where('torneo_id', $request->torneo_id)->where('torneo_categoria_id', $request->categoria_id)->get();
-
-        if((count($Jugadores) % 4) == 0){
+    
+        DB::beginTransaction();
+    
+        try {
+            $Jugadores = TorneoJugador::whereHas('torneo', function ($q) {
+                    $q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);
+                })
+                ->where('torneo_id', $request->torneo_id)
+                ->where('torneo_categoria_id', $request->categoria_id)
+                ->get();
+    
+            $totalJugadores = $Jugadores->count();
+    
+            if ($totalJugadores >= 4) {
+                if ($totalJugadores % 4 == 0) {
+                    $Result->Success = true;
+                    DB::commit();
+                    return response()->json($Result);
+                } else {
+                    $jugadoresNecesarios = 4 - ($totalJugadores % 4);
+                }
+            } else {
+                $jugadoresNecesarios = 4 - $totalJugadores;
+            }
+    
+            // Obtener jugadores temporales disponibles
+            $jugadoresTemporales = Jugador::where('temporal', true)
+                ->whereDoesntHave('torneoJugadors', function ($q) use ($request) {
+                    $q->where('torneo_id', $request->torneo_id)
+                      ->where('torneo_categoria_id', $request->categoria_id);
+                })
+                ->limit($jugadoresNecesarios)
+                ->get();
+    
+            if ($jugadoresTemporales->count() < $jugadoresNecesarios) {
+                DB::rollBack();
+                $Result->Message = 'No hay suficientes jugadores temporales disponibles para completar el grupo.';
+                return response()->json($Result);
+            }
+    
+            // Asignar jugadores temporales necesarios
+            foreach ($jugadoresTemporales as $jugadorTemporal) {
+                TorneoJugador::create([
+                    'torneo_id' => $request->torneo_id,
+                    'torneo_categoria_id' => $request->categoria_id,
+                    'jugador_simple_id' => $jugadorTemporal->id,
+                    'temporal' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'after' => true
+                ]);
+            }
+    
+            DB::commit();
             $Result->Success = true;
-        }else{
-            $Result->Message = 'Por favor, necesita agregar '.(4-(count($Jugadores) % 4)).' '.((4-(count($Jugadores) % 4)) == 1 ? 'jugador' : 'jugadores'). ' más para generar las llaves';
+            $Result->Message = 'Se han asignado ' . $jugadoresNecesarios . ' jugador(es) temporal(es) para completar el grupo.';
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $Result->Message = 'Ocurrió un error al validar el grupo.';
+            $Result->Errors = $e->getMessage();
         }
-
+    
         return response()->json($Result);
     }
 
+   
     public function grupoManualPartialView($torneo_id, $categoria_id, $tipo = null)
     {
         $Grupos = [];
@@ -4034,6 +4086,22 @@ class TorneoController extends Controller
 
                                             foreach ($PartidosModelWithDates as $q2)
                                             {
+                                                // Obtener los jugadores involucrados en el partido
+                                                $jugadorLocal = Jugador::find($q2['JugadorLocal']);
+                                                $jugadorLocalDupla = Jugador::find($q2['JugadorLocalDupla']);
+                                                $jugadorRival = Jugador::find($q2['JugadorRival']);
+                                                $jugadorRivalDupla = Jugador::find($q2['JugadorRivalDupla']);
+
+                                                // Verificar si alguno de los jugadores es temporal
+                                                $esTemporal = false;
+                                                if (
+                                                    ($jugadorLocal && $jugadorLocal->temporal) ||
+                                                    ($jugadorLocalDupla && $jugadorLocalDupla->temporal) ||
+                                                    ($jugadorRival && $jugadorRival->temporal) ||
+                                                    ($jugadorRivalDupla && $jugadorRivalDupla->temporal)
+                                                ) {
+                                                    $esTemporal = true;
+                                                }
                                                 Partido::create([
                                                     'comunidad_id' => Auth::guard('web')->user()->comunidad_id,
                                                     'torneo_id' => $TorneoCategoria->torneo_id,
@@ -4045,7 +4113,13 @@ class TorneoController extends Controller
                                                     'jugador_rival_dos_id' => $q2['JugadorRivalDupla'],
                                                     'fecha_inicio' => $q2['FechaInicio'],
                                                     'fecha_final' => $q2['FechaFinal'],
-                                                    'estado_id' => App::$ESTADO_PENDIENTE,
+                                                    'estado_id' => $esTemporal ? App::$ESTADO_FINALIZADO : App::$ESTADO_PENDIENTE,
+                                                    'resultado' => $esTemporal ? '-' : '0-0',
+                                                    'jugador_local_set' => $esTemporal ? 0 : 0, // Asignar 0 por defecto
+                                                    'jugador_local_juego' => $esTemporal ? 0 : 0, // Asignar 0 por defecto
+                                                    'jugador_rival_set' => $esTemporal ? 0 : 0, // Asignar 0 por defecto
+                                                    'jugador_rival_juego' => $esTemporal ? 0 : 0, // Asignar 0 por defecto
+                                                    'fase_inicial' => $esTemporal ? 1 : 0, // Asignar 1 si es temporal, de lo contrario 0
                                                     'user_create_id' => Auth::guard('web')->user()->id,
                                                 ]);
                                             }

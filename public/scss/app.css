@@ -1,0 +1,229 @@
+@font-face {
+  font-family: "Anton";
+  src: url(../fonts/Anton/Anton-Regular.ttf) format("truetype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url(../fonts/League_Spartan/LeagueSpartan-VariableFont_wght.ttf) format("truetype");
+}
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url(../fonts/League_Spartan/static/LeagueSpartan-Thin.ttf) format("truetype");
+  font-weight: 100;
+}
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url(../fonts/League_Spartan/static/LeagueSpartan-ExtraLight.ttf) format("truetype");
+  font-weight: 200;
+}
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url(../fonts/League_Spartan/static/LeagueSpartan-Light.ttf) format("truetype");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url(../fonts/League_Spartan/static/LeagueSpartan-Regular.ttf) format("truetype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url(../fonts/League_Spartan/static/LeagueSpartan-Medium.ttf) format("truetype");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url(../fonts/League_Spartan/static/LeagueSpartan-SemiBold.ttf) format("truetype");
+  font-weight: 600;
+}
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url(../fonts/League_Spartan/static/LeagueSpartan-Bold.ttf) format("truetype");
+  font-weight: 700;
+}
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url(../fonts/League_Spartan/static/LeagueSpartan-ExtraBold.ttf) format("truetype");
+  font-weight: 800;
+}
+@font-face {
+  font-family: "LeagueSpartan";
+  src: url(../fonts/League_Spartan/static/LeagueSpartan-Black.ttf) format("truetype");
+  font-weight: 900;
+}
+body, html {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-size: 15px;
+  font-family: "LeagueSpartan", sans-serif;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Anton", sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+}
+
+section {
+  margin-bottom: 50px;
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 17px;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.btn-primary {
+  background-color: #41B6EF;
+  color: white !important;
+}
+
+.btn-secundary {
+  background-color: #BBD147;
+  color: white !important;
+}
+
+header .nav-redes {
+  background-color: #BBD147;
+}
+header .nav-redes .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+header .nav-redes .container ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+header .nav-redes .container ul li {
+  margin: 0 10px;
+}
+header .nav-redes .container ul li a {
+  color: white;
+}
+header .nav-redes .container ul li:last-child {
+  margin-right: 0;
+}
+header .nav-item {
+  background-color: white;
+}
+header .nav-item .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+header .nav-item .container nav ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+header .nav-item .container nav ul li {
+  margin: 0 20px;
+}
+header .nav-item .container nav ul li a {
+  font-size: 18px;
+  color: #7B7C7F;
+}
+header .nav-item .container nav ul li a:hover {
+  color: #BBD147;
+}
+header .nav-item .container nav ul li:last-child {
+  margin-right: 0;
+}
+
+.tp-banner-container {
+  width: 100%;
+  position: relative;
+  padding: 0;
+}
+.tp-banner-container .tp-banner {
+  width: 100%;
+  position: relative;
+}
+.tp-banner-container .tp-banner .tp-banner-title {
+  color: #fff;
+  font-size: 50px;
+  font-family: "Anton", sans-serif;
+}
+.tp-banner-container .tp-banner .tp-banner-text {
+  color: #fff;
+  font-size: 17px;
+}
+
+.banner-fullscreen-container {
+  width: 100%;
+  position: relative;
+  padding: 0;
+}
+
+.content-bg {
+  background-image: url(../images/nosotros/image.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  padding: 2rem 1rem;
+}
+.content-bg .content-text {
+  width: 50%;
+  margin-left: auto;
+  background-color: #7B7C7F;
+  padding: 2rem;
+}
+.content-bg .content-text h2 {
+  color: white;
+  font-size: 42px;
+  margin: 0;
+  margin-bottom: 20px;
+}
+.content-bg .content-text p {
+  color: white;
+  font-size: 17px;
+  line-height: 1.2rem;
+}
+
+#fotografias {
+  text-align: center;
+}
+#fotografias h2 {
+  color: #BBD147;
+  font-size: 42px;
+  margin: 0;
+  margin-bottom: 20px;
+}
+#fotografias p {
+  font-size: 17px;
+}/*# sourceMappingURL=app.css.map */
