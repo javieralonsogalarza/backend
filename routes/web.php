@@ -106,6 +106,8 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::get('jugador/available/list-json', [Auth\TorneoController::class, 'jugadorAvailableListJson'])->name('jugadorAvailableListJson');
                             Route::get('jugador/available/list-json-all', [Auth\TorneoController::class, 'jugadorAvailableListJsonAll'])->name('jugadorAvailableListJsonAll');
 
+                            Route::post('update-jugador-simple', [Auth\TorneoController::class, 'updateJugadorSimpleId'])->name('updateJugadorSimpleId');
+
                             Route::get('jugador/available/classification/list-json', [Auth\TorneoController::class, 'jugadorAvailableClassificationListJson'])->name('jugadorAvailableClassificationListJson');
                             Route::get('jugador/available/not-classification/list-json', [Auth\TorneoController::class, 'jugadorAvailableNotClassificationListJson'])->name('jugadorAvailableNotClassificationListJson');
 

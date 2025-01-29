@@ -189,9 +189,8 @@
                                             <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
                                             <h5 class="col-md-10 text-left">Listado de Grupos</h5>  
 
-                                            @if(count($Model->torneoJugadors->where('torneo_categoria_id', $q->id)->where('after', true)) && !$q->first_final)
                                                     <li class="mr-2"><button type="button" class="btn btn-primary btn-add-groups" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Agregar grupos</button></li>
-                                                @endif
+                                                
                                                 @if($q->first_final)
                                                     <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-final" data-id="{{ $q->id }}" data-reload="1"><i class="fa fa-sync"></i> Volver a generar llaves</button></li>
                                                 @endif
@@ -208,7 +207,10 @@
                                     <h5>Listado de Grupos</h5></div>
 
                                         <div class="col-md-6 text-right">
+                                        <li class="mr-2"><button type="button" class="btn btn-primary btn-add-groups" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Agregar grupos</button></li>
+
                                             <button type="button" class="btn btn-primary btn-generate-json-grupo" data-category="{{ $q->id }}">Generar Json</button>
+                                         
                                         </div>
                                     </div>
                                 @endif
@@ -250,7 +252,7 @@
                                                                         <tr>
                                                                             <td >{{ $q->multiple ? ($q5->jugadorSimple->nombre_completo." + ".$q5->jugadorDupla->nombre_completo) : $q5->jugadorSimple->nombre_completo_temporal }}
                                                                             @if(!$q4->resultados_creados) <!-- Asegúrate de tener una condición para verificar si se han creado resultados -->
-                                                                            <i class="fa fa-edit ml-2 edit-player" data-player-id="{{ $q5->id }}" data-torneo-categoria-id="{{ $q->id }}" data-torneo-id="{{ $Model->id }}" data-toggle="modal" data-target="#editPlayerModal" title="Modificar Jugador" style="cursor: pointer;"></i>
+                                                                            <i class="fa fa-edit ml-2 edit-player" data-player-id="{{ $q5->jugadorSimple->id }}" data-torneo-categoria-id="{{ $q->id }}" data-torneo-id="{{ $Model->id }}" data-toggle="modal" data-target="#editPlayerModal" title="Modificar Jugador" style="cursor: pointer;"></i>
                                                                             @endif
                                                                             </td>
                                                                  
@@ -419,8 +421,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="editPlayerForm">
-                    <div class="form-group">
+            <form id="editPlayerForm" data-torneo-categoria-id="">
+            <div class="form-group">
                         <label for="playerSelect">Seleccionar Jugador</label>
                         <select class="form-control select2" id="playerSelect" name="player_id" style="width: 100%;">
                             <!-- Opciones se cargarán dinámicamente -->
@@ -1438,26 +1440,7 @@
         OnFailure{{$ViewName}} = () => onFailureForm();
     });
 
-    const playerLinks = document.querySelectorAll('.player-link');
-        playerLinks.forEach(link => {
-            console.log(link);
-            link.addEventListener('click', function () {
-                const targetId = this.getAttribute('data-target');
-                const tab = document.querySelector(targetId);
-                if (tab) {
-                    // Activar el tab
-                    const tabPane = new bootstrap.Tab(tab);
-                    tabPane.show();
 
-                    // Activar el enlace del tab
-                    const tabLink = document.querySelector(`a[href="${targetId}"]`);
-                    if (tabLink) {
-                        const tabLinkPane = new bootstrap.Tab(tabLink);
-                        tabLinkPane.show();
-                    }
-                }
-            });
-        });
         $(document).ready(function() {
     const editIcons = document.querySelectorAll('.edit-player');
     
@@ -1466,10 +1449,13 @@
             const playerId = this.getAttribute('data-player-id');
             const torneoCategoriaId = this.getAttribute('data-torneo-categoria-id');
             const torneoId = this.getAttribute('data-torneo-id');
-            
+            const form = document.getElementById('editPlayerForm');
+
             // Set the player ID on the form
             document.getElementById('editPlayerForm').setAttribute('data-player-id', playerId);
-            
+            form.setAttribute('data-torneo-categoria-id', torneoCategoriaId);
+            form.setAttribute('data-player-id', playerId);
+            form.setAttribute('data-torneo-id', torneoId);
             // Initialize Select2
             $('#playerSelect').select2({
                 dropdownParent: $('#editPlayerModal'),
@@ -1527,33 +1513,70 @@
     // Form submission handler
     $('#editPlayerForm').on('submit', function(event) {
         event.preventDefault();
+        const torneoCategoriaId =  this.getAttribute('data-torneo-categoria-id');
         const playerId = this.getAttribute('data-player-id');
         const newPlayerId = $('#playerSelect').val();
-        
+        const torneoId = this.getAttribute('data-torneo-id');
         if (!newPlayerId) {
             alert('Por favor seleccione un jugador');
             return;
         }
 
-        // Here you can add your AJAX call to save the changes
+        // Show loading state
+        const submitButton = $(this).find('button[type="submit"]');
+        const originalButtonText = submitButton.html();
+        submitButton.html('<i class="fas fa-spinner fa-spin"></i> Actualizando...').prop('disabled', true);
+
+        // Make the AJAX call to update
         $.ajax({
-            url: '/your-update-endpoint',
+            url: '/auth/torneo/update-jugador-simple',  // Ajusta esta URL según tu ruta
             type: 'POST',
             data: {
-                old_player_id: playerId,
-                new_player_id: newPlayerId,
+                torneo_categoria_id: torneoCategoriaId,
+                jugador_simple_id: playerId,
+                nuevo_jugador_simple_id: newPlayerId,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response) {
-                $('#editPlayerModal').modal('hide');
-                // Add your success handling here
+                // Show success message
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: response.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    // Reload the page or update the UI as needed
+                  // Actualizar solo la categoría específica
+                  invocarVista(`/auth/torneo/grupo/${torneoId}/${torneoCategoriaId}`, function(data) {  
+                    $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
+
+                });
+                });
             },
             error: function(xhr) {
-                // Add your error handling here
+                // Show error message
+                let errorMessage = 'Ocurrió un error al actualizar';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
+                
+                Swal.fire({
+                    title: 'Error',
+                    text: errorMessage,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            },
+            complete: function() {
+                // Restore button state
+                submitButton.html(originalButtonText).prop('disabled', false);
+                $('#editPlayerModal').modal('hide');
             }
         });
     });
 });
+
+
 </script>
 
 

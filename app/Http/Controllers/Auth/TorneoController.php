@@ -12222,5 +12222,74 @@ function reorderBlocks($data) {
         }
     }
     
+    public function updateJugadorSimpleId(Request $request)
+    {
+        // Validar los datos de entrada
+        $request->validate([
+            'torneo_categoria_id' => 'required|integer',
+            'jugador_simple_id' => 'required|integer',
+            'nuevo_jugador_simple_id' => 'required|integer'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // Obtener los registros correspondientes en torneo_jugadors
+            $torneoJugadors = TorneoJugador::where('torneo_categoria_id', $request->torneo_categoria_id)
+                ->where('jugador_simple_id', $request->jugador_simple_id)
+                ->get();
+
+            // Actualizar el jugador_simple_id en torneo_jugadors
+            foreach ($torneoJugadors as $torneoJugador) {
+                $torneoJugador->jugador_simple_id = $request->nuevo_jugador_simple_id;
+                $torneoJugador->save();
+            }
+
+            // Obtener los registros correspondientes en torneo_grupos
+            $torneoGrupos = TorneoGrupo::where('torneo_categoria_id', $request->torneo_categoria_id)
+                ->where('jugador_simple_id', $request->jugador_simple_id)
+                ->get();
+
+            // Actualizar el jugador_simple_id en torneo_grupos
+            foreach ($torneoGrupos as $torneoGrupo) {
+                $torneoGrupo->jugador_simple_id = $request->nuevo_jugador_simple_id;
+                $torneoGrupo->save();
+            }
+
+            // Obtener los registros correspondientes en partidos
+            $partidos = Partido::where('torneo_categoria_id', $request->torneo_categoria_id)
+                ->where(function ($query) use ($request) {
+                    $query->where('jugador_local_uno_id', $request->jugador_simple_id)
+                        ->orWhere('jugador_rival_uno_id', $request->jugador_simple_id);
+                })
+                ->get();
+
+            // Verificar si algún partido ya tiene resultados
+            foreach ($partidos as $partido) {
+                if (!empty($partido->resultado)) {
+                    DB::rollBack();
+                    return response()->json(['message' => 'No se puede cambiar el jugador porque ya existen resultados para este partido'], 400);
+                }
+            }
+
+            // Actualizar el jugador_simple_id en partidos
+            foreach ($partidos as $partido) {
+                if ($partido->jugador_local_uno_id == $request->jugador_simple_id) {
+                    $partido->jugador_local_uno_id = $request->nuevo_jugador_simple_id;
+                }
+                if ($partido->jugador_rival_uno_id == $request->jugador_simple_id) {
+                    $partido->jugador_rival_uno_id = $request->nuevo_jugador_simple_id;
+                }
+                $partido->save();
+            }
+
+            DB::commit();
+
+            return response()->json(['message' => 'Jugadores, grupos y partidos actualizados correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Ocurrió un error al actualizar los datos', 'error' => $e->getMessage()], 500);
+        }
+    }
    
 }
