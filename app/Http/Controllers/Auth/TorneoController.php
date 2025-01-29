@@ -5752,7 +5752,7 @@ while ($jugadoresZona->isNotEmpty()) {
         $JugadoresNoDisponibles = array_unique(array_filter(array_merge($JugadoresNoDisponiblesSimples, $JugadoresNoDisponiblesDuplas)));
     
         $query = Jugador::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
-            ->whereNotIn('id', $JugadoresNoDisponibles);
+            ->whereIn('id', $JugadoresNoDisponibles);
     
         if ($request->has('q')) {
             $query->where(function ($q) use ($request) {

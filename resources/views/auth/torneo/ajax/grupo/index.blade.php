@@ -203,15 +203,17 @@
                                 @endif
 
                                 @if(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) > 0 && $Model->torneoGrupos()->where('torneo_categoria_id', $q->id)->count() > 0)
-                                    <div class="row mt-3">
+                                    <ul class="row mt-3">
                                     <div class="col-md-6 text-left">
                                     <h5>Listado de Grupos</h5></div>
 
-                                        <div class="col-md-6 text-right">
-
+                                    <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
+                                    @if(count($Model->torneoJugadors->where('torneo_categoria_id', $q->id)->where('after', true)) )
+                                                    <li class="mr-2"><button type="button" class="btn btn-primary btn-add-groups" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Agregar grupos</button></li>
+                                         @endif
                                             <button type="button" class="btn btn-primary btn-generate-json-grupo" data-category="{{ $q->id }}">Generar Json</button>
                                          
-                                        </div>
+                                        </ul>
                                     </div>
                                 @endif
 
