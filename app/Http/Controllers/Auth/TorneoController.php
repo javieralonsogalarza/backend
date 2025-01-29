@@ -4620,10 +4620,110 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                                     }
                                 }
 
-                            }else{
+                            }
+                            else if($request->tipo =='zonas'){
+
+                            // Obtener los jugadores junto con sus zonas desde la tabla torneo_jugador_zona
+$Jugadores = $Torneo->torneoJugadors()
+->where('torneo_categoria_id', $request->torneo_categoria_id)
+->leftJoin('torneo_jugador_zona', 'torneo_jugador_zona.torneo_jugador_id', '=', 'torneo_jugadors.id')
+->leftJoin('zonas', 'zonas.id', '=', 'torneo_jugador_zona.zona_id')
+->select('torneo_jugadors.*', 'zonas.nombre as zona_nombre','torneo_jugador_zona.zona_id', 'torneo_jugador_zona.torneo_jugador_id')
+->orderBy('torneo_jugador_zona.zona_id', 'asc') // Asegurar que se ordenen por zona
+->get()
+->groupBy('zona_id'); // Agrupar por zona_id
+
+// Primero, validamos que todos los jugadores tengan una zona asignada
+foreach ($Jugadores as $zonaId => $jugadoresZona) {
+    // Validar que todos los jugadores en esta zona tengan zona asignada
+    foreach ($jugadoresZona as $jugador) {
+        if (empty($jugador->zona_id)) {
+            $Result->Message = "El jugador {$jugador->jugador_simple_id} no tiene zona asignada.";
+            return response()->json($Result);
+        }
+    }
+
+    // Luego validamos que el número de jugadores en cada zona sea divisible por 4
+    if ($jugadoresZona->count() % 4 !== 0) {
+        // Obtener el nombre de la zona desde el primer jugador de la zona
+        $zonaNombre = $jugadoresZona->first()->zona_nombre;
+        $Result->Message = "La zona {$zonaNombre} tiene {$jugadoresZona->count()} jugadores, que no es un número divisible por 4. Por favor, ajuste la cantidad de jugadores en esta zona.";
+        return response()->json($Result);
+    }
+}
+
+// Calcular la cantidad de grupos necesarios
+$CantidadGrupos = ceil($Jugadores->flatten(1)->count() / 4);
+
+// Obtener los grupos disponibles
+$GruposDisponibles = Grupo::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+->orderBy('nombre', 'asc')
+->get();
+
+if ($GruposDisponibles->count() < $CantidadGrupos) {
+    $Result->Message = "Por favor, registre " . ($CantidadGrupos - $GruposDisponibles->count()) . " grupos más para generar las llaves.";
+    return response()->json($Result);
+
+}
+
+// Seleccionar los grupos necesarios
+$Grupos = $GruposDisponibles->take($CantidadGrupos);
+
+// Lista para rastrear jugadores ya asignados
+$JugadoresAsignados = collect();
+
+// Índice del grupo actual
+$indexGrupo = 0;
+
+// Distribuir los jugadores por zonas en los grupos
+foreach ($Jugadores as $zonaId => $jugadoresZona) {
+while ($jugadoresZona->isNotEmpty()) {
+    // Obtener el grupo actual
+    $grupo = $Grupos[$indexGrupo];
+
+    // Sacar exactamente 4 jugadores de la zona
+    $jugadoresParaGrupo = $jugadoresZona->splice(0, 4);
+
+    // Asignar los jugadores al grupo
+    foreach ($jugadoresParaGrupo as $jugador) {
+        if ($JugadoresAsignados->contains($jugador->jugador_simple_id)) {
+            continue; // Si ya fue asignado, saltar este jugador
+        }
+        TorneoGrupo::create([
+            'torneo_id' => $request->torneo_id,
+            'torneo_categoria_id' => $request->torneo_categoria_id,
+            'jugador_simple_id' => $jugador->jugador_simple_id,
+            'grupo_id' => $grupo->id,
+            'nombre_grupo' => $grupo->nombre,
+            'user_create_id' => Auth::id(),
+        ]);
+
+        // Registrar el jugador como asignado
+        $JugadoresAsignados->push($jugador->jugador_simple_id);
+    }
+
+    // Avanzar al siguiente grupo
+    $indexGrupo++;
+    if ($indexGrupo >= $Grupos->count()) {
+        $indexGrupo = 0; // Reiniciar si se usan todos los grupos disponibles
+    }
+}
+}
+
+
+
+
+
+                            
+
+
+                            }
+                            else{
                                 $Result->Message = "El tipo ingresado no es vàlido, por favor seleccione uno válido";
                                 return response()->json($Result);
                             }
+
+                            
 
                             $OriginalOrder = $Torneo->torneoGrupos->where('grupo_id', $Grupos->first()->id)->pluck('id')->toArray();
                             $RandomOrder = TorneoGrupo::where('torneo_id', $TorneoCategoria->torneo_id)->where('torneo_categoria_id', $TorneoCategoria->id)->where('grupo_id', $Grupos->first()->id)->inRandomOrder()->pluck('id')->toArray();
@@ -5438,7 +5538,9 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
         $Zonas = collect(array_values(array_filter($ToneosZonas)));
 
-        return view('auth'.'.'.$this->viewName.'.ajax.jugador.partialViewZona', ['Model' => $Entity, 'Zonas' => $Zonas, 'ViewName' => ucfirst($this->viewName)]);
+        $selectedZonas = $Entity->zonas ? $Entity->zonas->pluck('id')->toArray() : [];
+
+        return view('auth'.'.'.$this->viewName.'.ajax.jugador.partialViewZona', ['Model' => $Entity, 'Zonas' => $Zonas, 'ViewName' => ucfirst($this->viewName), 'selectedZonas' => $selectedZonas]);
     }
 
     public function jugadorZonaStore(Request $request)
@@ -5468,7 +5570,12 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
 
                 if ($entity != null) {
                     $request->merge(['user_update_id' => Auth::guard('web')->user()->id]);
-                    $entity->update($request->only('zona_id', 'pago', 'monto', 'user_update_id'));
+                    $entity->update($request->only('pago', 'monto', 'user_update_id'));
+
+                    // Sync the zonas
+                    $entity->zonas()->sync($request->zonas);
+
+            
 
                     DB::commit();
                     $Result->Success = true;
