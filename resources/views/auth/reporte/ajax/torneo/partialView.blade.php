@@ -95,9 +95,48 @@
                         </tbody>
                     </table>
                 </div>
-                @if($Count % 2 == 0 && count($Grupos) > ($key+1))
-                    <div class="page-break"></div> <!-- Page break -->
-                @endif
+
+                <!-- Tabla de Posiciones -->
+   <div class="d-flex justify-content-between align-items-center">
+                <div><h5>Tabla de Posiciones</h5></div>
+            </div>
+            <div class="row mt-1">
+                
+                    <table class="table table-bordered table-striped">
+
+                            <thead>
+                            <tr>
+                                <th class="align-middle text-center" align="center">Jugadores</th>
+                                <th class="align-middle text-center" align="center">Partidos Jugados</th>
+                                <th class="align-middle text-center" align="center">Set Ganados</th>
+                                <th class="align-middle text-center" align="center">Set Perdidos</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #0101be !important;">Diferencia Sets</th>
+                                <th class="align-middle text-center" align="center">Games Ganados</th>
+                                <th class="align-middle text-center" align="center">Games Perdidos</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #0101be !important;">Diferencia Games</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #c40a0a !important;">Puntos</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($TablePositionsPorGrupo[$g->nombre_grupo] ?? [] as $key => $q)
+                                <tr>
+                                    <td class="align-middle text-center" align="center">{{ $q['nombres'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['partidosJugados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsGanados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsPerdidos'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsDiferencias'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesGanados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesPerdidos'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesDiferencias'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['puntos'] }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+            
+            </div>
+            <!-- Fin de Tabla de Posiciones -->
+            <div class="page-break"></div> <!-- Page break -->
             @endforeach
         @endif
 
@@ -165,9 +204,48 @@
                     </tbody>
                 </table>
             </div>
-            @if($Count % 2 == 0)
-                <div class="page-break"></div> <!-- Page break -->
-            @endif
+
+     <!-- Tabla de Posiciones -->
+     <div class="d-flex justify-content-between align-items-center">
+                <div><h5>Tabla de Posiciones</h5></div>
+            </div>
+            <div class="row mt-1">
+                
+                    <table class="table table-bordered table-striped">
+
+                            <thead>
+                            <tr>
+                                <th class="align-middle text-center" align="center">Jugadores</th>
+                                <th class="align-middle text-center" align="center">Partidos Jugados</th>
+                                <th class="align-middle text-center" align="center">Set Ganados</th>
+                                <th class="align-middle text-center" align="center">Set Perdidos</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #0101be !important;">Diferencia Sets</th>
+                                <th class="align-middle text-center" align="center">Games Ganados</th>
+                                <th class="align-middle text-center" align="center">Games Perdidos</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #0101be !important;">Diferencia Games</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #c40a0a !important;">Puntos</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($TablePositionsPorGrupo[$g->nombre_grupo] ?? [] as $key => $q)
+                                <tr>
+                                    <td class="align-middle text-center" align="center">{{ $q['nombres'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['partidosJugados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsGanados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsPerdidos'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsDiferencias'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesGanados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesPerdidos'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesDiferencias'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['puntos'] }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+            
+            </div>
+            <!-- Fin de Tabla de Posiciones -->
+            <div class="page-break"></div> <!-- Page break -->
         @endif
 
         @if(count($Partidos->where('fase', 8)) > 0)
@@ -234,9 +312,48 @@
                     </tbody>
                 </table>
             </div>
-            @if($Count % 2 == 0)
-                <div class="page-break"></div> <!-- Page break -->
-            @endif
+
+          <!-- Tabla de Posiciones -->
+   <div class="d-flex justify-content-between align-items-center">
+                <div><h5>Tabla de Posiciones</h5></div>
+            </div>
+            <div class="row mt-1">
+                
+                    <table class="table table-bordered table-striped">
+
+                            <thead>
+                            <tr>
+                                <th class="align-middle text-center" align="center">Jugadores</th>
+                                <th class="align-middle text-center" align="center">Partidos Jugados</th>
+                                <th class="align-middle text-center" align="center">Set Ganados</th>
+                                <th class="align-middle text-center" align="center">Set Perdidos</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #0101be !important;">Diferencia Sets</th>
+                                <th class="align-middle text-center" align="center">Games Ganados</th>
+                                <th class="align-middle text-center" align="center">Games Perdidos</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #0101be !important;">Diferencia Games</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #c40a0a !important;">Puntos</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($TablePositionsPorGrupo[$g->nombre_grupo] ?? [] as $key => $q)
+                                <tr>
+                                    <td class="align-middle text-center" align="center">{{ $q['nombres'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['partidosJugados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsGanados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsPerdidos'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsDiferencias'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesGanados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesPerdidos'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesDiferencias'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['puntos'] }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+            
+            </div>
+            <!-- Fin de Tabla de Posiciones -->
+            <div class="page-break"></div> <!-- Page break -->
         @endif
 
         @if(count($Partidos->where('fase', 4)) > 0)
@@ -303,9 +420,48 @@
                     </tbody>
                 </table>
             </div>
-            @if($Count % 2 == 0)
-                <div class="page-break"></div> <!-- Page break -->
-            @endif
+
+         <!-- Tabla de Posiciones -->
+   <div class="d-flex justify-content-between align-items-center">
+                <div><h5>Tabla de Posiciones</h5></div>
+            </div>
+            <div class="row mt-1">
+                
+                    <table class="table table-bordered table-striped">
+
+                            <thead>
+                            <tr>
+                                <th class="align-middle text-center" align="center">Jugadores</th>
+                                <th class="align-middle text-center" align="center">Partidos Jugados</th>
+                                <th class="align-middle text-center" align="center">Set Ganados</th>
+                                <th class="align-middle text-center" align="center">Set Perdidos</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #0101be !important;">Diferencia Sets</th>
+                                <th class="align-middle text-center" align="center">Games Ganados</th>
+                                <th class="align-middle text-center" align="center">Games Perdidos</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #0101be !important;">Diferencia Games</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #c40a0a !important;">Puntos</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($TablePositionsPorGrupo[$g->nombre_grupo] ?? [] as $key => $q)
+                                <tr>
+                                    <td class="align-middle text-center" align="center">{{ $q['nombres'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['partidosJugados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsGanados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsPerdidos'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsDiferencias'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesGanados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesPerdidos'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesDiferencias'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['puntos'] }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+            
+            </div>
+            <!-- Fin de Tabla de Posiciones -->
+            <div class="page-break"></div> <!-- Page break -->
         @endif
 
         @if(count($Partidos->where('fase', 2)) > 0)
@@ -372,9 +528,48 @@
                     </tbody>
                 </table>
             </div>
-            @if($Count % 2 == 0)
-                <div class="page-break"></div> <!-- Page break -->
-            @endif
+
+        <!-- Tabla de Posiciones -->
+   <div class="d-flex justify-content-between align-items-center">
+                <div><h5>Tabla de Posiciones</h5></div>
+            </div>
+            <div class="row mt-1">
+                
+                    <table class="table table-bordered table-striped">
+
+                            <thead>
+                            <tr>
+                                <th class="align-middle text-center" align="center">Jugadores</th>
+                                <th class="align-middle text-center" align="center">Partidos Jugados</th>
+                                <th class="align-middle text-center" align="center">Set Ganados</th>
+                                <th class="align-middle text-center" align="center">Set Perdidos</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #0101be !important;">Diferencia Sets</th>
+                                <th class="align-middle text-center" align="center">Games Ganados</th>
+                                <th class="align-middle text-center" align="center">Games Perdidos</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #0101be !important;">Diferencia Games</th>
+                                <th class="align-middle text-center" align="center" style="background-color: #c40a0a !important;">Puntos</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($TablePositionsPorGrupo[$g->nombre_grupo] ?? [] as $key => $q)
+                                <tr>
+                                    <td class="align-middle text-center" align="center">{{ $q['nombres'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['partidosJugados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsGanados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsPerdidos'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['setsDiferencias'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesGanados'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesPerdidos'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['gamesDiferencias'] }}</td>
+                                    <td class="align-middle text-center" align="center">{{ $q['puntos'] }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+            
+            </div>
+            <!-- Fin de Tabla de Posiciones -->
+            <div class="page-break"></div> <!-- Page break -->
         @endif
 
         @if(count($Partidos->where('fase', 1)) > 0)
@@ -445,3 +640,21 @@
 
 </body>
 </html>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

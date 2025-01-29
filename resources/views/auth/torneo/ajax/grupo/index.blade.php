@@ -1,5 +1,4 @@
 @inject('App', 'App\Models\App')
-
 @if($landing)
     <style type="text/css">
         select, input, textarea{ background-color: transparent !important; }
@@ -109,6 +108,8 @@
                                                             <th align="center" class="align-middle text-center"></th>
                                                             <th align="center" class="align-middle text-center"></th>
                                                             <th align="center" class="align-middle text-center"></th>
+                                                            <th align="center" class="align-middle text-center"></th>
+
                                                         @endif
                                                     </tr>
                                                     </thead>
@@ -116,9 +117,18 @@
                                                     @foreach($Model->torneoJugadors()->where('torneo_id', $Model->id)->whereHas('jugadorSimple')->where('torneo_categoria_id', $q->id)->get() as $q3)
                                                         @if($initial >= ($i == 0 ? 0 : ($i*8))  && $initial <= ($i == 0 ? 7 : (($i+1)*8)-1))
                                                             @if($q3->jugadorSimple != null)
+                                                            @php
+                                                                $grupo = $q3->torneoGrupos()->where('torneo_categoria_id', $q->id)->first();
+                                                            @endphp
                                                                 <tr>
                                                                     <td align="center" class="align-middle text-left td-jugador-info" data-category="{{ $q->id }}" style="cursor: pointer !important;" data-jugador-info="{{ $q3->id }}">
                                                                         {{ $q->multiple ? ($q3->jugadorSimple->nombre_completo." + ".($q3->jugadorDupla != null ? $q3->jugadorDupla->nombre_completo : "-")) : $q3->jugadorSimple->nombre_completo_temporal }}
+
+                                                                    </td>
+                                                                   <td width="40">
+                                                                   @if($grupo)
+                        <i class="fa fa-eye ml-2 player-link" data-target="#custom-tabs-grupo-{{ $q->id }}-{{ $grupo->grupo_id }}" title="Ver Grupo" style="cursor: pointer;"></i>
+                    @endif
                                                                     </td>
                                                                     @if(!$landing)
                                                                         <td width="40" align="center" data-jugador-info="{{ $q3->id }}">
@@ -232,12 +242,18 @@
                                                                     <thead>
                                                                     <tr>
                                                                         <th>Nombre Completo</th>
+                                                                      
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                     @foreach($Model->torneoGrupos()->where('torneo_categoria_id', $q->id)->whereHas('jugadorSimple')->where('grupo_id', $q4->grupo_id)->get() as $q5)
                                                                         <tr>
-                                                                            <td>{{ $q->multiple ? ($q5->jugadorSimple->nombre_completo." + ".$q5->jugadorDupla->nombre_completo) : $q5->jugadorSimple->nombre_completo_temporal }}</td>
+                                                                            <td >{{ $q->multiple ? ($q5->jugadorSimple->nombre_completo." + ".$q5->jugadorDupla->nombre_completo) : $q5->jugadorSimple->nombre_completo_temporal }}
+                                                                            @if(!$q4->resultados_creados) <!-- Asegúrate de tener una condición para verificar si se han creado resultados -->
+                                                                            <i class="fa fa-edit ml-2 edit-player" data-player-id="{{ $q5->id }}" data-torneo-categoria-id="{{ $q->id }}" data-torneo-id="{{ $Model->id }}" data-toggle="modal" data-target="#editPlayerModal" title="Modificar Jugador" style="cursor: pointer;"></i>
+                                                                            @endif
+                                                                            </td>
+                                                                 
                                                                         </tr>
                                                                     @endforeach
                                                                     </tbody>
@@ -392,8 +408,33 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="editPlayerModal" role="dialog" tabindex="-1" data-backdrop="static" aria-labelledby="editPlayerModalLabel">
+    <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPlayerModalLabel">Modificar Jugador</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editPlayerForm">
+                    <div class="form-group">
+                        <label for="playerSelect">Seleccionar Jugador</label>
+                        <select class="form-control select2" id="playerSelect" name="player_id" style="width: 100%;">
+                            <!-- Opciones se cargarán dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-
+<script type="text/javascript" src="{{ asset('auth/adminlte3/plugins/select2/js/select2.js') }}"></script>
 
 <script src="{{ asset('/plugins/sortable/1.15.0/sortable.min.js') }}"></script>
 <script type="text/javascript">
@@ -1396,6 +1437,123 @@
         OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}"));
         OnFailure{{$ViewName}} = () => onFailureForm();
     });
+
+    const playerLinks = document.querySelectorAll('.player-link');
+        playerLinks.forEach(link => {
+            console.log(link);
+            link.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const tab = document.querySelector(targetId);
+                if (tab) {
+                    // Activar el tab
+                    const tabPane = new bootstrap.Tab(tab);
+                    tabPane.show();
+
+                    // Activar el enlace del tab
+                    const tabLink = document.querySelector(`a[href="${targetId}"]`);
+                    if (tabLink) {
+                        const tabLinkPane = new bootstrap.Tab(tabLink);
+                        tabLinkPane.show();
+                    }
+                }
+            });
+        });
+        $(document).ready(function() {
+    const editIcons = document.querySelectorAll('.edit-player');
+    
+    editIcons.forEach(icon => {
+        icon.addEventListener('click', function() {
+            const playerId = this.getAttribute('data-player-id');
+            const torneoCategoriaId = this.getAttribute('data-torneo-categoria-id');
+            const torneoId = this.getAttribute('data-torneo-id');
+            
+            // Set the player ID on the form
+            document.getElementById('editPlayerForm').setAttribute('data-player-id', playerId);
+            
+            // Initialize Select2
+            $('#playerSelect').select2({
+                dropdownParent: $('#editPlayerModal'),
+                ajax: {
+                    url: '/auth/torneo/jugador/available/list-json-all',
+                    dataType: 'json',
+                    type: 'GET',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            select2: true,
+                            q: params.term,
+                            torneo_categoria_id: torneoCategoriaId,
+                            torneo_id: torneoId
+                        };
+                    },
+                    processResults: function(data) {
+                        // Ordenar los resultados alfabéticamente por el texto
+                        const sortedData = data.data.sort((a, b) => {
+                            return a.text.localeCompare(b.text, 'es', {
+                                sensitivity: 'base',
+                                ignorePunctuation: true
+                            });
+                        });
+                        
+                        return {
+                            results: sortedData
+                        };
+                    },
+                    sorter: function(data) {
+                    // Ordenar también cuando se filtran los resultados localmente
+                    return data.sort((a, b) => {
+                        return a.text.localeCompare(b.text, 'es', {
+                            sensitivity: 'base',
+                            ignorePunctuation: true
+                        });
+                    });
+                },
+                    cache: true
+                },
+                placeholder: 'Seleccione un jugador',
+                allowClear: true
+            });
+
+            // Clear the select when opening the modal
+            $('#playerSelect').val(null).trigger('change');
+            
+            // Focus on the select2 search field when modal opens
+            $('#editPlayerModal').on('shown.bs.modal', function() {
+                $('#playerSelect').select2('focus');
+            });
+        });
+    });
+
+    // Form submission handler
+    $('#editPlayerForm').on('submit', function(event) {
+        event.preventDefault();
+        const playerId = this.getAttribute('data-player-id');
+        const newPlayerId = $('#playerSelect').val();
+        
+        if (!newPlayerId) {
+            alert('Por favor seleccione un jugador');
+            return;
+        }
+
+        // Here you can add your AJAX call to save the changes
+        $.ajax({
+            url: '/your-update-endpoint',
+            type: 'POST',
+            data: {
+                old_player_id: playerId,
+                new_player_id: newPlayerId,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                $('#editPlayerModal').modal('hide');
+                // Add your success handling here
+            },
+            error: function(xhr) {
+                // Add your error handling here
+            }
+        });
+    });
+});
 </script>
 
 
@@ -1403,4 +1561,8 @@
 <!-- Incluir html2canvas -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+<link rel="stylesheet" href="{{ asset('auth/adminlte3/plugins/select2/css/select2.min.css') }}">
+<!-- Tus otros CSS -->
 
+<!-- Al final del documento -->
+<script src="{{ asset('auth/adminlte3/plugins/select2/js/select2.js') }}"></script>

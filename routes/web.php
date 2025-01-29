@@ -104,6 +104,8 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::get('jugador/list-json-validate', [Auth\TorneoController::class, 'jugadorListJsonValidate'])->name('jugadorListJsonValidate');
                             Route::get('jugador/partialView/{torneo_categoria}', [Auth\TorneoController::class, 'jugadorPartialView'])->name('jugador.partialView');
                             Route::get('jugador/available/list-json', [Auth\TorneoController::class, 'jugadorAvailableListJson'])->name('jugadorAvailableListJson');
+                            Route::get('jugador/available/list-json-all', [Auth\TorneoController::class, 'jugadorAvailableListJsonAll'])->name('jugadorAvailableListJsonAll');
+
                             Route::get('jugador/available/classification/list-json', [Auth\TorneoController::class, 'jugadorAvailableClassificationListJson'])->name('jugadorAvailableClassificationListJson');
                             Route::get('jugador/available/not-classification/list-json', [Auth\TorneoController::class, 'jugadorAvailableNotClassificationListJson'])->name('jugadorAvailableNotClassificationListJson');
 

@@ -5545,6 +5545,49 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
         return response()->json(['data' => $JugadoresDisponibles]);
     }
 
+
+
+    public function jugadorAvailableListJsonAll(Request $request)
+    {
+        $TorneoCategoria = TorneoCategoria::where('id', $request->torneo_categoria_id)
+            ->where('torneo_id', $request->torneo_id)
+            ->whereHas('torneo', function ($q) {
+                $q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);
+            })->first();
+    
+        if (!$TorneoCategoria) {
+            return response()->json(['data' => []]);
+        }
+    
+        $JugadoresNoDisponiblesSimples = $TorneoCategoria->torneo->torneoJugadors()
+            ->where('torneo_categoria_id', $TorneoCategoria->id)
+            ->pluck('jugador_simple_id')
+            ->toArray();
+    
+        $JugadoresNoDisponiblesDuplas = $TorneoCategoria->torneo->torneoJugadors()
+            ->where('torneo_categoria_id', $TorneoCategoria->id)
+            ->pluck('jugador_dupla_id')
+            ->toArray();
+    
+        $JugadoresNoDisponibles = array_unique(array_filter(array_merge($JugadoresNoDisponiblesSimples, $JugadoresNoDisponiblesDuplas)));
+    
+        $query = Jugador::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+            ->whereNotIn('id', $JugadoresNoDisponibles);
+    
+        if ($request->has('q')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nombres', 'like', '%' . $request->q . '%')
+                  ->orWhere('apellidos', 'like', '%' . $request->q . '%');
+            });
+        }
+    
+        $JugadoresDisponibles = $query->get()->map(function ($q) {
+            return ['id' => $q->id, 'text' => $q->nombre_completo];
+        });
+    
+        return response()->json(['data' => $JugadoresDisponibles]);
+    }
+
     public function jugadorAvailableClassificationListJson(Request $request)
     {
         $JugadoresNoJugaron = [];
