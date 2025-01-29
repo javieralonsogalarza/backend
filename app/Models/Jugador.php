@@ -13,7 +13,7 @@ class Jugador extends Authenticatable
 
     protected $fillable = ['comunidad_id', 'categoria_id', 'imagen_path', 'nombres', 'apellidos', 'tipo_documento_id', 'nro_documento',
     'email', 'password', 'isAccount', 'isFirstSession', 'edad', 'sexo', 'telefono', 'celular', 'altura', 'peso', 'user_create_id', 'user_update_id','nombre_completo_temporal'
-    , 'mano_habil', 'fecha_nacimiento', 'marca_raqueta','ranking_temporal'];
+    , 'mano_habil', 'fecha_nacimiento', 'marca_raqueta','ranking_temporal','temporal'];
 
     protected $appends = ['nombre_completo', 'sexo_completo'];
 
@@ -77,4 +77,8 @@ class Jugador extends Authenticatable
         return $this->belongsTo(Categoria::class);
     }
 
+    public function torneoJugadors()
+    {
+        return $this->hasMany(TorneoJugador::class, 'jugador_simple_id', 'id');
+    }
 }
