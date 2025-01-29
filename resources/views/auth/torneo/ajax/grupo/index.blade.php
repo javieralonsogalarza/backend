@@ -84,7 +84,7 @@
                                                     @endif
                                                     <div><button type="button" class="btn btn-primary btn-players" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Asignar Jugadores</button></div>
                                                 </div>
-                                            @elseif(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) > 0)
+                                            @elseif(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) >= 0)
                                                 <div class="d-flex justify-content-end align-items-center">
                                                     <div><button type="button" class="btn btn-primary btn-players" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Asignar Jugadores</button></div>
                                                 </div>
@@ -203,7 +203,7 @@
                                 @endif
 
                                 @if(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) > 0 && $Model->torneoGrupos()->where('torneo_categoria_id', $q->id)->count() > 0)
-                                    <ul class="row mt-3">
+                                    <div class="row mt-3">
                                     <div class="col-md-6 text-left">
                                     <h5>Listado de Grupos</h5></div>
 
@@ -1684,7 +1684,27 @@
         });
     });
 });
+(function() {
+        const playerLinks = document.querySelectorAll('.player-link');
+        playerLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const tab = document.querySelector(targetId);
+                if (tab) {
+                    // Activar el tab
+                    const tabPane = new bootstrap.Tab(tab);
+                    tabPane.show();
 
+                    // Activar el enlace del tab
+                    const tabLink = document.querySelector(`a[href="${targetId}"]`);
+                    if (tabLink) {
+                        const tabLinkPane = new bootstrap.Tab(tabLink);
+                        tabLinkPane.show();
+                    }
+                }
+            });
+        });
+    })();
 
 </script>
 
