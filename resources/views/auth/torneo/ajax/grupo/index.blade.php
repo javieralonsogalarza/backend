@@ -85,7 +85,7 @@
                                                     @endif
                                                     <div><button type="button" class="btn btn-primary btn-players" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Asignar Jugadores</button></div>
                                                 </div>
-                                            @elseif(count(value: $Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) > 0)
+                                            @elseif(count(value: $Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) >= 0)
                                                 <div class="d-flex justify-content-end align-items-center">
                                                     <div><button type="button" class="btn btn-primary btn-players" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Asignar Jugadores</button></div>
                                                 </div>
