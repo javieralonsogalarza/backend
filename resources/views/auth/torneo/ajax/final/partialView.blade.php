@@ -152,6 +152,7 @@
                 formData.append('_token', $("meta[name=csrf-token]").attr("content"));
                 formData.append("torneo_id", {{ $Model->torneo_id }});
                 formData.append("partido_id", {{ $Model->id }});
+                console.log("formData", $Model)
                 actionAjax(`/auth/{{strtolower($ViewName)}}/partido/reset`, formData, 'POST', function (data){
                     if(data.Success){
                         $modal.find("select").val("");
@@ -159,6 +160,9 @@
                         $jugador_rival_set.val("");$jugador_rival_juego.val("");
                         $modal.attr("data-reload", "true");
                         $modal.modal("hide");
+        
+                        //
+
                     }
                 });
             }
@@ -170,8 +174,10 @@
                 let setsLocalnew = 0; let gamesLocal = 0; let setsRivalew = 0; let gamesRival = 0;
 
                 if(sets.length > 0){
+                    console.log(sets,"sets")
                     $.each(sets, function (i, v){
                         const games = v.split('-');
+                        console.log("games",games)
                         let $GameLeft = parseInt(games[0].match(/\d+/)[0]);
                         let $GameRight = parseInt(games[1].match(/\d+/)[0]);
                         if(i <= 1){
@@ -220,6 +226,8 @@
                     $jugador_rival_set.val(setsRival); $jugador_rival_juego.val(gamesRival);
                 }
             }
+
+
         });
 
 

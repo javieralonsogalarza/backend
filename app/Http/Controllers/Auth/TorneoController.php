@@ -2162,6 +2162,135 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
                 ->filter(function($q) use ($request){ return str_contains(App::Unaccent(strtolower($q['nombres'])), App::Unaccent(strtolower($request->nombre))); })
                 ->map(function ($q){return ['id' => $q['key'], 'text' => $q['nombres']]; })->toArray();
 
+
+
+                if(!$TorneoCategoria->multiple){
+
+                    // Obtener todos los rankings por categoría
+                    $rankings = $this->rankingsByCategoryId($TorneoCategoria->categoria_simple_id);
+                    $nombreCompletoTemporal = [];
+                    $rankings = $rankings['Rankings']->toArray() ?? [];
+            
+                    $rankingsAssociativeArray = array_combine(
+                        array_column($rankings, 'id'),
+                        array_column($rankings, 'countRepeat')
+                    );
+            
+                    // 241
+                    // Obtener el grupo del jugador local
+                    $grupos = DB::table('torneo_grupos')
+                    ->where('torneo_categoria_id', $request->torneo_categoria_id)
+                    ->select('grupo_id', 'nombre_grupo', 'torneo_id', 'jugador_simple_id')
+                    ->get();
+                
+                    $gruposAssociativeArray = [];
+                    
+                    foreach ($grupos as $grupo) {
+                        $jugadorId = $grupo->jugador_simple_id;
+                        $grupoId = $grupo->grupo_id;
+                        $nombreGrupo = $grupo->nombre_grupo;
+                    
+                        $gruposAssociativeArray[$jugadorId] = [
+                            'grupo_id' => $grupoId,
+                            'nombre_grupo' => $nombreGrupo,
+                            'torneo_id' => $grupo->torneo_id
+                        ];
+                    }
+                    foreach ($JugadoresClasificados as $key => $value) {
+                      
+                        $JugadoresClasificados[$key]['grupo_nombre'] = $gruposAssociativeArray[$value['id']]['nombre_grupo'];
+                        $JugadoresClasificados[$key]['grupo_id'] = $gruposAssociativeArray[$value['id']]['grupo_id'];
+                        $JugadoresClasificados[$key]['torneo_id'] = $gruposAssociativeArray[$value['id']]['torneo_id'];
+                        // Llamada a la función grupoTablaPosicion
+                        $resultado = $this->grupoTablaPosicion($JugadoresClasificados[$key]['torneo_id'], $request->torneo_categoria_id, $JugadoresClasificados[$key]['grupo_id']);
+            
+                        // ID específico que deseas buscar
+                        $idEspecifico = $value['id'];
+                        // Filtrar el resultado para obtener el objeto donde jugador_simple_id sea igual a idEspecifico
+                        $jugadorFiltradoKeys = array_keys(array_filter($resultado->toArray(), function($jugador) use ($idEspecifico) {
+                            return $jugador['jugador_simple_id'] == $idEspecifico;
+                        }));
+            
+                        // Obtener el primer elemento del resultado filtrado
+                        $jugadorFiltrado = reset($jugadorFiltradoKeys);
+            
+                        $JugadoresClasificados[$key]['posicion'] =  $jugadorFiltrado+1;
+            
+                        if (!empty($rankingsAssociativeArray) && isset($rankingsAssociativeArray[$value['id']])) {
+            
+                            // Modificar el texto solo si el id está presente en el arreglo asociativo
+                            $JugadoresClasificados[$key]['text'] = $value['text'] . ' (' . $rankingsAssociativeArray[$value['id']] . ')';
+                          
+                        }
+                        // agregar al texto el grupo y la posicion
+            
+                        $JugadoresClasificados[$key]['text'] = $JugadoresClasificados[$key]['text'] . ' - ' . $JugadoresClasificados[$key]['grupo_nombre'] . ' - Posición: ' . $this->numeroOrdinal($JugadoresClasificados[$key]['posicion']);
+            
+                    }   
+                    }
+                    
+                    if($TorneoCategoria->multiple){
+            
+                        
+                        // Obtener el grupo del jugador local
+                        $grupos = DB::table('torneo_grupos')
+                        ->where('torneo_categoria_id', $request->torneo_categoria_id)
+                        ->select('grupo_id', 'nombre_grupo', 'torneo_id', 'jugador_simple_id')
+                        ->get();
+                    
+                        $gruposAssociativeArray = [];
+                        
+                        foreach ($grupos as $grupo) {
+                            $jugadorId = $grupo->jugador_simple_id;
+                            $grupoId = $grupo->grupo_id;
+                            $nombreGrupo = $grupo->nombre_grupo;
+                        
+                            $gruposAssociativeArray[$jugadorId] = [
+                                'grupo_id' => $grupoId,
+                                'nombre_grupo' => $nombreGrupo,
+                                'torneo_id' => $grupo->torneo_id
+                            ];
+                        }
+            
+                        foreach ($JugadoresClasificados as $key => $value) {
+            
+                            $idEspecifico = $value['id'];
+                            list($id1, $id2) = explode('-', $idEspecifico);
+            
+                            $JugadoresClasificados[$key]['grupo_nombre'] = $gruposAssociativeArray[$id1]['nombre_grupo'] ?? '';
+                            $JugadoresClasificados[$key]['grupo_nombre2'] = $gruposAssociativeArray[$id2]['nombre_grupo'] ?? '';
+            
+            
+                            $JugadoresClasificados[$key]['grupo_id'] = $gruposAssociativeArray[$id1]['grupo_id'] ?? '';
+                            $JugadoresClasificados[$key]['grupo_id2'] = $gruposAssociativeArray[$id2]['grupo_id'] ?? '';
+            
+                            $JugadoresClasificados[$key]['torneo_id'] = $gruposAssociativeArray[$id1]['torneo_id'] ?? '';
+                            $JugadoresClasificados[$key]['torneo_id2'] = $gruposAssociativeArray[$id2]['torneo_id'] ?? '';
+                            // Llamada a la función grupoTablaPosicion
+                            $resultado = $this->grupoTablaPosicion($JugadoresClasificados[$key]['torneo_id'], $request->torneo_categoria_id, $JugadoresClasificados[$key]['grupo_id']);          
+            
+                            // Filtrar el resultado para obtener el objeto donde jugador_simple_id sea igual a idEspecifico
+                            $jugadorFiltradoKeys = array_keys(array_filter($resultado->toArray(), function($jugador) use ($id1) {
+                                return $jugador['jugador_simple_id'] == $id1;
+                            }));
+            
+                            $jugadorFiltradoKeys2 = array_keys(array_filter($resultado->toArray(), function($jugador) use ($id2) {
+                                return $jugador['jugador_simple_id'] == $id2;
+                            }));
+                
+                            // Obtener el primer elemento del resultado filtrado
+                            $jugadorFiltrado = reset($jugadorFiltradoKeys);
+                            $jugadorFiltrado2 = reset($jugadorFiltradoKeys2);
+            
+                
+                            $JugadoresClasificados[$key]['posicion'] =  $jugadorFiltrado+1;
+                            $JugadoresClasificados[$key]['posicion1'] =  $jugadorFiltrado2+1;
+                
+                            $JugadoresClasificados[$key]['text'] = $JugadoresClasificados[$key]['text'] . ' - ' . $JugadoresClasificados[$key]['grupo_nombre'] . ' - Posición: ' . $this->numeroOrdinal($JugadoresClasificados[$key]['posicion']);
+                
+                        }    
+                    }
+
             }else{
 
                 $Partidos = Partido::where('torneo_categoria_id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
@@ -2203,132 +2332,7 @@ return view('auth' . '.' . $this->viewName . '.ajax.final.index', [
         }
 
 
-        if(!$TorneoCategoria->multiple){
-
-        // Obtener todos los rankings por categoría
-        $rankings = $this->rankingsByCategoryId($TorneoCategoria->categoria_simple_id);
-        $nombreCompletoTemporal = [];
-        $rankings = $rankings['Rankings']->toArray() ?? [];
-
-        $rankingsAssociativeArray = array_combine(
-            array_column($rankings, 'id'),
-            array_column($rankings, 'countRepeat')
-        );
-
-        // 241
-        // Obtener el grupo del jugador local
-        $grupos = DB::table('torneo_grupos')
-        ->where('torneo_categoria_id', $request->torneo_categoria_id)
-        ->select('grupo_id', 'nombre_grupo', 'torneo_id', 'jugador_simple_id')
-        ->get();
     
-        $gruposAssociativeArray = [];
-        
-        foreach ($grupos as $grupo) {
-            $jugadorId = $grupo->jugador_simple_id;
-            $grupoId = $grupo->grupo_id;
-            $nombreGrupo = $grupo->nombre_grupo;
-        
-            $gruposAssociativeArray[$jugadorId] = [
-                'grupo_id' => $grupoId,
-                'nombre_grupo' => $nombreGrupo,
-                'torneo_id' => $grupo->torneo_id
-            ];
-        }
-        foreach ($JugadoresClasificados as $key => $value) {
-          
-            $JugadoresClasificados[$key]['grupo_nombre'] = $gruposAssociativeArray[$value['id']]['nombre_grupo'];
-            $JugadoresClasificados[$key]['grupo_id'] = $gruposAssociativeArray[$value['id']]['grupo_id'];
-            $JugadoresClasificados[$key]['torneo_id'] = $gruposAssociativeArray[$value['id']]['torneo_id'];
-            // Llamada a la función grupoTablaPosicion
-            $resultado = $this->grupoTablaPosicion($JugadoresClasificados[$key]['torneo_id'], $request->torneo_categoria_id, $JugadoresClasificados[$key]['grupo_id']);
-
-            // ID específico que deseas buscar
-            $idEspecifico = $value['id'];
-            // Filtrar el resultado para obtener el objeto donde jugador_simple_id sea igual a idEspecifico
-            $jugadorFiltradoKeys = array_keys(array_filter($resultado->toArray(), function($jugador) use ($idEspecifico) {
-                return $jugador['jugador_simple_id'] == $idEspecifico;
-            }));
-
-            // Obtener el primer elemento del resultado filtrado
-            $jugadorFiltrado = reset($jugadorFiltradoKeys);
-
-            $JugadoresClasificados[$key]['posicion'] =  $jugadorFiltrado+1;
-
-            if (!empty($rankingsAssociativeArray) && isset($rankingsAssociativeArray[$value['id']])) {
-
-                // Modificar el texto solo si el id está presente en el arreglo asociativo
-                $JugadoresClasificados[$key]['text'] = $value['text'] . ' (' . $rankingsAssociativeArray[$value['id']] . ')';
-              
-            }
-            // agregar al texto el grupo y la posicion
-
-            $JugadoresClasificados[$key]['text'] = $JugadoresClasificados[$key]['text'] . ' - ' . $JugadoresClasificados[$key]['grupo_nombre'] . ' - Posición: ' . $this->numeroOrdinal($JugadoresClasificados[$key]['posicion']);
-
-        }   
-        }
-        
-        if($TorneoCategoria->multiple){
-
-            
-            // Obtener el grupo del jugador local
-            $grupos = DB::table('torneo_grupos')
-            ->where('torneo_categoria_id', $request->torneo_categoria_id)
-            ->select('grupo_id', 'nombre_grupo', 'torneo_id', 'jugador_simple_id')
-            ->get();
-        
-            $gruposAssociativeArray = [];
-            
-            foreach ($grupos as $grupo) {
-                $jugadorId = $grupo->jugador_simple_id;
-                $grupoId = $grupo->grupo_id;
-                $nombreGrupo = $grupo->nombre_grupo;
-            
-                $gruposAssociativeArray[$jugadorId] = [
-                    'grupo_id' => $grupoId,
-                    'nombre_grupo' => $nombreGrupo,
-                    'torneo_id' => $grupo->torneo_id
-                ];
-            }
-
-            foreach ($JugadoresClasificados as $key => $value) {
-
-                $idEspecifico = $value['id'];
-                list($id1, $id2) = explode('-', $idEspecifico);
-
-                $JugadoresClasificados[$key]['grupo_nombre'] = $gruposAssociativeArray[$id1]['nombre_grupo'] ?? '';
-                $JugadoresClasificados[$key]['grupo_nombre2'] = $gruposAssociativeArray[$id2]['nombre_grupo'] ?? '';
-
-
-                $JugadoresClasificados[$key]['grupo_id'] = $gruposAssociativeArray[$id1]['grupo_id'] ?? '';
-                $JugadoresClasificados[$key]['grupo_id2'] = $gruposAssociativeArray[$id2]['grupo_id'] ?? '';
-
-                $JugadoresClasificados[$key]['torneo_id'] = $gruposAssociativeArray[$id1]['torneo_id'] ?? '';
-                $JugadoresClasificados[$key]['torneo_id2'] = $gruposAssociativeArray[$id2]['torneo_id'] ?? '';
-                // Llamada a la función grupoTablaPosicion
-                $resultado = $this->grupoTablaPosicion($JugadoresClasificados[$key]['torneo_id'], $request->torneo_categoria_id, $JugadoresClasificados[$key]['grupo_id']);          
-
-                // Filtrar el resultado para obtener el objeto donde jugador_simple_id sea igual a idEspecifico
-                $jugadorFiltradoKeys = array_keys(array_filter($resultado->toArray(), function($jugador) use ($id1) {
-                    return $jugador['jugador_simple_id'] == $id1;
-                }));
-
-                $jugadorFiltradoKeys2 = array_keys(array_filter($resultado->toArray(), function($jugador) use ($id2) {
-                    return $jugador['jugador_simple_id'] == $id2;
-                }));
-    
-                // Obtener el primer elemento del resultado filtrado
-                $jugadorFiltrado = reset($jugadorFiltradoKeys);
-                $jugadorFiltrado2 = reset($jugadorFiltradoKeys2);
-
-    
-                $JugadoresClasificados[$key]['posicion'] =  $jugadorFiltrado+1;
-                $JugadoresClasificados[$key]['posicion1'] =  $jugadorFiltrado2+1;
-    
-                $JugadoresClasificados[$key]['text'] = $JugadoresClasificados[$key]['text'] . ' - ' . $JugadoresClasificados[$key]['grupo_nombre'] . ' - Posición: ' . $this->numeroOrdinal($JugadoresClasificados[$key]['posicion']);
-    
-            }    
-        }
         
         return response()->json(['data' => array_values($JugadoresClasificados)]);
     }

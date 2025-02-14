@@ -208,7 +208,7 @@
     }
 </style>
 
-@if(count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', $MaxFase)->whereNotNull('jugador_local_uno_id')->where('estado_id', $App::$ESTADO_PENDIENTE)) > 0)
+@if(count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', $MaxFase)->whereNotNull('jugador_local_uno_id')->where('estado_id', $App::$ESTADO_PENDIENTE)) > 0 && $TorneoFaseFinal->TorneoCategoria->torneo->formato_id==8)
     <div class="row mt-3">
         <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
             <li><button type="button" class="btn btn-primary btn-change-player-class">
