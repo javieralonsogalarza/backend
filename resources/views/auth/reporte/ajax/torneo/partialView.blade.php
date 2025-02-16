@@ -136,8 +136,14 @@
             
             </div>
             <!-- Fin de Tabla de Posiciones -->
+                 @if($Count  < count($Grupos) )
             <div class="page-break"></div> <!-- Page break -->
+             @endif
             @endforeach
+            
+            @if(count($Partidos->where('fase', 16)) > 0)
+            <div class="page-break"></div> <!-- Page break -->
+             @endif
         @endif
 
         @if(count($Partidos->where('fase', 16)) > 0)
@@ -204,7 +210,7 @@
                     </tbody>
                 </table>
             </div>
-
+<div class="page-break"></div> <!-- Page break -->
      <!-- Tabla de Posiciones -->
      <div class="d-flex justify-content-between align-items-center">
                 <div><h5>Tabla de Posiciones</h5></div>

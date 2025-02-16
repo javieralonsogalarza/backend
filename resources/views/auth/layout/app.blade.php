@@ -184,6 +184,11 @@
                                 <i class="fa fa-address-card nav-icon"></i> <p>Jugador</p>
                             </a>
                         </li>
+                         <li class="nav-item">
+                            <a href="{{ route('auth.reporte.h2h') }}" class="nav-link">
+                                <i class="fa fa-address-card nav-icon"></i> <p>H2H</p>
+                            </a>
+                        </li>
                         <li class="nav-header">PÁGINA WEB</li>
                         <li class="nav-item">
                             <a href="{{ route('auth.portada.index') }}" class="nav-link">

@@ -41,7 +41,7 @@ Route::prefix('auth')->group(function (){
 
                 Route::get('ranking/{torneo}/{torneo_categoria_id}/{landing?}', [Auth\TorneoController::class, 'ranking'])->name('ranking');
 
-                Route::get('h2h/{jugador_local_uno_id}/{jugador_rival_uno_id}/{torneo_categoria_id}/json', [Auth\TorneoController::class, 'h2h'])->name('h2h');
+                Route::get('h2h/{jugador_local_uno_id}/{jugador_rival_uno_id}/{torneo_categoria_id}/{categoria_id}/{torneo_id}/json', [Auth\TorneoController::class, 'h2h'])->name('h2h');
 
             });
         });
@@ -285,6 +285,20 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::get('torneo/exportar/pdf/{torneo}/{categoria}', [Auth\ReporteController::class, 'torneoExportarPdf'])->name('torneoExportarPdf');
                             Route::get('torneo/fase-final/exportar/pdf/{torneo}/{categoria}', [Auth\ReporteController::class, 'torneoFaseFinalExportarPdf'])->name('torneoFaseFinalExportarPdf');
                             Route::get('torneoPartialView', [Auth\ReporteController::class, 'torneoPartialView'])->name('torneoPartialView');
+                            
+                            Route::get('h2h', [Auth\ReporteController::class, 'h2h'])->name('h2h');
+                            Route::get('getCategoriasByTorneo', [Auth\ReporteController::class, 'getCategoriasByTorneo'])->name('getCategoriasByTorneo');
+                            Route::get('getJugadoresByTorneoCategoria', [Auth\ReporteController::class, 'getJugadoresByTorneoCategoria'])->name('getJugadoresByTorneoCategoria');
+                            Route::get('getCategorias', [Auth\ReporteController::class, 'getCategorias'])->name('getCategorias');
+                            Route::get('getJugadoresActivos', [Auth\ReporteController::class, 'getJugadoresActivos'])->name('getJugadoresActivos');
+                            Route::get('getJugadoresByCategoria', [Auth\ReporteController::class, 'getJugadoresByCategoria'])->name('getJugadoresByCategoria');
+                            Route::get('getJugadoresByTorneo', [Auth\ReporteController::class, 'getJugadoresByTorneo'])->name('getJugadoresByTorneo');
+                             
+                             
+                             
+                            
+                            
+ 
                         });
                     });
 

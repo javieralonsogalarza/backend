@@ -215,7 +215,7 @@
         });
 
         OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}"), $modal, function (data){
-            if(data.Repeat != null){ Swal.fire({icon: 'warning', title: 'Los jugadores que acaba de asignar ya se enfrentaron con anterioridad.'}); }
+            if(data.Repeat != null){  }
         });
         OnFailure{{$ViewName}} = () => onFailureForm();
     })

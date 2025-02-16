@@ -1,4 +1,5 @@
 @inject('App', 'App\Models\App')
+
 @if($landing)
     <style type="text/css">
         select, input, textarea{ background-color: transparent !important; }
@@ -42,7 +43,7 @@
                             </li>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link {{ ($TorneoCategoriaId != $q->id || $Fase == null) ? "active" : "" }}" id="custom-tabs-fase-one-tab-{{$q->id}}" data-toggle="pill" href="#custom-tabs-fase-one-{{$q->id}}" role="tab" aria-controls="custom-tabs-fase-one-{{$q->id}}" aria-selected="true">Primera Fase</a>
+                                <a class="nav-link {{ ($TorneoCategoriaId != $q->id || $Fase == null ) ? "active" : "" }}" id="custom-tabs-fase-one-tab-{{$q->id}}" data-toggle="pill" href="#custom-tabs-fase-one-{{$q->id}}" role="tab" aria-controls="custom-tabs-fase-one-{{$q->id}}" aria-selected="true">Primera Fase</a>
                             </li>
                             @if(!$q->first_final)
                                 <li class="nav-item">
@@ -170,17 +171,18 @@
                                     @if(count($Model->partidos->where('torneo_categoria_id', $q->id)) <= 0)
                                         <div class="row mt-3">
                                             <ul class="w-100 content-button-first-fase d-flex align-content-center justify-content-end list-unstyled p-0">
-                                              
+                                                 @if($Model->formato->nombre=='Eliminación Directa Flexible')
     <li class="mr-1">
         <button type="button" class="btn btn-primary btn-generate-keys-final" data-reload="0" data-id="{{ $q->id }}">
             <i class="fa fa-key"></i> Keys de Eliminación
         </button>
     </li>
-                                              
+@else
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-zonas" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos por Zonas</button></li>
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-random" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos Aleatorias</button></li>
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos con Siembra</button></li>
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-manual-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Grupos Manuales</button></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     @elseif(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) <= 0)
@@ -203,11 +205,13 @@
                                 @endif
 
                                 @if(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) > 0 && $Model->torneoGrupos()->where('torneo_categoria_id', $q->id)->count() > 0)
-                                    <div class="row mt-3">
-                                    <div class="col-md-6 d-flex align-items-center">
+                                 
+                                    <div class="col-md-12 d-flex flex-wrap align-items-center">
+                                        <div>
                                         <h5 class="mb-0 mr-3">Listado de Grupos</h5>
-                                        <div class="search-bar flex-grow-1">
-                                        <select id="search-grupos" class="form-control">
+                                        </div>
+                                        <div class="search-bar flex-grow-1 ">
+                                        <select id="search-grupos" class="form-control" style="width: 300px;"   >
     <option value="">Buscar jugador...</option>
     @php
         $jugadores = $Model->torneoJugadors()
@@ -224,7 +228,7 @@
     @endforeach
 </select>
 
-</div>
+                                        
                                     </div>
                                    
                                     <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
@@ -236,7 +240,7 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <div class="row mt-3">
+                               
     <div class="col-md-12">
         <ul class="nav nav-tabs navs-groups" id="custom-tabs-one-tab-{{ $q->id }}" role="tablist">
             @foreach($Model->torneoGrupos()->where('torneo_categoria_id', $q->id)->select(['nombre_grupo', 'grupo_id'])->groupBy(['nombre_grupo', 'grupo_id'])->orderBy(DB::raw('LENGTH(nombre_grupo)'))->orderBy('nombre_grupo')->get() as $key4 => $q4)
@@ -253,7 +257,7 @@
         })
         ->toArray();                    $playerNamesString = implode(',', $playerNames);
                 @endphp
-                <li class="nav-item grupo-item" data-players="{{ strtolower($playerNamesString) }}">
+                <li class="nav-item grupo-item" data-players="{{ strtolower($playerNamesString) }}" data-grupo="{{ $q4->grupo_id }}" data-categoria="{{ $q->id }}" >
                     <a class="nav-link {{ $key4 == 0 ? "active" : "" }}" data-category="{{ $q->id }}" data-id="{{ $q4->grupo_id }}" id="custom-tabs-{{ $q->id }}-{{ $q4->grupo_id }}-grupo-tab" data-toggle="pill" href="#custom-tabs-grupo-{{ $q->id }}-{{ $q4->grupo_id }}" role="tab" aria-controls="custom-tabs-grupo-{{ $q->id }}-{{ $q4->grupo_id }}" aria-selected="{{ $key4 == 0 ? 'true' : 'false' }}">
                         <span>{{ $q4->nombre_grupo }}</span>
                         <input type="hidden" class="form-control input-sm" data-category="{{ $q->id }}" data-id="{{ $q4->grupo_id }}" value="{{ $q4->nombre_grupo }}" readonly>
@@ -261,8 +265,8 @@
                 </li>
             @endforeach
         </ul>
-    </div>
-</div>
+    </div> 
+                               
                                 <div class="row mt-3">
                                     <div class="col-md-12">
                                         <div class="tab-content" id="custom-tabs-one-tabContent-grupo-{{ $q->id }}">
@@ -429,7 +433,7 @@
                                                                         <button class="btn btn-primary btn-copiar-tabla" data-category="{{ $q->id }}" data-id="{{ $q4->grupo_id }}">Copiar Tabla</button>
 
 
-                                                                <button type="button" data-id="{{ $q4->grupo_id }}" data-name="{{ $q4->nombre_grupo }}" data-category="{{ $q->id }}" class="btn btn-danger btn-export-pdf pull-right"><i class="fa fa-file-pdf"></i> Exportar PDF </button>
+                                                                <button type="button" data-id="{{ $q4->grupo_id }}" data-name="{{ $q4->nombre_grupo }}" data-category="{{ $q->id }}" class="btn btn-primary btn-export-pdf pull-right"><i class="fa fa-file-pdf"></i> Exportar PDF </button>
                                                             </div>
                                                         </div>
                                                     @endif
@@ -538,7 +542,7 @@
             var torneoCategoriaId = $(this).data('torneo-categoria-id');
 
             // Construir la URL con los parámetros
-            var url = `/auth/torneo/h2h/${jugadorLocalId}/${jugadorRivalId}/${torneoCategoriaId}/json`;
+            var url = `/auth/torneo/h2h/${jugadorLocalId}/${jugadorRivalId}/${torneoCategoriaId}/null/null/json`;
 
             // Redirigir a la URL
             window.open(url, '_blank');
@@ -689,13 +693,8 @@
             else if ($this.val().toLowerCase().includes("ret")) {
                 const cleanedValue = $this.val().toLowerCase().replace(/(\(ret\)|ret)/gi, "").trim();
                 const sets = cleanedValue.split('/');
-                console.log(sets,'aa')
                 let setsLocalnew = 0; let gamesLocal = 0; let setsRivalew = 0; let gamesRival = 0;
-
-
-
-                console.log(sets,"sets")
-                    const valoresPermitidos = ["6-0", "6-1", "6-2", "6-3", "6-4", "7-5", "7-6"];
+                const valoresPermitidos = ["6-0", "6-1", "6-2", "6-3", "6-4", "7-5", "7-6"];
 
                     if (!valoresPermitidos.includes(sets[0])) {
                         // Modificar los sets según sea necesario
@@ -713,12 +712,16 @@
                             if (valorPermitido) {
                                 sets[0] = valorPermitido;
                                 sets[1] = "6-0"; // Ejemplo de modificación por defecto
-                                console.log(sets, "sets")
                             } else {
                                 sets[0] = "6-0"; // Ejemplo de modificación por defecto
                             }
                         }
                     } 
+
+                if(sets.length == 1){
+                    sets[1] = "6-0"; // Ejemplo de modificación por defecto
+                }
+                    
 
                 if(sets.length > 0){
 
@@ -730,7 +733,7 @@
                         let $GameLeft = parseInt(games[0].match(/\d+/)[0]);
                         let $GameRight = parseInt(games[1].match(/\d+/)[0]);
                         if(i <= 1){
-                            console.log("sets.length",sets.length)
+                            console.log("sets.lengthmmccc",sets.length)
                             if(i == 1 && sets.length != 3){
                             if (games.includes('6') && sets[0] == '6-0') 
                             {
@@ -1324,10 +1327,6 @@
                     $this.closest("tr").find("input, select").prop("disabled", true);
                     $this.closest("tr").addClass("disable").removeClass("enable");
 
-                    console.log($this.attr("data-multiple"),'data-multiple');
-                    console.log($this.attr("data-local"),'data-local');
-                    console.log($this.attr("data-rival"),'data-rival');
-
                     const $idLocal = parseInt($this.attr("data-multiple")) === 0 ? [$this.attr("data-local")] : [$this.attr("data-local"), $this.attr("data-local-multiple")];
                     const $idRival = parseInt($this.attr("data-multiple")) === 0 ? [$this.attr("data-rival")] : [$this.attr("data-rival"), $this.attr("data-rival-multiple")];
 
@@ -1398,8 +1397,10 @@
         if ($this.attr("data-manual") === '0' && $this.attr("data-hasFase")) {
             formData.append('tipo', 'manual');
             formData.append('reload', 1);
-            
-            confirmAjax(`/auth/torneo/fase-final/store`, formData, 'POST', `¿Está seguro de que quiere editar? Las llaves se volverán a generar eliminando los resultados.`, null, handleResponse, null, true);
+            formData.append('grupo_id', $this.attr("data-group"));
+            actionAjax(`/auth/{{ strtolower($ViewName) }}/partido/store`, formData, 'POST', handleResponse);
+
+           // confirmAjax(`/auth/torneo/fase-final/store`, formData, 'POST', `¿Está seguro de que quiere editar? Las llaves se volverán a generar eliminando los resultados.`, null, handleResponse, null, true);
         } else {
             actionAjax(`/auth/{{ strtolower($ViewName) }}/partido/store`, formData, 'POST', handleResponse);
         }
@@ -1429,6 +1430,21 @@
         });
 
         const $btnPhaseFinal = $("a.nav-link.tab-phase-final");
+
+             // Obtener el valor de $Fase desde Blade
+             const fase =  {{ $Fase ?  $Fase : 0 }};
+
+        // Verificar si la fase es igual a 2 y ejecutar la función automáticamente
+        if (fase === 2) {
+            $btnPhaseFinal.each(function() {
+                const $this = $(this);
+                    const $toneo_category = $this.attr("data-id");
+                    const $partialView = $("#partialViewFinal"+$toneo_category);
+                    invocarVista(`/auth/{{strtolower($ViewName)}}/fase-final-final/{{ $Model->id }}/${$toneo_category ? $toneo_category : 0}/{{ $landing }}`, function(data){
+                        $partialView.html("").append(data);
+                    });
+            });
+        }
         $btnPhaseFinal.on("click", function (){
             const $this = $(this);
             const $toneo_category = $this.attr("data-id");
@@ -1877,6 +1893,8 @@
         // Iterate over each group item
         $('.grupo-item').each(function(){
             var players = $(this).data('players').toString().toLowerCase();
+            var categoria = $(this).data('categoria').toString().toLowerCase();
+            var grupo = $(this).data('grupo').toString().toLowerCase();
             
     
             
@@ -1887,7 +1905,12 @@
                 // Check if players string contains the search value
                 if(players.indexOf(searchValue) > -1) {
                     $(this).show();
-                } else {
+                    // Load the partial view if it's not already loaded
+
+                    invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/tabla/partialView/{{ $Model->id }}/${categoria}/${grupo}/{{ $landing }}`, function(data){
+                $(`#partialViewTablaGrupo${categoria}${grupo}`).html("").append(data);
+                 });
+                        } else {
                     $(this).hide();
                 }
             }

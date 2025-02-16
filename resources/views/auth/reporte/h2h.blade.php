@@ -19,7 +19,7 @@
                             <div class="form-group">
                                 <label for="torneo">Torneo:</label>
                                 <select name="torneo" id="torneo" class="form-control select2" style="width: 100% !important;">
-                                    <option value="">Seleccione</option>
+                                    <option value="">Todos los torneos</option>
                                     @foreach($Torneos as $torneo)
                                     <option value="{{ $torneo->id }}">{{ $torneo->nombre }}</option>
                                     @endforeach
@@ -30,7 +30,10 @@
                             <div class="form-group">
                                 <label for="categoria">Categoría:</label>
                                 <select name="categoria" id="categoria" class="form-control select2" style="width: 100% !important;">
-                                    <option value="">Seleccione</option>
+                                    <option value="">Todas las categorías</option>
+                                    @foreach($Categorias as $categoria)
+                                    <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -41,6 +44,9 @@
                                 <label for="jugador1">Jugador 1:</label>
                                 <select name="jugador1" id="jugador1" class="form-control select2" style="width: 100% !important;">
                                     <option value="">Seleccione</option>
+                                    @foreach($Jugadores as $jugador)
+                                    <option value="{{ $jugador->id }}">{{ $jugador->nombre_completo }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -49,14 +55,19 @@
                                 <label for="jugador2">Jugador 2:</label>
                                 <select name="jugador2" id="jugador2" class="form-control select2" style="width: 100% !important;">
                                     <option value="">Seleccione</option>
+                                    @foreach($Jugadores as $jugador)
+                                    <option value="{{ $jugador->id }}">{{ $jugador->nombre_completo }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer text-right">
+                    <button type="button" id="reset-button" class="btn btn-secondary">Restablecer</button>
+
                     <button type="button" class="btn btn-primary pull-right" id="btnBuscar" disabled>
-                        <i class="fa fa-search"></i> Realizar Búsqueda
+                        <i class="fa fa-search"></i> Generar Reporte
                     </button>
                 </div>
             </div>
@@ -68,10 +79,28 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('auth/adminlte3/plugins/select2/js/select2.js') }}"></script>
     <script src="{{ asset('auth/pages/'.strtolower($ViewName).'/torneo.min.js?v='.\Carbon\Carbon::now()->toDateTimeString()) }}"></script>
+   
     <script>
         $(document).ready(function() {
             $('.select2').select2();
+           // Guardar los valores iniciales de los select
+            const initialState = {
+                torneo: $('#torneo').html(),
+                categoria: $('#categoria').html(),
+                jugador1: $('#jugador1').html(),
+                jugador2: $('#jugador2').html(),
 
+            };
+
+            // Botón de reset
+            $('#reset-button').on('click', function() {
+            
+            // Restablecer valores de los selects
+            $('#torneo').html(initialState.torneo).val('').trigger('change.select2');
+    $('#categoria').html(initialState.categoria).val('').trigger('change.select2');
+    $('#jugador1').html(initialState.jugador1).val('').trigger('change.select2');
+    $('#jugador2').html(initialState.jugador2).val('').trigger('change.select2');
+            });
             function validateSelection() {
                 var jugador1 = $('#jugador1').val();
                 var jugador2 = $('#jugador2').val();
@@ -103,6 +132,7 @@
 
             $('#torneo').on('change', function() {
                 var torneoId = $(this).val();
+                var categoriaId = $(this).val();
                 $('#categoria').empty().append('<option value="">Seleccione</option>');
                 $('#jugador1').empty().append('<option value="">Seleccione</option>');
                 $('#jugador2').empty().append('<option value="">Seleccione</option>');
@@ -118,11 +148,51 @@
                         }
                     });
                 }
+               
+                     $.ajax({
+                        url: '{{ "getJugadoresByTorneo" }}',
+                        type: 'GET',
+                        data: { torneo_id: torneoId },
+                        success: function(data) {
+                            
+                            var opciones = [];
+                            $.each(data, function(key, value) {
+                                opciones.push({ key: key, value: value });
+                            });
+                        
+                            // Ordenar el array por el valor (nombre del jugador)
+                            opciones.sort(function(a, b) {
+                                return a.value.localeCompare(b.value); // Orden alfabético
+                            });
+                            
+                            
+                            
+                            
+                            
+                            $.each(opciones, function(key, opcion) {
+                                $('#jugador1').append('<option value="'+ opcion.key +'">'+ opcion.value +'</option>');
+                                $('#jugador2').append('<option value="'+ opcion.key +'">'+ opcion.value +'</option>');
+                            });
+                        }
+                    });
+                
+                
+                  if(torneoId == null || torneoId == 'null' || torneoId == '' || torneoId == ' ' ){
+                 $('#categoria').html(initialState.categoria).val('').trigger('change.select2');
+                $('#jugador1').html(initialState.jugador1).val('').trigger('change.select2');
+                $('#jugador2').html(initialState.jugador2).val('').trigger('change.select2');
+                 }
+                
+                
             });
 
             $('#categoria').on('change', function() {
+                
                 var torneoId = $('#torneo').val();
+                if(torneoId!=null && torneoId != ''){
                 var categoriaId = $(this).val();
+                
+                
                 $('#jugador1').empty().append('<option value="">Seleccione</option>');
                 $('#jugador2').empty().append('<option value="">Seleccione</option>');
                 if (torneoId && categoriaId) {
@@ -131,13 +201,67 @@
                         type: 'GET',
                         data: { torneo_id: torneoId, categoria_id: categoriaId },
                         success: function(data) {
+                            
+                            var opciones = [];
                             $.each(data, function(key, value) {
-                                $('#jugador1').append('<option value="'+ key +'">'+ value +'</option>');
-                                $('#jugador2').append('<option value="'+ key +'">'+ value +'</option>');
+                                opciones.push({ key: key, value: value });
+                            });
+                        
+                            // Ordenar el array por el valor (nombre del jugador)
+                            opciones.sort(function(a, b) {
+                                return a.value.localeCompare(b.value); // Orden alfabético
+                            });
+                            
+                            
+                            
+                            
+                            
+                            $.each(opciones, function(key, opcion) {
+                                $('#jugador1').append('<option value="'+ opcion.key +'">'+ opcion.value +'</option>');
+                                $('#jugador2').append('<option value="'+ opcion.key +'">'+ opcion.value +'</option>');
                             });
                         }
                     });
                 }
+                }
+                else{
+                     var categoriaId = $(this).val();
+                     $('#jugador1').empty().append('<option value="">Seleccione</option>');
+                $('#jugador2').empty().append('<option value="">Seleccione</option>');
+                      $.ajax({
+                        url: '{{ "getJugadoresByCategoria" }}',
+                        type: 'GET',
+                        data: { categoria_id: categoriaId },
+                        success: function(data) {
+                            
+                            var opciones = [];
+                            $.each(data, function(key, value) {
+                                opciones.push({ key: key, value: value });
+                            });
+                        
+                            // Ordenar el array por el valor (nombre del jugador)
+                            opciones.sort(function(a, b) {
+                                return a.value.localeCompare(b.value); // Orden alfabético
+                            });
+                            
+                            
+                            $.each(opciones, function(key, opcion) {
+                                $('#jugador1').append('<option value="'+ opcion.key +'">'+ opcion.value +'</option>');
+                                $('#jugador2').append('<option value="'+ opcion.key +'">'+ opcion.value +'</option>');
+                            });
+                        }
+                    });
+                    
+                }
+                
+                var categoriaId = $(this).val();
+                console.log(typeof categoriaId,'mm')
+                
+                 if(categoriaId == null || categoriaId == 'null' || categoriaId == '' || categoriaId == ' ' ){
+             
+    $('#jugador1').html(initialState.jugador1).val('').trigger('change.select2');
+    $('#jugador2').html(initialState.jugador2).val('').trigger('change.select2');
+                 }
             });
 
             $('#jugador1, #jugador2').on('change', function() {
@@ -147,16 +271,18 @@
             $('#btnBuscar').on('click', function() {
                 var jugador1 = $('#jugador1').val();
                 var jugador2 = $('#jugador2').val();
-                var categoriaId = $('#categoria').val();
+                var categoriaTorneoId = $('#torneo').val()? $('#categoria').val() : null ;
+                var categoriaId = $('#categoria').val() ? $('#categoria').val() : null ;
+                var torneoId = $('#torneo').val() ? $('#torneo').val() : null ;
 
-                if (jugador1 && jugador2 && categoriaId) {
+                if (jugador1 && jugador2) {
                     // Construir la URL con los parámetros
-                    var url = `/auth/torneo/h2h/${jugador1}/${jugador2}/${categoriaId}/json`;
+                    var url = `/auth/torneo/h2h/${jugador1}/${jugador2}/${categoriaTorneoId}/${categoriaId}/${torneoId}/json`;
 
                     // Redirigir a la URL
                     window.open(url, '_blank');
                 } else {
-                    alert('Por favor, selecciona ambos jugadores y una categoría.');
+                    alert('Por favor, selecciona ambos jugadores.');
                 }
             });
 
@@ -164,4 +290,5 @@
             validateSelection();
         });
     </script>
+
 @endsection
