@@ -125,6 +125,7 @@
                             <p>Rankings</p>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="{{ route('auth.torneo.index') }}" class="nav-link">
                             <i class="nav-icon fa fa-trophy"></i>

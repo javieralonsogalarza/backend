@@ -246,9 +246,42 @@
             });
         });
 
-        $("button[type=submit]").on("click", function (){ const $this = $(this); $("#estado_id").val($this.attr("data-id"));  })
+        $("button[type=submit]").on("click", function (){ 
+    const $this = $(this); 
+    $("#estado_id").val($this.attr("data-id"));  
+})
 
-        OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}FinalPartido"), $modal);
-        OnFailure{{$ViewName}} = () => onFailureForm();
+OnSuccess{{$ViewName}} = (data) => {
+    // Primero ejecuta la función original
+    onSuccessForm(data, $("form#frm{{$ViewName}}FinalPartido"), $modal);
+    
+    // Obtener el ID del partido desde los datos de respuesta o de un elemento
+    const partidoId = {{ $Model->id }} // Ajusta esto según tu estructura de datos
+    
+    // Después ejecuta la llamada AJAX
+    $.ajax({
+        url: '/auth/resultadoranking',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            partido_id: partidoId,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        },
+        success: function(response) {
+            if (response.Success) {
+                console.log('Ranking actualizado correctamente');
+            } else {
+                console.error('Error al actualizar ranking:', response.Message);
+            }
+        }
+    });
+};
+
+OnFailure{{$ViewName}} = () => onFailureForm();
     })
 </script>

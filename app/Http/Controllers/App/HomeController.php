@@ -22,6 +22,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -128,18 +129,30 @@ class HomeController extends Controller
         return response()->json(['data' => $list]);
     }
 
+  
+
+
     public function rankingsPartialView(Request $request)
     {
         $Model = Comunidad::where('principal', true)->first();
 
         if($Model != null)
         {
-            $Rankings = Ranking::where('comunidad_id', $Model->id)->get();
+            $Rankings = Ranking::where('comunidad_id', $Model->id)
+            ->where(function ($q) use ($request){
+                // Filter by torneo_categoria_id if provided
+                if($request->has('torneos') && is_array($request->torneos)){
+                    $q->whereIn('torneo_categoria_id', $request->torneos);
+                }
+            })
+            ->get();
 
+          
             $Torneos = Torneo::whereIn('id', array_values(array_unique(array_filter($Rankings->pluck('torneo_id')->toArray()))))
             ->where(function ($q) use ($request){
                 if($request->filter_anio){ $q->where(DB::raw('YEAR(fecha_inicio)'), '=', $request->filter_anio); }
-            })->where('rankeado', true)->orderBy('fecha_final', 'desc')->get();
+            })->where('rankeado', true)
+            ->orderBy('fecha_final', 'desc')->get();
 
             $Anios = $request->filter_anio == null ? array_values(array_unique($Torneos->pluck('fecha_inicio')->map(function ($date){ return Carbon::parse($date)->format('Y'); })->toArray())) : [];
 
@@ -276,6 +289,7 @@ class HomeController extends Controller
             'TorneoCategorias' => $TorneoCategorias,
             'Categorias' => $Categorias,
             'filterCategoria' => $request->filter_categoria]);
+            
 
         }else{
             abort(404);

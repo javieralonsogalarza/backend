@@ -1,7 +1,6 @@
 @inject('App', 'App\Models\App')
 
-@if($TorneoCategoria != null && $TablePositions != null &&  count($TablePositions) > 0 &&
-($TorneoCategoria->solo_ranking || count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('estado_id', $App::$ESTADO_FINALIZADO)->where('fase', 1)) > 0))
+@if(true)
     <div class="row mt-1">
         <div class="col-md-12">
             <table class="table table-bordered table-striped">
@@ -13,7 +12,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($TablePositions as $key => $q)
+                @foreach($TablePositions->sortByDesc('puntos') as $key => $q)
+
                         <tr>
                             <td width="50" align="center" class="align-middle text-center">{{ ($key+1) }}</td>
                             <td>{{ $q['nombres'] }}</td>
@@ -29,10 +29,10 @@
             </table>
         </div>
     </div>
-    @if($TorneoCategoria->estado_id == \App\Models\App::$ESTADO_PENDIENTE && count($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('estado_id', \App\Models\App::$ESTADO_PENDIENTE)->whereNotNull('fase')) == 0)
+    @if($TorneoCategoria->estado_id == \App\Models\App::$ESTADO_PENDIENTE)
         <div class="row">
             <div class="col-md-12 text-right">
-                <button type="button" class="btn btn-finish-torneo btn-primary">Generar Rankings </button>
+                <button type="button" class="btn btn-finish-torneo btn-primary">Generar Rankings </button> 
             </div>
         </div>
     @endif
@@ -58,7 +58,7 @@
             formData.append('torneo_id', {{ $TorneoCategoria->torneo->id }});
             formData.append('torneo_categoria_id', {{ $TorneoCategoria->id }});
             formData.append('rakings', JSON.stringify(rankings($this)));
-            confirmAjax(`/auth/{{ strtolower($ViewName)}}/finish`, formData, "POST", `¿Está seguro de finalizar el torneo de {{ $TorneoCategoria->multiple && ($TorneoCategoria->categoriaSimple->id !== $TorneoCategoria->categoriaDupla->id) ? ($TorneoCategoria->categoriaSimple->nombre." + ".$TorneoCategoria->categoriaDupla->nombre) : ($TorneoCategoria->categoriaSimple->nombre)."".($TorneoCategoria->multiple ? " (Doble) " : "") }} categoría?`, null, function (){
+            confirmAjax(`/auth/{{ strtolower($ViewName)}}/finish`, formData, "POST", `¿Está seguro de editar el ranking de {{ $TorneoCategoria->multiple && ($TorneoCategoria->categoriaSimple->id !== $TorneoCategoria->categoriaDupla->id) ? ($TorneoCategoria->categoriaSimple->nombre." + ".$TorneoCategoria->categoriaDupla->nombre) : ($TorneoCategoria->categoriaSimple->nombre)."".($TorneoCategoria->multiple ? " (Doble) " : "") }} categoría?`, null, function (){
                 invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $TorneoCategoria->torneo->id }}/{{ $TorneoCategoria->id }}/3`, function(data){
                     $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
                     invocarVista(`/auth/{{strtolower($ViewName)}}/ranking/{{ $TorneoCategoria->torneo->id }}/{{ $TorneoCategoria->id }}`, function(data){

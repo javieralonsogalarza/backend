@@ -27,6 +27,7 @@ Route::get('/img/{path}', [Controllers\ImagenController::class, 'show'])->where(
 
 Route::prefix('auth')->group(function (){
     Route::name('auth.')->group(function(){
+        Route::post('resultadoranking', [Auth\TorneoController::class, 'resultadoRanking'])->name('torneo.ranking.finish');
 
         Route::prefix('torneo')->group(function () {
             Route::name('torneo.')->group(function () {
@@ -53,6 +54,9 @@ Route::group(['middleware' => 'auth:web'], function() {
     Route::prefix('auth')->group(function (){
         Route::name('auth.')->group(function(){
 
+            Route::get('rankings/botones', [Auth\TorneoController::class, 'rankingsPartialView'])->name('botones');
+
+
             Route::group(['roles' => ['Comunidad']], function () {
                 Route::middleware('auth.route.access')->group(function () {
 
@@ -73,6 +77,7 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::post('delete', [Auth\TorneoController::class, 'delete'])->name('delete');
                             Route::post('finish', [Auth\TorneoController::class, 'finish'])->name('finish');
 
+                            
                             Route::get('categorias', [Auth\TorneoController::class, 'categorias'])->name('categorias');
                             Route::post('categoria/store', [Auth\TorneoController::class, 'categoriaStore'])->name('categoria.store');
 
@@ -373,6 +378,9 @@ Route::get('torneos/todos', [App\HomeController::class, 'torneoTodos'])->name('t
 
 Route::get('rankings', [App\HomeController::class, 'rankings'])->name('rankings');
 Route::get('rankings/categorias', [App\HomeController::class, 'rankingsCategorias'])->name('rankingsCategorias');
+Route::get('/rankings/torneos-por-categoria', [Auth\RakingController::class, 'getTorneosByCategorias'])
+    ->name('rankings.torneos-por-categoria');
+
 
 Route::get('rankings/partialView', [App\HomeController::class, 'rankingsPartialView'])->name('rankingsPartialView');
 Route::get('jugadores', [App\HomeController::class, 'jugadores'])->name('jugadores');

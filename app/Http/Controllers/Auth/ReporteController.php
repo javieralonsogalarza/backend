@@ -483,8 +483,7 @@ $ultimosPartidosPorCategoria = array_values($ultimosPartidosPorCategoria);
                 'Torneo' => $TorneoCategoria->torneo,
                 'TorneoCategoria' => $TorneoCategoria,
                 'Categoria' => $TorneoCategoria->categoriaSimple,
-                'Grupos' => TorneoGrupo::where('torneo_categoria_id', $TorneoCategoria->id)->select(['nombre_grupo', 'grupo_id'])->groupBy(['nombre_grupo', 'grupo_id'])
-                ->orderBy(DB::raw('LENGTH(nombre_grupo)'))->orderBy('nombre_grupo')->get(),
+            'Grupos' => $Grupos,
                 'Partidos' => $Partidos,
             'Count' => 0,
             'TablePositionsPorGrupo' => $TablePositionsPorGrupo,

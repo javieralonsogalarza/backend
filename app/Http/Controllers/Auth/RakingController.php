@@ -27,6 +27,45 @@ class RakingController extends Controller
 
         return view('auth'.'.'.$this->viewName.'.index', ['Anio' => $Anio, 'Torneos' => $Torneos, 'ViewName' => ucfirst($this->viewName)]);
     }
+    public function getTorneosByCategorias(Request $request)
+    {
+        // Validar que se haya enviado una categoría
+        if (!$request->has('categoria_id')) {
+            return response()->json([]);
+        }
+    
+        // Obtener los torneos para la categoría seleccionada
+        $torneos = TorneoCategoria::join('torneos', 'torneo_categorias.torneo_id', '=', 'torneos.id')
+            ->where('torneo_categorias.categoria_simple_id', $request->categoria_id)
+            ->select(
+                'torneo_categorias.id', 
+                'torneos.nombre', 
+                'torneos.fecha_inicio', 
+                'torneos.fecha_final'
+            )
+            ->orderBy('fecha_inicio', 'desc')
+            ->get()            
+            ->groupBy(function($torneo) {
+                return Carbon::parse($torneo->fecha_inicio)->format('Y');
+            });
+    
+        // Formatear los torneos para el select2
+        $formattedTorneos = [];
+        foreach ($torneos as $year => $torneosPorAnio) {
+            $yearGroup = [
+                'text' => $year,
+                'children' => $torneosPorAnio->map(function($torneo) {
+                    return [
+                        'id' => $torneo->id,
+                        'text' => $torneo->nombre
+                    ];
+                })->toArray()
+            ];
+            $formattedTorneos[] = $yearGroup;
+        }
+    
+        return response()->json($formattedTorneos);
+    }
 
     public function filtroTorneoCategorias(Request $request)
     {

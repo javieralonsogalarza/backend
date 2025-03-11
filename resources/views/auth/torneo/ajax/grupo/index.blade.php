@@ -190,15 +190,20 @@
                                        
 
                                             <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
+                                            @if($Model->formato->nombre!='Eliminación Directa Flexible')
                                             <h5 class="col-md-10 text-left">Listado de Grupos</h5>  
+                                            @endif
+                                            @if($Model->formato->nombre!='Eliminación Directa Flexible')
 
                                                     <li class="mr-2"><button type="button" class="btn btn-primary btn-add-groups" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Agregar grupos</button></li>
-                                                
+                                                    @endif  
                                                 @if($q->first_final)
                                                     <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-final" data-id="{{ $q->id }}" data-reload="1"><i class="fa fa-sync"></i> Volver a generar llaves</button></li>
                                                 @endif
                                                 <li class="mr-1"><button type="button" class="btn btn-danger btn-delete-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Eliminar keys generados</button></li>
+                                                @if($Model->formato->nombre!='Eliminación Directa Flexible')
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-json-grupo" data-id="{{ $q->id }}" data-category="{{ $q->id }}><i class="fa fa-key"></i> Generar Json</button></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     @endif
@@ -1338,6 +1343,34 @@
                         $this.closest("tr").find("select").val("");
                     }
 
+
+                    let partidoId = $this.attr("data-id");
+
+                    $.ajax({
+                        url: '/auth/resultadoranking',  // Esta es la ruta correcta según tu definición
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            partido_id: partidoId,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        },
+                        success: function(response) {
+                            if (response.Success) {
+                                console.log('Ranking actualizado correctamente');
+                            } else {
+                                console.error('Error al actualizar ranking:', response.Message);
+                            }
+                        }
+                    });
+
+
+
+
                    refrescarTablaPosiciones($this.attr("data-category"), $this.attr("data-group"));
                    //refrescarMapaTorneo($this.attr("data-category"));
                    const targetId = $this.attr('data-target');
@@ -1363,6 +1396,10 @@
                     });
 
 
+           
+
+
+                    
                    
            
 
@@ -1480,7 +1517,11 @@
             const $toneo_category = $this.attr("data-id");
             const $first_final = $this.attr("data-mapa");
             const $ranking = $this.attr("data-ranking");
-            if(parseInt($first_final) === 1) refrescarMapaFaseOne($toneo_category);
+            if(parseInt($first_final) === 1){ refrescarMapaFaseOne($toneo_category);
+            invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${$toneo_category}/0/{{ $landing }}`, function(data){
+                        $("#main").addClass("hidden");
+                        $("#info").removeClass("hidden").html("").append(data);
+                    });}
             else{
                 if(parseInt($ranking) === 1){
                     const $partialView = $("#partialViewRanking"+$toneo_category);
