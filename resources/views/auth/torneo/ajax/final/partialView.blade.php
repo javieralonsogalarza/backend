@@ -246,12 +246,9 @@
             });
         });
 
-        $("button[type=submit]").on("click", function (){ 
-    const $this = $(this); 
-    $("#estado_id").val($this.attr("data-id"));  
-})
+        $("button[type=submit]").on("click", function (){ const $this = $(this); $("#estado_id").val($this.attr("data-id"));  })
 
-OnSuccess{{$ViewName}} = (data) => {
+        OnSuccess{{$ViewName}} = (data) => {
     // Primero ejecuta la función original
     onSuccessForm(data, $("form#frm{{$ViewName}}FinalPartido"), $modal);
     
@@ -285,3 +282,4 @@ OnSuccess{{$ViewName}} = (data) => {
 OnFailure{{$ViewName}} = () => onFailureForm();
     })
 </script>
+

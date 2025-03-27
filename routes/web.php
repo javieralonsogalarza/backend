@@ -27,7 +27,13 @@ Route::get('/img/{path}', [Controllers\ImagenController::class, 'show'])->where(
 
 Route::prefix('auth')->group(function (){
     Route::name('auth.')->group(function(){
+
         Route::post('resultadoranking', [Auth\TorneoController::class, 'resultadoRanking'])->name('torneo.ranking.finish');
+            Route::get('rankings/botones', [Auth\TorneoController::class, 'rankingsPartialView'])->name('botones');
+                        Route::get('rankings/fama', [Auth\TorneoController::class, 'rankingsPartialViewFama'])->name('fama');
+
+Route::post('/rankings/update-player-ranking-consideration', [Auth\RakingController::class, 'updateRankingConsideration'])
+     ->name('update.ranking.consideration');
 
         Route::prefix('torneo')->group(function () {
             Route::name('torneo.')->group(function () {
@@ -53,9 +59,7 @@ Route::group(['middleware' => 'auth:web'], function() {
 
     Route::prefix('auth')->group(function (){
         Route::name('auth.')->group(function(){
-
             Route::get('rankings/botones', [Auth\TorneoController::class, 'rankingsPartialView'])->name('botones');
-
 
             Route::group(['roles' => ['Comunidad']], function () {
                 Route::middleware('auth.route.access')->group(function () {
@@ -63,6 +67,7 @@ Route::group(['middleware' => 'auth:web'], function() {
                     Route::prefix('rankings')->group(function (){
                         Route::name('rankings.')->group(function(){
                             Route::get('/', [Auth\RakingController::class, 'index'])->name('index');
+                            Route::get('/salon', [Auth\RakingController::class, 'salon'])->name('salon');
                             Route::get('partialView', [Auth\RakingController::class, 'partialView'])->name('partialView');
                         });
                     });
@@ -77,7 +82,6 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::post('delete', [Auth\TorneoController::class, 'delete'])->name('delete');
                             Route::post('finish', [Auth\TorneoController::class, 'finish'])->name('finish');
 
-                            
                             Route::get('categorias', [Auth\TorneoController::class, 'categorias'])->name('categorias');
                             Route::post('categoria/store', [Auth\TorneoController::class, 'categoriaStore'])->name('categoria.store');
 
@@ -96,7 +100,7 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::get('grupos/agregar/partialView/{torneo_id}/{categoria_id}', [Auth\TorneoController::class, 'grupoAgregarPartialView'])->name('grupo.agregarPartialView');
 
                             Route::get('grupos/export/json', [Auth\TorneoController::class, 'exportGrupoJson'])->name('exportGrupoJson');
-
+                            Route::get('grupos/vs/export/json', [Auth\TorneoController::class, 'exportGrupoJsonVs'])->name('exportGrupoJsonVs');
                             Route::get('export/mapa/json', [Auth\TorneoController::class, 'exportMapaJson'])->name('exportMapaJson');
                             Route::get('export/mapa/figuras/json', [Auth\TorneoController::class, 'exportMapaJsonFiguras'])->name('exportMapaJsonFiguras');
 
@@ -378,12 +382,15 @@ Route::get('torneos/todos', [App\HomeController::class, 'torneoTodos'])->name('t
 
 Route::get('rankings', [App\HomeController::class, 'rankings'])->name('rankings');
 Route::get('rankings/categorias', [App\HomeController::class, 'rankingsCategorias'])->name('rankingsCategorias');
+
 Route::get('/rankings/torneos-por-categoria', [Auth\RakingController::class, 'getTorneosByCategorias'])
     ->name('rankings.torneos-por-categoria');
 
-
 Route::get('rankings/partialView', [App\HomeController::class, 'rankingsPartialView'])->name('rankingsPartialView');
+Route::get('rankings/partialViewSalon', [App\HomeController::class, 'rankingsPartialViewSalon'])->name('rankingsPartialViewSalon');
 Route::get('jugadores', [App\HomeController::class, 'jugadores'])->name('jugadores');
 Route::get('jugadorPartialView', [App\HomeController::class, 'jugadorPartialView'])->name('jugadorPartialView');
 Route::get('jugadorPartidosPartialView', [App\HomeController::class, 'jugadorPartidosPartialView'])->name('jugadorPartidosPartialView');
 Route::post('contactanos', [App\HomeController::class, 'contactanos'])->name('contactanos');
+
+

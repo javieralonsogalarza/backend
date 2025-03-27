@@ -28,6 +28,7 @@
                         @foreach($Zonas as $zona)
                             <option value="{{ $zona->id }}" {{ in_array($zona->id, $selectedZonas) ? 'selected' : '' }}>{{ $zona->nombre }}</option>
                         @endforeach
+                        
                     </select>
                 </div>
             </div>
@@ -39,7 +40,7 @@
                         <div class="col-sm-6">
                             <div class="icheck-primary d-inline">
                                 <input type="checkbox" name="pago" id="pago" value="1" {{ $Model != null && $Model->pago ? "checked" : "" }}>
-                                <label for="pago">¿Se realizó el pago?</label>
+                                <label for="pago"> ¿Se realizó el pago?</label>
                             </div>
                         </div>
                         <div class="col-sm-6">

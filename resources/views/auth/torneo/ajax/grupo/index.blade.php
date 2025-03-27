@@ -186,7 +186,7 @@
                                             </ul>
                                         </div>
                                     @elseif(count($Model->partidos->where('torneo_categoria_id', $q->id)->where('estado_id', $App::$ESTADO_FINALIZADO)) <= 0)
-                                        <div class="row mt-3">
+                 <div class="row mt-3">
                                        
 
                                             <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
@@ -241,7 +241,7 @@
                                                     <li class="mr-2"><button type="button" class="btn btn-primary btn-add-groups" data-id="{{ $q->id }}"><i class="fa fa-users"></i> Agregar grupos</button></li>
                                          @endif
                                             <button type="button" class="btn btn-primary btn-generate-json-grupo" data-category="{{ $q->id }}">Generar Json</button>
-                                         
+                                          <button style="margin-left: 10px" type="button" class="btn btn-primary btn-generate-json-grupo-vs" data-category="{{ $q->id }}">Generar Json Vs</button>
                                         </ul>
                                     </div>
                                 @endif
@@ -250,6 +250,8 @@
         <ul class="nav nav-tabs navs-groups" id="custom-tabs-one-tab-{{ $q->id }}" role="tablist">
             @foreach($Model->torneoGrupos()->where('torneo_categoria_id', $q->id)->select(['nombre_grupo', 'grupo_id'])->groupBy(['nombre_grupo', 'grupo_id'])->orderBy(DB::raw('LENGTH(nombre_grupo)'))->orderBy('nombre_grupo')->get() as $key4 => $q4)
                 @php
+                
+                   $grupo_id = $q4->id;
                     // Obtener nombres de jugadores para el grupo actual
                     $playerNames = $Model->torneoGrupos()
         ->where('torneo_categoria_id', $q->id)
@@ -640,7 +642,25 @@
             const $category_id = $this.attr('data-category');
             window.open(`/auth/{{strtolower($ViewName)}}/grupos/export/json?torneo={{ $Model->id  }}&categoria=${$category_id}`);
         });
-
+        
+        
+$(".btn-generate-json-grupo-vs").on("click", function (){
+    const $this = $(this);
+    const $category_id = $this.attr('data-category');
+    
+    // Filtrar el elemento que coincide con data-category
+    const $activeTab = $('.nav-tabs.navs-groups .nav-link.active').filter(function() {
+        return $(this).data('category') == $category_id;
+    });
+    
+    // Extraer el grupo del ID de la pestaña
+    const $grupo_id = $activeTab.attr('id').split('-')[3];
+    
+    console.log('Grupo ID:', $grupo_id);
+    console.log('Categoria ID:', $category_id);
+    
+    window.open(`/auth/{{strtolower($ViewName)}}/grupos/vs/export/json?torneo={{ $Model->id }}&categoria=${$category_id}&grupo=${$grupo_id}`);
+});
         let $btnChangePlayerLocal, $btnChangePlayerRival;
         $("input.result-input").on("change", function (){
            const $this = $(this);
@@ -1342,8 +1362,7 @@
                     if (["-"].includes($("#resultado_" + id).val())) {
                         $this.closest("tr").find("select").val("");
                     }
-
-
+                    
                     let partidoId = $this.attr("data-id");
 
                     $.ajax({
@@ -1367,9 +1386,6 @@
                             }
                         }
                     });
-
-
-
 
                    refrescarTablaPosiciones($this.attr("data-category"), $this.attr("data-group"));
                    //refrescarMapaTorneo($this.attr("data-category"));
@@ -1396,10 +1412,6 @@
                     });
 
 
-           
-
-
-                    
                    
            
 
@@ -1517,11 +1529,14 @@
             const $toneo_category = $this.attr("data-id");
             const $first_final = $this.attr("data-mapa");
             const $ranking = $this.attr("data-ranking");
-            if(parseInt($first_final) === 1){ refrescarMapaFaseOne($toneo_category);
+            if(parseInt($first_final) === 1){ 
             invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${$toneo_category}/0/{{ $landing }}`, function(data){
                         $("#main").addClass("hidden");
                         $("#info").removeClass("hidden").html("").append(data);
-                    });}
+                    });
+                
+                refrescarMapaFaseOne($toneo_category);
+            }
             else{
                 if(parseInt($ranking) === 1){
                     const $partialView = $("#partialViewRanking"+$toneo_category);

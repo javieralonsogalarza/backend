@@ -20,6 +20,8 @@ use App\Http\Controllers;
 
 Route::post('/upload-image', [Controllers\ImagenController::class, 'uploadImage'])->where('path', '.*')->name('uploadImage');
 
+Route::post('/upload-image-segunda', [Controllers\ImagenController::class, 'uploadImageSegunda'])->where('path', '.*')->name('uploadImageSegunda');
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

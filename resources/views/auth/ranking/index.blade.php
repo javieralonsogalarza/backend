@@ -3,20 +3,21 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('auth/adminlte3/plugins/select2/css/select2.min.css') }}">
     <style>
-        .footer-rankings {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #f8f9fa;
-            padding: 10px 0;
-            z-index: 1000;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+         .radio-group {
+            margin-bottom: 15px;
         }
-        .footer-rankings .btn-group {
-            display: flex;
-            justify-content: center;
+        .footer-rankings {
             width: 100%;
+            padding: 10px 0px 10px 0px;
+            z-index: 1000;
+                background-color: rgba(0, 0, 0, .03);
+        }
+        .footer-rankings .group {
+               display: flex;
+               align-items: center;
+               justify-content: flex-end;
+               gap: 20px;
+               margin-right: 50px;
         }
         #main {
             padding-bottom: 70px; /* Adjust based on footer height */
@@ -25,6 +26,7 @@
             opacity: 0.5;
             pointer-events: none;
         }
+
     </style>
 @endsection
 
@@ -34,23 +36,45 @@
             <div class="card">
                 <div class="card-header">
                     <div>
-                        <h3 class="card-title"><i class="fas fa-star fa-1x"></i> Rankings</h3>
+                        <h3 class="card-title"><i class="fas fa-medal fa-1x"></i> Rankings</h3>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <label for="filter_category">Categoría:</label>
-                            <select name="filter_category" id="filter_category" class="form-control">
-                                <option value="">--Todos--</option>
-                            </select>
-                        </div>
-                        <div class="col-md-7">
-                            <label for="filter_tournaments">Torneos:</label>
-                            <select name="filter_tournaments[]" id="filter_tournaments" class="form-control" multiple="multiple">
-                            </select>
-                        </div>
+                <div class="row">
+    <div class="col-md-5">
+        <label for="filter_category">Categoría:</label>
+        <select name="filter_category" id="filter_category" class="form-control">
+            <option value="">--Todos--</option>
+        </select>
+    </div>
+    <div class="col-md-7">
+        <div class="row align-items-center">
+            <div class="col-md-2 d-flex flex-column">
+                <label class="mb-2">Tipo:</label>
+                <div class="form-group mb-0">
+                <div class="custom-control custom-radio">
+                        <input type="radio" id="carrera_maestros_radio" name="tournament_type" class="custom-control-input" value="carrera_maestros" checked>
+                        <label class="custom-control-label" for="carrera_maestros_radio">Carrera hacia el torrneo de maestros</label>
                     </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="torneos_radio" name="tournament_type" class="custom-control-input" value="torneos" >
+                        <label class="custom-control-label" for="torneos_radio">Torneos por separado</label>
+                    </div>
+                   
+                </div>
+            </div>
+           <div class="col-md-8">
+                 <div class="invalid-feedback">
+        Por favor seleccione al menos un torneo
+    </div>
+    <select name="filter_tournaments[]" id="filter_tournaments" class="form-control" required>
+        <option value="">Seleccione un torneo</option>
+    </select>
+  
+</div>
+        </div>
+    </div>
+</div>
                 </div>
                 <div class="card-footer text-right">
                     <button type="button" class="btn btn-primary pull-right" id="btnBuscar">
@@ -62,22 +86,12 @@
 
         <div class="box">
             <div id="partialView"></div>
+           
         </div>
     </div>
 
     {{-- Footer with static buttons --}}
-    <div class="footer-rankings">
-        <div class="container">
-            <div class="btn-group" role="group" aria-label="Rankings Options">
-                <button type="button" class="btn btn-outline-primary btn-disabled" id="btnTopTen" disabled>
-                    <i class="fa fa-trophy"></i> Top Ten
-                </button>
-                <button type="button" class="btn btn-outline-secondary btn-disabled" id="btnListaRanking" disabled>
-                    <i class="fa fa-list"></i> Lista Ranking
-                </button>
-            </div>
-        </div>
-    </div>
+   
 @endsection
 
 @section('scripts')
@@ -89,6 +103,10 @@
         const $filter_tournaments = $("#filter_tournaments");
         const $btnTopTen = $("#btnTopTen");
         const $btnListaRanking = $("#btnListaRanking");
+        const $tournamentTypeRadio = $("input[name='tournament_type']");
+
+        // Deshabilitar radio buttons al inicio
+        $tournamentTypeRadio.prop('disabled', true);
 
         // Inicializar select2 para torneos (inicialmente deshabilitado)
         $('#filter_tournaments').select2({
@@ -115,34 +133,113 @@
         $('#filter_category').on('change', function() {
             var categoriaId = $(this).val();
             
-            // Habilitar y limpiar select de torneos
-            $('#filter_tournaments').prop('disabled', false)
-                .val(null)
-                .trigger('change');
+            if (categoriaId) {
+                // Habilitar radio buttons
+                $tournamentTypeRadio.prop('disabled', false);
+                
+                // Habilitar y limpiar select de torneos
+                $('#filter_tournaments')
+                    .prop('disabled', false)
+                    .val(null)
+                    .trigger('change');
 
-            // Cargar torneos para la categoría seleccionada
-            $('#filter_tournaments').select2({
-                placeholder: "Seleccione torneos",
-                multiple: true,
-                ajax: {
-                    url: "{{ route('rankings.torneos-por-categoria') }}",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            categoria_id: categoriaId,
-                            search: params.term
-                        };
-                    },
-                    processResults: function (data) {
-                        return {
-                            results: data
-                        };
-                    },
-                    cache: true
-                }
-            });
+                // Simular cambio de radio button para recargar torneos
+                $tournamentTypeRadio.filter(':checked').trigger('change');
+            } else {
+                // Deshabilitar radio buttons
+                $tournamentTypeRadio.prop('disabled', true);
+                
+                // Deshabilitar select de torneos
+                $('#filter_tournaments')
+                    .prop('disabled', true)
+                    .val(null)
+                    .trigger('change');
+            }
+
+            // Validar botones de ranking
+            validateRankingButtons();
         });
+
+        // Manejar cambio de radio button
+            // Manejar cambio de radio button
+// Manejar cambio de radio button
+$tournamentTypeRadio.on('change', function() {
+    const selectedType = $(this).val();
+    
+    if (selectedType === 'carrera_maestros') {
+        $('#filter_tournaments')
+            .prop('disabled', true)
+            .val(null)
+            .trigger('change');
+
+        // Cargar torneos con carrera directamente
+        $.ajax({
+            url: "{{ route('rankings.torneos-por-categoria') }}",
+            method: 'GET',
+            data: {
+                categoria_id: $filter_category.val(),
+                carrera: true
+            },
+            success: function(data) {
+                // Filtrar y aplanar los torneos con carrera
+                const carreraTorneos = data.flatMap(year => 
+                    year.children.filter(torneo => torneo.carrera === true ||  torneo.carrera === false)
+                );
+                
+                // Limpiar y popular el select
+                $('#filter_tournaments').empty();
+                
+                // Crear un select2 con los datos filtrados
+                $('#filter_tournaments').select2({
+                    data: carreraTorneos,
+                    placeholder: "Torneos con carrera",
+                    multiple: true,
+                    disabled: true
+                });
+
+                // Seleccionar todos los torneos con carrera
+                const torneoIds = carreraTorneos.map(torneo => torneo.id);
+                $('#filter_tournaments').val(torneoIds).trigger('change');
+                
+                // Validar botones de ranking
+                validateRankingButtons();
+            },
+            error: function() {
+                console.error('Error al cargar torneos con carrera');
+            }
+        });
+    } else {
+        // Restaurar select de torneos para selección normal
+        $('#filter_tournaments')
+            .prop('disabled', false)
+            .val(null)
+            .trigger('change');
+         // Limpiar y popular el select
+          $('#filter_tournaments').empty();
+        $('#filter_tournaments').select2({
+            placeholder: "Seleccione torneos",
+            multiple: false,
+            ajax: {
+                url: "{{ route('rankings.torneos-por-categoria') }}",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        categoria_id: $filter_category.val(),
+                        search: params.term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+    }
+});
+
 
         // Validar botones cuando cambian categoría o torneos
         $filter_category.on('change', validateRankingButtons);

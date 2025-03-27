@@ -121,11 +121,16 @@
                     @if($Auth::guard('web')->user()->perfil_id == $App::$PERFIL_COMUNIDAD)
                     <li class="nav-item">
                         <a href="{{ route('auth.rankings.index') }}" class="nav-link">
-                            <i class="nav-icon fa fa-star"></i>
+                            <i class="nav-icon fa fa-medal"></i>
                             <p>Rankings</p>
                         </a>
                     </li>
-
+                    <li class="nav-item">
+                        <a href="{{ route('auth.rankings.salon') }}" class="nav-link">
+                            <i class="nav-icon fa fa-star"></i>
+                            <p>Salón de la fama</p>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a href="{{ route('auth.torneo.index') }}" class="nav-link">
                             <i class="nav-icon fa fa-trophy"></i>

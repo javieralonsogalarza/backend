@@ -17,7 +17,7 @@
                     <th class="align-middle text-center" align="center" style="background-color: #0101be !important;">Diferencia Games</th>
                     <th class="align-middle text-center" align="center" style="background-color: #c40a0a !important;">Puntos</th>
                 </tr>
-                </thead>    
+                </thead>
                 <tbody>
                 @foreach($TablaPosiciones as $key => $q)
                     <tr>

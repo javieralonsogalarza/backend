@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RankingDetalle extends Model
 {
-    protected $fillable = ['ranking_id', 'jugador_simple_id', 'jugador_dupla_id', 'puntos'];
+    protected $fillable = ['ranking_id', 'jugador_simple_id', 'jugador_dupla_id', 'puntos','considerado_ranking'];
 
     public function ranking()
     {

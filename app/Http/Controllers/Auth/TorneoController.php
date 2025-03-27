@@ -27,9 +27,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Log;
 use Maatwebsite\Excel\Facades\Excel;
-use Nette\Utils\Json;
 
 class TorneoController extends Controller
 {
@@ -368,7 +366,12 @@ class TorneoController extends Controller
                     $entity->user_create_id = Auth::guard('web')->user()->id;
                 }
 
-                $TorneoCategoria->estado_id = App::$ESTADO_PENDIENTE;
+
+               $TorneoCategoria->estado_id = $TorneoCategoria->estado_id == App::$ESTADO_FINALIZADO 
+    ? App::$ESTADO_FINALIZADO 
+    : ($request->finalizar == "true" || $request->finalizar == true 
+        ? App::$ESTADO_FINALIZADO 
+        : App::$ESTADO_PENDIENTE);
 
                 $RankingDetalle = [];
 
@@ -410,438 +413,6 @@ class TorneoController extends Controller
         return response()->json($Result);
     }
 
- public function resultadoRankingv2(Request $request)
-{
-    $entity = null;
-    $Result = (object)['Success' => false, 'Message' => null];
-
-    try {
-        DB::beginTransaction();
-
-        // Obtener el partido actual
-        $partido = Partido::findOrFail($request->partido_id);
-        
-        $TorneoCategoria = TorneoCategoria::where('id', $partido->torneo_categoria_id)
-            ->whereHas('torneo', function ($q){
-                $q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);
-            })->first();
-
-        if($TorneoCategoria != null)
-        {
-            // Obtener todos los jugadores de la categoría
-            $jugadores = DB::table('torneo_jugadors')
-                ->where('torneo_jugadors.torneo_categoria_id', $TorneoCategoria->id)
-                ->whereNull('torneo_jugadors.deleted_at')
-                ->get();
-
-            // Obtener todos los partidos finalizados de esta categoría
-            $partidos = Partido::where('torneo_categoria_id', $TorneoCategoria->id)
-                ->where('estado_id', 2) // Estado finalizado
-                ->whereNull('deleted_at')
-                ->get();
-
-            // Inicializar array para almacenar puntos acumulados
-            $puntosAcumulados = [];
-            $detalleCalculos = []; // Para debug
-
-            // Buscar o crear el Ranking
-            $Ranking = Ranking::firstOrCreate(
-                [
-                    'torneo_id' => $TorneoCategoria->torneo_id,
-                    'torneo_categoria_id' => $TorneoCategoria->id,
-                    'comunidad_id' => Auth::guard('web')->user()->comunidad_id
-                ],
-                [
-                    'multiple' => $TorneoCategoria->multiple,
-                    'user_create_id' => Auth::guard('web')->user()->id
-                ]
-            );
-
-            // Calcular puntos para cada partido
-            foreach($partidos as $partidoActual) {
-                \Log::info("Procesando partido ID: " . $partidoActual->id);
-
-                // Array de posibles formatos de WO
-                $formatosWO = ['WO', 'W.O', 'W.O.', 'W/O', 'WALKOVER'];
-                $resultado = strtoupper($partidoActual->resultado);
-
-                // Verificar si el resultado contiene alguna variación de WO
-                $esWO = false;
-                foreach($formatosWO as $formato) {
-                    if(str_contains($resultado, $formato)) {
-                        $esWO = true;
-                        break;
-                    }
-                }
-
-                if($esWO) {
-                    $puntosGanador = 15; // WO
-                    $puntosPerdedor = 0;
-                    \Log::info("Partido WO - Resultado: " . $resultado);
-                } else {
-                    // Determinar quién es el ganador y el perdedor
-                    $setsGanador = max($partidoActual->jugador_local_set, $partidoActual->jugador_rival_set);
-                    $setsPerdedor = min($partidoActual->jugador_local_set, $partidoActual->jugador_rival_set);
-
-                    \Log::info("Sets Ganador: $setsGanador, Sets Perdedor: $setsPerdedor");
-
-                    if($setsGanador == 2 && $setsPerdedor == 0) {
-                        $puntosGanador = 15; // Victoria 2-0
-                        $puntosPerdedor = 0;
-                        \Log::info("Victoria 2-0");
-                    } else if($setsGanador == 2 && $setsPerdedor == 1) {
-                        $puntosGanador = 10; // Victoria 2-1
-                        $puntosPerdedor = 5;
-                        \Log::info("Victoria 2-1");
-                    } else {
-                        $puntosGanador = 0;
-                        $puntosPerdedor = 0;
-                        \Log::info("Otro resultado");
-                    }
-                }
-
-                // Identificar ganador y perdedor
-                $ganadorId = $partidoActual->jugador_ganador_uno_id;
-                $perdedorId = $partidoActual->jugador_local_uno_id == $ganadorId 
-                    ? $partidoActual->jugador_rival_uno_id 
-                    : $partidoActual->jugador_local_uno_id;
-
-                // Acumular puntos
-                if(!isset($puntosAcumulados[$ganadorId])) {
-                    $puntosAcumulados[$ganadorId] = 0;
-                }
-                $puntosAcumulados[$ganadorId] += $puntosGanador;
-
-                if(!isset($puntosAcumulados[$perdedorId])) {
-                    $puntosAcumulados[$perdedorId] = 0;
-                }
-                $puntosAcumulados[$perdedorId] += $puntosPerdedor;
-
-                // Registrar el cálculo para debug
-                $detalleCalculos[] = [
-                    'partido_id' => $partidoActual->id,
-                    'resultado' => $partidoActual->resultado,
-                    'ganador_id' => $ganadorId,
-                    'perdedor_id' => $perdedorId,
-                    'sets_ganador' => $setsGanador,
-                    'sets_perdedor' => $setsPerdedor,
-                    'puntos_ganador' => $puntosGanador,
-                    'puntos_perdedor' => $puntosPerdedor,
-                    'acumulado_ganador' => $puntosAcumulados[$ganadorId],
-                    'acumulado_perdedor' => $puntosAcumulados[$perdedorId]
-                ];
-
-                \Log::info("Puntos asignados - Ganador ID $ganadorId: $puntosGanador, Perdedor ID $perdedorId: $puntosPerdedor");
-            }
-
-            \Log::info("Detalle final de cálculos:", $detalleCalculos);
-            \Log::info("Puntos acumulados finales:", $puntosAcumulados);
-
-            // Actualizar RankingDetalle para todos los jugadores
-            foreach($jugadores as $jugador) {
-                $puntosFinales = $puntosAcumulados[$jugador->jugador_simple_id] ?? 0;
-                \Log::info("Actualizando jugador {$jugador->jugador_simple_id} con puntos: $puntosFinales");
-
-                RankingDetalle::updateOrCreate(
-                    [
-                        'ranking_id' => $Ranking->id,
-                        'jugador_simple_id' => $jugador->jugador_simple_id
-                    ],
-                    [
-                        'puntos' => $puntosFinales
-                    ]
-                );
-
-                // Si es torneo de dobles y hay jugador dupla
-                if($TorneoCategoria->multiple && $jugador->jugador_dupla_id) {
-                    $puntosDupla = $puntosAcumulados[$jugador->jugador_dupla_id] ?? 0;
-                    
-                    RankingDetalle::updateOrCreate(
-                        [
-                            'ranking_id' => $Ranking->id,
-                            'jugador_dupla_id' => $jugador->jugador_dupla_id
-                        ],
-                        [
-                            'puntos' => $puntosDupla
-                        ]
-                    );
-                }
-            }
-
-            DB::commit();
-            $Result->Success = true;
-            $Result->Message = "Ranking actualizado correctamente";
-            $Result->Detalle = $detalleCalculos; // Incluir detalle en la respuesta
-        } else {
-            $Result->Message = "La categoría del torneo no se encuentra disponible";
-        }
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        $Result->Message = $e->getMessage();
-    }
-
-    return response()->json($Result);
-}
-
-
-
-
-public function resultadoRanking(Request $request)
-{
-    $entity = null;
-    $Result = (object)['Success' => false, 'Message' => null];
-
-    try {
-        DB::beginTransaction();
-
-        // Obtener el partido actual
-        $partido = Partido::findOrFail($request->partido_id);
-        
-        $TorneoCategoria = TorneoCategoria::where('id', $partido->torneo_categoria_id)
-            ->whereHas('torneo', function ($q){
-                $q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);
-            })->first();
-
-        if($TorneoCategoria != null)
-        {
-            // Crear o obtener el Ranking
-            $Ranking = Ranking::firstOrCreate(
-                [
-                    'torneo_id' => $TorneoCategoria->torneo_id,
-                    'torneo_categoria_id' => $TorneoCategoria->id,
-                    'comunidad_id' => Auth::guard('web')->user()->comunidad_id
-                ],
-                [
-                    'multiple' => $TorneoCategoria->multiple,
-                    'user_create_id' => Auth::guard('web')->user()->id
-                ]
-            );
-
-            // Obtener todos los jugadores de la categoría
-            $jugadores = DB::table('torneo_jugadors')
-                ->where('torneo_jugadors.torneo_categoria_id', $TorneoCategoria->id)
-                ->whereNull('torneo_jugadors.deleted_at')
-                ->get();
-
-            // Obtener todos los partidos finalizados de esta categoría
-            $partidos = Partido::where('torneo_categoria_id', $TorneoCategoria->id)
-                ->where('estado_id', 2) // Estado finalizado
-                ->whereNull('deleted_at')
-                ->get();
-
-            $partidosv2 = Partido::where('torneo_categoria_id', $TorneoCategoria->id)
-                ->whereIn('estado_id', [1,2]) // Estado finalizado
-                ->whereNull('deleted_at')
-                ->get();
-
-
-            // Inicializar arrays
-            $puntosAcumulados = [];
-            $mejoresPosiciones = [];
-
-            // Primera fase: Calcular puntos por victoria/derrota
-            foreach($partidos as $partidoActual) {
-                // Identificar ganador y perdedor
-                $ganadorId = $partidoActual->jugador_ganador_uno_id;
-                $perdedorId = $partidoActual->jugador_local_uno_id == $ganadorId 
-                    ? $partidoActual->jugador_rival_uno_id 
-                    : $partidoActual->jugador_local_uno_id;
-
-                if(!isset($puntosAcumulados[$ganadorId])) {
-                    $puntosAcumulados[$ganadorId] = 0;
-                }
-                if(!isset($puntosAcumulados[$perdedorId])) {
-                    $puntosAcumulados[$perdedorId] = 0;
-                }
-
-                // Calcular puntos del partido
-                $formatosWO = ['WO', 'W.O', 'W.O.', 'W/O', 'WALKOVER'];
-                $resultado = strtoupper($partidoActual->resultado);
-                $esWO = false;
-                foreach($formatosWO as $formato) {
-                    if(str_contains($resultado, $formato)) {
-                        $esWO = true;
-                        break;
-                    }
-                }
-
-                if($esWO) {
-                    $puntosAcumulados[$ganadorId] += 15;
-                } else {
-                    $setsGanador = max($partidoActual->jugador_local_set, $partidoActual->jugador_rival_set);
-                    $setsPerdedor = min($partidoActual->jugador_local_set, $partidoActual->jugador_rival_set);
-
-                    if($setsGanador == 2 && $setsPerdedor == 0) {
-                        $puntosAcumulados[$ganadorId] += 15;
-                    } else if($setsGanador == 2 && $setsPerdedor == 1) {
-                        $puntosAcumulados[$ganadorId] += 10;
-                        $puntosAcumulados[$perdedorId] += 5;
-                    }
-                }
-
-                \Log::info("Puntos partido {$partidoActual->id} - Ganador ID $ganadorId: {$puntosAcumulados[$ganadorId]}, Perdedor ID $perdedorId: {$puntosAcumulados[$perdedorId]}");
-            }
-
-            // Segunda fase: Determinar mejor posición de cada jugador
-            foreach($jugadores as $jugador) {
-                $mejorPuesto = $this->determinarMejorPuesto($jugador->jugador_simple_id, $partidosv2);
-                if($mejorPuesto) {
-                    $puntosPorPuesto = $this->getPuntajePorPuesto($mejorPuesto);
-                    if(!isset($puntosAcumulados[$jugador->jugador_simple_id])) {
-                        $puntosAcumulados[$jugador->jugador_simple_id] = 0;
-                    }
-                    $puntosAcumulados[$jugador->jugador_simple_id] += $puntosPorPuesto;
-                    \Log::info("Jugador ID {$jugador->jugador_simple_id} - Puesto: $mejorPuesto, Puntos por puesto: $puntosPorPuesto");
-                }
-            }
-
-            // Actualizar RankingDetalle para todos los jugadores
-            foreach($jugadores as $jugador) {
-                $puntosFinales = $puntosAcumulados[$jugador->jugador_simple_id] ?? 0;
-                \Log::info("Actualizando jugador {$jugador->jugador_simple_id} con puntos finales: $puntosFinales");
-
-                RankingDetalle::updateOrCreate(
-                    [
-                        'ranking_id' => $Ranking->id,
-                        'jugador_simple_id' => $jugador->jugador_simple_id,
-                    ],
-                    [
-                        'puntos' => $puntosFinales,
-                        'updated_at' => Carbon::now()
-
-                    ]
-                );
-            }
-
-            DB::commit();
-            $Result->Success = true;
-            $Result->Message = "Ranking actualizado correctamente";
-        } else {
-            $Result->Message = "La categoría del torneo no se encuentra disponible";
-        }
-
-    } catch (\Exception $e) {
-        DB::rollBack();
-        $Result->Message = $e->getMessage();
-    }
-
-    return response()->json($Result);
-}
-
-private function determinarMejorPuesto($jugadorId, $partidos) {
-    \Log::info("V1 ID: $jugadorId");
-
-    // Obtener todos los partidos del jugador
-    $partidosJugador = $partidos->filter(function($partido) use ($jugadorId) {
-        return ($partido->jugador_local_uno_id == $jugadorId || 
-                $partido->jugador_rival_uno_id == $jugadorId) &&
-                $partido->fase !== null;
-    })->sortBy('fase');
-
-
-    \Log::info("V2 ID: $partidosJugador");
-
-    if($partidosJugador->isEmpty()) {
-        return null;
-    }
-
-    // Verificar si tiene partido pendiente
-    $partidoPendiente = $partidosJugador->first(function($partido) {
-        return $partido->estado_id === 1;
-    });
-
-    // Obtener partidos finalizados
-    $partidosFinalizados = $partidosJugador->where('estado_id', 2);
-
-    // Buscar última victoria en partidos finalizados
-    $ultimaVictoria = $partidosFinalizados->first(function($partido) use ($jugadorId) {
-        return $partido->jugador_ganador_uno_id == $jugadorId;
-    });
-
-      // Buscar última derrota en partidos finalizados
-    $ultimaDerrota = $partidosFinalizados->first(function($partido) use ($jugadorId) {
-        return $partido->jugador_ganador_uno_id !== null && 
-               $partido->jugador_ganador_uno_id != $jugadorId;
-    });
-    // Si tiene partido pendiente
-    if($partidoPendiente) {
-        \Log::info("Jugador ID: $jugadorId - Tiene partido pendiente en fase: {$partidoPendiente->fase}");
-        
-        if($ultimaVictoria) {
-            \Log::info("ultimaVictoria->fase ID: $jugadorId - Tiene partido pendiente en fase: {$ultimaVictoria->fase}");
-
-            switch($ultimaVictoria->fase) {
-                case 2: return 'SEMIFINAL';   // Ganó semifinal, pendiente final
-                case 4: return 'CUARTOS';    // Ganó cuartos, pendiente semifinal
-                case 8: return 'OCTAVOS';    // Ganó octavos, pendiente cuartos
-                case 16: return 'DIECISEISAVOS'; // Ganó dieciseisavos, pendiente octavos
-            }
-        }
-    } 
-    // Si no tiene partidos pendientes
-    else {
-        // Si tiene victorias
-        if($ultimaVictoria) {
-            $ultimoPartidoFinalizado = $partidosFinalizados->first();
-            \Log::info(message: "CAMPEON: {$ultimoPartidoFinalizado}");
-
-            // Si el último partido fue la final
-            if($ultimoPartidoFinalizado->fase == 1) {
-                \Log::info(message: "CAMPEON: {$ultimoPartidoFinalizado}");
-
-                return $ultimoPartidoFinalizado->jugador_ganador_uno_id == $jugadorId ? 
-                       'CAMPEON' : 'SUBCAMPEON';
-            }
-
-            // Si tiene una derrota en una fase menor que su última victoria
-            if($ultimaDerrota && $ultimaDerrota->fase < $ultimaVictoria->fase) {
-                switch($ultimaDerrota->fase) {
-                    case 2: return 'SEMIFINAL';
-                    case 4: return 'CUARTOS';
-                    case 8: return 'OCTAVOS';
-                }
-            }
-            
-            // Si no, usar la fase de su última victoria
-            switch($ultimaVictoria->fase) {
-                case 2: return 'SEMIFINAL';
-                case 4: return 'CUARTOS';
-                case 8: return 'OCTAVOS';
-                case 16: return null;
-            }
-        }
-        // Si no tiene victorias, ver dónde fue eliminado
-        else if($ultimaDerrota) {
-            switch($ultimaDerrota->fase) {
-                case 1: return 'SUBCAMPEON';
-                case 2: return 'SEMIFINAL';
-                case 4: return 'CUARTOS';
-                case 8: return 'OCTAVOS';
-                case 16: return null;
-            }
-        }
-    }
-
-    return null;
-}
-
-private function getPuntajePorPuesto($puesto) {
-    if($puesto === null) {
-        return 0;
-    }
-
-    $puntajes = [
-        'CAMPEON' => 1000,    // Ganador de la final
-        'SUBCAMPEON' => 700,  // Perdedor de la final
-        'SEMIFINAL' => 500,   // Eliminado en semifinal
-        'CUARTOS' => 200,     // Eliminado en cuartos
-        'OCTAVOS' => 100,     // Eliminado en octavos
-        'DIECISEISAVOS' => 0  // Eliminado en dieciseisavos
-    ];
-
-    return $puntajes[$puesto] ?? 0;
-}
     public function categorias(Request $request)
     {
         $Categorias = TorneoCategoria::where('torneo_id', $request->torneo)
@@ -2241,7 +1812,6 @@ return $TorneoFaseFinal->JugadoresClasificados;
                 if($request->tipo == "manual")
                 {
                     $PartidosManuales = [];
-                  
                     foreach (collect($Partidos)->where('fase', count($PartidosFaseFinal)) as $q)
                     {
                         $q['jugador_local_uno_id'] = null;
@@ -2265,6 +1835,7 @@ return $TorneoFaseFinal->JugadoresClasificados;
                     }
 
                     //dd($PartidosManuales);
+
                     Partido::insert($PartidosManuales);
 
                 }else{
@@ -2276,6 +1847,18 @@ return $TorneoFaseFinal->JugadoresClasificados;
                     TorneoCategoria::where('id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
                     ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})
                     ->update(['aleatorio' => true]);
+                }
+
+                $partidosvalidar = Partido::where('torneo_categoria_id', $request->torneo_categoria_id)
+                ->where('fase',6)->where('estado_id', App::$ESTADO_PENDIENTE)
+                ->get();
+
+          
+
+                if(count($partidosvalidar)==6){
+                    //actualizar fase deesos aprtidos a 4 
+                    Partido::where('torneo_id', $TorneoCategoria->torneo_id)->where('torneo_categoria_id', $TorneoCategoria->id)
+                    ->where('fase',6)->where('estado_id', App::$ESTADO_PENDIENTE)->update(['fase' => 4]);
                 }
 
                 DB::commit();
@@ -3428,33 +3011,39 @@ return $TorneoFaseFinal->JugadoresClasificados;
     {
         $filter_anio = '2024';
 
-
         $Model = Comunidad::where('principal', true)->first();
 
         if ($Model != null) {
             $Rankings = Ranking::where('comunidad_id', $Model->id)->get();
 
-            $Torneos = Torneo::whereIn('id', array_values(array_unique(array_filter($Rankings->pluck('torneo_id')->toArray()))))
-                ->where(function ($q) use ($filter_anio) {
-                    if ($filter_anio) {
-                        $q->where(DB::raw('YEAR(fecha_inicio)'), '=', $filter_anio);
-                    }
-                })->where('rankeado', true)->orderBy('fecha_final', 'desc')->get();
-
-            $Anios = $filter_anio == null ? array_values(array_unique($Torneos->pluck('fecha_inicio')->map(function ($date) {
-                return Carbon::parse($date)->format('Y');
-            })->toArray())) : [];
-
-            $TorneoCategorias = TorneoCategoria::whereIn('id', array_values(array_unique(array_filter($Rankings->pluck('torneo_categoria_id')->toArray()))))->orderBy('id', 'desc')->get();
+       // Modificar la consulta de torneos para incluir las validaciones
+       $Torneos = Torneo::join('torneo_categorias', 'torneos.id', '=', 'torneo_categorias.torneo_id')
+       ->where('torneo_categorias.categoria_simple_id', $filter_categoria)
+       ->whereNull('torneos.deleted_at')
+       ->whereNull('torneo_categorias.deleted_at')
+       ->where('torneos.fecha_inicio', '<=', Carbon::now()->format('Y-m-d'))
+       ->whereIn('torneo_categorias.estado_id', [1, 2]) // Pendiente y finalizado
+       ->where('torneos.rankeado', true)
+       ->select('torneos.*')
+       ->orderBy('torneos.fecha_inicio', 'desc')
+       ->limit(4) // Limitar a los 4 torneos más recientes
+       ->get();
            
+   $TorneoCategorias = TorneoCategoria::whereIn('torneo_id', $Torneos->pluck('id'))
+       ->orderBy('id', 'desc')
+       ->get();
            
             $Categorias = Categoria::whereIn('id', array_values(array_unique(array_filter($TorneoCategorias->pluck('categoria_simple_id')->toArray()))))
-                ->where('visible', true)->where('id', '!=', 3)->where('orden', '>', '0')
+       ->where('visible', true)
+       ->where('id', '!=', 3)
+       ->where('orden', '>', '0')
                 ->where(function ($q) use ($filter_categoria) {
                     if ($filter_categoria) {
                         $q->where('id', $filter_categoria);
                     }
-                })->orderBy('id', 'desc')->get();
+       })
+       ->orderBy('id', 'desc')
+       ->get();
 
             $RankingsResult = [];
             foreach ($Categorias as $q) {
@@ -3468,6 +3057,9 @@ return $TorneoFaseFinal->JugadoresClasificados;
                     foreach ($Rankings->where('torneo_categoria_id', $q2->id) as $q3) {
                         if ($q3->detalles != null && count($q3->detalles) > 0) {
                             foreach ($q3->detalles as $q4) {
+                            
+                             
+
                                 $Id = $q->dupla ? ($q4->jugadorSimple->id . '-' . $q4->jugadorDupla->id) : $q4->jugadorSimple->id;
                                 if (!in_array($Id, $JugadoresIds)) {
                                     $ObjectJugador = [];
@@ -3493,7 +3085,8 @@ return $TorneoFaseFinal->JugadoresClasificados;
                                                     if ($q->dupla) {
                                                         $query->where('jugador_dupla_id', $q4->jugadorDupla->id);
                                                     }
-                                                })->first();
+                                            })->where('considerado_ranking', 1) // Añadir esta línea para filtrar
+->first();
 
                                                 $Puntos += $rankingDetalle != null ? $rankingDetalle->puntos : 0;
 
@@ -3518,6 +3111,7 @@ return $TorneoFaseFinal->JugadoresClasificados;
                                     $Object['jugadores'][] = $ObjectJugador;
 
                                     $JugadoresIds[] = $Id;
+                            
                                 }
                             }
                         }
@@ -3621,6 +3215,8 @@ return $TorneoFaseFinal->JugadoresClasificados;
 
             }          
         
+
+    
 
             return [
                 'Rankings' => collect( $result),
@@ -4549,7 +4145,7 @@ return $TorneoFaseFinal->JugadoresClasificados;
         }
         $torneoCategoria = $entity->torneoCategorias()->where('id', $torneo_categoria_id)->with('categoriaSimple')->orderBy('orden')->first();
        
-       // return $torneoCategoria;
+
         $TorneoCategoria = $torneoCategoria;
         if($TorneoCategoria != null)
         {
@@ -7259,7 +6855,7 @@ while ($jugadoresZona->isNotEmpty()) {
                          
                           $Result->Success = true;
 
-                          if(filter_var($request->fase_inicial, FILTER_VALIDATE_BOOLEAN))
+                          if(false)
                           {
                               if(Partido::where('torneo_categoria_id', $TorneoCategoria->id)->whereNotNull('fase')->count() > 0)
                               {
@@ -7500,7 +7096,7 @@ while ($jugadoresZona->isNotEmpty()) {
         return response()->json($Result);
     }
 
-    public function partidoGenerateJson(Request $request)
+    public function partidoGenerateJsonv2(Request $request)
     {
         $content = "";
 
@@ -7540,6 +7136,9 @@ while ($jugadoresZona->isNotEmpty()) {
                 'jugador_rival_dos'  => $Partido->multiple ? ($Partido->jugador_local_dos_id == $Partido->jugador_ganador_dos_id ? $Partido->jugadorRivalDos->nombre_completo : $Partido->jugadorLocalDos->nombre_completo) : null,
                 'resultado_ganador'  => $ResultadoGanador,
                 'resultado_rival' => $ResultadoPerdedor,
+                'partido' => $Partido->id,
+                'torneo_categoria_id' => $Partido->torneoCategoria->id,
+                'categoria_id' => $Partido->torneoCategoria->categoriaSimple->id
             ];
 
             $content = json_encode($model);
@@ -7552,6 +7151,143 @@ while ($jugadoresZona->isNotEmpty()) {
 
         return redirect(App::$URL_JSON_MATCHES.'?json='.env('APP_URL').'/storage/public/uploads/matches/json.txt');
     }
+
+public function partidoGenerateJson(Request $request)
+{
+    try {
+        $content = "";
+        $Partido = Partido::find($request->id);
+        
+        if($Partido != null)
+        {
+            $TorneoGrupo = TorneoGrupo::where('torneo_categoria_id', $Partido->torneo_categoria_id)
+                ->where('grupo_id', $Partido->grupo_id)->first();
+
+            $ResultadoGanador = $Partido->resultado; 
+            $ResultadoPerdedor = '';
+            if(!in_array($Partido->resultado, ["wo", "w.o", "WO", "W.O"]))
+            {
+                $ResultadoLeft = []; 
+                $ResultadoRight = [];
+
+                $Resultado = explode('/', $Partido->resultado);
+                foreach ($Resultado as $item){
+                    $set = explode('-', $item);
+                    $ResultadoLeft[] = $set[0]; 
+                    $ResultadoRight[] = $set[1];
+                }
+
+                $ResultadoGanador = join('/', $ResultadoLeft);
+                $ResultadoPerdedor = join('/', $ResultadoRight);
+            }
+
+            // Construir la ruta de la imagen usando la misma lógica de uploadImageSegunda
+            $torneoFolder = $this->sanitizeFilename($Partido->torneoCategoria->torneo->nombre) . '-' . $Partido->torneo_categoria_id;
+            $categoriaFolder = $this->sanitizeFilename($Partido->torneoCategoria->categoriaSimple->nombre) . '-' . $Partido->torneoCategoria->categoriaSimple->id;
+            
+            // Implementar la misma lógica para determinar el nombre de la ronda
+            $rondaNumero = $Partido->fase ? $Partido->fase : 0;
+            $nombreRonda = '';
+            
+            switch ($rondaNumero) {
+                case 32:
+                    $nombreRonda = 'Ronda-de-32';
+                    break;
+                case 16:
+                    $nombreRonda = 'Ronda-de-16';
+                    break;
+                case 8:
+                    $nombreRonda = 'Octavos-de-final';
+                    break;
+                case 4:
+                    $nombreRonda = 'Cuartos-de-final';
+                    break;
+                case 2:
+                    $nombreRonda = 'Semifinal';
+                    break;
+                case 1:
+                    $nombreRonda = 'Final';
+                    break;
+                default:
+                    $nombreRonda = 'Fase-de-Grupos';
+            }
+            
+            // Usar el mismo formato para el nombre de la ronda
+            $rondaFolder = $nombreRonda . '-' . $rondaNumero;
+            
+            // Usar el mismo formato para el nombre del grupo y partido
+            $grupoFolder = $TorneoGrupo ? $this->sanitizeFilename($TorneoGrupo->nombre_grupo) : null;
+            $partidoFolder = 'partido-' . $Partido->id;
+
+            // Construir la ruta de la carpeta usando el mismo formato
+            $folderPath = ['segundo_modulo', 'uploads', $torneoFolder, $categoriaFolder, $rondaFolder];
+            
+            if ($grupoFolder) {
+                $folderPath[] = $grupoFolder;
+            }
+            
+            $folderPath[] = $partidoFolder;
+            $folderPath = implode('/', $folderPath);
+
+            // Buscar la imagen en la carpeta
+            $imagePath = null;
+            if (Storage::disk('public')->exists($folderPath)) {
+                $files = Storage::disk('public')->files($folderPath);
+                if (!empty($files)) {
+                    $imagePath = Storage::url($files[0]); // Obtener la primera imagen encontrada
+                }
+            }
+
+            $model = (object)[
+                'titulo' => 'La Confraternidad del Tenis',
+                'torneo' => $Partido->torneoCategoria->torneo->nombre,
+                'formato' => $Partido->torneoCategoria->torneo->formato != null ? $Partido->torneoCategoria->torneo->formato->nombre : null,
+                'grupo' => $TorneoGrupo != null ? $TorneoGrupo->nombre_grupo : null,
+                'ronda' => $Partido->fase ?? 'Fase de grupos',
+                'categoria' => $Partido->multiple && ($Partido->torneoCategoria->categoriaSimple->id !== $Partido->torneoCategoria->categoriaDupla->id) 
+                    ? ($Partido->torneoCategoria->categoriaSimple->nombre." + ".$Partido->torneoCategoria->categoriaDupla->nombre) 
+                    : ($Partido->torneoCategoria->categoriaSimple->nombre),
+                'jugador_ganador_uno' => $Partido->jugadorGanadorUno->nombre_completo_temporal,
+                'jugador_ganador_dos' => $Partido->multiple ? ($Partido->jugadorGanadorDos->nombre_completo) : null,
+                'jugador_rival_uno'  => $Partido->jugador_local_uno_id == $Partido->jugador_ganador_uno_id 
+                    ? $Partido->jugadorRivalUno->nombre_completo_temporal 
+                    : $Partido->jugadorLocalUno->nombre_completo_temporal,
+                'jugador_rival_dos'  => $Partido->multiple 
+                    ? ($Partido->jugador_local_dos_id == $Partido->jugador_ganador_dos_id 
+                        ? $Partido->jugadorRivalDos->nombre_completo 
+                        : $Partido->jugadorLocalDos->nombre_completo) 
+                    : null,
+                'resultado_ganador'  => $ResultadoGanador,
+                'resultado_rival' => $ResultadoPerdedor,
+                'partido' => $Partido->id,
+                'torneo_categoria_id' => $Partido->torneoCategoria->id,
+                'categoria_id' => $Partido->torneoCategoria->categoriaSimple->id,
+                'imagen_path' => $imagePath // Agregar la ruta de la imagen
+            ];
+
+            $content = json_encode($model);
+        }
+
+        Storage::disk('public')->put('public/uploads/matches/json.txt', $content);
+        return redirect(App::$URL_JSON_MATCHES.'?json='.env('APP_URL').'/storage/public/uploads/matches/json.txt');
+
+    } catch (\Exception $e) {
+        Log::error('Error en partidoGenerateJson: ' . $e->getMessage());
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Error: ' . $e->getMessage()
+        ], 500);
+    }
+}
+
+protected function sanitizeFilename($string)
+{
+    $string = strtolower($string);
+    $string = preg_replace('/[^a-z0-9\-_]/', '_', $string);
+    $string = preg_replace('/_+/', '_', $string);
+    $string = trim($string, '_');
+    return substr($string, 0, 30);
+}
 
     /* TORNEO RANKING */
     public function ranking($torneo, $torneo_categoria_id, $landing=false)
@@ -7774,7 +7510,7 @@ while ($jugadoresZona->isNotEmpty()) {
                 foreach ($Puntuacionesv2 as $puntuacion) {
                     $puntosMap[$puntuacion['nombre']] = $puntuacion['puntos'];
                 }
-                $partidos=  Partido::where('torneo_categoria_id', $TorneoCategoria->id)->whereNull(columns: 'deleted_at')->where(['estado_id' => App::$ESTADO_FINALIZADO])->get();
+                $partidos=  Partido::where('torneo_categoria_id', $TorneoCategoria->id)->whereNull('deleted_at')->where(['estado_id' => App::$ESTADO_FINALIZADO])->get();
 
                 foreach ($partidos as $partido) {
                     // Asumiendo que el jugador ganador es el jugador local si 'jugador_ganador_uno_id' coincide con 'jugador_local_uno_id'
@@ -12606,6 +12342,179 @@ function reorderBlocks($data) {
         return redirect(App::$URL_JSON_PLAYERS.'?json='.env('APP_URL').'/storage/public/uploads/players/json.txt');
     }
 
+    public function exportGrupoJsonVs(Request $request)
+{
+    try {
+        $torneo_categoria_id = $request->categoria;
+        $grupo_id =  $request->grupo;
+        
+        // Obtener la categoría del torneo
+        $torneoCategoria = TorneoCategoria::with(['torneo', 'categoriaSimple'])
+            ->findOrFail($torneo_categoria_id);
+        
+        // Obtener el grupo
+        $grupo = Grupo::findOrFail($grupo_id);
+        
+        // Método para obtener imagen del jugador
+        $obtenerImagenJugador = function($jugador_id) {
+            $jugador_imagen = "";
+            
+            if ($jugador_id) {
+                $jugador = Jugador::find($jugador_id);
+                
+                if ($jugador) {
+                    // Verificar si existe imagen personalizada
+                    if (Storage::disk('public')->exists("uploads/img/jugador_{$jugador_id}.png")) {
+                        $jugador_imagen = Storage::url("uploads/img/jugador_{$jugador_id}.png");
+                    } else {
+                        // Asignar imagen por defecto según sexo
+                        switch ($jugador->sexo) {
+                            case 'M':
+                                $jugador_imagen = asset("images/hombre.png");
+                                break;
+                            case 'F':
+                                $jugador_imagen = asset("images/mujer.png");
+                                break;
+                            default:
+                                $jugador_imagen = asset("images/incognito.png");
+                                break;
+                        }
+                    }
+                } else {
+                    $jugador_imagen = asset("images/incognito.png");
+                }
+            } else {
+                $jugador_imagen = asset("images/incognito.png");
+            }
+            
+            return $jugador_imagen;
+        };
+        
+        // Recuperar los partidos del grupo
+        $partidos = Partido::where('torneo_categoria_id', $torneo_categoria_id)
+            ->where('grupo_id', $grupo_id)
+            ->with([
+                'jugadorLocalUno', 
+                'jugadorLocalDos', 
+                'jugadorRivalUno', 
+                'jugadorRivalDos',
+                'estado'
+            ])
+            ->get()
+            ->map(function($partido) use ($torneoCategoria, $obtenerImagenJugador) {
+                // Preparar información de jugadores
+                $jugadoresLocal = $torneoCategoria->multiple
+                    ? [
+                        'v1' => [
+                            'nombres' => $partido->jugadorLocalUno->nombres,
+                            'apellidos' => $partido->jugadorLocalUno->apellidos,
+                            'imagen' => $obtenerImagenJugador($partido->jugador_local_uno_id),
+                            'nombre_completo_temporal' => $partido->jugadorLocalUno->nombre_completo_temporal,
+                        ],
+                        'v2' => [
+                            'nombres' => $partido->jugadorLocalDos->nombres,
+                            'apellidos' => $partido->jugadorLocalDos->apellidos,
+                            'imagen' => $obtenerImagenJugador($partido->jugador_local_dos_id),
+                            'nombre_completo_temporal' => $partido->jugadorLocalDos->nombre_completo_temporal,
+                        ]
+                    ]
+                    : [
+                        'v1' => [
+                            'nombres' => $partido->jugadorLocalUno->nombres,
+                            'apellidos' => $partido->jugadorLocalUno->apellidos,
+                            'imagen' => $obtenerImagenJugador($partido->jugador_local_uno_id),
+                            'nombre_completo_temporal' => $partido->jugadorLocalUno->nombre_completo_temporal,
+                        ]
+                    ];
+
+                $jugadoresRival = $torneoCategoria->multiple
+                    ? [
+                        'v1' => [
+                            'nombres' => $partido->jugadorRivalUno->nombres,
+                            'apellidos' => $partido->jugadorRivalUno->apellidos,
+                            'imagen' => $obtenerImagenJugador($partido->jugador_rival_uno_id),
+                            'nombre_completo_temporal' => $partido->jugadorRivalUno->nombre_completo_temporal,
+                        ],
+                        'v2' => [
+                            'nombres' => $partido->jugadorRivalDos->nombres,
+                            'apellidos' => $partido->jugadorRivalDos->apellidos,
+                            'imagen' => $obtenerImagenJugador($partido->jugador_rival_dos_id),
+                            'nombre_completo_temporal' => $partido->jugadorRivalDos->nombre_completo_temporal,
+                        ]
+                    ]
+                    : [
+                        'v1' => [
+                            'nombres' => $partido->jugadorRivalUno->nombres,
+                            'apellidos' => $partido->jugadorRivalUno->apellidos,
+                            'imagen' => $obtenerImagenJugador($partido->jugador_rival_uno_id),
+                            'nombre_completo_temporal' => $partido->jugadorRivalUno->nombre_completo_temporal,
+                        ]
+                    ];
+
+                return [
+                    'id' => $partido->id,
+                    'fecha_inicio' => $partido->fecha_inicio,
+                    'fecha_final' => $partido->fecha_final,
+                    'resultado' => $partido->resultado,
+                    'estado' => $partido->estado->nombre,
+                    'jugadores' => [
+                        'local' => $jugadoresLocal,
+                        'rival' => $jugadoresRival
+                    ],
+                    'sets' => [
+                        'local' => $partido->jugador_local_set,
+                        'rival' => $partido->jugador_rival_set
+                    ],
+                    'games' => [
+                        'local' => $partido->jugador_local_juego,
+                        'rival' => $partido->jugador_rival_juego
+                    ]
+                ];
+            });
+
+        // Preparar el modelo de exportación
+        $model = (object)[
+            'titulo' => 'La Confraternidad del Tenis',
+            'torneo' => $torneoCategoria->torneo->nombre,
+            'formato' => $torneoCategoria->torneo->formato?->nombre,
+            'multiple' => $torneoCategoria->multiple,
+            'categoria' => $torneoCategoria->multiple && ($torneoCategoria->categoriaSimple->id !== $torneoCategoria->categoriaDupla->id)
+                ? ($torneoCategoria->categoriaSimple->nombre . " + " . $torneoCategoria->categoriaDupla->nombre)
+                : ($torneoCategoria->categoriaSimple->nombre),
+            'fecha_inicio' => Carbon::parse($torneoCategoria->torneo->fecha_inicio)->format('Y-m-d'),
+            'fecha_final' => Carbon::parse($torneoCategoria->torneo->fecha_final)->format('Y-m-d'),
+            'grupo' => [
+                'nombre' => $grupo->nombre,
+                'partidos' => $partidos
+            ]
+        ];
+
+        // Generar contenido JSON
+        $content = json_encode($model);
+
+        // Generar nombre de archivo único
+        $filename = 'partidos_grupo_vs_' . 
+            $torneoCategoria->torneo->id . '_' . 
+            $torneo_categoria_id . '_' . 
+            $grupo_id . '_' . 
+            date('YmdHis') . 
+            '.txt';
+
+        // Guardar el contenido en un archivo
+        Storage::disk('public')->put('public/uploads/groups/' . $filename, $content);
+
+        // Devolver la URL del archivo JSON
+        return redirect(App::$URL_JSON_GROUPS_VS . '?json=' . env('APP_URL') . '/storage/public/uploads/groups/' . $filename);
+
+    } catch (\Exception $e) {
+        // Manejar errores
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al recuperar los partidos: ' . $e->getMessage()
+        ], 500);
+    }
+}
+
     public function exportGrupoJson(Request $request)
     {
         
@@ -13530,6 +13439,208 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
     }
     }   
 
+
+public function rankingsPartialViewFama(Request $request)
+{
+    $Model = Comunidad::where('principal', true)->first();
+
+    if($Model != null)
+    {
+        $Rankings = Ranking::where('comunidad_id', $Model->id)
+        ->whereHas('torneoCategoria', function($query) {
+            $query->where('multiple', false); // Solo torneos no múltiples
+        })
+        ->whereHas('torneo', function($query) {
+            $query->where('rankeado', true); // Solo torneos rankeados
+        })
+        ->where(function ($q) use ($request){
+            if($request->filter_categoria){ 
+                $q->whereHas('torneoCategoria', function($query) use ($request) {
+                    $query->where('categoria_simple_id', $request->filter_categoria);
+                });
+            }
+        })
+        ->get();
+
+        $RankingsResult = [];
+        foreach (Categoria::where('visible', true)->where('id', '!=', 3)->where('orden', '>', '0')
+            ->when($request->filter_categoria, function($query) use ($request) {
+                return $query->where('id', $request->filter_categoria);
+            })
+            ->orderBy('id', 'desc')
+            ->get() as $categoria)
+        {
+            $Object = ['categoria_id' => $categoria->id, 'categoria_name' => $categoria->nombre, 'multiple' => $categoria->dupla, 'jugadores' => []];
+            
+            // Obtener rankings para esta categoría
+            $rankingsCategorias = $Rankings->filter(function($ranking) use ($categoria) {
+                return $ranking->torneoCategoria->categoria_simple_id == $categoria->id;
+            });
+
+            $campeones = [];
+            foreach ($rankingsCategorias as $ranking)
+            {
+                // Buscar campeones (jugadores con más de 1000 puntos)
+                $campeonesRanking = $ranking->detalles
+                    ->filter(function($detalle) {
+                        return $detalle->puntos >= 1000;
+                    })
+                    ->sortByDesc('puntos')
+                    ->take(1); // Solo el primer campeón
+
+                foreach ($campeonesRanking as $campeon)
+                {
+                    $jugadorId = $categoria->dupla 
+                        ? ($campeon->jugadorSimple->id . '-' . $campeon->jugadorDupla->id) 
+                        : $campeon->jugadorSimple->id;
+
+                    // Verificar si el jugador ya existe en campeones
+                    $jugadorExistente = collect($campeones)->firstWhere('id', $jugadorId);
+
+                    if (!$jugadorExistente) {
+                        $campeones[] = [
+                            'id' => $jugadorId,
+                            'nombre' => $categoria->dupla 
+                                ? ($campeon->jugadorSimple->nombre_completo . ' + ' . $campeon->jugadorDupla->nombre_completo) 
+                                : $campeon->jugadorSimple->nombre_completo,
+                            'torneos' => [
+                                [
+                                    'id' => $ranking->torneo_id,
+                                    'nombre' => $ranking->torneo->nombre,
+                                    'anio' => Carbon::parse($ranking->torneo->fecha_inicio)->format('Y'),
+                                    'categorias' => [
+                                        [
+                                            'puntos' => $campeon->puntos,
+                                            'torneo_categoria_id' => $ranking->torneo_categoria_id
+                                        ]
+                                    ]
+                                ]
+                            ],
+                            'puntos' => $campeon->puntos
+                        ];
+                    } else {
+                        // Si el jugador ya existe, agregar el torneo
+                        $indice = array_search($jugadorExistente, $campeones);
+                        $campeones[$indice]['torneos'][] = [
+                            'id' => $ranking->torneo_id,
+                            'nombre' => $ranking->torneo->nombre,
+                            'anio' => Carbon::parse($ranking->torneo->fecha_inicio)->format('Y'),
+                            'categorias' => [
+                                [
+                                    'puntos' => $campeon->puntos,
+                                    'torneo_categoria_id' => $ranking->torneo_categoria_id
+                                ]
+                            ]
+                        ];
+                        $campeones[$indice]['puntos'] += $campeon->puntos;
+                    }
+                }
+            }
+
+            $Object['jugadores'] = $campeones;
+            $RankingsResult[] = (object)$Object;
+        }
+
+        // Obtener los torneos de los campeones
+        $Torneos = Torneo::whereIn('id', 
+            collect($RankingsResult)
+                ->flatMap(function($categoria) {
+                    return collect($categoria->jugadores)
+                        ->flatMap(function($jugador) {
+                            return collect($jugador['torneos'])->pluck('id');
+                        });
+                })
+                ->unique()
+                ->toArray()
+        )
+        ->where('rankeado', true)
+        ->orderBy('fecha_final', 'desc')
+        ->get();
+
+        $type = $request->type;
+
+        switch($type) {
+           case 'salon_fama':
+    $RankingsResultConPosiciones = [];
+    foreach ($RankingsResult as &$categoria) {
+        if (isset($categoria->jugadores)) {
+            // Ordenar jugadores por puntos y nombre
+            $jugadoresOrdenados = collect($categoria->jugadores)
+                ->sortBy([
+                    ['puntos', 'desc'],
+                    ['nombre', 'asc']
+                ]);
+
+            // Convertir a array para poder manipular
+            $jugadoresArray = $jugadoresOrdenados->toArray();
+
+            // Calcular posiciones considerando empates
+            $posicionesCalculadas = [];
+            $posicionActual = 1;
+            $ultimoPuntaje = null;
+            $empate = 0;
+
+            foreach ($jugadoresArray as $index => $jugador) {
+                // Si es el primer jugador o el puntaje es diferente al anterior
+                if ($ultimoPuntaje === null || $jugador['puntos'] != $ultimoPuntaje) {
+                    $posicionActual += $empate;
+                    $empate = 0;
+                }
+                
+                $posicionesCalculadas[$index] = $posicionActual;
+                $ultimoPuntaje = $jugador['puntos'];
+                $empate++;
+            }
+
+            // Agregar fotos y posiciones
+            $jugadoresConPosicion = array_map(function($jugador, $index) use ($posicionesCalculadas) {
+                // Agregar foto del jugador
+                $folderPath = 'uploads/img';
+                
+                // Manejar tanto jugadores individuales como de dupla
+                $jugadorId = is_string($jugador['id']) ? 
+                    explode('-', $jugador['id'])[0] : 
+                    $jugador['id'];
+                
+                $imagePath = "jugador_{$jugadorId}.png";
+                $fullImagePath = "{$folderPath}/{$imagePath}";
+
+                if (Storage::disk('public')->exists($fullImagePath)) {
+                    $jugador['foto'] = Storage::url($fullImagePath);
+                } else {
+                    $jugador['foto'] = Storage::url('uploads/img/default_player.png');
+                }
+
+                // Agregar posición
+                $jugador['posicion'] = $posicionesCalculadas[$index];
+
+                return $jugador;
+            }, $jugadoresArray, array_keys($jugadoresArray));
+
+            $categoria->jugadores = $jugadoresConPosicion;
+        }
+        
+        $RankingsResultConPosiciones[] = $categoria;
+    }
+
+    $content = json_encode($RankingsResultConPosiciones);
+    break;
+
+            default:
+                $content = json_encode($RankingsResult);
+        }
+
+        Storage::disk('public')->put('public/uploads/parcial_ranking/json.txt', $content);
+        
+        return redirect(App::$URL_JSON_SALON_FAMA.'?json='.env('APP_URL').'/storage/public/uploads/parcial_ranking/json.txt');
+    }
+    else
+    {
+        abort(404);
+    }
+}
+
+
     public function rankingsPartialView(Request $request)
     {
         $Model = Comunidad::where('principal', true)->first();
@@ -13541,6 +13652,12 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
                 // Filter by torneo_categoria_id if provided
                 if($request->has('torneos') && is_array($request->torneos)){
                     $q->whereIn('torneo_categoria_id', $request->torneos);
+                }
+            })
+            ->whereHas('torneoCategoria.torneo', function($query) use ($request) {
+                // Filtrar por carrera si se proporciona
+                if($request->has('carrera') && $request->carrera == true){
+                    $query->where('carrera', true);
                 }
             })
             ->get();
@@ -13556,7 +13673,7 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
 
             $TorneoCategorias = TorneoCategoria::whereIn('id', array_values(array_unique(array_filter($Rankings->pluck('torneo_categoria_id')->toArray()))))->orderBy('id', 'desc')->get();
             $Categorias = Categoria::whereIn('id', array_values(array_unique(array_filter($TorneoCategorias->pluck('categoria_simple_id')->toArray()))))
-            ->where('visible', true)->where('id', '!=', 3)->where('orden', '>', '0')
+            ->where('visible', true)->where('orden', '>', '0')
             ->where(function ($q) use ($request){
                 if($request->filter_categoria){ $q->where('id', $request->filter_categoria); }
             })->orderBy('id', 'desc')->get();
@@ -13568,7 +13685,15 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
                 $TorneoCategoria = TorneoCategoria::where('categoria_simple_id', $q->id)->get();
 
                 $Object['categoria_id'] = $q->id;
+                $Object['categoria_name'] = $q->nombre;
                 $Object['multiple'] = $q->dupla;
+                $Object['type'] =  $request->type;
+                $Object['maestros'] =  $request->maestros;
+                if ($request->maestros == "false") {
+                    // When maestros is false, get the tournament name
+                    $tournamentsForCategory = $Torneos->whereIn('id', $TorneoCategoria->pluck('torneo_id'));
+                    $Object['tournament_name'] = $tournamentsForCategory->first()->nombre;
+                }
                 foreach ($TorneoCategoria as $q2)
                 {
                     foreach ($Rankings->where('torneo_categoria_id', $q2->id) as $q3)
@@ -13577,6 +13702,8 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
                         {
                             foreach ($q3->detalles as $q4)
                             {
+                                  
+
                                 $Id = $q->dupla ? ($q4->jugadorSimple->id . '-' . $q4->jugadorDupla->id) : $q4->jugadorSimple->id;
                                 if (!in_array($Id, $JugadoresIds))
                                 {
@@ -13584,6 +13711,9 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
                                     $Puntos = 0;
                                     $ObjectJugador['id'] = $Id;
                                     $ObjectJugador['nombre'] = $q->dupla ? ($q4->jugadorSimple->nombre_completo . ' + ' . $q4->jugadorDupla->nombre_completo) : $q4->jugadorSimple->nombre_completo;
+                                      $ObjectJugador['considerado_ranking'] = $q4->considerado_ranking;
+                                      $ObjectJugador['nombres'] = $q->dupla ? ($q4->jugadorSimple->nombres. ' + ' . $q4->jugadorDupla->nombres) : $q4->jugadorSimple->nombres;
+                                        $ObjectJugador['apellido'] = $q->dupla ? ($q4->jugadorSimple->apellidos) : $q4->jugadorSimple->apellidos;
 
                                     foreach ($Torneos as $q5)
                                     {
@@ -13629,7 +13759,9 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
                                     $Object['jugadores'][] = $ObjectJugador;
 
                                     $JugadoresIds[] = $Id;
+                                    
                                 }
+                                
                             }
                         }
                     }
@@ -13680,30 +13812,432 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
                 }
             }
 
-            if(true){
-                $content = json_encode($RankingsResult);
+            
+        $type = $request->type;
 
+switch($type) {
+    case 'top_ten':
+        $RankingsResultTopTen = [];
+        foreach ($RankingsResult as &$categoria) {
+            if (isset($categoria->jugadores)) {
+                
+            // Obtener jugadores
+            $jugadoresColeccion = collect($categoria->jugadores);
+
+            // Si es modo carrera, filtrar solo jugadores considerados
+            if ($request->maestros === "true") {
+                $jugadoresColeccion = $jugadoresColeccion->filter(function($jugador) {
+                    return isset($jugador['considerado_ranking']) && $jugador['considerado_ranking'] == 1;
+                });
+            }
+
+            // Ordenar primero por puntos de mayor a menor
+            $jugadoresOrdenados = $jugadoresColeccion
+                ->sortByDesc('puntos')
+                ->take(10);
+
+                // Convertir a array para poder manipular
+                $jugadoresArray = $jugadoresOrdenados->toArray();
+
+                // Calcular posiciones
+                $posicionesCalculadas = [];
+                $posicionActual = 1;
+                $ultimoPuntaje = null;
+                $empate = 0;
+
+                foreach ($jugadoresArray as $index => $jugador) {
+                    // Si es el primer jugador o el puntaje es diferente al anterior
+                    if ($ultimoPuntaje === null || $jugador['puntos'] != $ultimoPuntaje) {
+                        $posicionActual += $empate;
+                        $empate = 0;
+                    }
+                    
+                    $posicionesCalculadas[$index] = $posicionActual;
+                    $ultimoPuntaje = $jugador['puntos'];
+                    $empate++;
+                }
+
+                // Agregar fotos y posiciones
+                $jugadoresConPosicion = array_map(function($jugador, $index) use ($posicionesCalculadas) {
+                    // Agregar foto del jugador
+                    $folderPath = 'uploads/img';
+                    
+                    // Manejar tanto jugadores individuales como de dupla
+                    $jugadorId = is_string($jugador['id']) ? 
+                        explode('-', $jugador['id'])[0] : 
+                        $jugador['id'];
+                    
+                    $imagePath = "jugador_{$jugadorId}.png";
+                    $fullImagePath = "{$folderPath}/{$imagePath}";
+
+                    if (Storage::disk('public')->exists($fullImagePath)) {
+                        $jugador['foto'] = Storage::url($fullImagePath);
+                    } else {
+                        $jugador['foto'] = Storage::url('uploads/img/default_player.png');
+                    }
+
+                    // Agregar posición
+                    $jugador['posicion'] = $posicionesCalculadas[$index];
+
+                    return $jugador;
+                }, $jugadoresArray, array_keys($jugadoresArray));
+
+                $categoria->jugadores = $jugadoresConPosicion;
+            }
+            
+            $RankingsResultTopTen[] = $categoria;
+        }
+
+        $content = json_encode($RankingsResultTopTen);
+        break;
+
+    case 'lista_ranking':
+    $RankingsResultConPosiciones = [];
+    foreach ($RankingsResult as &$categoria) {
+        if (isset($categoria->jugadores)) {
+           // Obtener jugadores
+            $jugadoresColeccion = collect($categoria->jugadores);
+
+            // Si es modo carrera, filtrar solo jugadores considerados
+            if ($request->maestros === "true") {
+                $jugadoresColeccion = $jugadoresColeccion->filter(function($jugador) {
+                    return isset($jugador['considerado_ranking']) && $jugador['considerado_ranking'] == 1;
+                });
+            }
+
+            // Ordenar primero por puntos de mayor a menor
+            $jugadoresOrdenados = $jugadoresColeccion
+                ->sortByDesc('puntos')
+                ;
+
+            // Convertir a array para poder manipular
+            $jugadoresArray = $jugadoresOrdenados->toArray();
+
+            // Calcular posiciones
+            $posicionesCalculadas = [];
+            $posicionActual = 1;
+            $ultimoPuntaje = null;
+            $empate = 0;
+
+            foreach ($jugadoresArray as $index => $jugador) {
+                // Si es el primer jugador o el puntaje es diferente al anterior
+                if ($ultimoPuntaje === null || $jugador['puntos'] != $ultimoPuntaje) {
+                    $posicionActual += $empate;
+                    $empate = 0;
+                }
+                
+                $posicionesCalculadas[$index] = $posicionActual;
+                $ultimoPuntaje = $jugador['puntos'];
+                $empate++;
+            }
+
+            // Agregar posiciones
+            $jugadoresConPosicion = array_map(function($jugador, $index) use ($posicionesCalculadas) {
+                // Agregar posición
+                $jugador['posicion'] = $posicionesCalculadas[$index];
+
+                return $jugador;
+            }, $jugadoresArray, array_keys($jugadoresArray));
+
+            $categoria->jugadores = $jugadoresConPosicion;
+        }
+        
+        $RankingsResultConPosiciones[] = $categoria;
+    }
+
+    $content = json_encode($RankingsResultConPosiciones);
+    break;
+
+    case 'salon_fama':
+                $content = json_encode($RankingsResult);
+        break;
+
+    default:
+        $content = json_encode($RankingsResult);
+}
        
                 Storage::disk('public')->put('public/uploads/parcial_ranking/json.txt', $content);
                 
-                return redirect(App::$URL_JSON_PARCIAL_RANKING.'?json='.env('APP_URL').'/storage/public/uploads/parcial_ranking/json.txt');
+        // Seleccionar la URL base según el tipo
+        switch($type) {
+            case 'top_ten':
+                $urlBase = App::$URL_JSON_PARCIAL_RANKING;
+                break;
+            case 'lista_ranking':
+                $urlBase = App::$URL_JSON_ALL_RANKING;
+                break;
+            case 'salon_fama':
+                $urlBase = App::$URL_JSON_SALON_FAMA;
+                break;
+            default:
+                $urlBase = App::$URL_JSON_PARCIAL_RANKING;
+        }
+        
+        return redirect($urlBase.'?json='.env('APP_URL').'/storage/public/uploads/parcial_ranking/json.txt');
+    }
+    else
+    {
+        abort(404);
+    }
+}
+
+
+
+
+public function resultadoRanking(Request $request)
+{
+    $entity = null;
+    $Result = (object)['Success' => false, 'Message' => null];
+
+    try {
+        DB::beginTransaction();
+
+        // Obtener el partido actual
+        $partido = Partido::findOrFail($request->partido_id);
+        
+        $TorneoCategoria = TorneoCategoria::where('id', $partido->torneo_categoria_id)
+            ->whereHas('torneo', function ($q){
+                $q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);
+            })->first();
+
+        if($TorneoCategoria != null)
+        {
+            // Crear o obtener el Ranking
+            $Ranking = Ranking::firstOrCreate(
+                [
+                    'torneo_id' => $TorneoCategoria->torneo_id,
+                    'torneo_categoria_id' => $TorneoCategoria->id,
+                    'comunidad_id' => Auth::guard('web')->user()->comunidad_id
+                ],
+                [
+                    'multiple' => $TorneoCategoria->multiple,
+                    'user_create_id' => Auth::guard('web')->user()->id
+                ]
+            );
+
+            // Obtener todos los jugadores de la categoría
+            $jugadores = DB::table('torneo_jugadors')
+                ->where('torneo_jugadors.torneo_categoria_id', $TorneoCategoria->id)
+                ->whereNull('torneo_jugadors.deleted_at')
+                ->get();
+
+            // Obtener todos los partidos finalizados de esta categoría
+            $partidos = Partido::where('torneo_categoria_id', $TorneoCategoria->id)
+                ->where('estado_id', 2) // Estado finalizado
+                ->whereNull('deleted_at')
+                ->get();
+
+            $partidosv2 = Partido::where('torneo_categoria_id', $TorneoCategoria->id)
+                ->whereIn('estado_id', [1,2]) // Estado finalizado
+                ->whereNull('deleted_at')
+                ->get();
+
+
+            // Inicializar arrays
+            $puntosAcumulados = [];
+            $mejoresPosiciones = [];
+
+            // Primera fase: Calcular puntos por victoria/derrota
+            foreach($partidos as $partidoActual) {
+                // Identificar ganador y perdedor
+                $ganadorId = $partidoActual->jugador_ganador_uno_id;
+                $perdedorId = $partidoActual->jugador_local_uno_id == $ganadorId 
+                    ? $partidoActual->jugador_rival_uno_id 
+                    : $partidoActual->jugador_local_uno_id;
+
+                if(!isset($puntosAcumulados[$ganadorId])) {
+                    $puntosAcumulados[$ganadorId] = 0;
+                }
+                if(!isset($puntosAcumulados[$perdedorId])) {
+                    $puntosAcumulados[$perdedorId] = 0;
+                }
+
+                // Calcular puntos del partido
+                $formatosWO = ['WO', 'W.O', 'W.O.', 'W/O', 'WALKOVER'];
+                $resultado = strtoupper($partidoActual->resultado);
+                $esWO = false;
+                foreach($formatosWO as $formato) {
+                    if(str_contains($resultado, $formato)) {
+                        $esWO = true;
+                        break;
+                    }
+                }
+
+                if($esWO) {
+                    $puntosAcumulados[$ganadorId] += 15;
             }else{
+                    $setsGanador = max($partidoActual->jugador_local_set, $partidoActual->jugador_rival_set);
+                    $setsPerdedor = min($partidoActual->jugador_local_set, $partidoActual->jugador_rival_set);
 
+                    if($setsGanador == 2 && $setsPerdedor == 0) {
+                        $puntosAcumulados[$ganadorId] += 15;
+                    } else if($setsGanador == 2 && $setsPerdedor == 1) {
+                        $puntosAcumulados[$ganadorId] += 10;
+                        $puntosAcumulados[$perdedorId] += 5;
+                    }
+                }
 
-
-            return view('auth.ranking.ajax.partialView', ['Torneos' => $Torneos,
-            'Rankings' => collect($RankingsResult), 'Anios' => $Anios,
-            'Landing' => true,
-            'RankingsResultYear' => $RankingsResultYear != null ? collect($RankingsResultYear) : null,
-            'TorneoCategorias' => $TorneoCategorias,
-            'Categorias' => $Categorias,
-            'filterCategoria' => $request->filter_categoria]);
+                \Log::info("Puntos partido {$partidoActual->id} - Ganador ID $ganadorId: {$puntosAcumulados[$ganadorId]}, Perdedor ID $perdedorId: {$puntosAcumulados[$perdedorId]}");
             }
 
+            // Segunda fase: Determinar mejor posición de cada jugador
+            foreach($jugadores as $jugador) {
+                $mejorPuesto = $this->determinarMejorPuesto($jugador->jugador_simple_id, $partidosv2);
+                if($mejorPuesto) {
+                    $puntosPorPuesto = $this->getPuntajePorPuesto($mejorPuesto);
+                    if(!isset($puntosAcumulados[$jugador->jugador_simple_id])) {
+                        $puntosAcumulados[$jugador->jugador_simple_id] = 0;
+                    }
+                    $puntosAcumulados[$jugador->jugador_simple_id] += $puntosPorPuesto;
+                    \Log::info("Jugador ID {$jugador->jugador_simple_id} - Puesto: $mejorPuesto, Puntos por puesto: $puntosPorPuesto");
+                }
+            }
+
+            // Actualizar RankingDetalle para todos los jugadores
+            foreach($jugadores as $jugador) {
+                $puntosFinales = $puntosAcumulados[$jugador->jugador_simple_id] ?? 0;
+                \Log::info("Actualizando jugador {$jugador->jugador_simple_id} con puntos finales: $puntosFinales");
+
+                RankingDetalle::updateOrCreate(
+                    [
+                        'ranking_id' => $Ranking->id,
+                        'jugador_simple_id' => $jugador->jugador_simple_id,
+                    ],
+                    [
+                        'puntos' => $puntosFinales,
+                        'updated_at' => Carbon::now()
+
+                    ]
+                );
+            }
+
+            DB::commit();
+            $Result->Success = true;
+            $Result->Message = "Ranking actualizado correctamente";
         }else{
-            abort(404);
+            $Result->Message = "La categoría del torneo no se encuentra disponible";
+        }
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        $Result->Message = $e->getMessage();
+    }
+
+    return response()->json($Result);
+}
+
+private function determinarMejorPuesto($jugadorId, $partidos) {
+    \Log::info("V1 ID: $jugadorId");
+
+    // Obtener todos los partidos del jugador
+    $partidosJugador = $partidos->filter(function($partido) use ($jugadorId) {
+        return ($partido->jugador_local_uno_id == $jugadorId || 
+                $partido->jugador_rival_uno_id == $jugadorId) &&
+                $partido->fase !== null;
+    })->sortBy('fase');
+
+
+    \Log::info("V2 ID: $partidosJugador");
+
+    if($partidosJugador->isEmpty()) {
+        return null;
+    }
+
+    // Verificar si tiene partido pendiente
+    $partidoPendiente = $partidosJugador->first(function($partido) {
+        return $partido->estado_id === 1;
+    });
+
+    // Obtener partidos finalizados
+    $partidosFinalizados = $partidosJugador->where('estado_id', 2);
+
+    // Buscar última victoria en partidos finalizados
+    $ultimaVictoria = $partidosFinalizados->first(function($partido) use ($jugadorId) {
+        return $partido->jugador_ganador_uno_id == $jugadorId;
+    });
+
+      // Buscar última derrota en partidos finalizados
+    $ultimaDerrota = $partidosFinalizados->first(function($partido) use ($jugadorId) {
+        return $partido->jugador_ganador_uno_id !== null && 
+               $partido->jugador_ganador_uno_id != $jugadorId;
+    });
+    // Si tiene partido pendiente
+    if($partidoPendiente) {
+        \Log::info("Jugador ID: $jugadorId - Tiene partido pendiente en fase: {$partidoPendiente->fase}");
+        
+        if($ultimaVictoria) {
+            \Log::info("ultimaVictoria->fase ID: $jugadorId - Tiene partido pendiente en fase: {$ultimaVictoria->fase}");
+
+            switch($ultimaVictoria->fase) {
+                case 2: return 'SEMIFINAL';   // Ganó semifinal, pendiente final
+                case 4: return 'CUARTOS';    // Ganó cuartos, pendiente semifinal
+                case 8: return 'OCTAVOS';    // Ganó octavos, pendiente cuartos
+                case 16: return 'DIECISEISAVOS'; // Ganó dieciseisavos, pendiente octavos
+            }
+        }
+    } 
+    // Si no tiene partidos pendientes
+    else {
+        // Si tiene victorias
+        if($ultimaVictoria) {
+            $ultimoPartidoFinalizado = $partidosFinalizados->first();
+            \Log::info(message: "CAMPEON: {$ultimoPartidoFinalizado}");
+
+            // Si el último partido fue la final
+            if($ultimoPartidoFinalizado->fase == 1) {
+                \Log::info(message: "CAMPEON: {$ultimoPartidoFinalizado}");
+
+                return $ultimoPartidoFinalizado->jugador_ganador_uno_id == $jugadorId ? 
+                       'CAMPEON' : 'SUBCAMPEON';
+            }
+
+            // Si tiene una derrota en una fase menor que su última victoria
+            if($ultimaDerrota && $ultimaDerrota->fase < $ultimaVictoria->fase) {
+                switch($ultimaDerrota->fase) {
+                    case 2: return 'SEMIFINAL';
+                    case 4: return 'CUARTOS';
+                    case 8: return 'OCTAVOS';
+                }
+            }
+            
+            // Si no, usar la fase de su última victoria
+            switch($ultimaVictoria->fase) {
+                case 2: return 'SEMIFINAL';
+                case 4: return 'CUARTOS';
+                case 8: return 'OCTAVOS';
+                case 16: return null;
+            }
+        }
+        // Si no tiene victorias, ver dónde fue eliminado
+        else if($ultimaDerrota) {
+            switch($ultimaDerrota->fase) {
+                case 1: return 'SUBCAMPEON';
+                case 2: return 'SEMIFINAL';
+                case 4: return 'CUARTOS';
+                case 8: return 'OCTAVOS';
+                case 16: return null;
+            }
         }
     }
 
+    return null;
+        }
+
+private function getPuntajePorPuesto($puesto) {
+    if($puesto === null) {
+        return 0;
+    }
+
+    $puntajes = [
+        'CAMPEON' => 1000,    // Ganador de la final
+        'SUBCAMPEON' => 700,  // Perdedor de la final
+        'SEMIFINAL' => 500,   // Eliminado en semifinal
+        'CUARTOS' => 200,     // Eliminado en cuartos
+        'OCTAVOS' => 100,     // Eliminado en octavos
+        'DIECISEISAVOS' => 0  // Eliminado en dieciseisavos
+    ];
+
+    return $puntajes[$puesto] ?? 0;
+}
    
 }

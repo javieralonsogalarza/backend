@@ -88,4 +88,9 @@ class Partido extends Model
                 ->orWhere('jugador_rival_uno_id', $this->jugador_rival_uno_id)->orWhere('jugador_rival_uno_id', $this->jugador_rival_uno_id);
             })->get()) > 0) : false;
     }
+    
+     public function estado()
+    {
+        return $this->belongsTo(Estado::class, 'estado_id', 'id');
+    }
 }

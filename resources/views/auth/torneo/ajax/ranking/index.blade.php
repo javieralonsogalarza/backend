@@ -1,6 +1,6 @@
 @inject('App', 'App\Models\App')
 
-@if(true)
+@if($TorneoCategoria != null && $TablePositions != null &&  count($TablePositions) > 0)
     <div class="row mt-1">
         <div class="col-md-12">
             <table class="table table-bordered table-striped">
@@ -12,8 +12,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach($TablePositions->sortByDesc('puntos') as $key => $q)
-
+                    @foreach($TablePositions as $key => $q)
                         <tr>
                             <td width="50" align="center" class="align-middle text-center">{{ ($key+1) }}</td>
                             <td>{{ $q['nombres'] }}</td>
@@ -32,7 +31,16 @@
     @if($TorneoCategoria->estado_id == \App\Models\App::$ESTADO_PENDIENTE)
         <div class="row">
             <div class="col-md-12 text-right">
-                <button type="button" class="btn btn-finish-torneo btn-primary">Generar Rankings </button> 
+                <button type="button" class="btn btn-finish-torneo btn-primary" data-action="editar">Editar Ranking</button>
+                <button type="button" class="btn btn-finish-torneo btn-primary" data-action="finalizar">Finalizar torneo</button>
+   
+            </div>
+        </div>
+    @endif
+    @if($TorneoCategoria->estado_id == \App\Models\App::$ESTADO_FINALIZADO)
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-finish-torneo btn-primary" data-action="editar">Editar Ranking</button>
             </div>
         </div>
     @endif
@@ -53,11 +61,15 @@
         $("input.numeric").inputmask("numeric", { min: 0, digits: 0, removeMaskOnSubmit: true, groupSeparator: ",", groupSize: 3 });
         $(".btn-finish-torneo").on("click", function (){
             const $this = $(this);
+            const action = $this.data('action');
             const formData = new FormData();
             formData.append('_token', $("meta[name=csrf-token]").attr("content"));
             formData.append('torneo_id', {{ $TorneoCategoria->torneo->id }});
             formData.append('torneo_categoria_id', {{ $TorneoCategoria->id }});
             formData.append('rakings', JSON.stringify(rankings($this)));
+            if (action === 'finalizar') {
+                formData.append('finalizar', 'true');
+            }
             confirmAjax(`/auth/{{ strtolower($ViewName)}}/finish`, formData, "POST", `¿Está seguro de editar el ranking de {{ $TorneoCategoria->multiple && ($TorneoCategoria->categoriaSimple->id !== $TorneoCategoria->categoriaDupla->id) ? ($TorneoCategoria->categoriaSimple->nombre." + ".$TorneoCategoria->categoriaDupla->nombre) : ($TorneoCategoria->categoriaSimple->nombre)."".($TorneoCategoria->multiple ? " (Doble) " : "") }} categoría?`, null, function (){
                 invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $TorneoCategoria->torneo->id }}/{{ $TorneoCategoria->id }}/3`, function(data){
                     $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
