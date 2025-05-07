@@ -242,6 +242,7 @@
                                          @endif
                                             <button type="button" class="btn btn-primary btn-generate-json-grupo" data-category="{{ $q->id }}">Generar Json</button>
                                           <button style="margin-left: 10px" type="button" class="btn btn-primary btn-generate-json-grupo-vs" data-category="{{ $q->id }}">Generar Json Vs</button>
+                                          <li class="mr-1"><button type="button" class="btn btn-danger btn-delete-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Eliminar keys generados</button></li>
                                         </ul>
                                     </div>
                                 @endif
@@ -281,6 +282,8 @@
                                                 <div class="tab-pane p-2 fade {{ $key4 == 0 ? "show active" : "" }}" id="custom-tabs-grupo-{{ $q->id }}-{{ $q4->grupo_id }}" role="tabpanel" aria-labelledby="custom-tabs-grupo-{{ $q->id }}-{{ $q4->grupo_id }}-tab">
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <div><h5>Jugadores</h5></div>
+                                                        <button style="margin-left: 10px" type="button" class="btn btn-primary btn-delete-group" data-category="{{ $q->id }}" data-group="{{ $q4->grupo_id }}">Eliminar grupo</button>
+
                                                     </div>
                                                     <div class="row mt-1">
                                                         <div class="col-md-12">
@@ -940,7 +943,7 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
         });
 
         const $btnGenerateKeys = $(".btn-generate-keys"), $btnGenerateKeysRandom = $(".btn-generate-keys-random"),
-        $btnManualKeys = $(".btn-manual-keys"), $btnDeleteKeys = $(".btn-delete-keys"), $btnGenerateKeysZonas = $(".btn-generate-keys-zonas");
+        $btnManualKeys = $(".btn-manual-keys"), $btnDeleteKeys = $(".btn-delete-keys"), $btnGenerateKeysZonas = $(".btn-generate-keys-zonas"),$btnDeleteGroups = $(".btn-delete-group");
 
         $btnGenerateKeys.on("click", function (){
             const $this = $(this);
@@ -988,7 +991,6 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
 
                 } else {
                     if ($table.find("tbody tr").length < 8) Toast.fire({icon: 'error', title: `Por favor, registre al menos ${(8 - $table.find("tbody tr").length)} jugadores más para generar las llaves`});
-                    else if ($table.find("tbody tr").length > 64) Toast.fire({icon: 'error', title: `Por favor, solo puede registrar como máximo 64 jugadores para generar las llaves`});
                 }
             }else Toast.fire({icon: 'error', title: 'No existen jugadores disponibles para generar las llaves'});
         });
@@ -1095,7 +1097,7 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
                     });
                 } else {
                     if ($table.find("tbody tr").length < 8) Toast.fire({icon: 'error', title: `Por favor, registre al menos ${(8 - $table.find("tbody tr").length)} jugadores más para generar las llaves`});
-                    else if ($table.find("tbody tr").length > 64) Toast.fire({icon: 'error', title: `Por favor, solo puede registrar como máximo 64 jugadores para generar las llaves`});
+                    else if ($table.find("tbody tr").length > 64) Toast.fire({icon: 'error', title: ``});
                 }
             }else Toast.fire({icon: 'error', title: 'No existen jugadores disponibles para generar las llaves'});
         });
@@ -1202,7 +1204,7 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
                     });
                 } else {
                     if ($table.find("tbody tr").length < 8) Toast.fire({icon: 'error', title: `Por favor, registre al menos ${(8 - $table.find("tbody tr").length)} jugadores más para generar las llaves`});
-                    else if ($table.find("tbody tr").length > 64) Toast.fire({icon: 'error', title: `Por favor, solo puede registrar como máximo 64 jugadores para generar las llaves`});
+                    else if ($table.find("tbody tr").length > 64) Toast.fire({icon: 'error', title: ``});
                 }
             }else Toast.fire({icon: 'error', title: 'No existen jugadores disponibles para generar las llaves'});
         });
@@ -1215,6 +1217,24 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
             formData.append('torneo_id', {{ $Model->id }});
             formData.append('torneo_categoria_id', id);
             confirmAjax(`/auth/{{strtolower($ViewName)}}/grupo/delete`, formData, `POST`, `¿Está seguro de eliminar las llaves generadas ?`, null, function (data){
+                if(data.Success){
+                    invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${id}`, function(data){
+                        $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
+                    });
+                }else Toast.fire({icon: 'error', title: 'Algo salió mal, hubo un error al guardar.'});
+            });
+        });
+
+        $btnDeleteGroups.on("click", function (){
+            const $this = $(this);
+            const id = $this.attr("data-category");
+            const group_id = $this.attr("data-group");
+            const formData = new FormData();
+            formData.append('_token', $("meta[name=csrf-token]").attr("content"));
+            formData.append('torneo_id', {{ $Model->id }});
+            formData.append('torneo_categoria_id', id);
+            formData.append('group_id', group_id);
+            confirmAjax(`/auth/{{strtolower($ViewName)}}/grupo/unique/delete`, formData, `POST`, `¿Está seguro de eliminar las llaves generadas ?`, null, function (data){
                 if(data.Success){
                     invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${id}`, function(data){
                         $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
@@ -1250,7 +1270,7 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
                     });
                 } else {
                     if ($table.find("tbody tr").length < 8) Toast.fire({icon: 'error', title: `Por favor, registre al menos ${(8 - $table.find("tbody tr").length)} jugadores más para generar las llaves`});
-                    else if ($table.find("tbody tr").length > 64) Toast.fire({icon: 'error', title: `Por favor, solo puede registrar como máximo 64 jugadores para generar las llaves`});
+                    else if ($table.find("tbody tr").length > 64) Toast.fire({icon: 'error', title: ``});
                 }
             }else Toast.fire({icon: 'error', title: 'No existen jugadores disponibles para generar las llaves'});
         });

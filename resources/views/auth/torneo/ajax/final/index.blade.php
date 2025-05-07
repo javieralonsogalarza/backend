@@ -51,7 +51,7 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
     @if(!$landing)
         @if(
         count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('estado_id', $App::$ESTADO_PENDIENTE)) == 0 &&
-        count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->whereNotNull('fase')) == 0)
+        count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->whereNotNull('fase')->whereNull('deleted_at')) == 0)
             <div class="row mt-3">
                 <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
                     <li class="mr-1"><button type="button" class="btn btn-primary btn-add-three-players-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="0"><i class="fa fa-users"></i> ¿Agregar Mejores 3ros?</button></li>

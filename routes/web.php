@@ -138,6 +138,9 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::post('grupo/store', [Auth\TorneoController::class, 'grupoStore'])->name('grupo.store');
                             Route::post('grupo/delete', [Auth\TorneoController::class, 'grupoDelete'])->name('grupo.delete');
 
+
+                            Route::post('grupo/unique/delete', [Auth\TorneoController::class, 'grupoDeleteUnique'])->name('grupo.unique.delete');
+
                             Route::get('grupo/partido/partialView/{id}/{torneo_categoria_id}/{torneo_grupo_id}', [Auth\TorneoController::class, 'grupoPartidoPartialView'])->name('grupo.partido.partialView');
                             Route::post('grupo/partido/store', [Auth\TorneoController::class, 'grupoPartidoStore'])->name('grupo.partido.store');
 
