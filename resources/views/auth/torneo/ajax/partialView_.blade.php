@@ -91,9 +91,7 @@
         }
 
         OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}"), $modal, function (data){
-            if(data.Repeat){
-                Swal.fire({icon: 'warning', title: 'Algunos jugadores que acaba de asignar ya se enfrentaron con anterioridad en el torneo anterior en la fase de grupos.'});
-            }
+            
         });
         OnFailure{{$ViewName}} = () => onFailureForm();
     });

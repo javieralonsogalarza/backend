@@ -34,7 +34,17 @@ class App
     public static $URL_JSON_MATCHES = 'https://laconfraternidaddeltenis.com/segundo_modulo/tennis/';
     public static $URL_JSON_PLAYERS = 'https://laconfraternidaddeltenis.com/tercer_modulo/jugadores.php';
     public static $URL_JSON_GROUPS = 'https://laconfraternidaddeltenis.com/tercer_modulo/grupos.php';
+    public static $URL_JSON_VS = 'https://laconfraternidaddeltenis.com/cuarto_modulo/tennis/';
+    
+    public static $URL_JSON_MAP_FIGURAS = 'https://laconfraternidaddeltenis.com/quinto_modulo/';
 
+    public static $URL_JSON_PARCIAL_RANKING = 'https://laconfraternidaddeltenis.com/sexto_modulo/jugadores.php';
+    public static $URL_JSON_ALL_RANKING = 'https://laconfraternidaddeltenis.com/sexto_modulo/grupos.php';
+
+    public static $URL_JSON_SALON_FAMA = 'https://laconfraternidaddeltenis.com/sexto_modulo/salon_fama.php';
+    
+    public static $URL_JSON_GROUPS_VS = 'https://laconfraternidaddeltenis.com/septimo_modulo/grupos.php';
+    
     public static function ApiServiceCaptcha($recaptcha)
     {
         $message = null; $success = false; $result = null;

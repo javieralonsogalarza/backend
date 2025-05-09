@@ -96,7 +96,7 @@
             "columns": [
                 {
                     width: "20px",
-                    title: `${$isMultiple ? "" : "<label class='container-label m-0'><input type='checkbox' id='selectAll'/><span class='checkmark'></span></label>"}`,
+                    title: `${true ? "" : "<label class='container-label m-0'><input type='checkbox' id='selectAll'/><span class='checkmark'></span></label>"}`,
                     className: "text-center",
                     data: null,
                     render: function (data) {

@@ -215,9 +215,105 @@
         });
 
         OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}"), $modal, function (data){
-            if(data.Repeat != null){ Swal.fire({icon: 'warning', title: 'Los jugadores que acaba de asignar ya se enfrentaron con anterioridad.'}); }
+            if(data.Repeat != null){  }
         });
         OnFailure{{$ViewName}} = () => onFailureForm();
-    })
+        function verificarClasificacionJugadores() {
+        const jugadoresNoClasificados = [];
+        
+        // Verificar jugador local
+        const localOption = $jugador_local_id.select2('data')[0];
+        if (localOption && localOption.clasificado === false) {
+            jugadoresNoClasificados.push(localOption.text);
+        }
+
+        // Verificar jugador rival
+        const rivalOption = $jugador_rival_id.select2('data')[0];
+        if (rivalOption && rivalOption.clasificado === false) {
+            jugadoresNoClasificados.push(rivalOption.text);
+        }
+
+        return jugadoresNoClasificados;
+    }
+
+    // Modificar la función de éxito para manejar la validación
+   // Modificar la función de éxito para manejar la validación
+   window.OnSuccess{{$ViewName}} = function(data) {
+    const jugadoresNoClasificados = verificarClasificacionJugadores();
+
+    if (jugadoresNoClasificados.length > 0) {
+        // Generar mensaje basado en género y cantidad
+        const generarMensaje = () => {
+            if (jugadoresNoClasificados.length === 1) {
+                const jugador = jugadoresNoClasificados[0];
+                return jugador.sexo === 'F' 
+                    ? `La siguiente jugadora no pertenece al cuadro principal:<br>${jugador.nombre}` 
+                    : `El siguiente jugador no pertenece al cuadro principal:<br>${jugador.nombre}`;
+            } else {
+                // Verificar si hay una mezcla de géneros
+                const tieneHombres = jugadoresNoClasificados.some(j => j.sexo === 'M');
+                const tieneMujeres = jugadoresNoClasificados.some(j => j.sexo === 'F');
+
+                if (tieneHombres && tieneMujeres) {
+                    return `Los siguientes jugadores no pertenecen al cuadro principal:<br>${jugadoresNoClasificados.map(j => j.nombre).join('<br>')}`;
+                } else if (jugadoresNoClasificados.every(j => j.sexo === 'F')) {
+                    return `Las siguientes jugadoras no pertenecen al cuadro principal:<br>${jugadoresNoClasificados.map(j => j.nombre).join('<br>')}`;
+                } else {
+                    return `Los siguientes jugadores no pertenecen al cuadro principal:<br>${jugadoresNoClasificados.map(j => j.nombre).join('<br>')}`;
+                }
+            }
+        };
+
+        Swal.fire({
+            title: "Confirmación",
+            html: generarMensaje(),
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Si, Confirmar',
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Llamar a la función de éxito original
+                onSuccessForm(data, $("form#frm{{$ViewName}}"), $modal, function(data){
+                    if(data.Repeat != null){  }
+                });
+            }
+        });
+    } else {
+        // Si todos están clasificados, proceder normalmente
+        onSuccessForm(data, $("form#frm{{$ViewName}}"), $modal, function(data){
+            if(data.Repeat != null){  }
+        });
+    }
+};
+
+// Función para verificar clasificación de jugadores
+function verificarClasificacionJugadores() {
+    const jugadoresNoClasificados = [];
+    
+    // Verificar jugador local
+    const localOption = $jugador_local_id.select2('data')[0];
+    if (localOption && localOption.clasificado === false) {
+        jugadoresNoClasificados.push({
+            nombre: localOption.text,
+            sexo: localOption.sexo // Asumiendo que viene en el objeto
+        });
+    }
+
+    // Verificar jugador rival
+    const rivalOption = $jugador_rival_id.select2('data')[0];
+    if (rivalOption && rivalOption.clasificado === false) {
+        jugadoresNoClasificados.push({
+            nombre: rivalOption.text,
+            sexo: rivalOption.sexo // Asumiendo que viene en el objeto
+        });
+    }
+
+    return jugadoresNoClasificados;
+}
+});
 </script>
 

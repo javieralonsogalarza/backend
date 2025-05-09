@@ -13,9 +13,9 @@ class TorneoJugador extends Model
 
     protected $dates = ['deleted_at'];
 
-    public function zona()
+    public function zonas()
     {
-        return $this->belongsTo(Zona::class);
+        return $this->belongsToMany(Zona::class);
     }
 
     public function torneo()
@@ -31,5 +31,9 @@ class TorneoJugador extends Model
     public function jugadorDupla()
     {
         return $this->belongsTo(Jugador::class);
+    }
+    public function torneoGrupos()
+    {
+        return $this->hasMany(TorneoGrupo::class, 'jugador_simple_id', 'jugador_simple_id');
     }
 }

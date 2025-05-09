@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Auth;
+use App\Http\Controllers\App;
+use App\Http\Controllers;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('/upload-image', [Controllers\ImagenController::class, 'uploadImage'])->where('path', '.*')->name('uploadImage');
+
+Route::post('/upload-image-segunda', [Controllers\ImagenController::class, 'uploadImageSegunda'])->where('path', '.*')->name('uploadImageSegunda');
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
