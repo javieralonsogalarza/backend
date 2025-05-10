@@ -29,7 +29,8 @@
                         <div class="col-sm-6 mt-1 content-buy-all {{ $Partido->buy_all ? "hidden" : "" }}">
                             <div class="icheck-primary d-inline">
                                 <input type="checkbox" name="buy" id="buy" value="1" {{ !$Partido->buy_all && $Partido->buy ? "checked" : "" }}>
-                                <label for="buy">¿El Jugador Rival es Bye?</label>
+                                <label for="buy">
+                                    ¿El Jugador Rival es Bye?</label>
                             </div>
                         </div>
                         <div class="col-sm-6 mt-1">
@@ -206,7 +207,7 @@
             formData.append('partido_id', {{ $Partido->id }});
             formData.append('torneo_id', {{ $TorneoCategoria->torneo->id }});
             formData.append('torneo_categoria_id', {{ $TorneoCategoria->id }});
-            confirmAjax(`/auth/{{strtolower($ViewName)}}/fase-final/prepartido/delete`, formData, `POST`, `¿Está seguro de eliminar la llave generada ?`, null, function (data){
+            confirmAjax(`/auth/{{strtolower($ViewName)}}/fase-final/prepartido/delete`, formData, `POST`, `¿Estás seguro de eliminar la llave generada ?`, null, function (data){
                 if(data.Success){
                     $modal.attr("data-reload", "true");
                     $modal.modal("hide");
@@ -230,8 +231,7 @@
         // Verificar jugador rival
         const rivalOption = $jugador_rival_id.select2('data')[0];
         if (rivalOption && rivalOption.clasificado === false) {
-            jugadoresNoClasificados.push(rivalOption.text);
-        }
+            jugadoresNoClasificados.push(rivalOption.text);        }
 
         return jugadoresNoClasificados;
     }

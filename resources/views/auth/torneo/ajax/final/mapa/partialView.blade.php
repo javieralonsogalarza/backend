@@ -3165,7 +3165,7 @@
                                     data-bracket="{{ in_array($bloque2A, [2, 3]) ? "upper" : "lower" }}" data-id="{{ $q->id }}">
                                     <tr>
                                         <td class="text-center color-participantes">
-                                          asas  {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
+                                            {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                         </td>
                                     </tr>
                                     <tr>

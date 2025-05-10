@@ -2665,6 +2665,9 @@ return response()->json(['data' => $mergedPlayers]);
 
             DB::beginTransaction();
 
+            \Log::info('Iniciando faseFinalPrePartidoFinish');
+            \Log::info('Parámetros: torneo_categoria_id=' . $request->torneo_categoria_id . ', torneo_id=' . $request->torneo_id);
+            
             $TorneoCategoria = TorneoCategoria::where('id', $request->torneo_categoria_id)->where('torneo_id', $request->torneo_id)
             ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
 
@@ -2677,10 +2680,14 @@ return response()->json(['data' => $mergedPlayers]);
 
                 if($Partidos->whereNull('jugador_local_uno_id')->whereNull('jugador_rival_uno_id')->where('buy_all', false)->count() == 0)
                 {
-                    $Partidos = $Partidos->where('buy', true);
+                    // Filtramos los partidos que son buy o buy_all
+                $Partidos = $Partidos->filter(function($item) {
+                    return $item->buy == true || $item->buy_all == true;
+                });
 
                     if ($Partidos != null && count($Partidos) > 0)
                     {
+                        \Log::info('Partidos buy/buy_all encontrados: ' . count($Partidos));
                         $PartidosDobleBuy = $Partidos;
 
                         do{
@@ -2689,8 +2696,136 @@ return response()->json(['data' => $mergedPlayers]);
                             foreach ($PartidosDobleBuy as $q)
                             {
                                 $SiguienteFase = ($q->fase/2);
+                                \Log::info('Procesando partido ID: ' . $q->id . ', fase: ' . $q->fase . ', siguiente fase: ' . $SiguienteFase);
+                                $PartidoNext = null;
+    
+                                // Manejo especial para fase 32 (similar a faseFinalPartidoStore)
+                                if($q->fase == 32) {
+                                    $bracketMap = [
+                                        // Upper Bracket - Primer Bloque
+                                        '1_1_upper' => ['nextFase' => 16, 'nextBloque' => 1, 'nextBracket' => 'upper', 'position' => 1],
+                                        '1_2_upper' => ['nextFase' => 16, 'nextBloque' => 1, 'nextBracket' => 'upper', 'position' => 1],
+                                        
+                                        // Lower Bracket - Primer Bloque
+                                        '1_1_lower' => ['nextFase' => 16, 'nextBloque' => 1, 'nextBracket' => 'upper', 'position' => 2],
+                                        '1_2_lower' => ['nextFase' => 16, 'nextBloque' => 1, 'nextBracket' => 'upper', 'position' => 2],
+                                        
+                                        // Upper Bracket - Tercer Bloque
+                                        '3_1_upper' => ['nextFase' => 16, 'nextBloque' => 1, 'nextBracket' => 'lower', 'position' => 1],
+                                        '3_2_upper' => ['nextFase' => 16, 'nextBloque' => 1, 'nextBracket' => 'lower', 'position' => 1],
+                                        
+                                        // Lower Bracket - Tercer Bloque
+                                        '3_1_lower' => ['nextFase' => 16, 'nextBloque' => 1, 'nextBracket' => 'lower', 'position' => 2],
+                                        '3_2_lower' => ['nextFase' => 16, 'nextBloque' => 1, 'nextBracket' => 'lower', 'position' => 2],
+                                        
+                                        // Upper Bracket - Quinto Bloque
+                                        '5_1_upper' => ['nextFase' => 16, 'nextBloque' => 3, 'nextBracket' => 'upper', 'position' => 1],
+                                        '5_2_upper' => ['nextFase' => 16, 'nextBloque' => 3, 'nextBracket' => 'upper', 'position' => 1],
+                                        
+                                        // Lower Bracket - Quinto Bloque
+                                        '5_1_lower' => ['nextFase' => 16, 'nextBloque' => 3, 'nextBracket' => 'upper', 'position' => 2],
+                                        '5_2_lower' => ['nextFase' => 16, 'nextBloque' => 3, 'nextBracket' => 'upper', 'position' => 2],
+                                        
+                                        // Upper Bracket - Séptimo Bloque
+                                        '7_1_upper' => ['nextFase' => 16, 'nextBloque' => 3, 'nextBracket' => 'lower', 'position' => 1],
+                                        '7_2_upper' => ['nextFase' => 16, 'nextBloque' => 3, 'nextBracket' => 'lower', 'position' => 1],
+                                        
+                                        // Lower Bracket - Séptimo Bloque
+                                        '7_1_lower' => ['nextFase' => 16, 'nextBloque' => 3, 'nextBracket' => 'lower', 'position' => 2],
+                                        '7_2_lower' => ['nextFase' => 16, 'nextBloque' => 3, 'nextBracket' => 'lower', 'position' => 2],
+    
+                                        //LADO IZQUIERDO
+                                        // Upper Bracket - Segundo Bloque
+                                        '2_1_upper' => ['nextFase' => 16, 'nextBloque' => 2, 'nextBracket' => 'upper', 'position' => 1],
+                                        '2_2_upper' => ['nextFase' => 16, 'nextBloque' => 2, 'nextBracket' => 'upper', 'position' => 1],
+    
+                                        '2_1_lower' => ['nextFase' => 16, 'nextBloque' => 2, 'nextBracket' => 'upper', 'position' => 2],
+                                        '2_2_lower' => ['nextFase' => 16, 'nextBloque' => 2, 'nextBracket' => 'upper', 'position' => 2],
+    
+                                        '4_1_upper' => ['nextFase' => 16, 'nextBloque' => 2, 'nextBracket' => 'lower', 'position' => 1],
+                                        '4_2_upper' => ['nextFase' => 16, 'nextBloque' => 2, 'nextBracket' => 'lower', 'position' => 1],
+    
+                                        '4_1_lower' => ['nextFase' => 16, 'nextBloque' => 2, 'nextBracket' => 'lower', 'position' => 2],
+                                        '4_2_lower' => ['nextFase' => 16, 'nextBloque' => 2, 'nextBracket' => 'lower', 'position' => 2],
+    
+                                        '6_1_upper' => ['nextFase' => 16, 'nextBloque' => 4, 'nextBracket' => 'upper', 'position' => 1],
+                                        '6_2_upper' => ['nextFase' => 16, 'nextBloque' => 4, 'nextBracket' => 'upper', 'position' => 1],
+    
+                                        '6_1_lower' => ['nextFase' => 16, 'nextBloque' => 4, 'nextBracket' => 'upper', 'position' => 2],
+                                        '6_2_lower' => ['nextFase' => 16, 'nextBloque' => 4, 'nextBracket' => 'upper', 'position' => 2],
+    
+                                        '8_1_upper' => ['nextFase' => 16, 'nextBloque' => 4, 'nextBracket' => 'lower', 'position' => 1],
+                                        '8_2_upper' => ['nextFase' => 16, 'nextBloque' => 4, 'nextBracket' => 'lower', 'position' => 1],
+    
+                                        '8_1_lower' => ['nextFase' => 16, 'nextBloque' => 4, 'nextBracket' => 'lower', 'position' => 2],
+                                        '8_2_lower' => ['nextFase' => 16, 'nextBloque' => 4, 'nextBracket' => 'lower', 'position' => 2],
+                                    ];
+    
+                                    // Clave para buscar en el mapeo
+                                    $bracketKey = $q->bloque . '_' . $q->position . '_' . $q->bracket;
+                                    
+                                    // Debug
+                                    \Log::info('Procesando partido fase 32: ' . $bracketKey);
+                                    
+                                    // Si la clave no existe, usar un valor por defecto para evitar fallos
+                                    if (!isset($bracketMap[$bracketKey])) {
+                                        \Log::warning('Clave no encontrada en bracketMap: ' . $bracketKey);
+                                        // Usar un valor por defecto básico para continuar
+                                        $nextConfig = [
+                                            'nextFase' => 16,
+                                            'nextBloque' => 1,
+                                            'nextBracket' => $q->bracket,
+                                            'position' => $q->position
+                                        ];
+                                    } else {
+                                        $nextConfig = $bracketMap[$bracketKey];
+                                    }
 
                                 $PartidoNext = Partido::where('torneo_id', $q->torneo_id)
+                                        ->where('torneo_categoria_id', $q->torneo_categoria_id)
+                                        ->where('fase', $nextConfig['nextFase'])
+                                        ->where('bloque', $nextConfig['nextBloque'])
+                                        ->where('bracket', $nextConfig['nextBracket'])
+                                        ->where('position', $nextConfig['position'])
+                                        ->where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+                                        ->first();
+                                    
+                                    if($PartidoNext == null) {
+                                        \Log::info('Creando nuevo partido para fase ' . $nextConfig['nextFase']);
+                                        $PartidoNext = new Partido();
+                                        $PartidoNext->comunidad_id = Auth::guard('web')->user()->comunidad_id;
+                                        $PartidoNext->torneo_id = $q->torneo_id;
+                                        $PartidoNext->torneo_categoria_id = $q->torneo_categoria_id;
+                                        $PartidoNext->estado_id = App::$ESTADO_PENDIENTE;
+                                        $PartidoNext->multiple = $q->multiple;
+                                        $PartidoNext->bracket = $nextConfig['nextBracket'];
+                                        $PartidoNext->position = $nextConfig['position'];
+                                        $PartidoNext->fecha_inicio = Carbon::parse($q->fecha_final)->addDay(1);
+                                        $PartidoNext->fecha_final = Carbon::parse($q->fecha_final)->addDay(7);
+                                        $PartidoNext->user_create_id = Auth::guard('web')->user()->id;
+                                        $PartidoNext->fase = $nextConfig['nextFase'];
+                                        $PartidoNext->bloque = $nextConfig['nextBloque'];
+                                        
+                                        // Establecer buy si es necesario
+                                        $PartidoNext->buy = filter_var($q->buy_all, FILTER_VALIDATE_BOOLEAN);
+                                        if($PartidoNext->buy) { 
+                                            $PartidosDobleBuyTemp[] = $PartidoNext;
+                                        }
+                                    } else {
+                                        \Log::info('Actualizando partido existente para fase ' . $nextConfig['nextFase']);
+                                        $PartidoNext->user_update_id = Auth::guard('web')->user()->id;
+                                        
+                                        // Gestionar buy también para partidos existentes
+                                        if(filter_var($q->buy_all, FILTER_VALIDATE_BOOLEAN)) {
+                                            if($PartidoNext->buy) $PartidoNext->buy_all = true;
+                                            else $PartidoNext->buy = true;
+                                            
+                                            $PartidosDobleBuyTemp[] = $PartidoNext;
+                                        }
+                                    }
+                                } else {
+                                    // Lógica original para otras fases
+                                    $PartidoNext = Partido::where('torneo_id', $q->torneo_id)
                                     ->where('torneo_categoria_id', $q->torneo_categoria_id)->where('fase', $SiguienteFase)
                                     ->where(function ($query) use ($q){if($q->fase == 16){ $query->where('bracket', $q->bracket); }})
                                     ->whereIn('bloque', $SiguienteFase == 1 ? [1] : ($SiguienteFase == 2 ? (in_array($q->bloque, [1, 3]) ? [1] : [2]) : [$q->bloque]))
@@ -2729,6 +2864,11 @@ return response()->json(['data' => $mergedPlayers]);
                                         $PartidosDobleBuyTemp[] = $PartidoNext;
                                     }
                                 }
+                                }
+    
+                                // Si se encontró o creó un partido siguiente
+                                if ($PartidoNext !== null) {
+                                    // Ya no necesitamos esta verificación adicional para fase 32 pues ya se maneja arriba
 
                                 if($q->position == 1){
                                     $PartidoNext->jugador_local_uno_id = $q->jugador_local_uno_id;
@@ -2752,6 +2892,7 @@ return response()->json(['data' => $mergedPlayers]);
                                     $Partido->estado_id = App::$ESTADO_FINALIZADO;
                                     $Partido->save();
                                 }
+                            }
                             }
 
                             $PartidosDobleBuy = $PartidosDobleBuyTemp;
@@ -6172,8 +6313,7 @@ $TorneoFaseFinal = (object)[
         function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})
         ->where('after', true)->where('torneo_id', $torneo_id)->where('torneo_categoria_id', $categoria_id)->get();
 
-        if((count($Jugadores) % 4) == 0)
-        {
+       
             $TorneoGrupos = TorneoGrupo::whereHas('torneo',
                 function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})
                 ->where('torneo_id', $torneo_id)->where('torneo_categoria_id', $categoria_id)->get();
@@ -6193,7 +6333,7 @@ $TorneoFaseFinal = (object)[
             ->get()->map(function ($item, $key) use ($TipoGrupo, $ArrayNumbersoLetters){
                 return (object)['id' => $item->id, 'nombre' => $TipoGrupo == App::$TIPO_GRUPO_LETRA ? $item->nombre : ('Grupo '.($ArrayNumbersoLetters[count($ArrayNumbersoLetters)-1] + ($key + 1)))];
             });
-        }
+        
 
         return view('auth'.'.'.$this->viewName.'.ajax.grupo.agregar.partialView',
             ['Torneo' => $torneo_id, 'Categoria' => $categoria_id, 'TipoGrupo' => $TipoGrupo, 'Grupos' => $Grupos, 'ViewName' => ucfirst($this->viewName)]);
@@ -7966,7 +8106,7 @@ protected function sanitizeFilename($string)
                     $model->llaves['ronda32']['bloque_tres'] = [];
                     $model->llaves['ronda32']['bloque_cuatro'] = [];
 
-                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 1) as $q)
+                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 1)->sortByDesc('bracket') as $q)
                     {
                         $bloque = [];
                         $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
@@ -7975,7 +8115,7 @@ protected function sanitizeFilename($string)
                         $model->llaves['ronda32']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }
 
-                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 2) as $q)
+                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 2)->sortByDesc('bracket') as $q)
                     {
                         $bloque = [];
                         $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
@@ -7984,7 +8124,7 @@ protected function sanitizeFilename($string)
                         $model->llaves['ronda32']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }
 
-                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 3) as $q)
+                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 3)->sortByDesc('bracket') as $q)
                     {
                         $bloque = [];
                         $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
@@ -7993,7 +8133,7 @@ protected function sanitizeFilename($string)
                         $model->llaves['ronda32']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }
 
-                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 4) as $q)
+                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 4)->sortByDesc('bracket') as $q)
                     {
                         $bloque = [];
                         $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");

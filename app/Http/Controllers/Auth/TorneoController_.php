@@ -3715,7 +3715,6 @@ class TorneoController extends Controller
             function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})
             ->where('torneo_id', $request->torneo_id)->where('torneo_categoria_id', $request->categoria_id)->get();
 
-            return $Jugadores;
         if((count($Jugadores) % 4) == 0){
             $Result->Success = true;
         }else{
@@ -4671,58 +4670,6 @@ class TorneoController extends Controller
             {
                 TorneoGrupo::where('torneo_categoria_id', $TorneoCategoria->id)->where('torneo_id', $TorneoCategoria->torneo_id)->delete();
                 Partido::where('torneo_categoria_id', $TorneoCategoria->id)->where('torneo_id', $TorneoCategoria->torneo_id)->delete();
-
-                DB::commit();
-                $Result->Success = true;
-            }else{
-                $Result->Message = "Las llaves generadas que intenta eliminar, ya no se encuentra disponible";
-            }
-
-        }catch (\Exception $e){
-            $Result->Message = $e->getMessage();
-            DB::rollBack();
-        }
-
-        return response()->json($Result);
-
-        /*$Result = (object)['Success' => false, 'Message' => null];
-
-        try {
-
-            $entity = TorneoGrupo::where('id', $request->id)
-                ->where('torneo_categoria_id', $request->torneo_categoria_id)
-                ->whereHas('torneoCategoria.torneo', function ($q){
-                    $q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);
-                })->first();
-
-            $entity->user_update_id = Auth::guard('web')->user()->id;
-            if($entity->save()){
-                if ($entity->delete()) $Result->Success = true;
-            }
-        }catch (\Exception $e){
-            $Result->Message = $e->getMessage();
-        }
-
-        return response()->json($Result);*/
-    }
-
-
-    public function grupoDeleteUnique(Request $request)
-    {
-        $Result = (object)['Success' => false, 'Message' => null];
-
-        try {
-
-            DB::beginTransaction();
-
-            $TorneoCategoria = TorneoCategoria::where('torneo_id', $request->torneo_id)
-            ->where('id', $request->torneo_categoria_id)
-            ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})->first();
-
-            if($TorneoCategoria != null)
-            {
-                TorneoGrupo::where('torneo_categoria_id', $TorneoCategoria->id)->where('torneo_id', $TorneoCategoria->torneo_id)->where('group_id',$request->group_id)->delete();
-                Partido::where('torneo_categoria_id', $TorneoCategoria->id)->where('torneo_id', $TorneoCategoria->torneo_id)->where('group_id',$request->group_id)->delete();
 
                 DB::commit();
                 $Result->Success = true;

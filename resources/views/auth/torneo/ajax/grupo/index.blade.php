@@ -191,7 +191,31 @@
 
                                             <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
                                             @if($Model->formato->nombre!='Eliminación Directa Flexible')
-                                            <h5 class="col-md-10 text-left">Listado de Grupos</h5>  
+                                              <div class="col-md-12 d-flex flex-wrap align-items-center">
+                                        <div>
+                                        <h5 class="mb-0 mr-3">Listado de Grupos</h5>
+                                        </div>
+                                        <div class="search-bar flex-grow-1 ">
+                                        <select class="form-control search-grupos-dropdown" style="width: 300px;"   >
+    <option value="">Buscar jugador...</option>
+    @php
+        $jugadores = $Model->torneoJugadors()
+            ->where('torneo_id', $Model->id)
+            ->whereHas('jugadorSimple')
+            ->where('torneo_categoria_id', $q->id)
+            ->get()
+            ->sortBy(function($jugador) {
+                return $jugador->jugadorSimple->nombre_completo;
+            });
+    @endphp
+    @foreach($jugadores as $q3)
+        <option value="{{ $q3->jugadorSimple->nombre_completo }}">{{ $q3->jugadorSimple->nombre_completo }}</option>
+    @endforeach
+</select>
+
+                                        
+                                    </div>
+                                            
                                             @endif
                                             @if($Model->formato->nombre!='Eliminación Directa Flexible')
 
@@ -204,6 +228,7 @@
                                                 @if($Model->formato->nombre!='Eliminación Directa Flexible')
                                                 <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-json-grupo" data-id="{{ $q->id }}" data-category="{{ $q->id }}><i class="fa fa-key"></i> Generar Json</button></li>
                                                 @endif
+                                                 <button type="button" class="btn btn-primary btn-generate-json-grupo-vs" data-category="{{ $q->id }}">Generar Json Vs</button>
                                             </ul>
                                         </div>
                                     @endif
@@ -216,7 +241,7 @@
                                         <h5 class="mb-0 mr-3">Listado de Grupos</h5>
                                         </div>
                                         <div class="search-bar flex-grow-1 ">
-                                        <select id="search-grupos" class="form-control" style="width: 300px;"   >
+                                        <select  class="form-control search-grupos-dropdown" style="width: 300px;"   >
     <option value="">Buscar jugador...</option>
     @php
         $jugadores = $Model->torneoJugadors()
@@ -242,7 +267,8 @@
                                          @endif
                                             <button type="button" class="btn btn-primary btn-generate-json-grupo" data-category="{{ $q->id }}">Generar Json</button>
                                           <button style="margin-left: 10px" type="button" class="btn btn-primary btn-generate-json-grupo-vs" data-category="{{ $q->id }}">Generar Json Vs</button>
-                                          <li class="mr-1"><button type="button" class="btn btn-danger btn-delete-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Eliminar keys generados</button></li>
+                                          
+                                                <li class="ml-2"><button type="button" class="btn btn-danger btn-delete-keys" data-id="{{ $q->id }}"><i class="fa fa-key"></i> Eliminar keys generados</button></li>
                                         </ul>
                                     </div>
                                 @endif
@@ -281,8 +307,10 @@
                                             @foreach($Model->torneoGrupos()->where('torneo_categoria_id', $q->id)->select(['nombre_grupo', 'grupo_id'])->groupBy(['nombre_grupo', 'grupo_id'])->orderBy(DB::raw('LENGTH(nombre_grupo)'))->orderBy('nombre_grupo')->get() as $key4 => $q4)
                                                 <div class="tab-pane p-2 fade {{ $key4 == 0 ? "show active" : "" }}" id="custom-tabs-grupo-{{ $q->id }}-{{ $q4->grupo_id }}" role="tabpanel" aria-labelledby="custom-tabs-grupo-{{ $q->id }}-{{ $q4->grupo_id }}-tab">
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <div><h5>Jugadores</h5></div>
-                                                        <button style="margin-left: 10px" type="button" class="btn btn-primary btn-delete-group" data-category="{{ $q->id }}" data-group="{{ $q4->grupo_id }}">Eliminar grupo</button>
+                                                        <div><h5>Jugadores</h5>
+                                                        
+                                                        </div>
+                                                                                                                <button style="margin-left: 10px" type="button"  class="btn btn-primary btn-delete-group-unique" data-category="{{ $q->id }}" data-group="{{ $q4->grupo_id }}">Eliminar grupo</button>
 
                                                     </div>
                                                     <div class="row mt-1">
@@ -514,7 +542,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="{{ asset('auth/adminlte3/plugins/select2/js/select2.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('auth/adminlte3/plugins/select2/js/select2.full.min.js') }}"></script>
 
 <script src="{{ asset('/plugins/sortable/1.15.0/sortable.min.js') }}"></script>
 <script type="text/javascript">
@@ -943,7 +971,7 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
         });
 
         const $btnGenerateKeys = $(".btn-generate-keys"), $btnGenerateKeysRandom = $(".btn-generate-keys-random"),
-        $btnManualKeys = $(".btn-manual-keys"), $btnDeleteKeys = $(".btn-delete-keys"), $btnGenerateKeysZonas = $(".btn-generate-keys-zonas"),$btnDeleteGroups = $(".btn-delete-group");
+        $btnManualKeys = $(".btn-manual-keys"), $btnDeleteKeys = $(".btn-delete-keys"), $btnGenerateKeysZonas = $(".btn-generate-keys-zonas"),$btnDeleteGroups = $(".btn-delete-group-unique");
 
         $btnGenerateKeys.on("click", function (){
             const $this = $(this);
@@ -1097,7 +1125,7 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
                     });
                 } else {
                     if ($table.find("tbody tr").length < 8) Toast.fire({icon: 'error', title: `Por favor, registre al menos ${(8 - $table.find("tbody tr").length)} jugadores más para generar las llaves`});
-                    else if ($table.find("tbody tr").length > 64) Toast.fire({icon: 'error', title: ``});
+
                 }
             }else Toast.fire({icon: 'error', title: 'No existen jugadores disponibles para generar las llaves'});
         });
@@ -1204,7 +1232,7 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
                     });
                 } else {
                     if ($table.find("tbody tr").length < 8) Toast.fire({icon: 'error', title: `Por favor, registre al menos ${(8 - $table.find("tbody tr").length)} jugadores más para generar las llaves`});
-                    else if ($table.find("tbody tr").length > 64) Toast.fire({icon: 'error', title: ``});
+
                 }
             }else Toast.fire({icon: 'error', title: 'No existen jugadores disponibles para generar las llaves'});
         });
@@ -1234,7 +1262,7 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
             formData.append('torneo_id', {{ $Model->id }});
             formData.append('torneo_categoria_id', id);
             formData.append('group_id', group_id);
-            confirmAjax(`/auth/{{strtolower($ViewName)}}/grupo/unique/delete`, formData, `POST`, `¿Está seguro de eliminar las llaves generadas ?`, null, function (data){
+            confirmAjax(`/auth/{{strtolower($ViewName)}}/grupo/unique/delete`, formData, `POST`, `¿Está seguro de eliminar el grupo?`, null, function (data){
                 if(data.Success){
                     invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${id}`, function(data){
                         $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
@@ -1270,7 +1298,7 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
                     });
                 } else {
                     if ($table.find("tbody tr").length < 8) Toast.fire({icon: 'error', title: `Por favor, registre al menos ${(8 - $table.find("tbody tr").length)} jugadores más para generar las llaves`});
-                    else if ($table.find("tbody tr").length > 64) Toast.fire({icon: 'error', title: ``});
+
                 }
             }else Toast.fire({icon: 'error', title: 'No existen jugadores disponibles para generar las llaves'});
         });
@@ -1958,11 +1986,12 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
     })();
 
     $(document).ready(function(){
-        $('#search-grupos').select2({
+
+               $('.search-grupos-dropdown').select2({
             placeholder: "Buscar jugador...",
             allowClear: true
         });
-    $('#search-grupos').on('change', function(){
+    $('#search-grupos, #search-gruposv2, .search-grupos-dropdown').on('change', function(){
         var searchValue = $(this).val().toLowerCase().trim();
             console.log(searchValue);
         
