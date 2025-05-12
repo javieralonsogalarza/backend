@@ -74,6 +74,7 @@
                                                 <div>
                                                     <ul class="d-flex list-unstyled m-0">
                                                         <li><button type="button" data-category="{{ $q->id }}" class="btn btnReporteLocalizacion btn-success mr-2"><i class="fa fa-file-excel"></i> Reporte Localización</button></li>
+                                                        <li><button type="button" onclick="abrirModalDistribucion({{ $q->id }})" class="btn btn-primary mr-2"><i class="fa fa-map-marker"></i> Distribución por Zonas</button></li>
                                                         <li><button type="button" data-category="{{ $q->id }}" class="btn btnReportePagos btn-success mr-2"><i class="fa fa-file-excel"></i> Reporte Pagos</button></li>
                                                     </ul>
                                                 </div>
@@ -545,7 +546,56 @@
     <script type="text/javascript" src="{{ asset('auth/adminlte3/plugins/select2/js/select2.full.min.js') }}"></script>
 
 <script src="{{ asset('/plugins/sortable/1.15.0/sortable.min.js') }}"></script>
+
 <script type="text/javascript">
+// Function to open the distribution modal
+function abrirModalDistribucion(categoriaId) {
+    // Asegurar que el modal está cargado antes de mostrarlo
+    if ($('#zonasDistribucionModal').length === 0) {
+        // Si el modal no existe, cárgalo primero
+        $.ajax({
+            url: '/auth/torneo/get-distribution-modal',
+            type: 'GET',
+            async: false, // Importante: hacer esto síncrono para asegurar que se cargue antes de continuar
+            success: function(response) {
+                $('body').append(response);
+                
+                // Una vez añadido el modal, mostrarlo y cargar los datos
+                $('#zonasDistribucionModal').modal('show');
+                cargarDistribucionZonas(categoriaId);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error loading distribution modal:', error);
+                alert('Error al cargar el modal de distribución por zonas');
+            }
+        });
+    } else {
+        // Si el modal ya existe, simplemente mostrarlo y cargar los datos
+        $('#zonasDistribucionModal').modal('show');
+        cargarDistribucionZonas(categoriaId);
+    }
+}
+
+// Make sure cargarDistribucionZonas is properly defined and works correctly
+$(document).ready(function() {
+    // Precargar el modal al inicio para asegurar que esté disponible cuando se necesite
+    if ($('#zonasDistribucionModal').length === 0) {
+        $.ajax({
+            url: '/auth/torneo/get-distribution-modal',
+            type: 'GET',
+            success: function(response) {
+                $('body').append(response);
+            },
+            error: function() {
+                console.error('Error loading distribution modal');
+            }
+        });
+    }
+});
+</script>
+
+<script type="text/javascript">
+    
     $(function (){
         setTimeout(function (){ $("form").find("input[type=text]").first().focus().select(); }, 500);
 

@@ -36,6 +36,177 @@ class TorneoController extends Controller
     protected $lits_for_page = 50;
 
     /*TORNEO*/
+
+    
+    /**
+     * Get the distribution of players by zones
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function jugadorZonaDistribution(Request $request, $categoria_id = null)
+{
+    $Result = (object)['Success' => false, 'Message' => null, 'Errors' => null, 'data' => null, 'success' => false];
+
+    try {
+        // Si viene por GET, usa el parámetro de la URL
+        if ($request->isMethod('get') && $categoria_id) {
+            $torneoCategoriaId = $categoria_id;
+            // Necesitamos obtener el torneo_id a partir de la categoría
+            $torneoCategoria = TorneoCategoria::find($torneoCategoriaId);
+            if (!$torneoCategoria) {
+                $Result->Message = 'La categoría seleccionada no existe.';
+                return response()->json($Result);
+            }
+            $torneoId = $torneoCategoria->torneo_id;
+        } else {
+            // Si viene por POST, usa los inputs del request
+            $torneoId = $request->input('torneo_id');
+            $torneoCategoriaId = $request->input('torneo_categoria_id');
+        }
+
+        // Verificar que la categoría pertenece al torneo
+        $torneoCategoria = TorneoCategoria::where('id', $torneoCategoriaId)
+            ->where('torneo_id', $torneoId)
+            ->first();
+
+        if (!$torneoCategoria) {
+            $Result->Message = 'La categoría seleccionada no pertenece a este torneo.';
+            return response()->json($Result);
+        }
+
+        // Obtener todas las zonas disponibles para el torneo
+        $torneoZonas = TorneoZona::where('torneo_id', $torneoId)
+            ->with('zona')
+            ->get();
+            
+        $zonas = $torneoZonas->map(function ($q) {
+            return $q->zona ? [
+                'id' => $q->zona->id,
+                'nombre' => $q->zona->nombre
+            ] : null;
+        })->filter()->values()->toArray();
+
+        // Obtener los jugadores y agruparlos por zona
+        $jugadoresPorZona = [];
+        
+        // Inicializar array por zona
+        foreach ($zonas as $zona) {
+            $jugadoresPorZona[$zona['id']] = [
+                'zona' => $zona,
+                'jugadores' => []
+            ];
+        }
+
+        // Obtener todos los jugadores de la categoría
+        $jugadores = TorneoJugador::where('torneo_id', $torneoId)
+            ->where('torneo_categoria_id', $torneoCategoriaId)
+            ->with(['jugadorSimple:id,nombres,apellidos', 'jugadorDupla:id,nombres,apellidos'])
+            ->get();
+
+        // Agrupar jugadores por zonas
+        foreach ($jugadores as $jugador) {
+            // Obtener las zonas asignadas a este jugador
+            $jugadorZonas = DB::table('torneo_jugador_zona')
+                ->join('zonas', 'zonas.id', '=', 'torneo_jugador_zona.zona_id')
+                ->where('torneo_jugador_zona.torneo_jugador_id', $jugador->id)
+                ->select('zonas.id', 'zonas.nombre')
+                ->get();
+                
+            if ($jugadorZonas->isEmpty()) {
+                // Jugadores sin zona asignada
+                if (!isset($jugadoresPorZona['sin_zona'])) {
+                    $jugadoresPorZona['sin_zona'] = [
+                        'zona' => [
+                            'id' => 'sin_zona',
+                            'nombre' => 'Sin Zona Asignada'
+                        ],
+                        'jugadores' => []
+                    ];
+                }
+                
+                $jugadoresPorZona['sin_zona']['jugadores'][] = $this->formatearJugador($jugador);
+            } else {
+                // Agregar el jugador a cada una de sus zonas
+                foreach ($jugadorZonas as $zona) {
+                    if (isset($jugadoresPorZona[$zona->id])) {
+                        $jugadoresPorZona[$zona->id]['jugadores'][] = $this->formatearJugador($jugador);
+                    }
+                }
+            }
+        }
+        
+        // Convertir a valores para eliminar claves numéricas
+        $jugadoresPorZona = array_values($jugadoresPorZona);
+        
+        // Calcular totales
+        $totales = [
+            'total_jugadores' => $jugadores->count(),
+            'jugadores_con_zona' => $jugadores->filter(function($j) {
+                return DB::table('torneo_jugador_zona')->where('torneo_jugador_id', $j->id)->exists();
+            })->count(),
+            'total_por_zona' => array_map(function($zona) {
+                return [
+                    'zona_id' => $zona['zona']['id'],
+                    'zona_nombre' => $zona['zona']['nombre'],
+                    'cantidad' => count($zona['jugadores'])
+                ];
+            }, $jugadoresPorZona)
+        ];
+        
+        $Result->Success = true;
+        // Para compatibilidad con el frontend que espera success en minúsculas
+        $Result->success = true;
+        $Result->Zonas = $zonas;
+        $Result->JugadoresPorZona = $jugadoresPorZona;
+        $Result->Totales = $totales;
+        // Para compatibilidad con el frontend que espera data
+        $Result->data = $jugadoresPorZona;
+        
+        return response()->json($Result);
+    } catch (\Exception $e) {
+        $Result->Message = 'Error al obtener la distribución por zonas: ' . $e->getMessage();
+        return response()->json($Result);
+    }
+}
+
+    /**
+     * Helper para formatear la información del jugador
+     * 
+     * @param TorneoJugador $jugador
+     * @return array
+     */
+    private function formatearJugador($jugador)
+    {
+        $jugadorInfo = [
+            'id' => $jugador->id,
+            'multiple' => $jugador->multiple
+        ];
+        
+        // Agregar información del jugador simple
+        if ($jugador->jugadorSimple) {
+            $jugadorInfo['jugador_simple'] = [
+                'id' => $jugador->jugadorSimple->id,
+                'nombres' => $jugador->jugadorSimple->nombres,
+                'apellidos' => $jugador->jugadorSimple->apellidos,
+                'nombre_completo' => $jugador->jugadorSimple->nombres . ' ' . $jugador->jugadorSimple->apellidos
+            ];
+        }
+        
+        // Agregar información del jugador dupla si existe
+        if ($jugador->multiple && $jugador->jugadorDupla) {
+            $jugadorInfo['jugador_dupla'] = [
+                'id' => $jugador->jugadorDupla->id,
+                'nombres' => $jugador->jugadorDupla->nombres,
+                'apellidos' => $jugador->jugadorDupla->apellidos,
+                'nombre_completo' => $jugador->jugadorDupla->nombres . ' ' . $jugador->jugadorDupla->apellidos
+            ];
+        }
+        
+        return $jugadorInfo;
+    }
+
+
     public function index(Request $request)
     {
         $Comunidad = $request->landing ? Comunidad::where('principal', true)->first() : Auth::guard('web')->user()->comunidad;
