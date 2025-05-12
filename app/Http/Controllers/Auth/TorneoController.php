@@ -7418,6 +7418,9 @@ $TorneoFaseFinal = (object)[
                          
                           $Result->Success = true;
 
+                          if ($request->has('update_ranking') && $request->update_ranking == '1') {
+                            $Result->rankingUpdated = $this->resultadoRanking( $request);
+                           }
                           if(false)
                           {
                               if(Partido::where('torneo_categoria_id', $TorneoCategoria->id)->whereNotNull('fase')->count() > 0)

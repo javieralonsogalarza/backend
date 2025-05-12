@@ -1418,147 +1418,117 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
         $closeView.on("click", function (){ $("body").removeClass("sidebar-collapse"); $("#main").removeClass("hidden");$("#info").html("").addClass("hidden");});
 
         const $btnFinishPlay = $("button.btn-finish-play");
-       $btnFinishPlay.on("click", function () {
-            const $this = $(this);
-            const id = $this.attr("data-id");
-            const formData = new FormData();
-            const category = $(event.target).attr("data-category");
-            formData.append('_token', $("meta[name=csrf-token]").attr("content"));
-            formData.append('torneo_id', {{ $Model->id }});
-            formData.append('torneo_categoria_id', $this.attr("data-category"));
-            formData.append('partido_id', id);
-            formData.append('fecha_inicio', $("#fecha_inicio_" + id).val());
-            formData.append('fecha_final', $("#fecha_final_" + id).val());
-            formData.append('resultado', $("#resultado_" + id).val());
-            formData.append('jugador_local_id', $("#jugador_local_id_" + id).val());
-            formData.append('jugador_local_set', $("#jugador_local_set_" + id).val());
-            formData.append('jugador_local_juego', $("#jugador_local_juego_" + id).val());
-            formData.append('jugador_rival_id', $("#jugador_rival_id_" + id).val());
-            formData.append('jugador_rival_set', $("#jugador_rival_set_" + id).val());
-            formData.append('jugador_rival_juego', $("#jugador_rival_juego_" + id).val());
-            formData.append('fase_inicial', '1');
-            const targetId = $this.attr('data-target');
-            const tab = document.querySelector(targetId);
+$btnFinishPlay.on("click", function () {
+    const $this = $(this);
+    const id = $this.attr("data-id");
+    const formData = new FormData();
+    const category = $(event.target).attr("data-category");
+    formData.append('_token', $("meta[name=csrf-token]").attr("content"));
+    formData.append('torneo_id', {{ $Model->id }});
+    formData.append('torneo_categoria_id', $this.attr("data-category"));
+    formData.append('partido_id', id);
+    formData.append('fecha_inicio', $("#fecha_inicio_" + id).val());
+    formData.append('fecha_final', $("#fecha_final_" + id).val());
+    formData.append('resultado', $("#resultado_" + id).val());
+    formData.append('jugador_local_id', $("#jugador_local_id_" + id).val());
+    formData.append('jugador_local_set', $("#jugador_local_set_" + id).val());
+    formData.append('jugador_local_juego', $("#jugador_local_juego_" + id).val());
+    formData.append('jugador_rival_id', $("#jugador_rival_id_" + id).val());
+    formData.append('jugador_rival_set', $("#jugador_rival_set_" + id).val());
+    formData.append('jugador_rival_juego', $("#jugador_rival_juego_" + id).val());
+    formData.append('fase_inicial', '1');
+    const targetId = $this.attr('data-target');
+    const tab = document.querySelector(targetId);
 
-            const handleResponse = function(data) {
-                if (data.Success) {
-  
-                    
-                    Toast.fire({ icon: data.Message ? 'warning' : 'success', title: data.Message ? data.Message : 'Proceso realizado Correctamente' });
-                    $this.addClass("hidden");
-                    $this.closest("td").find("button.btn-edit-play").closest('div.btn-group').removeClass("hidden");
-                    $this.closest("tr").find("input, select").prop("disabled", true);
-                    $this.closest("tr").addClass("disable").removeClass("enable");
+    const handleResponse = function(data) {
+        if (data.Success) {
+            // Muestra mensaje de éxito
+            Toast.fire({ 
+                icon: data.Message ? 'warning' : 'success', 
+                title: data.Message ? data.Message : 'Proceso realizado Correctamente' 
+            });
+            
+            // Actualiza la UI para este partido específico
+            $this.addClass("hidden");
+            $this.closest("td").find("button.btn-edit-play").closest('div.btn-group').removeClass("hidden");
+            $this.closest("tr").find("input, select").prop("disabled", true);
+            $this.closest("tr").addClass("disable").removeClass("enable");
 
-                    const $idLocal = parseInt($this.attr("data-multiple")) === 0 ? [$this.attr("data-local")] : [$this.attr("data-local"), $this.attr("data-local-multiple")];
-                    const $idRival = parseInt($this.attr("data-multiple")) === 0 ? [$this.attr("data-rival")] : [$this.attr("data-rival"), $this.attr("data-rival-multiple")];
+            // Obtiene IDs de jugadores
+            const $idLocal = parseInt($this.attr("data-multiple")) === 0 ? 
+                [$this.attr("data-local")] : 
+                [$this.attr("data-local"), $this.attr("data-local-multiple")];
+                
+            const $idRival = parseInt($this.attr("data-multiple")) === 0 ? 
+                [$this.attr("data-rival")] : 
+                [$this.attr("data-rival"), $this.attr("data-rival-multiple")];
 
+            // Oculta los botones de cambio de jugador para los jugadores involucrados en este partido
+            $("button#btnChangePlayer_" + $this.attr("data-category") + "_" + $idLocal[0] + "_" + ($idLocal.length > 1 ? $idLocal[1] : "")).hide();
+            $("button#btnChangePlayer_" + $this.attr("data-category") + "_" + $idRival[0] + "_" + ($idRival.length > 1 ? $idRival[1] : "")).hide();
 
-                    $("button#btnChangePlayer_" + $this.attr("data-category") + "_" + $idLocal[0] + "_" + ($idLocal.length > 1 ? $idLocal[1] : "")).hide();
-                    $("button#btnChangePlayer_" + $this.attr("data-category") + "_" + $idRival[0] + "_" + ($idRival.length > 1 ? $idRival[1] : "")).hide();
+            // Oculta los botones de reemplazo en toda la tabla para estos jugadores
+            $(`.edit-player[data-player-id="${$idLocal[0]}"]`).hide();
+            if ($idLocal.length > 1 && $idLocal[1]) {
+                $(`.edit-player[data-player-id="${$idLocal[1]}"]`).hide();
+            }
+            
+            $(`.edit-player[data-player-id="${$idRival[0]}"]`).hide();
+            if ($idRival.length > 1 && $idRival[1]) {
+                $(`.edit-player[data-player-id="${$idRival[1]}"]`).hide();
+            }
 
-                    if (["-"].includes($("#resultado_" + id).val())) {
-                        $this.closest("tr").find("select").val("");
-                    }
-                    
-                    let partidoId = $this.attr("data-id");
-
-                    $.ajax({
-                        url: '/auth/resultadoranking',  // Esta es la ruta correcta según tu definición
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            partido_id: partidoId,
-                            _token: $('meta[name="csrf-token"]').attr('content')
-                        },
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'application/json'
-                        },
-                        success: function(response) {
-                            if (response.Success) {
-                                console.log('Ranking actualizado correctamente');
-                            } else {
-                                console.error('Error al actualizar ranking:', response.Message);
-                            }
-                        }
-                    });
-
-                   refrescarTablaPosiciones($this.attr("data-category"), $this.attr("data-group"));
-                   //refrescarMapaTorneo($this.attr("data-category"));
-                   const targetId = $this.attr('data-target');
-                   const tab = document.querySelector(targetId);
-
-                   //refrescarGrupos($this.attr("data-category"));
-                    invocarVista(`/auth/{{ strtolower($ViewName) }}/grupo/{{ $Model->id }}/${category}`, function (data) {
-                        $("#main").addClass("hidden");
-                        $("#info").removeClass("hidden").html("").append(data);
-                        if (tab) {
-                    // Activar el tab
-                    const tabPane = new bootstrap.Tab(tab);
-                    tabPane.show();
-
-                    // Activar el enlace del tab
-                    const tabLink = document.querySelector(`a[href="${targetId}"]`);
-                    console.log(tabLink,'tabLink');
-                    if (tabLink) {
-                        const tabLinkPane = new bootstrap.Tab(tabLink);
-                        tabLinkPane.show();
-                    }
-                }
-                    });
-
-
-                   
+            if (["-"].includes($("#resultado_" + id).val())) {
+                $this.closest("tr").find("select").val("");
+            }
+            
+            // Actualiza tabla de posiciones con AJAX
+            refrescarTablaPosiciones($this.attr("data-category"), $this.attr("data-group"));
+            
+            // Actualizar ranking en un solo request combinado con la operación principal
+            // en lugar de hacer otro request separado
+            if (data.rankingUpdated) {
+                console.log('Ranking actualizado correctamente como parte del request principal');
+            }
+        } else {
+            if (data.Errors) {
+                const $arregloErros = [];
+                $.each(data.Errors, function (i, v) { $arregloErros.push(v); });
+                if ($arregloErros.length > 0) Toast.fire({ icon: 'error', title: $arregloErros[0] });
+                else Toast.fire({ icon: 'error', title: data.Message != null ? data.Message : "Algo salió mal, por favor verifique los campos ingresados." });
+            } else {
+                Toast.fire({ icon: 'error', title: data.Message != null ? data.Message : "Algo salió mal, por favor verifique los campos ingresados." });
+            }
+        }
+    };
            
+    const torneoId = {{ $Model->id }};
+    const torneoCategoriaId = $this.attr("data-category");
+    
+    // Incluir flag para actualizar ranking en el mismo request
+    formData.append('update_ranking', '1');
+    
+    actionAjax(`/auth/torneo/jugador/list-json-validate?torneo_id=${torneoId}&torneo_categoria_id=${torneoCategoriaId}&landing=false&completo=true`, null, "GET", function (data) {
+        const jugador_local_id = $("#jugador_local_id_" + id).val();
+        const jugador_rival_id = $("#jugador_rival_id_" + id).val();
 
-                } else {
-                    if (data.Errors) {
-                        const $arregloErros = [];
-                        $.each(data.Errors, function (i, v) { $arregloErros.push(v); });
-                        if ($arregloErros.length > 0) Toast.fire({ icon: 'error', title: $arregloErros[0] });
-                        else Toast.fire({ icon: 'error', title: data.Message != null ? data.Message : "Algo salió mal, por favor verifique los campos ingresados." });
-                    } else {
-                        Toast.fire({ icon: 'error', title: data.Message != null ? data.Message : "Algo salió mal, por favor verifique los campos ingresados." });
-                    }
-                }
-            };
+        // Verificar si el ID del jugador en data.data coincide con el ID del jugador local o del rival
+        const jugadorEnData = data.data.some(jugador => jugador.jugador_simple_id == jugador_local_id || jugador.jugador_simple_id == jugador_rival_id);
 
-
-           
-            const torneoId = {{ $Model->id }}; // Reemplaza con el valor dinámico si es necesario
-            const jugadorSelectedId = ''; // Reemplaza con el valor dinámico si es necesario
-            const torneoCategoriaId =  $this.attr("data-category"); // Reemplaza con el valor dinámico si es necesario
-            actionAjax(`/auth/torneo/jugador/list-json-validate?torneo_id=${torneoId}&torneo_categoria_id=${torneoCategoriaId}&landing=false&completo=true`, null, "GET", function (data) {
-    console.log(data.data);
-    const jugador_local_id = $("#jugador_local_id_" + id).val();
-    const jugador_rival_id = $("#jugador_rival_id_" + id).val();
-
-    // Verificar si el ID del jugador en data.data coincide con el ID del jugador local o del rival
-    const jugadorEnData = data.data.some(jugador => jugador.jugador_simple_id == jugador_local_id || jugador.jugador_simple_id == jugador_rival_id);
-    console.log(jugadorEnData);
-
-    if (jugadorEnData) {
-        console.log('jugadorEnData');
-        if ($this.attr("data-manual") === '0' && $this.attr("data-hasFase")) {
-            formData.append('tipo', 'manual');
-            formData.append('reload', 1);
-            formData.append('grupo_id', $this.attr("data-group"));
-            actionAjax(`/auth/{{ strtolower($ViewName) }}/partido/store`, formData, 'POST', handleResponse);
-
-           // confirmAjax(`/auth/torneo/fase-final/store`, formData, 'POST', `¿Está seguro de que quiere editar? Las llaves se volverán a generar eliminando los resultados.`, null, handleResponse, null, true);
+        if (jugadorEnData) {
+            if ($this.attr("data-manual") === '0' && $this.attr("data-hasFase")) {
+                formData.append('tipo', 'manual');
+                formData.append('reload', 0); // Cambiado a 0 para no forzar recarga
+                formData.append('grupo_id', $this.attr("data-group"));
+                actionAjax(`/auth/{{ strtolower($ViewName) }}/partido/store`, formData, 'POST', handleResponse);
+            } else {
+                actionAjax(`/auth/{{ strtolower($ViewName) }}/partido/store`, formData, 'POST', handleResponse);
+            }
         } else {
             actionAjax(`/auth/{{ strtolower($ViewName) }}/partido/store`, formData, 'POST', handleResponse);
         }
-    } else {
-        actionAjax(`/auth/{{ strtolower($ViewName) }}/partido/store`, formData, 'POST', handleResponse);
-    }
+    });
 });
-        
-
-          
-        });
 
         const $btnEditPlay = $("button.btn-edit-play");
         $btnEditPlay.on("click", function (){
