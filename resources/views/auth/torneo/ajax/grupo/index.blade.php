@@ -2012,28 +2012,26 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
             }
         });
     });
-});
-(function() {
-        const playerLinks = document.querySelectorAll('.player-link');
-        playerLinks.forEach(link => {
-            link.addEventListener('click', function () {
-                const targetId = this.getAttribute('data-target');
-                const tab = document.querySelector(targetId);
-                if (tab) {
-                    // Activar el tab
-                    const tabPane = new bootstrap.Tab(tab);
-                    tabPane.show();
 
-                    // Activar el enlace del tab
-                    const tabLink = document.querySelector(`a[href="${targetId}"]`);
-                    if (tabLink) {
-                        const tabLinkPane = new bootstrap.Tab(tabLink);
-                        tabLinkPane.show();
-                    }
-                }
-            });
-        });
-    })();
+    $(document).on('click', '.player-link', function(e) {
+    e.preventDefault();
+    const targetId = $(this).data('target');
+    
+    // Extract category and group from the target ID
+    const parts = targetId.split('-');
+    const category = parts[3];
+    const group = parts[4];
+    
+    // First activate the tab
+    $(`a[href="${targetId}"]`).tab('show');
+    
+    // Use the extracted category and group variables
+    invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/tabla/partialView/{{ $Model->id }}/${category}/${group}/{{ $landing }}`, function(data){
+        $(`#partialViewTablaGrupo${category}${group}`).html("").append(data);
+    });
+});
+});
+
 
     $(document).ready(function(){
 
