@@ -7,6 +7,11 @@
         select{ -webkit-appearance: none;-moz-appearance: none;text-indent: 1px;text-overflow: '';}
         a.nav-link{ color: black !important; }
         a.nav-link.active{ background-color: var(--color-cabecera) !important; border-color: var(--color-cabecera) !important; color: white !important;}
+        .bg-json-generado { background-color: #b2d235 !important; }
+    </style>
+@else
+    <style type="text/css">
+        .bg-json-generado { background-color: #b2d235 !important; }
     </style>
 @endif
 
@@ -394,8 +399,7 @@
                                                                     </thead>
                                                                     <tbody>
                                                                     @foreach($Model->partidos->where('torneo_categoria_id', $q->id)->where('grupo_id', $q4->grupo_id) as $q6)
-                                                                        <tr class="content-tr-{{ $q6->id }} {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disable" : "enable" }}" data-id="{{ $q6->id }}" data-category="{{ $q->id }}" data-group="{{ $q4->grupo_id }}">
-                                                                            
+                                                                    <tr class="content-tr-{{ $q6->id }} {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disable" : "enable" }} {{ $q6->reporte_json_generado ? "bg-json-generado" : "" }}" data-id="{{ $q6->id }}" data-category="{{ $q->id }}" data-group="{{ $q4->grupo_id }}">                                                                            
                                                                               <td class="text-center td-jugador-info-h2h" 
                                                                             data-jugador-local-id="{{ $q6->jugador_local_uno_id }}" 
                                                                             data-jugador-rival-id="{{ $q6->jugador_rival_uno_id }}" 

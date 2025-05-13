@@ -25508,6 +25508,10 @@ public function resultadoRanking(Request $request)
                 $puntosFinales = $puntosAcumulados[$jugador->jugador_simple_id] ?? 0;
                 \Log::info("Actualizando jugador {$jugador->jugador_simple_id} con puntos finales: $puntosFinales");
 
+                  $existeRanking = RankingDetalle::where('ranking_id', $Ranking->id)
+                 ->where('jugador_simple_id', $jugador->jugador_simple_id)
+                 ->where('puntos', '>', 0)
+                ->exists();
                 RankingDetalle::updateOrCreate(
                     [
                         'ranking_id' => $Ranking->id,
@@ -25515,6 +25519,7 @@ public function resultadoRanking(Request $request)
                     ],
                     [
                         'puntos' => $puntosFinales,
+                        'considerado_ranking' => $existeRanking ? null : true, // Si es nuevo, establecer como true
                         'updated_at' => Carbon::now()
 
                     ]
