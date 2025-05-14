@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use Illuminate\Support\Facades\Log;
 
 use App\Exports\TorneoJugadorExport;
 use App\Http\Controllers\Controller;
@@ -3452,89 +3453,110 @@ return response()->json(['data' => $mergedPlayers]);
         return view('auth'.'.'.$this->viewName.'.ajax.final.partialView', ['Model' => $entity, 'Position' => $position, 'ViewName' => ucfirst($this->viewName)]);
     }
 
-   public function rankingsByCategoryId($filter_categoria,$changeAll = false)
-{
-    $filter_anio = '2024';
-
+    
+   public function rankingsByCategoryId($filter_categoria)
+   {
     $Model = Comunidad::where('principal', true)->first();
 
-    if ($Model != null) {
-        $Rankings = Ranking::where('comunidad_id', $Model->id)->get();
+    $torneos = Torneo::join('torneo_categorias', 'torneos.id', '=', 'torneo_categorias.torneo_id')
+    ->where('torneo_categorias.categoria_simple_id', $filter_categoria)
+   ->where('torneos.fecha_inicio', '<=', Carbon::now()->format('Y-m-d'))
+    ->whereNull('torneos.deleted_at')
+    ->whereNull('torneo_categorias.deleted_at')
+    ->whereIn('torneo_categorias.estado_id', [1, 2])
+    ->where('torneos.rankeado', true)
+    ->select(
+        'torneo_categorias.id', 
+        'torneos.nombre', 
+        'torneos.fecha_inicio', 
+        'torneos.fecha_final',
+        'torneos.carrera'
+    )
+    ->orderBy('torneos.fecha_inicio', 'desc')
+    ->limit(4)
+    ->get();
 
-       // Modificar la consulta de torneos para incluir las validaciones
-       $Torneos = Torneo::join('torneo_categorias', 'torneos.id', '=', 'torneo_categorias.torneo_id')
-       ->where('torneo_categorias.categoria_simple_id', $filter_categoria)
-       ->whereNull('torneos.deleted_at')
-       ->whereNull('torneo_categorias.deleted_at')
-       ->where('torneos.fecha_inicio', '<=', Carbon::now()->format('Y-m-d'))
-       ->whereIn('torneo_categorias.estado_id', [1, 2]) // Pendiente y finalizado
-       ->where('torneos.rankeado', true)
-       ->select('torneos.*')
-       ->orderBy('torneos.fecha_inicio', 'desc')
-       ->limit(4) // Limitar a los 4 torneos más recientes
-       ->get();
+    $request = new \stdClass(); // Initialize $request as an object
+    $request->torneos = $torneos;
+    $request->filter_categoria = $filter_categoria;
+    $request->carrera = true;
+    $request->filter_anio = null;
 
-   $TorneoCategorias = TorneoCategoria::whereIn('torneo_id', $Torneos->pluck('id'))
-       ->orderBy('id', 'desc')
-       ->get();
+    
+    if($Model != null)
+    {
+        $Rankings = Ranking::where('comunidad_id', $Model->id)
+        ->where(function ($q) use ($request){
+            // Filter by torneo_categoria_id if provided
+            if(property_exists($request, 'torneos')){
+                $q->whereIn('torneo_categoria_id', $request->torneos->pluck('id')->toArray());
+            }
+        })
+        ->get();
+        
+
+      
+        
+
+      
+        $Torneos = Torneo::whereIn('id', array_values(array_unique(array_filter($Rankings->pluck('torneo_id')->toArray()))))
+        ->where(function ($q) use ($request){
+            if($request->filter_anio){ $q->where(DB::raw('YEAR(fecha_inicio)'), '=', $request->filter_anio); }
+        })->where('rankeado', true)
+        ->orderBy('fecha_final', 'desc')->get();
+
   
-   $Categorias = Categoria::whereIn('id', array_values(array_unique(array_filter($TorneoCategorias->pluck('categoria_simple_id')->toArray()))))
-       ->where('visible', true)
-       ->where('orden', '>', '0')
-       ->where(function ($q) use ($filter_categoria) {
-           if ($filter_categoria) {
-               $q->where('id', $filter_categoria);
-           }
-       })
-       ->orderBy('id', 'desc')
-       ->get();
+
+        $Anios = $request->filter_anio == null ? array_values(array_unique($Torneos->pluck('fecha_inicio')->map(function ($date){ return Carbon::parse($date)->format('Y'); })->toArray())) : [];
+
+        $TorneoCategorias = TorneoCategoria::whereIn('id', array_values(array_unique(array_filter($Rankings->pluck('torneo_categoria_id')->toArray()))))->orderBy('id', 'desc')->get();
+        $Categorias = Categoria::whereIn('id', array_values(array_unique(array_filter($TorneoCategorias->pluck('categoria_simple_id')->toArray()))))
+        ->where('visible', true)->where('orden', '>', '0')
+        ->where(function ($q) use ($request){
+            if($request->filter_categoria){ $q->where('id', $request->filter_categoria); }
+        })->orderBy('id', 'desc')->get();
+
 
         $RankingsResult = [];
-        foreach ($Categorias as $q) {
-            $Object = [];
-            $JugadoresIds = [];
+        foreach ($Categorias as $q)
+        {
+            $Object = []; $JugadoresIds = [];
             $TorneoCategoria = TorneoCategoria::where('categoria_simple_id', $q->id)->get();
 
             $Object['categoria_id'] = $q->id;
             $Object['multiple'] = $q->dupla;
-            foreach ($TorneoCategoria as $q2) {
-                foreach ($Rankings->where('torneo_categoria_id', $q2->id) as $q3) {
-                    if ($q3->detalles != null && count($q3->detalles) > 0) {
-                        foreach ($q3->detalles as $q4) {
-                            
-                             
-
-                            $Id = null;
-                            if ($q->dupla) {
-                                // Validar que tanto jugadorSimple como jugadorDupla existen
-                                if ($q4->jugadorSimple && $q4->jugadorDupla) {
-                                    $Id = $q4->jugadorSimple->id . '-' . $q4->jugadorDupla->id;
-                                }
-                            } else {
-                                // Validar que jugadorSimple existe
-                                if ($q4->jugadorSimple) {
-                                    $Id = $q4->jugadorSimple->id;
-                                }
-                            }
-                            // Validar que $Id no es null antes de usarlo
-if ($Id === null) {
-    return false;
-}
-
-                            if (!in_array($Id, $JugadoresIds)) {
+            foreach ($TorneoCategoria as $q2)
+            {
+                foreach ($Rankings->where('torneo_categoria_id', $q2->id) as $q3)
+                {
+                    if ($q3->detalles != null && count($q3->detalles) > 0)
+                    {
+                        foreach ($q3->detalles as $q4)
+                        {
+            
+            
+            // Filtrar jugadores con menos de 1000 puntos
+            
+                            $Id = $q->dupla ? ($q4->jugadorSimple->id . '-' . $q4->jugadorDupla->id) : $q4->jugadorSimple->id;
+                            if (!in_array($Id, $JugadoresIds))
+                            {
                                 $ObjectJugador = [];
                                 $Puntos = 0;
+                    $ObjectJugador['considerado_ranking'] = $q4->considerado_ranking;
                                 $ObjectJugador['id'] = $Id;
                                 $ObjectJugador['nombre'] = $q->dupla ? ($q4->jugadorSimple->nombre_completo . ' + ' . $q4->jugadorDupla->nombre_completo) : $q4->jugadorSimple->nombre_completo;
 
-                                foreach ($Torneos as $q5) {
+                                foreach ($Torneos as $q5)
+                                {
                                     $ObjectTorneo = [];
                                     $ObjectTorneo['id'] = $q5->id;
                                     $ObjectTorneo['anio'] = Carbon::parse($q5->fecha_inicio)->format('Y');
                                     $ObjectTorneo['nombre'] = $q5->nombre;
 
-                                    if (count($TorneoCategoria->where('torneo_id', $q5->id)) > 0) {
-                                        foreach ($TorneoCategoria->where('torneo_id', $q5->id) as $q9) {
+                                    if(count($TorneoCategoria->where('torneo_id', $q5->id)) > 0)
+                                    {
+                                        foreach ($TorneoCategoria->where('torneo_id', $q5->id) as $q9)
+                                        {
                                             $ObjectTorneoCategoria = [];
 
                                             $rankingDetalle = RankingDetalle::whereHas('ranking', function ($query) use ($q9, $q5) {
@@ -3542,11 +3564,8 @@ if ($Id === null) {
                                                 $query->where('torneo_categoria_id', $q9->id);
                                             })->where(function ($query) use ($q, $q4) {
                                                 $query->where('jugador_simple_id', $q4->jugador_simple_id);
-                                                if ($q->dupla) {
-                                                    $query->where('jugador_dupla_id', $q4->jugadorDupla->id);
-                                                }
-                                            })->where('considerado_ranking', 1) // Añadir esta línea para filtrar
-->first();
+                                                if ($q->dupla) { $query->where('jugador_dupla_id', $q4->jugadorDupla->id);}
+                                            })->first();
 
                                             $Puntos += $rankingDetalle != null ? $rankingDetalle->puntos : 0;
 
@@ -3558,55 +3577,60 @@ if ($Id === null) {
                                             $ObjectTorneoCategoria['ranking_id'] = $rankingDetalle != null ? $rankingDetalle->ranking_id : null;
                                             $ObjectTorneoCategoria['puntos'] = $rankingDetalle != null ? $rankingDetalle->puntos : 0;
 
-                                            $ObjectTorneo['categorias'][] = (object) $ObjectTorneoCategoria;
+                                            $ObjectTorneo['categorias'][]  = (object)$ObjectTorneoCategoria;
                                         }
-                                    } else {
+                                    }else{
                                         $ObjectTorneo['categorias'] = [];
                                     }
 
-                                    $ObjectJugador['torneos'][] = (object) $ObjectTorneo;
+                                    $ObjectJugador['torneos'][] = (object)$ObjectTorneo;
                                 }
 
                                 $ObjectJugador['puntos'] = $Puntos;
                                 $Object['jugadores'][] = $ObjectJugador;
 
                                 $JugadoresIds[] = $Id;
-                            
                             }
+            
                         }
                     }
                 }
             }
-            $RankingsResult[] = (object) $Object;
+            $RankingsResult[] = (object)$Object;
         }
 
         $RankingsResultYear = null;
 
-        if ($filter_anio == null) {
+        if($request->filter_anio == null)
+        {
             $RankingsResultYear = [];
 
-            foreach ($RankingsResult as $q) {
+            foreach ($RankingsResult as $q)
+            {
                 $ResultYear = [];
                 $ResultYear['categoria_id'] = $q->categoria_id;
                 $ResultYear['multiple'] = $q->multiple;
 
-                foreach ($q->jugadores as $q2) {
-                    $ResultYearJugador = [];
-                    $Puntos = 0;
+               
+                foreach ($q->jugadores as $q2)
+                {
+                    $ResultYearJugador = []; $Puntos = 0;
                     $ResultYearJugador['nombre'] = $q2['nombre'];
-
-                    foreach ($Anios as $q3) {
+                    $ResultYearJugador['id'] = $q2['id'];
+                    $ResultYearJugador['considerado_ranking'] = $q2['considerado_ranking'];
+                    foreach ($Anios as $q3)
+                    {
                         $ResultYearJugadorAnio = [];
                         $ResultYearJugadorAnio['anio'] = $q3;
                         $ResultYearJugadorAnio['puntos'] = 0;
 
                         $TorneosPuntos = collect($q2['torneos'])->where('anio', $q3)->whereNotNull('categorias')->pluck('categorias');
 
-                        foreach ($TorneosPuntos as $q4) {
+                        foreach ($TorneosPuntos as $q4){
                             $ResultYearJugadorAnio['puntos'] += count($q4) > 0 ? $q4[0]->puntos : 0;
                         }
 
-                        $ResultYearJugador['anios'][] = (object) $ResultYearJugadorAnio;
+                        $ResultYearJugador['anios'][] = (object)$ResultYearJugadorAnio;
 
                         $Puntos += $ResultYearJugadorAnio['puntos'];
                     }
@@ -3616,42 +3640,56 @@ if ($Id === null) {
                     $ResultYear['jugadores'][] = $ResultYearJugador;
                 }
 
-                $RankingsResultYear[] = (object) $ResultYear;
+                $RankingsResultYear[] = (object)$ResultYear;
             }
         }
-
-        $result = [];
-
         
-
-        foreach ($RankingsResult as $q2) {
+   
+          // Calcular posiciones en el ranking
+        $result = [];
+        
+        foreach ($RankingsResultYear as $q2) {
             $countSingle = 0;
             $countRepeat = 1;
             $pointBefore = 0;
             $next = false;
     
+            // Ordenar jugadores por puntos descendentes
             $jugadoresOrdenados = App::multiPropertySort(collect($q2->jugadores), [['column' => 'puntos', 'order' => 'desc']]);
-    
+
+            //qquitalre la referencia
+
             foreach ($jugadoresOrdenados as $key => $q3) {
                 if ($q3['puntos'] > 0) {
-                    $countSingle += 1;
+                    $countSingle +=  $q3['considerado_ranking'] == 1 ? 1 : 0;
                     $pointBefore = $q3['puntos'];
                     $countRepeat = $next ? $countRepeat : $countSingle;
                     
-                    
-    
                     $result[] = [
                         'countRepeat' => $countRepeat,
                         'nombre' => $q3['nombre'],
                         'puntos' => $q3['puntos'],
-                        'id' => $q3['id']
+                        'id' => $q3['id'],
+                        'considerado_ranking' => isset($q3['considerado_ranking']) ? $q3['considerado_ranking'] : 1,
                     ];
     
-                    if (count(collect($q2->jugadores)->where('puntos', '>', '0')) > ($key + 1)) {
-                        if ($q3['puntos'] != $jugadoresOrdenados[$key + 1]['puntos']) {
+                    // Calcular siguiente posición
+                    if (count(collect($jugadoresOrdenados)->where('puntos', '>', '0')) > ($key + 1) ) {
+                        if ($q3['puntos'] != $jugadoresOrdenados[$key + 1]['puntos']   ) {
                             $countRepeat += 1;
                             $next = false;
-                        } else {
+                            \Log::debug(message: 'Calculating next position: current=' . $countRepeat . ', jugador=' . $q3['nombre'] . ', puntos=' . $q3['puntos'] . ', next puntos=' . $jugadoresOrdenados[$key + 1]['puntos'] . $jugadoresOrdenados[$key + 1]['nombre']);
+
+
+                        }
+                        else if($q3['considerado_ranking'] == 0 && $jugadoresOrdenados[$key + 1]['considerado_ranking'] == 0 ) {
+                            $next = true;
+                            \Log::debug('Calculating next position: current=' . $countRepeat . ', jugador=' . $q3['nombre'] . ', puntos=' . $q3['puntos'] . ', next puntos=' . $jugadoresOrdenados[$key + 1]['puntos'] . $jugadoresOrdenados[$key + 1]['nombre']);
+
+                        }
+                        else {
+                            \Log::debug('NEXT: current=' . $countRepeat . ', jugador=' . $q3['nombre'] . ', puntos=' . $q3['puntos'] . ', next puntos=' . $jugadoresOrdenados[$key + 1]['puntos'] . $jugadoresOrdenados[$key + 1]['nombre'] );
+
                             $next = true;
                         }
                     }
@@ -3660,33 +3698,46 @@ if ($Id === null) {
         }
 
 
-        foreach ($result as $key => $q) {
-
-            // Obtener el modelo Jugador
-            $jugador = Jugador::find($q['id']);
-
-            if ($jugador) {
-
-                // Llamar al método en el modelo Jugador
-                $jugador->setNombreCompletoConDatosAdicionales([$result[$key]['countRepeat']]);
-                $jugador->ranking_temporal = $result[$key]['countRepeat'];
-                $jugador->save();
-            }
-
-        }
         
-       
-    
 
-        return [
-            'Rankings' => collect( $result),
 
-        ];
+          
 
-    } else {
-        abort(404);
-    }
-}
+
+           
+
+           //filtrar los jugadores con considerado_ranking == 1
+              $result = collect($result)->where('considerado_ranking', 1)->values()->all();
+   
+      
+           foreach ($result as $key => $q) {
+   
+               // Obtener el modelo Jugador
+               $jugador = Jugador::find($q['id']);
+   
+               if ($jugador) {
+   
+                   // Llamar al método en el modelo Jugador
+                   $jugador->setNombreCompletoConDatosAdicionales([$result[$key]['countRepeat']]);
+                   $jugador->ranking_temporal = $result[$key]['countRepeat'];
+                   $jugador->save();
+               }
+   
+           }
+           
+          
+           //devulve solo los jugadores con && $q3['considerado_ranking'] == 1
+            
+   
+           return [
+               'Rankings' => collect( $result),
+   
+           ];
+   
+       } else {
+           abort(404);
+       }
+   }
 
 
 
@@ -5508,6 +5559,13 @@ $TorneoFaseFinal = (object)[
 
                             }
                             else if($request->tipo == 'zonas'){
+
+                                         // Helper function to get player full name
+                            function getNombreJugador($jugadorId) {
+                                $jugador = Jugador::find($jugadorId);
+                                if (!$jugador) return "Jugador no encontrado";
+                                return $jugador->nombres . ' ' . $jugador->apellidos;
+                            }
                                 // Fetch all players with their zones, handling both single players and duplas
                                 $allJugadores = $Torneo->torneoJugadors()
                                     ->where('torneo_categoria_id', $request->torneo_categoria_id)
@@ -5516,7 +5574,7 @@ $TorneoFaseFinal = (object)[
                                     ->select('torneo_jugadors.*', 'zonas.nombre as zona_nombre', 'torneo_jugador_zona.zona_id', 'torneo_jugador_zona.torneo_jugador_id')
                                     ->orderBy('torneo_jugador_zona.zona_id', 'asc')
                                     ->get();
-                            
+                                
                                 // Check if there are players without zones
                                 $jugadoresSinZona = $allJugadores->filter(function($jugador) {
                                     return is_null($jugador->zona_id);
@@ -5695,101 +5753,228 @@ $TorneoFaseFinal = (object)[
                                     $gruposTemporales->push($grupoActual);
                                 }
                                 
-                                // Step 3: Optimize groups - try to merge incomplete groups that share a common zone
-                                $gruposDefinitivos = collect();
+                                // Step 3: Check for incomplete groups and generate suggestions
                                 $gruposIncompletos = $gruposTemporales->filter(function($grupo) {
                                     return $grupo->count() < 4;
-                                })->sortBy(function($grupo) {
-                                    return $grupo->count(); // Process smallest groups first
                                 });
                                 
                                 $gruposCompletos = $gruposTemporales->filter(function($grupo) {
                                     return $grupo->count() == 4;
                                 });
                                 
-                                // Add complete groups directly
-                                foreach ($gruposCompletos as $grupo) {
-                                    $gruposDefinitivos->push($grupo);
-                                }
-                                
-                                // Process incomplete groups
-                                while ($gruposIncompletos->count() > 0) {
-                                    $grupoActual = $gruposIncompletos->shift();
-                                    $zonaComun = obtenerZonaComun($grupoActual);
+                                // If we have incomplete groups, generate suggestions
+                                if ($gruposIncompletos->count() > 0) {
+                                    // Get all available zones
+                                    $zonasDisponibles = Zona::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+                                        ->orderBy('nombre', 'asc')
+                                        ->get();
                                     
-                                    // Try to merge with another incomplete group
-                                    $encontradoMerge = false;
+                                    $sugerencias = collect();
+                                    $jugadoresYaSugeridos = collect(); // Track players that already have suggestions
                                     
-                                    foreach ($gruposIncompletos as $index => $otroGrupo) {
-                                        $otroZonaComun = obtenerZonaComun($otroGrupo);
+                                    // Analyze all groups and their requirements
+                                    $analisisGrupos = collect();
+                                    foreach ($gruposIncompletos as $grupoIndice => $grupo) {
+                                        $zonaActual = obtenerZonaComun($grupo);
+                                        $faltantes = 4 - $grupo->count();
                                         
-                                        // If both groups share a common zone and can be merged without exceeding 4 players
-                                        if ($zonaComun == $otroZonaComun && ($grupoActual->count() + $otroGrupo->count()) <= 4) {
-                                            // Merge groups
-                                            foreach ($otroGrupo as $jugador) {
-                                                $grupoActual->push($jugador);
-                                            }
-                                            
-                                            $gruposIncompletos->forget($index);
-                                            $encontradoMerge = true;
-                                            break;
-                                        }
-                                    }
-                                    
-                                    // If no merge happened and the group is still incomplete, we'll need temporary players
-                                    if (!$encontradoMerge && $grupoActual->count() < 4) {
-                                        $faltantes = 4 - $grupoActual->count();
-                                        
-                                        // Get available temporary players
-                                        $jugadoresTemporales = Jugador::where('temporal', true)
-                                            ->whereDoesntHave('torneoJugadors', function ($q) use ($request) {
-                                                $q->where('torneo_id', $request->torneo_id)
-                                                  ->where('torneo_categoria_id', $request->torneo_categoria_id);
+                                        $analisisGrupos->push([
+                                            'indice' => $grupoIndice,
+                                            'grupo' => $grupo,
+                                            'zona' => $zonaActual,
+                                            'nombre_zona' => $zonasDisponibles->firstWhere('id', $zonaActual)->nombre ?? 'Sin zona común',
+                                            'faltantes' => $faltantes,
+                                            'jugadores' => $grupo->map(function($j) use ($TorneoCategoria) {
+                                                return [
+                                                    'id' => $TorneoCategoria->multiple ? 
+                                                        $j->jugador_simple_id . '-' . $j->jugador_dupla_id : 
+                                                        $j->jugador_simple_id,
+                                                    'nombre' => $TorneoCategoria->multiple ? 
+                                                        getNombreJugador($j->jugador_simple_id) . ' & ' . getNombreJugador($j->jugador_dupla_id) : 
+                                                        getNombreJugador($j->jugador_simple_id)
+                                                ];
                                             })
-                                            ->limit($faltantes)
-                                            ->get();
-                                        
-                                        if ($jugadoresTemporales->count() < $faltantes) {
-                                            $Result->Message = "No hay suficientes jugadores temporales disponibles para completar un grupo. Se necesitan {$faltantes} jugadores temporales.";
-                                            return response()->json($Result);
+                                        ]);
+                                    }
+                                    
+                                    // Analyze non-assigned players
+                                    $jugadoresNoAsignados = $jugadoresConZonas->filter(function($jugador) use ($TorneoCategoria, $jugadoresAsignados) {
+                                        if ($TorneoCategoria->multiple) {
+                                            $idCompuesto = $jugador->jugador_simple_id . '-' . $jugador->jugador_dupla_id;
+                                            return !$jugadoresAsignados->contains($idCompuesto);
+                                        } else {
+                                            return !$jugadoresAsignados->contains($jugador->jugador_simple_id);
                                         }
+                                    });
+                                    
+                                    // First approach: Try to recommend strategic zone additions
+                                    foreach ($analisisGrupos as $analisis) {
+                                        // Skip groups that only need 1 player (we'll handle those later)
+                                        if ($analisis['faltantes'] <= 1) continue;
                                         
-                                        // Create tournament player records for temporary players
-                                        foreach ($jugadoresTemporales as $jugadorTemporal) {
-                                            $torneoJugador = TorneoJugador::create([
-                                                'torneo_id' => $request->torneo_id,
-                                                'torneo_categoria_id' => $request->torneo_categoria_id,
-                                                'jugador_simple_id' => $jugadorTemporal->id,
-                                                'jugador_dupla_id' => $TorneoCategoria->multiple ? $jugadorTemporal->id : null, // For duplas, use same ID as placeholder
-                                                'temporal' => true,
-                                                'created_at' => now(),
-                                                'updated_at' => now(),
-                                                'after' => true
-                                            ]);
+                                        // Find pairs or triplets of players who could share a common zone
+                                        $gruposCompatibles = $analisisGrupos->filter(function($a) use ($analisis) {
+                                            return $a['indice'] != $analisis['indice'] && 
+                                                   $a['faltantes'] > 0 && 
+                                                   ($a['faltantes'] + $analisis['faltantes']) <= 4;
+                                        });
+                                        
+                                        foreach ($gruposCompatibles as $compatible) {
+                                            $nombreGrupo1 = 'Grupo ' . ($analisis['indice'] + 1);
+                                            $nombreGrupo2 = 'Grupo ' . ($compatible['indice'] + 1);
                                             
-                                            // Add zone information to the player for consistency
-                                            $torneoJugador->zonas = [$zonaComun];
-                                            $grupoActual->push($torneoJugador);
+                                            // Approach 1: If both groups have the same zone, suggest merging
+                                            if ($analisis['zona'] == $compatible['zona']) {
+                                                // Only suggest if total players would be <= 4
+                                                $totalJugadores = $analisis['grupo']->count() + $compatible['grupo']->count();
+                                                if ($totalJugadores <= 4) {
+                                                    $sugerencia = [
+                                                        'tipo' => 'fusion_grupos',
+                                                        'grupo1' => $nombreGrupo1,
+                                                        'grupo2' => $nombreGrupo2,
+                                                        'zona' => $analisis['nombre_zona'],
+                                                        'mensaje' => "Fusionar " . $nombreGrupo1 . " y " . $nombreGrupo2 . 
+                                                            " ya que comparten la zona " . $analisis['nombre_zona'] . 
+                                                            " y juntos forman un grupo de " . $totalJugadores . " jugadores"
+                                                    ];
+                                                    $sugerencias->push($sugerencia);
+                                                    break; // One good suggestion is enough for this group
+                                                }
+                                            } 
+                                            // Approach 2: Find players who could easily switch zones
+                                            else {
+                                                $jugadoresConPotencial = $compatible['grupo']->filter(function($jugador) use ($analisis) {
+                                                    // Can this player be assigned to the target zone?
+                                                    return count($jugador->zonas) == 0 || in_array($analisis['zona'], $jugador->zonas);
+                                                });
+                                                
+                                                if ($jugadoresConPotencial->count() > 0) {
+                                                    // We found players who already have the zone or can be assigned to it
+                                                    $jugadoresStr = $jugadoresConPotencial->map(function($j) use ($TorneoCategoria) {
+                                                        return $TorneoCategoria->multiple ? 
+                                                            getNombreJugador($j->jugador_simple_id) . ' & ' . getNombreJugador($j->jugador_dupla_id) : 
+                                                            getNombreJugador($j->jugador_simple_id);
+                                                    })->implode(', ');
+                                                    
+                                                    $sugerencia = [
+                                                        'tipo' => 'mover_jugadores',
+                                                        'jugadores' => $jugadoresStr,
+                                                        'grupo_origen' => $nombreGrupo2,
+                                                        'grupo_destino' => $nombreGrupo1,
+                                                        'zona' => $analisis['nombre_zona'],
+                                                        'mensaje' => "Mover a " . $jugadoresStr . " del " . $nombreGrupo2 . 
+                                                            " al " . $nombreGrupo1 . " ya que " . 
+                                                            (count($jugadoresConPotencial) > 1 ? "comparten" : "comparte") . 
+                                                            " la zona " . $analisis['nombre_zona']
+                                                    ];
+                                                    $sugerencias->push($sugerencia);
+                                                    break; // One good suggestion is enough
+                                                } else {
+                                                    // No players can easily move, suggest a zone change for some players
+                                                    $jugadoresParaZona = $compatible['grupo']->take($analisis['faltantes']);
+                                                    if ($jugadoresParaZona->count() > 0) {
+                                                        foreach ($jugadoresParaZona as $jugador) {
+                                                            $nombreJugador = $TorneoCategoria->multiple ? 
+                                                                getNombreJugador($jugador->jugador_simple_id) . ' & ' . getNombreJugador($jugador->jugador_dupla_id) : 
+                                                                getNombreJugador($jugador->jugador_simple_id);
+                                                            
+                                                            $idJugador = $TorneoCategoria->multiple ? 
+                                                                $jugador->jugador_simple_id . '-' . $jugador->jugador_dupla_id : 
+                                                                $jugador->jugador_simple_id;
+                                                            
+                                                            // Avoid duplicating suggestions for the same player
+                                                            if ($jugadoresYaSugeridos->contains($idJugador)) continue;
+                                                            
+                                                            $zonaActualJugador = obtenerZonaComun(collect([$jugador]));
+                                                            $nombreZonaActual = $zonaActualJugador ? 
+                                                                $zonasDisponibles->firstWhere('id', $zonaActualJugador)->nombre : 'Sin zona';
+                                                            
+                                                            $sugerencia = [
+                                                                'tipo' => 'cambio_zona',
+                                                                'jugador' => $nombreJugador,
+                                                                'zona_actual' => $nombreZonaActual,
+                                                                'zona_sugerida' => $analisis['nombre_zona'],
+                                                                'mensaje' => "Asignar a " . $nombreJugador . " a la zona " . 
+                                                                    $analisis['nombre_zona'] . " para completar el " . $nombreGrupo1
+                                                            ];
+                                                            $sugerencias->push($sugerencia);
+                                                            $jugadoresYaSugeridos->push($idJugador);
+                                                        }
+                                                        break; // One set of suggestions is enough
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                     
-                                    // Add the processed group to our definitive collection
-                                    $gruposDefinitivos->push($grupoActual);
+                                    // If we have very few suggestions, add more options
+                                    if ($sugerencias->count() < 2) {
+                                        // Look for non-assigned players who could join a group with a zone change
+                                        foreach ($jugadoresNoAsignados as $jugador) {
+                                            $nombreJugador = $TorneoCategoria->multiple ? 
+                                                getNombreJugador($jugador->jugador_simple_id) . ' & ' . getNombreJugador($jugador->jugador_dupla_id) : 
+                                                getNombreJugador($jugador->jugador_simple_id);
+                                            
+                                            $idJugador = $TorneoCategoria->multiple ? 
+                                                $jugador->jugador_simple_id . '-' . $jugador->jugador_dupla_id : 
+                                                $jugador->jugador_simple_id;
+                                            
+                                            // Avoid duplicating suggestions
+                                            if ($jugadoresYaSugeridos->contains($idJugador)) continue;
+                                            
+                                            // Find a suitable group for this player
+                                            foreach ($analisisGrupos->sortBy('faltantes') as $analisis) {
+                                                if ($analisis['faltantes'] > 0) {
+                                                    $sugerencia = [
+                                                        'tipo' => 'agregar_zona',
+                                                        'jugador' => $nombreJugador,
+                                                        'zona_sugerida' => $analisis['nombre_zona'],
+                                                        'mensaje' => "Agregar al jugador " . $nombreJugador . 
+                                                            " a la zona " . $analisis['nombre_zona'] . 
+                                                            " para incluirlo en el Grupo " . ($analisis['indice'] + 1)
+                                                    ];
+                                                    $sugerencias->push($sugerencia);
+                                                    $jugadoresYaSugeridos->push($idJugador);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    // Check if we still need more players overall
+                                    $totalJugadoresActuales = $gruposTemporales->sum(function($grupo) {
+                                        return $grupo->count();
+                                    });
+                                    
+                                    $jugadoresFaltantes = 0;
+                                    foreach ($gruposIncompletos as $grupo) {
+                                        $jugadoresFaltantes += (4 - $grupo->count());
+                                    }
+                                    
+                                    if ($jugadoresFaltantes > $jugadoresNoAsignados->count()) {
+                                        $remanente = $jugadoresFaltantes - $jugadoresNoAsignados->count();
+                                        $sugerencia = [
+                                            'tipo' => 'agregar_jugadores',
+                                            'cantidad' => $remanente,
+                                            'mensaje' => "Agregar " . $remanente . " jugador(es) adicional(es) para completar todos los grupos"
+                                        ];
+                                        $sugerencias->push($sugerencia);
+                                    }
+                                    
+                                    // Limit to a reasonable number of suggestions
+                                    if ($sugerencias->count() > 5) {
+                                        $sugerencias = $sugerencias->take(5);
+                                    }
+                                    
+                                    // Return suggestions instead of automatically creating temporary players
+                                    $Result->Success = false;
+                                    $Result->sugerencias = $sugerencias;
+                                    $Result->Message = "No se pudieron formar grupos completos de 4 jugadores. Revise las sugerencias proporcionadas.";
+                                    return response()->json($Result);
                                 }
                                 
-                                // Verify that all groups have exactly 4 players
-                                foreach ($gruposDefinitivos as $grupo) {
-                                    if ($grupo->count() != 4) {
-                                        $Result->Message = "No se pudo formar un grupo con exactamente 4 jugadores.";
-                                        return response()->json($Result);
-                                    }
-                                    
-                                    // Verify that each group has at least one zone in common
-                                    if (!tienenZonaComun($grupo)) {
-                                        $Result->Message = "Hay un grupo donde los jugadores no comparten ninguna zona en común.";
-                                        return response()->json($Result);
-                                    }
-                                }
+                                // If all groups are complete, continue with assignment
+                                $gruposDefinitivos = $gruposCompletos;
                                 
                                 // Get available groups from database
                                 $GruposDisponibles = Grupo::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
@@ -5824,7 +6009,13 @@ $TorneoFaseFinal = (object)[
                                 }
                                 
                                 $Grupos = $GruposDB;
+
+                         
                             }
+                            
+                          
+                            
+                            
                         
                             else{
                                 $Result->Message = "El tipo ingresado no es vàlido, por favor seleccione uno válido";
@@ -6040,7 +6231,6 @@ $TorneoFaseFinal = (object)[
         }
         return response()->json($Result);
     }
-
     public function grupoCambiarNombre(Request $request)
     {
         $Result = (object)['Success' => false, 'Message' => null];
@@ -24105,7 +24295,8 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
         
    
 } else {
-    $this->rankingsByCategoryId($categoria_simple_id, true);
+    $prueba = $this->rankingsByCategoryId($categoria_simple_id);
+ 
 }
 
 

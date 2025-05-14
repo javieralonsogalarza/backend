@@ -133,6 +133,8 @@ class HomeController extends Controller
     {
         $Model = Comunidad::where('principal', true)->first();
 
+
+        
         if($Model != null)
         {
             $Rankings = Ranking::where('comunidad_id', $Model->id)
@@ -292,10 +294,8 @@ class HomeController extends Controller
                     $RankingsResultYear[] = (object)$ResultYear;
                 }
             }
-
             
-      
-
+          
             return view('auth.ranking.ajax.partialView', ['Torneos' => $Torneos,
             'Rankings' => collect($RankingsResult), 'Anios' => $Anios,
             'Landing' => true,

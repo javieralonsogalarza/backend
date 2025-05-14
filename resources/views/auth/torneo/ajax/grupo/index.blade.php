@@ -1206,25 +1206,65 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
                         formData.append('torneo_categoria_id', id);
                         formData.append('tipo', 'zonas');
                         formData.append('tipo_grupo_id', $("#tipo_grupo").val());
-                        actionAjax(`/auth/{{strtolower($ViewName)}}/grupo/store`, formData, `POST`, function (data){
+                       
+                        actionAjaxEspecial(`/auth/{{strtolower($ViewName)}}/grupo/store`, formData, `POST`, function (data){
                             if(data.Success){
-                               
+                                console.log("mmms")
                                 invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${id}`, function(data){
                                     $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
                                 });
-                            }else Toast.fire({icon: 'error', title: 'Algo salió mal, hubo un error al guardar.'});
-                        }, true);
-
-
-
-                        /*confirmAjax(`/auth/{{strtolower($ViewName)}}/grupo/store`, formData, `POST`,
-                        `¿Está seguro de generar las llaves de manera aleatoria para los ${$table.find("tbody tr").length} jugadores ?`, null, function (data){
-
-                        });*/
+                            } else {
+                                console.log('data.sugerencias');
+                        // Verificar si hay sugerencias disponibles
+                        if (data.sugerencias && data.sugerencias.length > 0) {
+                            // Construir el contenido HTML para las sugerencias
+                            let contenidoSugerencias = '<div class="sugerencias-container" style="text-align:left;max-height:400px;overflow-y:auto;">';
+                            contenidoSugerencias += '<h4>Sugerencias para formar grupos completos:</h4>';
+                            contenidoSugerencias += '<ul style="padding-left:20px;">';
+                            
+                            data.sugerencias.forEach(sugerencia => {
+                                switch(sugerencia.tipo) {
+                                    case 'cambio_zona':
+                                        contenidoSugerencias += `<li>Asignar a <strong>${sugerencia.jugador}</strong> de la zona ${sugerencia.zona_actual} a la zona <strong>${sugerencia.zona_sugerida}</strong></li>`;
+                                        break;
+                                    case 'fusion_grupos':
+                                        contenidoSugerencias += `<li>Fusionar <strong>${sugerencia.grupo1}</strong> y <strong>${sugerencia.grupo2}</strong> que comparten la zona ${sugerencia.zona}</li>`;
+                                        break;
+                                    case 'mover_jugadores':
+                                        contenidoSugerencias += `<li>Mover a <strong>${sugerencia.jugadores}</strong> del ${sugerencia.grupo_origen} al ${sugerencia.grupo_destino}</li>`;
+                                        break;
+                                    case 'agregar_jugadores':
+                                        contenidoSugerencias += `<li>Agregar <strong>${sugerencia.cantidad}</strong> jugador(es) adicional(es) para completar todos los grupos</li>`;
+                                        break;
+                                    default:
+                                        contenidoSugerencias += `<li>${sugerencia.mensaje}</li>`;
+                                }
+                            });
+                            
+                            contenidoSugerencias += '</ul>';
+                            contenidoSugerencias += '<p class="mt-3">Para crear los grupos correctamente, es necesario aplicar estos cambios primero.</p>';
+                            contenidoSugerencias += '</div>';
+                            
+                            // Mostrar modal con las sugerencias
+                            Swal.fire({
+                                title: 'No se pudieron formar grupos completos',
+                                html: contenidoSugerencias,
+                                icon: 'warning',
+                                confirmButtonText: 'Entendido',
+                                width: '600px'
+                            });
+                        } else {
+                            // Si no hay sugerencias específicas, mostrar mensaje general
+                            Toast.fire({icon: 'error', title: data.Message || 'Algo salió mal, hubo un error al guardar.'});
+                        }
                     }
-                });
-            }else Toast.fire({icon: 'error', title: 'No existen jugadores disponibles para generar las llaves'});
+                }, true);
+            }
         });
+    } else {
+        Toast.fire({icon: 'error', title: 'No existen jugadores disponibles para generar las llaves'});
+    }
+});
 
         $btnManualKeys.on("click", function (){
             const $this = $(this);
