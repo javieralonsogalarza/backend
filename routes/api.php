@@ -23,6 +23,11 @@ Route::post('/upload-image', [Controllers\ImagenController::class, 'uploadImage'
 Route::post('/upload-image-segunda', [Controllers\ImagenController::class, 'uploadImageSegunda'])->where('path', '.*')->name('uploadImageSegunda');
 
 
+Route::post('/actualizarReporteJsonGenerado', [Controllers\ImagenController::class, 'actualizarReporteJsonGenerado'])->name('actualizarReporteJsonGenerado');
+
+
+Route::post('/verificarReporteJsonGenerado', [Controllers\ImagenController::class, 'verificarReporteJsonGenerado'])->name('verificarReporteJsonGenerado');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
