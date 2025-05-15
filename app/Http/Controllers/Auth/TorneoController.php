@@ -8470,7 +8470,7 @@ protected function sanitizeFilename($string)
                     $model->llaves['ronda32']['bloque_tres'] = [];
                     $model->llaves['ronda32']['bloque_cuatro'] = [];
 
-                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 1)->sortByDesc('bracket') as $q)
+                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 1)->sortBy('position')->sortByDesc('bracket') as $q)
                     {
                         $bloque = [];
                         $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
@@ -8479,7 +8479,7 @@ protected function sanitizeFilename($string)
                         $model->llaves['ronda32']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }
 
-                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 2)->sortByDesc('bracket') as $q)
+                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 2)->sortBy('position')->sortByDesc('bracket') as $q)
                     {
                         $bloque = [];
                         $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
@@ -8488,7 +8488,7 @@ protected function sanitizeFilename($string)
                         $model->llaves['ronda32']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
                     }
 
-                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 3)->sortByDesc('bracket') as $q)
+                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 3)->sortBy('position')->sortByDesc('bracket') as $q)
                     {
                         $bloque = [];
                         $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
@@ -8497,7 +8497,7 @@ protected function sanitizeFilename($string)
                         $model->llaves['ronda32']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
                     }
 
-                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 4)->sortByDesc('bracket') as $q)
+                    foreach($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 16)->where('bloque', 4)->sortBy('position')->sortByDesc('bracket') as $q)
                     {
                         $bloque = [];
                         $bloque['jugador_local'] = $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-").' + '.($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo_temporal : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-");
@@ -23892,7 +23892,12 @@ public function exportMapaJsonFiguras(Request $request)
             usort($jugadoresConNumero, function ($a, $b) {
                 preg_match('/\(([^)]+)\)/', $a['apellidosv1'], $matchesA);
                 preg_match('/\(([^)]+)\)/', $b['apellidosv1'], $matchesB);
-                return intval($matchesA[1]) - intval($matchesB[1]);
+                
+                // Check if matches exist before accessing index 1
+                $valueA = isset($matchesA[1]) ? intval($matchesA[1]) : 0;
+                $valueB = isset($matchesB[1]) ? intval($matchesB[1]) : 0;
+                
+                return $valueA - $valueB;
             });
 
             // Ordenar los jugadores sin números alfabéticamente por apellido y nombre
@@ -24348,6 +24353,7 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
 
         
     )
+    ->where('torneo_categorias.multiple',0)
     ->whereNotNull('partidos.resultado')
     ->where(function ($query) {
        $query->whereRaw("LOWER(partidos.resultado) NOT LIKE '%wo%'");
@@ -24394,6 +24400,7 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
     ->where('partidos.multiple',0)
     ->where('resultado', '<>', '-')
     ->whereNull('torneos.deleted_at')
+    ->where('torneo_categorias.multiple',0)
   //  ->where('torneo_categorias.id',$torneo_categoria_id)
     ->orderByRaw("IFNULL(partidos.resultado_timestamp, partidos.fecha_final) DESC")
     ->take(5)
@@ -24439,6 +24446,7 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
     ->whereNotNull('partidos.resultado')
     ->where('resultado', '<>', '-')
     ->where('partidos.multiple',0)
+    ->where('torneo_categorias.multiple',0)
     ->whereNull('torneos.deleted_at')
    // ->where('torneo_categorias.id',$torneo_categoria_id)
     ->orderByRaw("IFNULL(partidos.resultado_timestamp, partidos.fecha_final) DESC")
@@ -24458,6 +24466,7 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
         {
             foreach ($Partidos as $partido) {
                 $resultado = [
+                    'id' => $partido->id,
                     'jugador_local' => $partido->jugador_ganador_uno_id == $partido->jugador_local_uno_id ? $partido->nombre_local : $partido->nombre_rival,
                     'jugador_rival' => $partido->jugador_ganador_uno_id != $partido->jugador_rival_uno_id ? $partido->nombre_rival : $partido->nombre_local,
                     'jugador_local_id' => $partido->jugador_local_uno_id,
@@ -24487,6 +24496,7 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
 
             foreach ($Partidos_vs as $partido) {
                 $resultado_vs = [
+                    'partido_id' => $partido->id,
                   'jugador_local' => $partido->jugador_ganador_uno_id == $partido->jugador_local_uno_id ? $partido->nombre_local : $partido->nombre_rival,
                     'jugador_rival' => $partido->jugador_ganador_uno_id != $partido->jugador_rival_uno_id ? $partido->nombre_rival : $partido->nombre_local,
                     'jugador_local_id' => $partido->jugador_local_uno_id,
@@ -24522,6 +24532,7 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
 
             foreach ($Partidos_rival as $partido) {
                 $resultado_rival = [
+                    'partido_id' => $partido->id,
                     'jugador_local' => $partido->jugador_ganador_uno_id == $partido->jugador_local_uno_id ? $partido->nombre_local : $partido->nombre_rival,
                     'jugador_rival' => $partido->jugador_ganador_uno_id != $partido->jugador_rival_uno_id ? $partido->nombre_rival : $partido->nombre_local,
                     'jugador_local_id' => $partido->jugador_local_uno_id,

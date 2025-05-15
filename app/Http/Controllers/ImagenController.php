@@ -8,6 +8,9 @@ use League\Glide\Responses\LaravelResponseFactory;
 use League\Glide\ServerFactory;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Partido;
+
 
 class ImagenController extends Controller
 {
@@ -241,5 +244,81 @@ public function uploadImageSegunda(Request $request)
 
         // Acortar si es demasiado largo
         return substr($string, 0, 30);
+    }
+    
+    
+        
+    public function actualizarReporteJsonGenerado(Request $request)
+{
+    $Result = (object)['Success' => false, 'Message' => null];
+
+    try {
+        // Validar que existe el partido_id en el request
+        $validator = Validator::make($request->all(), [
+            'partido_id' => 'required|exists:partidos,id',
+        ]);
+
+        if ($validator->fails()) {
+            $Result->Message = 'ID de partido inválido o no existe';
+            return response()->json($Result);
+        }
+
+        // Obtener el partido y actualizar el campo
+        $partido = Partido::findOrFail($request->partido_id);
+        
+        // Verificar que el usuario tiene permiso (opcional, si quieres restringir el acceso)
+        // if ($partido->comunidad_id != Auth::guard('web')->user()->comunidad_id) {
+        //     $Result->Message = 'No tiene permisos para modificar este partido';
+        //     return response()->json($Result);
+        // }
+        
+        $partido->reporte_json_generado = now();
+        
+        if ($partido->save()) {
+            $Result->Success = true;
+            $Result->Message = 'Reporte JSON actualizado correctamente';
+            $Result->fecha = $partido->reporte_json_generado;
+        } else {
+            $Result->Message = 'No se pudo actualizar el registro';
+        }
+    } catch (\Exception $e) {
+        $Result->Message = 'Error: ' . $e->getMessage();
+    }
+
+    return response()->json($Result);
+}
+
+
+
+/**
+ * Verifica si el campo reporte_json_generado está marcado
+ *
+ * @param int $partido_id
+ * @return \Illuminate\Http\JsonResponse
+ */
+public function verificarReporteJsonGenerado(Request $request)
+{
+    $Result = (object)['Success' => false, 'Message' => null, 'reporteGenerado' => false, 'fecha' => null];
+
+    try {
+        // Validar que existe el partido_id en el request
+        $validator = Validator::make($request->all(), [
+            'partido_id' => 'required|exists:partidos,id',
+        ]);
+
+        if ($validator->fails()) {
+            $Result->Message = 'ID de partido inválido o no existe';
+            return response()->json($Result);
+        }
+
+        $partido = Partido::findOrFail($request->partido_id);
+        $Result->Success = true;
+        $Result->reporteGenerado = !is_null($partido->reporte_json_generado);
+        $Result->fecha = $partido->reporte_json_generado;
+    } catch (\Exception $e) {
+        $Result->Message = 'Error: ' . $e->getMessage();
+    }
+
+    return response()->json($Result);
 }
 }
