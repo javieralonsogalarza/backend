@@ -400,5 +400,8 @@ Route::get('jugadores', [App\HomeController::class, 'jugadores'])->name('jugador
 Route::get('jugadorPartialView', [App\HomeController::class, 'jugadorPartialView'])->name('jugadorPartialView');
 Route::get('jugadorPartidosPartialView', [App\HomeController::class, 'jugadorPartidosPartialView'])->name('jugadorPartidosPartialView');
 Route::post('contactanos', [App\HomeController::class, 'contactanos'])->name('contactanos');
+Route::post('actualizarReporteJsonGenerado', [App\HomeController::class, 'actualizarReporteJsonGenerado'])->name('actualizarReporteJsonGenerado');
 
+
+Route::post('verificarReporteJsonGenerado', [App\HomeController::class, 'verificarReporteJsonGenerado'])->name('verificarReporteJsonGenerado');
 

@@ -3166,6 +3166,9 @@
                                     <tr>
                                         <td class="text-center color-participantes">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
+                                        @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
+                                                <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
+                                        @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -3199,6 +3202,9 @@
                                     <tr>
                                         <td class="text-center color-participantes">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
+                                        @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
+                                                <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
+                                        @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -3232,6 +3238,9 @@
                                     <tr>
                                         <td class="text-center color-participantes">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
+                                        @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
+                                                <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
+                                        @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -3675,6 +3684,9 @@
                                     <tr>
                                         <td class="text-center color-participantes">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
+                                        @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
+                                                <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
+                                        @endif
                                         </td>
                                     </tr>
                                     <tr>
