@@ -779,23 +779,7 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
                         let category = $this.closest("tr").attr("data-category");
                         const targetId = $this.attr('data-target');
                         const tab = document.querySelector(targetId);
-                    invocarVista(`/auth/{{ strtolower($ViewName) }}/grupo/{{ $Model->id }}/${category}`, function (data) {
-                        $("#main").addClass("hidden");
-                        $("#info").removeClass("hidden").html("").append(data);
-                        if (tab) {
-                    // Activar el tab
-                    const tabPane = new bootstrap.Tab(tab);
-                    tabPane.show();
 
-                    // Activar el enlace del tab
-                    const tabLink = document.querySelector(`a[href="${targetId}"]`);
-                    console.log(tabLink,'tabLink');
-                    if (tabLink) {
-                        const tabLinkPane = new bootstrap.Tab(tabLink);
-                        tabLinkPane.show();
-                    }
-                }
-                    });
                              
                     }
                 });

@@ -50,6 +50,8 @@ Route::post('/rankings/update-player-ranking-consideration', [Auth\RakingControl
 
                 Route::get('h2h/{jugador_local_uno_id}/{jugador_rival_uno_id}/{torneo_categoria_id}/{categoria_id}/{torneo_id}/json', [Auth\TorneoController::class, 'h2h'])->name('h2h');
 
+                                            Route::get('getTorneoFinales', [Auth\NuevoController::class, 'getTorneoFinales'])->name('getTorneoFinales');
+
                 Route::get('/zonas-distribucion/{categoria_id}', [Auth\TorneoController::class, 'jugadorZonaDistribution'])->name('jugador.zona.distribution');
                 // Add to your web.php routes
                 Route::get('/get-distribution-modal', function () {
@@ -312,6 +314,7 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::get('getJugadoresByTorneo', [Auth\ReporteController::class, 'getJugadoresByTorneo'])->name('getJugadoresByTorneo');
                              
                              
+
                              
                             
                             

@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-use Illuminate\Support\Facades\Log;
 
 use App\Exports\TorneoJugadorExport;
 use App\Http\Controllers\Controller;
@@ -2670,6 +2669,12 @@ return $TorneoFaseFinal->JugadoresClasificados;
             }
         }
 
+ if($TorneoCategoria->multiple){
+        return response()->json(['data' => array_values($JugadoresClasificados)]);
+
+        }else{
+
+       
 
 // Obtenemos todos los jugadores
 $allPlayers = Jugador::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
@@ -2741,6 +2746,8 @@ unset($player['apellidos']);
 }
 
 return response()->json(['data' => $mergedPlayers]);
+
+ }
     }
 
     public function faseFinalPrePartidoStore(Request $request)
@@ -3454,7 +3461,7 @@ return response()->json(['data' => $mergedPlayers]);
     }
 
     
-   public function rankingsByCategoryId($filter_categoria)
+    public function rankingsByCategoryId($filter_categoria)
    {
     $Model = Comunidad::where('principal', true)->first();
 
@@ -3661,7 +3668,7 @@ return response()->json(['data' => $mergedPlayers]);
 
             foreach ($jugadoresOrdenados as $key => $q3) {
                 if ($q3['puntos'] > 0) {
-                    $countSingle +=  $q3['considerado_ranking'] == 1 ? 1 : 0;
+                    $countSingle +=  1;
                     $pointBefore = $q3['puntos'];
                     $countRepeat = $next ? $countRepeat : $countSingle;
                     
@@ -3681,12 +3688,7 @@ return response()->json(['data' => $mergedPlayers]);
                             \Log::debug(message: 'Calculating next position: current=' . $countRepeat . ', jugador=' . $q3['nombre'] . ', puntos=' . $q3['puntos'] . ', next puntos=' . $jugadoresOrdenados[$key + 1]['puntos'] . $jugadoresOrdenados[$key + 1]['nombre']);
 
 
-                        }
-                        else if($q3['considerado_ranking'] == 0 && $jugadoresOrdenados[$key + 1]['considerado_ranking'] == 0 ) {
-                            $next = true;
-                            \Log::debug('Calculating next position: current=' . $countRepeat . ', jugador=' . $q3['nombre'] . ', puntos=' . $q3['puntos'] . ', next puntos=' . $jugadoresOrdenados[$key + 1]['puntos'] . $jugadoresOrdenados[$key + 1]['nombre']);
-
-                        }
+                        }                        
                         else {
                             \Log::debug('NEXT: current=' . $countRepeat . ', jugador=' . $q3['nombre'] . ', puntos=' . $q3['puntos'] . ', next puntos=' . $jugadoresOrdenados[$key + 1]['puntos'] . $jugadoresOrdenados[$key + 1]['nombre'] );
 
@@ -3710,20 +3712,80 @@ return response()->json(['data' => $mergedPlayers]);
               $result = collect($result)->where('considerado_ranking', 1)->values()->all();
    
       
-           foreach ($result as $key => $q) {
-   
-               // Obtener el modelo Jugador
-               $jugador = Jugador::find($q['id']);
-   
-               if ($jugador) {
-   
-                   // Llamar al método en el modelo Jugador
-                   $jugador->setNombreCompletoConDatosAdicionales([$result[$key]['countRepeat']]);
-                   $jugador->ranking_temporal = $result[$key]['countRepeat'];
-                   $jugador->save();
-               }
-   
-           }
+//filtrar los jugadores con considerado_ranking == 1 solo para calcular
+$result = collect($result);
+
+// Si es modo carrera, recalcular el ranking con posiciones correctas
+if (true) {
+    // Primero ordenar por puntos descendentes
+    $jugadoresOrdenados = App::multiPropertySort($result, [['column' => 'puntos', 'order' => 'desc']]);
+    
+    // Variables para cálculo de posiciones
+    $countSingle = 0;
+    $countRepeat = 1;
+    $pointBefore = null;
+    $next = false;
+    
+    // Nuevo array con posiciones recalculadas
+    $resultRecalculado = [];
+    $posicionesConsideradas = [];
+    
+    // Primero, procesar solo los jugadores considerados para el ranking
+    foreach ($jugadoresOrdenados as $key => $jugador) {
+        // Solo calcular posiciones para jugadores considerados
+        if ($jugador['considerado_ranking'] == 1 && $jugador['puntos'] > 0) {
+            $countSingle += 1;
+            
+            // Si cambian los puntos o es el primer jugador
+            if ($pointBefore === null || $pointBefore != $jugador['puntos']) {
+                $countRepeat = $countSingle;
+                $next = false;
+            }
+            
+            // Guardar la posición para este jugador
+            $posicionesConsideradas[$jugador['id']] = $next ? $countRepeat : $countSingle;
+            
+            // Recordar estos puntos para la siguiente comparación
+            $pointBefore = $jugador['puntos'];
+            
+            // Verificar si el siguiente jugador tiene los mismos puntos (para empates)
+            if ($key + 1 < count($jugadoresOrdenados)) {
+                $siguienteJugador = $jugadoresOrdenados[$key + 1];
+                if ($siguienteJugador['considerado_ranking'] == 1 && $jugador['puntos'] == $siguienteJugador['puntos']) {
+                    $next = true;
+                } else {
+                    $next = false;
+                }
+            }
+        }
+    }
+    
+    // Ahora procesar todos los jugadores, asignando posiciones calculadas
+    foreach ($jugadoresOrdenados as $key => $jugador) {
+        $resultRecalculado[] = [
+            'countRepeat' => $jugador['considerado_ranking'] == 1 ? ($posicionesConsideradas[$jugador['id']] ?? null) : null,
+            'nombre' => $jugador['nombre'],
+            'puntos' => $jugador['puntos'],
+            'id' => $jugador['id'],
+            'considerado_ranking' => $jugador['considerado_ranking'],
+        ];
+    }
+    
+    $result = collect($resultRecalculado);
+}
+
+// Actualizar el ranking temporal en los jugadores
+foreach ($result as $q) {
+    // Solo actualizar el ranking de jugadores considerados
+    if ($q['considerado_ranking'] == 1) {
+        $jugador = Jugador::find($q['id']);
+        if ($jugador) {
+            $jugador->setNombreCompletoConDatosAdicionales([$q['countRepeat']]);
+            $jugador->ranking_temporal = $q['countRepeat'];
+            $jugador->save();
+        }
+    }
+}
            
           
            //devulve solo los jugadores con && $q3['considerado_ranking'] == 1
@@ -4658,8 +4720,13 @@ return response()->json(['data' => $mergedPlayers]);
             $maxFase = $Partido != null ? $Partido->fase : 0;
 
             $TorneoFaseFinal = (object)['TorneoCategoria' => $TorneoCategoria];
-            return view('auth'.'.'.$this->viewName.'.ajax.final.mapa.partialView', ['TorneoFaseFinal' => $TorneoFaseFinal, 'MaxFase' => $maxFase, 'ViewName' => ucfirst($this->viewName), 'comunidad' => $Comunidad, 'landing' => filter_var($landing, FILTER_VALIDATE_BOOLEAN)]);
-        }
+           
+            if($maxFase == 32){
+                return view('auth'.'.'.$this->viewName.'.ajax.final.mapa.partialView64', ['TorneoFaseFinal' => $TorneoFaseFinal, 'MaxFase' => $maxFase, 'ViewName' => ucfirst($this->viewName), 'comunidad' => $Comunidad, 'landing' => filter_var($landing, FILTER_VALIDATE_BOOLEAN)]);
+            }else{
+                return view('auth'.'.'.$this->viewName.'.ajax.final.mapa.partialView', ['TorneoFaseFinal' => $TorneoFaseFinal, 'MaxFase' => $maxFase, 'ViewName' => ucfirst($this->viewName), 'comunidad' => $Comunidad, 'landing' => filter_var($landing, FILTER_VALIDATE_BOOLEAN)]);
+
+            }        }
 
         return null;
     }
@@ -5559,13 +5626,6 @@ $TorneoFaseFinal = (object)[
 
                             }
                             else if($request->tipo == 'zonas'){
-
-                                         // Helper function to get player full name
-                            function getNombreJugador($jugadorId) {
-                                $jugador = Jugador::find($jugadorId);
-                                if (!$jugador) return "Jugador no encontrado";
-                                return $jugador->nombres . ' ' . $jugador->apellidos;
-                            }
                                 // Fetch all players with their zones, handling both single players and duplas
                                 $allJugadores = $Torneo->torneoJugadors()
                                     ->where('torneo_categoria_id', $request->torneo_categoria_id)
@@ -5574,7 +5634,7 @@ $TorneoFaseFinal = (object)[
                                     ->select('torneo_jugadors.*', 'zonas.nombre as zona_nombre', 'torneo_jugador_zona.zona_id', 'torneo_jugador_zona.torneo_jugador_id')
                                     ->orderBy('torneo_jugador_zona.zona_id', 'asc')
                                     ->get();
-                                
+                            
                                 // Check if there are players without zones
                                 $jugadoresSinZona = $allJugadores->filter(function($jugador) {
                                     return is_null($jugador->zona_id);
@@ -5753,228 +5813,101 @@ $TorneoFaseFinal = (object)[
                                     $gruposTemporales->push($grupoActual);
                                 }
                                 
-                                // Step 3: Check for incomplete groups and generate suggestions
+                                // Step 3: Optimize groups - try to merge incomplete groups that share a common zone
+                                $gruposDefinitivos = collect();
                                 $gruposIncompletos = $gruposTemporales->filter(function($grupo) {
                                     return $grupo->count() < 4;
+                                })->sortBy(function($grupo) {
+                                    return $grupo->count(); // Process smallest groups first
                                 });
                                 
                                 $gruposCompletos = $gruposTemporales->filter(function($grupo) {
                                     return $grupo->count() == 4;
                                 });
                                 
-                                // If we have incomplete groups, generate suggestions
-                                if ($gruposIncompletos->count() > 0) {
-                                    // Get all available zones
-                                    $zonasDisponibles = Zona::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
-                                        ->orderBy('nombre', 'asc')
-                                        ->get();
-                                    
-                                    $sugerencias = collect();
-                                    $jugadoresYaSugeridos = collect(); // Track players that already have suggestions
-                                    
-                                    // Analyze all groups and their requirements
-                                    $analisisGrupos = collect();
-                                    foreach ($gruposIncompletos as $grupoIndice => $grupo) {
-                                        $zonaActual = obtenerZonaComun($grupo);
-                                        $faltantes = 4 - $grupo->count();
-                                        
-                                        $analisisGrupos->push([
-                                            'indice' => $grupoIndice,
-                                            'grupo' => $grupo,
-                                            'zona' => $zonaActual,
-                                            'nombre_zona' => $zonasDisponibles->firstWhere('id', $zonaActual)->nombre ?? 'Sin zona común',
-                                            'faltantes' => $faltantes,
-                                            'jugadores' => $grupo->map(function($j) use ($TorneoCategoria) {
-                                                return [
-                                                    'id' => $TorneoCategoria->multiple ? 
-                                                        $j->jugador_simple_id . '-' . $j->jugador_dupla_id : 
-                                                        $j->jugador_simple_id,
-                                                    'nombre' => $TorneoCategoria->multiple ? 
-                                                        getNombreJugador($j->jugador_simple_id) . ' & ' . getNombreJugador($j->jugador_dupla_id) : 
-                                                        getNombreJugador($j->jugador_simple_id)
-                                                ];
-                                            })
-                                        ]);
-                                    }
-                                    
-                                    // Analyze non-assigned players
-                                    $jugadoresNoAsignados = $jugadoresConZonas->filter(function($jugador) use ($TorneoCategoria, $jugadoresAsignados) {
-                                        if ($TorneoCategoria->multiple) {
-                                            $idCompuesto = $jugador->jugador_simple_id . '-' . $jugador->jugador_dupla_id;
-                                            return !$jugadoresAsignados->contains($idCompuesto);
-                                        } else {
-                                            return !$jugadoresAsignados->contains($jugador->jugador_simple_id);
-                                        }
-                                    });
-                                    
-                                    // First approach: Try to recommend strategic zone additions
-                                    foreach ($analisisGrupos as $analisis) {
-                                        // Skip groups that only need 1 player (we'll handle those later)
-                                        if ($analisis['faltantes'] <= 1) continue;
-                                        
-                                        // Find pairs or triplets of players who could share a common zone
-                                        $gruposCompatibles = $analisisGrupos->filter(function($a) use ($analisis) {
-                                            return $a['indice'] != $analisis['indice'] && 
-                                                   $a['faltantes'] > 0 && 
-                                                   ($a['faltantes'] + $analisis['faltantes']) <= 4;
-                                        });
-                                        
-                                        foreach ($gruposCompatibles as $compatible) {
-                                            $nombreGrupo1 = 'Grupo ' . ($analisis['indice'] + 1);
-                                            $nombreGrupo2 = 'Grupo ' . ($compatible['indice'] + 1);
-                                            
-                                            // Approach 1: If both groups have the same zone, suggest merging
-                                            if ($analisis['zona'] == $compatible['zona']) {
-                                                // Only suggest if total players would be <= 4
-                                                $totalJugadores = $analisis['grupo']->count() + $compatible['grupo']->count();
-                                                if ($totalJugadores <= 4) {
-                                                    $sugerencia = [
-                                                        'tipo' => 'fusion_grupos',
-                                                        'grupo1' => $nombreGrupo1,
-                                                        'grupo2' => $nombreGrupo2,
-                                                        'zona' => $analisis['nombre_zona'],
-                                                        'mensaje' => "Fusionar " . $nombreGrupo1 . " y " . $nombreGrupo2 . 
-                                                            " ya que comparten la zona " . $analisis['nombre_zona'] . 
-                                                            " y juntos forman un grupo de " . $totalJugadores . " jugadores"
-                                                    ];
-                                                    $sugerencias->push($sugerencia);
-                                                    break; // One good suggestion is enough for this group
-                                                }
-                                            } 
-                                            // Approach 2: Find players who could easily switch zones
-                                            else {
-                                                $jugadoresConPotencial = $compatible['grupo']->filter(function($jugador) use ($analisis) {
-                                                    // Can this player be assigned to the target zone?
-                                                    return count($jugador->zonas) == 0 || in_array($analisis['zona'], $jugador->zonas);
-                                                });
-                                                
-                                                if ($jugadoresConPotencial->count() > 0) {
-                                                    // We found players who already have the zone or can be assigned to it
-                                                    $jugadoresStr = $jugadoresConPotencial->map(function($j) use ($TorneoCategoria) {
-                                                        return $TorneoCategoria->multiple ? 
-                                                            getNombreJugador($j->jugador_simple_id) . ' & ' . getNombreJugador($j->jugador_dupla_id) : 
-                                                            getNombreJugador($j->jugador_simple_id);
-                                                    })->implode(', ');
-                                                    
-                                                    $sugerencia = [
-                                                        'tipo' => 'mover_jugadores',
-                                                        'jugadores' => $jugadoresStr,
-                                                        'grupo_origen' => $nombreGrupo2,
-                                                        'grupo_destino' => $nombreGrupo1,
-                                                        'zona' => $analisis['nombre_zona'],
-                                                        'mensaje' => "Mover a " . $jugadoresStr . " del " . $nombreGrupo2 . 
-                                                            " al " . $nombreGrupo1 . " ya que " . 
-                                                            (count($jugadoresConPotencial) > 1 ? "comparten" : "comparte") . 
-                                                            " la zona " . $analisis['nombre_zona']
-                                                    ];
-                                                    $sugerencias->push($sugerencia);
-                                                    break; // One good suggestion is enough
-                                                } else {
-                                                    // No players can easily move, suggest a zone change for some players
-                                                    $jugadoresParaZona = $compatible['grupo']->take($analisis['faltantes']);
-                                                    if ($jugadoresParaZona->count() > 0) {
-                                                        foreach ($jugadoresParaZona as $jugador) {
-                                                            $nombreJugador = $TorneoCategoria->multiple ? 
-                                                                getNombreJugador($jugador->jugador_simple_id) . ' & ' . getNombreJugador($jugador->jugador_dupla_id) : 
-                                                                getNombreJugador($jugador->jugador_simple_id);
-                                                            
-                                                            $idJugador = $TorneoCategoria->multiple ? 
-                                                                $jugador->jugador_simple_id . '-' . $jugador->jugador_dupla_id : 
-                                                                $jugador->jugador_simple_id;
-                                                            
-                                                            // Avoid duplicating suggestions for the same player
-                                                            if ($jugadoresYaSugeridos->contains($idJugador)) continue;
-                                                            
-                                                            $zonaActualJugador = obtenerZonaComun(collect([$jugador]));
-                                                            $nombreZonaActual = $zonaActualJugador ? 
-                                                                $zonasDisponibles->firstWhere('id', $zonaActualJugador)->nombre : 'Sin zona';
-                                                            
-                                                            $sugerencia = [
-                                                                'tipo' => 'cambio_zona',
-                                                                'jugador' => $nombreJugador,
-                                                                'zona_actual' => $nombreZonaActual,
-                                                                'zona_sugerida' => $analisis['nombre_zona'],
-                                                                'mensaje' => "Asignar a " . $nombreJugador . " a la zona " . 
-                                                                    $analisis['nombre_zona'] . " para completar el " . $nombreGrupo1
-                                                            ];
-                                                            $sugerencias->push($sugerencia);
-                                                            $jugadoresYaSugeridos->push($idJugador);
-                                                        }
-                                                        break; // One set of suggestions is enough
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    
-                                    // If we have very few suggestions, add more options
-                                    if ($sugerencias->count() < 2) {
-                                        // Look for non-assigned players who could join a group with a zone change
-                                        foreach ($jugadoresNoAsignados as $jugador) {
-                                            $nombreJugador = $TorneoCategoria->multiple ? 
-                                                getNombreJugador($jugador->jugador_simple_id) . ' & ' . getNombreJugador($jugador->jugador_dupla_id) : 
-                                                getNombreJugador($jugador->jugador_simple_id);
-                                            
-                                            $idJugador = $TorneoCategoria->multiple ? 
-                                                $jugador->jugador_simple_id . '-' . $jugador->jugador_dupla_id : 
-                                                $jugador->jugador_simple_id;
-                                            
-                                            // Avoid duplicating suggestions
-                                            if ($jugadoresYaSugeridos->contains($idJugador)) continue;
-                                            
-                                            // Find a suitable group for this player
-                                            foreach ($analisisGrupos->sortBy('faltantes') as $analisis) {
-                                                if ($analisis['faltantes'] > 0) {
-                                                    $sugerencia = [
-                                                        'tipo' => 'agregar_zona',
-                                                        'jugador' => $nombreJugador,
-                                                        'zona_sugerida' => $analisis['nombre_zona'],
-                                                        'mensaje' => "Agregar al jugador " . $nombreJugador . 
-                                                            " a la zona " . $analisis['nombre_zona'] . 
-                                                            " para incluirlo en el Grupo " . ($analisis['indice'] + 1)
-                                                    ];
-                                                    $sugerencias->push($sugerencia);
-                                                    $jugadoresYaSugeridos->push($idJugador);
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    
-                                    // Check if we still need more players overall
-                                    $totalJugadoresActuales = $gruposTemporales->sum(function($grupo) {
-                                        return $grupo->count();
-                                    });
-                                    
-                                    $jugadoresFaltantes = 0;
-                                    foreach ($gruposIncompletos as $grupo) {
-                                        $jugadoresFaltantes += (4 - $grupo->count());
-                                    }
-                                    
-                                    if ($jugadoresFaltantes > $jugadoresNoAsignados->count()) {
-                                        $remanente = $jugadoresFaltantes - $jugadoresNoAsignados->count();
-                                        $sugerencia = [
-                                            'tipo' => 'agregar_jugadores',
-                                            'cantidad' => $remanente,
-                                            'mensaje' => "Agregar " . $remanente . " jugador(es) adicional(es) para completar todos los grupos"
-                                        ];
-                                        $sugerencias->push($sugerencia);
-                                    }
-                                    
-                                    // Limit to a reasonable number of suggestions
-                                    if ($sugerencias->count() > 5) {
-                                        $sugerencias = $sugerencias->take(5);
-                                    }
-                                    
-                                    // Return suggestions instead of automatically creating temporary players
-                                    $Result->Success = false;
-                                    $Result->sugerencias = $sugerencias;
-                                    $Result->Message = "No se pudieron formar grupos completos de 4 jugadores. Revise las sugerencias proporcionadas.";
-                                    return response()->json($Result);
+                                // Add complete groups directly
+                                foreach ($gruposCompletos as $grupo) {
+                                    $gruposDefinitivos->push($grupo);
                                 }
                                 
-                                // If all groups are complete, continue with assignment
-                                $gruposDefinitivos = $gruposCompletos;
+                                // Process incomplete groups
+                                while ($gruposIncompletos->count() > 0) {
+                                    $grupoActual = $gruposIncompletos->shift();
+                                    $zonaComun = obtenerZonaComun($grupoActual);
+                                    
+                                    // Try to merge with another incomplete group
+                                    $encontradoMerge = false;
+                                    
+                                    foreach ($gruposIncompletos as $index => $otroGrupo) {
+                                        $otroZonaComun = obtenerZonaComun($otroGrupo);
+                                        
+                                        // If both groups share a common zone and can be merged without exceeding 4 players
+                                        if ($zonaComun == $otroZonaComun && ($grupoActual->count() + $otroGrupo->count()) <= 4) {
+                                            // Merge groups
+                                            foreach ($otroGrupo as $jugador) {
+                                                $grupoActual->push($jugador);
+                                            }
+                                            
+                                            $gruposIncompletos->forget($index);
+                                            $encontradoMerge = true;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    // If no merge happened and the group is still incomplete, we'll need temporary players
+                                    if (!$encontradoMerge && $grupoActual->count() < 4) {
+                                        $faltantes = 4 - $grupoActual->count();
+                                        
+                                        // Get available temporary players
+                                        $jugadoresTemporales = Jugador::where('temporal', true)
+                                            ->whereDoesntHave('torneoJugadors', function ($q) use ($request) {
+                                                $q->where('torneo_id', $request->torneo_id)
+                                                  ->where('torneo_categoria_id', $request->torneo_categoria_id);
+                                            })
+                                            ->limit($faltantes)
+                                            ->get();
+                                        
+                                        if ($jugadoresTemporales->count() < $faltantes) {
+                                            $Result->Message = "No hay suficientes jugadores temporales disponibles para completar un grupo. Se necesitan {$faltantes} jugadores temporales.";
+                                            return response()->json($Result);
+                                        }
+                                        
+                                        // Create tournament player records for temporary players
+                                        foreach ($jugadoresTemporales as $jugadorTemporal) {
+                                            $torneoJugador = TorneoJugador::create([
+                                                'torneo_id' => $request->torneo_id,
+                                                'torneo_categoria_id' => $request->torneo_categoria_id,
+                                                'jugador_simple_id' => $jugadorTemporal->id,
+                                                'jugador_dupla_id' => $TorneoCategoria->multiple ? $jugadorTemporal->id : null, // For duplas, use same ID as placeholder
+                                                'temporal' => true,
+                                                'created_at' => now(),
+                                                'updated_at' => now(),
+                                                'after' => true
+                                            ]);
+                                            
+                                            // Add zone information to the player for consistency
+                                            $torneoJugador->zonas = [$zonaComun];
+                                            $grupoActual->push($torneoJugador);
+                                        }
+                                    }
+                                    
+                                    // Add the processed group to our definitive collection
+                                    $gruposDefinitivos->push($grupoActual);
+                                }
+                                
+                                // Verify that all groups have exactly 4 players
+                                foreach ($gruposDefinitivos as $grupo) {
+                                    if ($grupo->count() != 4) {
+                                        $Result->Message = "No se pudo formar un grupo con exactamente 4 jugadores.";
+                                        return response()->json($Result);
+                                    }
+                                    
+                                    // Verify that each group has at least one zone in common
+                                    if (!tienenZonaComun($grupo)) {
+                                        $Result->Message = "Hay un grupo donde los jugadores no comparten ninguna zona en común.";
+                                        return response()->json($Result);
+                                    }
+                                }
                                 
                                 // Get available groups from database
                                 $GruposDisponibles = Grupo::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
@@ -6009,13 +5942,7 @@ $TorneoFaseFinal = (object)[
                                 }
                                 
                                 $Grupos = $GruposDB;
-
-                         
                             }
-                            
-                          
-                            
-                            
                         
                             else{
                                 $Result->Message = "El tipo ingresado no es vàlido, por favor seleccione uno válido";
@@ -6231,6 +6158,7 @@ $TorneoFaseFinal = (object)[
         }
         return response()->json($Result);
     }
+
     public function grupoCambiarNombre(Request $request)
     {
         $Result = (object)['Success' => false, 'Message' => null];
@@ -8514,7 +8442,7 @@ protected function sanitizeFilename($string)
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->resultado ;
                         $model->llaves['octavos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
@@ -8529,7 +8457,7 @@ protected function sanitizeFilename($string)
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal : '-')) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal : '-')) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->resultado ;
                         $model->llaves['octavos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
@@ -8544,7 +8472,7 @@ protected function sanitizeFilename($string)
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->resultado ;
                         $model->llaves['octavos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
@@ -8589,7 +8517,7 @@ protected function sanitizeFilename($string)
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->resultado ;
                         $model->llaves['octavos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
@@ -8645,7 +8573,7 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->first()->jugadorLocalUno ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal ?? "-")) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->resultado ;
                         $model->llaves['octavos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
@@ -8660,7 +8588,7 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->resultado ;
                         $model->llaves['octavos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
@@ -8850,7 +8778,7 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->resultado ;
                         $model->llaves['octavos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
@@ -8865,7 +8793,7 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal : '-')) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal : '-')) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->resultado ;
                         $model->llaves['octavos']['bloque_uno'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
@@ -8880,7 +8808,7 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->resultado ;
                         $model->llaves['octavos']['bloque_dos'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
@@ -8925,7 +8853,7 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->resultado ;
                         $model->llaves['octavos']['bloque_tres'][] = ($request->type == 'full' || $request->type == 'left') ? (object)$bloque : null;
@@ -8981,10 +8909,11 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->first()->jugadorLocalUno ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal ?? "-")) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->resultado ;
                         $model->llaves['octavos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
+                    
                     }else{
                           $bloque = [
                     'jugador_local' => '',
@@ -8996,7 +8925,7 @@ if (!$TorneoCategoria->manual && $partido->buy_all) {
 
                     if($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first() != null){
                         $bloque = [];
-                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
+                        $bloque['jugador_local'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-");
                         $bloque['jugador_rival'] = !$TorneoCategoria->manual && $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy ? "BYE" : ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo.' + '.$TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-");
                         $bloque['resultado'] = $TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->resultado ;
                         $model->llaves['octavos']['bloque_cuatro'][] = ($request->type == 'full' || $request->type == 'right') ? (object)$bloque : null;
@@ -24301,6 +24230,7 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
    
 } else {
     $prueba = $this->rankingsByCategoryId($categoria_simple_id);
+
  
 }
 
