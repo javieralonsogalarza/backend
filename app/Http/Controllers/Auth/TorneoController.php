@@ -2793,17 +2793,10 @@ return response()->json(['data' => $mergedPlayers]);
                    $JugadorRivalUno = $request->jugador_rival_id != null ? ($entity->torneoCategoria->multiple ? explode("-", $request->jugador_rival_id)[0] : $request->jugador_rival_id) : null;
                    $JugadorRivalDos = $request->jugador_rival_id != null ? ($entity->torneoCategoria->multiple ? explode("-", $request->jugador_rival_id)[1] : null) : null;
 
-                   /*$entity->jugador_local_uno_id = $request->jugador_local_id != null ? ($entity->torneoCategoria->multiple ? explode("-", $request->jugador_local_id)[0] : $request->jugador_local_id) : null;
-                   $entity->jugador_local_dos_id = $request->jugador_local_id != null ? ($entity->torneoCategoria->multiple ? explode("-", $request->jugador_local_id)[1] : null) : null;
-                   $entity->jugador_rival_uno_id = $request->jugador_rival_id != null ? ($entity->torneoCategoria->multiple ? explode("-", $request->jugador_rival_id)[0] : $request->jugador_rival_id) : null;
-                   $entity->jugador_rival_dos_id = $request->jugador_rival_id != null ? ($entity->torneoCategoria->multiple ? explode("-", $request->jugador_rival_id)[1] : null) : null;*/
-
                    $entity->jugador_local_uno_id = $JugadorLocalUno;
                    $entity->jugador_local_dos_id = $JugadorLocalDos;
                    $entity->jugador_rival_uno_id = $JugadorRivalUno;
-                   $entity->jugador_rival_dos_id = $JugadorRivalDos;
-
-                   $entity->position = $request->position;
+                   $entity->jugador_rival_dos_id = $JugadorRivalDos;                   $entity->position = $request->position;
                    $entity->bracket = $request->bracket;
                    $entity->buy = $request->buy;
                    $entity->buy_all = $request->buy_all;
@@ -2820,6 +2813,9 @@ return response()->json(['data' => $mergedPlayers]);
 
                    if($entity->save())
                    {
+                       // Auto-register players if they don't exist in torneo_jugadors table
+                       $this->autoRegisterPlayersInTournament($entity, $JugadorLocalUno, $JugadorLocalDos, $JugadorRivalUno, $JugadorRivalDos);
+
                        DB::commit();
                        $Result->Success = true;
                    }
@@ -2831,9 +2827,108 @@ return response()->json(['data' => $mergedPlayers]);
         }catch (\Exception $e){
             $Result->Message = $e->getMessage();
             DB::rollBack();
-        }
+        }        return response()->json($Result);
+    }
 
-        return response()->json($Result);
+    /**
+     * Auto-register players in the tournament if they don't exist in torneo_jugadors table
+     * 
+     * @param \App\Models\Partido $partido
+     * @param int|null $jugadorLocalUno
+     * @param int|null $jugadorLocalDos
+     * @param int|null $jugadorRivalUno
+     * @param int|null $jugadorRivalDos
+     * @return void
+     */
+    private function autoRegisterPlayersInTournament($partido, $jugadorLocalUno, $jugadorLocalDos, $jugadorRivalUno, $jugadorRivalDos)
+    {
+        try {
+            $comunidadId = Auth::guard('web')->user()->comunidad_id;
+            $torneoId = $partido->torneo_id;
+            $torneoCategoriaId = $partido->torneo_categoria_id;
+            $multiple = $partido->torneoCategoria->multiple;
+
+            // Array of players to check and register
+            $playersToCheck = [];
+            
+            if ($multiple) {
+                // For doubles (multiple) tournaments
+                if ($jugadorLocalUno && $jugadorLocalDos) {
+                    $playersToCheck[] = [
+                        'jugador_simple_id' => $jugadorLocalUno,
+                        'jugador_dupla_id' => $jugadorLocalDos,
+                        'type' => 'local_pair'
+                    ];
+                }
+                if ($jugadorRivalUno && $jugadorRivalDos) {
+                    $playersToCheck[] = [
+                        'jugador_simple_id' => $jugadorRivalUno,
+                        'jugador_dupla_id' => $jugadorRivalDos,
+                        'type' => 'rival_pair'
+                    ];
+                }
+            } else {
+                // For singles tournaments
+                if ($jugadorLocalUno) {
+                    $playersToCheck[] = [
+                        'jugador_simple_id' => $jugadorLocalUno,
+                        'jugador_dupla_id' => null,
+                        'type' => 'local_single'
+                    ];
+                }
+                if ($jugadorRivalUno) {
+                    $playersToCheck[] = [
+                        'jugador_simple_id' => $jugadorRivalUno,
+                        'jugador_dupla_id' => null,
+                        'type' => 'rival_single'
+                    ];
+                }
+            }
+
+            // Check and register each player/pair
+            foreach ($playersToCheck as $playerData) {
+                $existingRegistration = TorneoJugador::where('torneo_id', $torneoId)
+                    ->where('torneo_categoria_id', $torneoCategoriaId)
+                    ->where('jugador_simple_id', $playerData['jugador_simple_id'])
+                    ->when($playerData['jugador_dupla_id'], function ($query, $jugadorDuplaId) {
+                        return $query->where('jugador_dupla_id', $jugadorDuplaId);
+                    })
+                    ->when(!$playerData['jugador_dupla_id'], function ($query) {
+                        return $query->whereNull('jugador_dupla_id');
+                    })
+                    ->first();
+
+                if (!$existingRegistration) {
+                    // Register the player/pair in the tournament
+                    TorneoJugador::create([
+                        'torneo_id' => $torneoId,
+                        'torneo_categoria_id' => $torneoCategoriaId,
+                        'jugador_simple_id' => $playerData['jugador_simple_id'],
+                        'jugador_dupla_id' => $playerData['jugador_dupla_id'],
+                        'after' => false, // Mark as added after tournament started
+                        'zona_id' => null,
+                        'pago' => false,
+                        'monto' => null,
+                        'user_create_id' => Auth::guard('web')->user()->id,
+                        'user_update_id' => Auth::guard('web')->user()->id,
+                    ]);
+                    
+                    \Log::info('Auto-registered player in tournament', [
+                        'torneo_id' => $torneoId,
+                        'torneo_categoria_id' => $torneoCategoriaId,
+                        'jugador_simple_id' => $playerData['jugador_simple_id'],
+                        'jugador_dupla_id' => $playerData['jugador_dupla_id'],
+                        'type' => $playerData['type']
+                    ]);
+                }
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error auto-registering players in tournament', [
+                'error' => $e->getMessage(),
+                'partido_id' => $partido->id
+            ]);
+            // Don't throw the exception to avoid breaking the main flow
+        }
     }
 
     public function faseFinalPrePartidoFinish(Request $request)
@@ -25439,6 +25534,8 @@ switch($type) {
         if (isset($categoria->jugadores)) {
            // Obtener jugadores
             $jugadoresColeccion = collect($categoria->jugadores);
+
+            return $jugadoresColeccion;
 
             // Si es modo carrera, filtrar solo jugadores considerados
             if ($request->maestros === "true") {

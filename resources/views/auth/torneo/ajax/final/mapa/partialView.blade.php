@@ -2092,11 +2092,12 @@
                                 data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}"
                                 data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}"
                                 data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-image"></i> Descargar
-                                Reporte 1/4 de final</button></li>
-                        <li class="mr-1"><button type="button" class="btn btn-primary btn-finish-keys-final"
+                                Reporte 1/4 de final</button></li>                        <li class="mr-1"><button type="button" class="btn btn-primary btn-finish-keys-final"
                                 data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}"
                                 data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-save"></i> Finalizar
                                 llaves</button></li>
+                        <li class="mr-1"><button type="button" class="btn btn-info btn-reporte-finales"
+                                data-torneo-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}"><i class="fa fa-file-text"></i> Reporte Finales</button></li>
                     </ul>
                 </div>
             </div>
@@ -2112,12 +2113,13 @@
                                 data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}"
                                 data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}"
                                 data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-image"></i> Descargar
-                                Reporte 1/4 de final</button></li>
-                        <li class="mr-1"><button type="button" class="btn btn-success btn-download-cup"
+                                Reporte 1/4 de final</button></li>                        <li class="mr-1"><button type="button" class="btn btn-success btn-download-cup"
                                 data-category="{{ ($TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoFaseFinal->TorneoCategoria->multiple ? " (Doble) " : "") }}"
                                 data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}"
                                 data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-image"></i> Descargar
                                 Llaves</button></li>
+                        <li class="mr-1"><button type="button" class="btn btn-info btn-reporte-finales"
+                                data-torneo-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}"><i class="fa fa-file-text"></i> Reporte Finales</button></li>
                     </ul>
                 </div>
             </div>
@@ -2126,14 +2128,31 @@
 @endif
 
 
+
 <script type="text/javascript">
     $(function () {
+        // Function to refresh the tournament map
+        function refrescarMapa(){
+            invocarVista(`/auth/{{strtolower($ViewName)}}/fase-final/mapa/partialView/{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}/{{ $TorneoFaseFinal->TorneoCategoria->id }}/{{ $landing }}`, function(data){
+                $("#mapaCampeonato{{ $TorneoFaseFinal->TorneoCategoria->id }}").html(data);
+            });
+        }        // Existing code for player changes
         const $btnChangePlayerClass = $(".btn-change-player-class");
         $btnChangePlayerClass.on("click", function () {
             invocarModal(`/auth/{{strtolower($ViewName)}}/fase-final/players/changes/{{$TorneoFaseFinal->TorneoCategoria->torneo->id}}/{{$TorneoFaseFinal->TorneoCategoria->id}}`,
                 function ($modal) {
                     if ($modal.attr("data-reload") === "true") refrescarMapa();
                 });
+        });
+
+        // Handle Reporte Finales button click
+        const $btnReporteFinales = $(".btn-reporte-finales");
+        $btnReporteFinales.on("click", function () {
+            const torneoId = $(this).attr("data-torneo-id");
+            const url = `/auth/torneo/getTorneoFinales?torneo_id=${torneoId}`;
+            
+            // Open in a new tab/window
+            window.open(url, '_blank');
         });
     });
 </script>

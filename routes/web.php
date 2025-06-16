@@ -295,10 +295,11 @@ Route::group(['middleware' => 'auth:web'], function() {
                     });
 
                     Route::prefix('reporte')->group(function (){
-                        Route::name('reporte.')->group(function(){
+                        Route::name('reporte.')->group(function(){             
                             Route::get('jugador', [Auth\ReporteController::class, 'jugador'])->name('jugador');
                             Route::get('jugadorPartialView', [Auth\ReporteController::class, 'jugadorPartialView'])->name('jugadorPartialView');
                             Route::get('jugadorPartidosPartialView', [Auth\ReporteController::class, 'jugadorPartidosPartialView'])->name('jugadorPartidosPartialView');
+                            Route::get('jugador/partidos/exportar/pdf/{torneo}/{categoria}/{jugador}', [Auth\ReporteController::class, 'jugadorPartidosExportarPdf'])->name('jugadorPartidosExportarPdf');
 
                             Route::get('torneo', [Auth\ReporteController::class, 'torneo'])->name('torneo');
                             Route::get('torneo/exportar/pdf/{torneo}/{categoria}', [Auth\ReporteController::class, 'torneoExportarPdf'])->name('torneoExportarPdf');

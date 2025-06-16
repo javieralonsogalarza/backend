@@ -62,7 +62,7 @@ class ReporteController extends Controller
                         'TorneoCategoria' => $Partido->torneoCategoria,
                         'Periodo' => ($q->fecha_inicio_texto . " - " . $q->fecha_final_texto),
                         'Categoria' => $q->multiple && ($Partido->torneoCategoria->categoria_simple_id !== $Partido->torneoCategoria->categoria_dupla_id) ? (($Partido->torneoCategoria->categoriaSimple != null ? $Partido->torneoCategoria->categoriaSimple->nombre : "-") . " + " . ($Partido->torneoCategoria->categoriaDupla != null ? $Partido->torneoCategoria->categoriaDupla->nombre : "-")) : ($Partido->torneoCategoria->categoriaSimple != null ? $Partido->torneoCategoria->categoriaSimple->nombre : "-") . "" . ($q->multiple ? " (Doble) " : ""),
-                        'Fase' => $Partido->fase == null ? "Fase de Grupos" : ($Partido->fase == 16 ? "Deciseisavo de Final" : ($Partido->fase == 8 ? "Octavos de Final" : ($Partido->fase == 4 ? "Cuartos de Final" : ($Partido->fase == 2 ? "Semifinal" : ($Partido->fase == 1 ? ((in_array($Jugador->id, [$Partido->jugador_ganador_uno_id, $Partido->jugador_ganador_dos_id]) ? "Campeón" : "Finalista")) : "-"))))),
+                        'Fase' => $Partido->fase == null ? "Fase de Grupos" : ($Partido->fase == 16 ? "Deciseisavo de Final" : ($Partido->fase == 8 ? "Octavos de Final" : ($Partido->fase == 4 ? "Cuartos de Final" : ($Partido->fase == 2 ? "Semifinal" : ($Partido->fase == 1 ? ((in_array($Jugador->id, [$Partido->jugador_ganador_uno_id, $Partido->jugador_ganador_dos_id]) ? "Campe锟斤拷n" : "Finalista")) : "-"))))),
                         'Estado' => $q->estado_texto
                     ];
             
@@ -74,11 +74,10 @@ class ReporteController extends Controller
                     }
                 }
             }   
-            
-            $ultimosPartidosPorCategoria = [];
+              $ultimosPartidosPorCategoria = [];
 
 foreach ($HistorialTorneos as $partido) {
-    $categoriaId = $partido['TorneoCategoria']['id'];
+    $categoriaId = $partido['TorneoCategoria']->id;
     if (!isset($ultimosPartidosPorCategoria[$categoriaId]) || strtotime($partido['Periodo']) > strtotime($ultimosPartidosPorCategoria[$categoriaId]['Periodo'])) {
         $ultimosPartidosPorCategoria[$categoriaId] = $partido;
     }
@@ -99,13 +98,13 @@ $ultimosPartidosPorCategoria = array_values($ultimosPartidosPorCategoria);
                 if (!empty($rankings)) {
                     $rankings = $rankings['Rankings'] ?? [];
             
-                    // Convertir rankings a una colección para usar firstWhere
+                    // Convertir rankings a una colecci锟斤拷n para usar firstWhere
                     $rankingsCollection = collect($rankings);
             
-                    // Filtrar los rankings específicos para los jugadores locales y rivales
+                    // Filtrar los rankings espec锟斤拷ficos para los jugadores locales y rivales
                     $rankingByCategoryAndPlayer = $rankingsCollection->firstWhere('id', $request->filter_jugador);
             
-                    // Agregar al arreglo $categoriaSimpleIds si no está vacío
+                    // Agregar al arreglo $categoriaSimpleIds si no est锟斤拷 vac锟斤拷o
                     if ($rankingByCategoryAndPlayer) {
                         $rankingByCategoryAndPlayerTotal[] = [
                             'id' => $q['id'],
@@ -348,9 +347,46 @@ $ultimosPartidosPorCategoria = array_values($ultimosPartidosPorCategoria);
                     'Partidos' => $Partidos,
                 ];
             }
+        }        return view('auth'.'.'.$this->viewName.'.ajax.jugador.partido.partialView', ['Data' => $Data]);
+    }
+
+    public function jugadorPartidosExportarPdf($torneo, $categoria, $jugador)
+    {
+        $Data = null;
+        
+        $TorneoCategoria = TorneoCategoria::where('torneo_id', $torneo)
+            ->whereHas('torneo', function ($q) {
+                $q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);
+            })
+            ->where('id', $categoria)->first();
+
+        if($TorneoCategoria != null) {
+            $Jugador = Jugador::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+                ->where('id', $jugador)->first();
+
+            if($Jugador != null) {
+                $Partidos = Partido::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+                    ->where('torneo_id', $torneo)
+                    ->where('torneo_categoria_id', $categoria)
+                    ->where(function ($q) use ($Jugador){
+                        $q->where('jugador_local_uno_id', $Jugador->id)->orWhere('jugador_local_dos_id', $Jugador->id)
+                        ->orWhere('jugador_rival_uno_id', $Jugador->id)->orWhere('jugador_rival_dos_id', $Jugador->id);
+                    })->get();
+
+                $Data = [
+                    'Jugador' => $Jugador,
+                    'Torneo' => $TorneoCategoria->torneo,
+                    'TorneoCategoria' => $TorneoCategoria,
+                    'Categoria' => $TorneoCategoria->categoriaSimple,
+                    'Partidos' => $Partidos,
+                ];
+
+                $pdf = Pdf::loadView('auth'.'.'.$this->viewName.'.ajax.jugador.partido.pdf', $Data)->setPaper('a4', 'landscape');
+                return $pdf->stream("ReporteJugadorPartidos_{$Jugador->nombre_completo}.pdf");
+            }
         }
 
-        return view('auth'.'.'.$this->viewName.'.ajax.jugador.partido.partialView', ['Data' => $Data]);
+        return null;
     }
 
 
@@ -491,7 +527,7 @@ $ultimosPartidosPorCategoria = array_values($ultimosPartidosPorCategoria);
         
        
 
-            $pdf = Pdf::loadView('auth'.'.'.$this->viewName.'.ajax.torneo.partialView', $Data)->setPaper('a4', 'landscape');
+               $pdf = Pdf::loadView('auth'.'.'.$this->viewName.'.ajax.jugador.partido.pdf', ['Data' => $Data])->setPaper('a4', 'landscape');
             return $pdf->stream("ReporteTorneo.pdf");
         }
 
@@ -672,7 +708,7 @@ $ultimosPartidosPorCategoria = array_values($ultimosPartidosPorCategoria);
                 $JugadoresClasificados[] = ['Grupo' => $q->grupo->nombre, 'Clasificados' => App::multiPropertySort(collect($TablePositions), [['column' => 'puntos', 'order' => 'desc'], ['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->take($Clasifican)];
             }
 
-            //CLASIFICADOS POR CÁLCULO
+            //CLASIFICADOS POR C锟�0锟�9LCULO
             $PrimerosLugares = [];
             $SegundoLugares = [];
             $TercerosLugares = [];
@@ -867,10 +903,10 @@ $ultimosPartidosPorCategoria = array_values($ultimosPartidosPorCategoria);
             $jugador1 = Jugador::find($request->jugador1);
             $jugador2 = Jugador::find($request->jugador2);
 
-            // Aquí puedes agregar la lógica para generar el reporte H2H entre jugador1 y jugador2
-            // Por ejemplo, podrías pasar los datos de los jugadores a la vista o generar un PDF, etc.
+            // Aqu锟斤拷 puedes agregar la l锟斤拷gica para generar el reporte H2H entre jugador1 y jugador2
+            // Por ejemplo, podr锟斤拷as pasar los datos de los jugadores a la vista o generar un PDF, etc.
         } else {
-            // Obtener todos los jugadores si no se ha seleccionado ningún jugador específico
+            // Obtener todos los jugadores si no se ha seleccionado ning锟斤拷n jugador espec锟斤拷fico
             $Jugadores = Jugador::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)->orderBy('nombres')->get();
         }
 
