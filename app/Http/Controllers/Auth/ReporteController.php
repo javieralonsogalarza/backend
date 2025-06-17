@@ -44,6 +44,9 @@ class ReporteController extends Controller
         if($Jugador != null && count($Torneos) > 0)
         {       
               foreach ($Torneos as $q) {
+                       $inscrito = TorneoJugador::where('torneo_id', $q->id)
+                    ->where('jugador_simple_id', $Jugador->id)
+                    ->count();
                 $Partidos = Partido::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
                     ->where('torneo_id', $q->id)
                     ->where(function ($query) use ($Jugador) {
@@ -56,14 +59,34 @@ class ReporteController extends Controller
                     ->get();
             
                 foreach ($Partidos as $Partido) {
+                    
+                            $PartidoFaseNext = $Partido->fase == null ? null :  ($Partido->fase == 1 ? 1 : ($Partido->fase/2));
+
+                        $PartidoNext = null;
+
+                        if($Partido->estado_id == App::$ESTADO_FINALIZADO)
+                        {
+                            $PartidoNext = Partido::where('comunidad_id',Auth::guard('web')->user()->comunidad_id)->where
+                            ('torneo_id', $q->id)
+                                ->where('torneo_categoria_id', $Partido->torneo_categoria_id)->where('fase', $PartidoFaseNext)
+                                //->where(function ($q) use ($Jugador){$q->where('jugador_local_uno_id', $Jugador->id)
+                                ->where('estado_id', App::$ESTADO_PENDIENTE)
+                                ->where(function ($q) use ($Jugador){
+                                    $q->where('jugador_local_uno_id', $Jugador->id)
+                                    ->orWhere('jugador_local_dos_id', $Jugador->id)
+                                    ->orWhere('jugador_rival_uno_id', $Jugador->id)
+                                    ->orWhere('jugador_rival_dos_id', $Jugador->id);
+                                })
+                                ->orderBy('id', 'desc')->first();
+                        }
                     $HistorialTorneos[] = [
                         'id' => $q->id,
                         'Torneo' => $q->nombre,
                         'TorneoCategoria' => $Partido->torneoCategoria,
                         'Periodo' => ($q->fecha_inicio_texto . " - " . $q->fecha_final_texto),
                         'Categoria' => $q->multiple && ($Partido->torneoCategoria->categoria_simple_id !== $Partido->torneoCategoria->categoria_dupla_id) ? (($Partido->torneoCategoria->categoriaSimple != null ? $Partido->torneoCategoria->categoriaSimple->nombre : "-") . " + " . ($Partido->torneoCategoria->categoriaDupla != null ? $Partido->torneoCategoria->categoriaDupla->nombre : "-")) : ($Partido->torneoCategoria->categoriaSimple != null ? $Partido->torneoCategoria->categoriaSimple->nombre : "-") . "" . ($q->multiple ? " (Doble) " : ""),
-                        'Fase' => $Partido->fase == null ? "Fase de Grupos" : ($Partido->fase == 16 ? "Deciseisavo de Final" : ($Partido->fase == 8 ? "Octavos de Final" : ($Partido->fase == 4 ? "Cuartos de Final" : ($Partido->fase == 2 ? "Semifinal" : ($Partido->fase == 1 ? ((in_array($Jugador->id, [$Partido->jugador_ganador_uno_id, $Partido->jugador_ganador_dos_id]) ? "Campe��n" : "Finalista")) : "-"))))),
-                        'Estado' => $q->estado_texto
+                        'Fase' => $Partido->fase == null ? "Fase de Grupos" : ($Partido->fase == 16 ? "Deciseisavo de Final" : ($Partido->fase == 8 ? "Octavos de Final" : ($Partido->fase == 4 ? "Cuartos de Final" : ($Partido->fase == 2 ? "Semifinal" : ($Partido->fase == 1 ? ((in_array($Jugador->id, [$Partido->jugador_ganador_uno_id, $Partido->jugador_ganador_dos_id]) ? "Campeón" : "Finalista")) : "-"))))),
+                        'Estado' =>         in_array($q->estado_id, [App::$ESTADO_CANCELADO, App::$ESTADO_FINALIZADO]) ? 'Participación terminada' : ($Partido->estado_id == App::$ESTADO_PENDIENTE ? 'Participación en curso' : ($PartidoNext == null ? 'Participación terminada' : ($PartidoNext->estado_id == App::$ESTADO_PENDIENTE ? 'Participación curso' : 'Participación terminada') ))
                     ];
             
                     if (isset($Partido->torneoCategoria->categoria_simple_id)) {
@@ -74,10 +97,11 @@ class ReporteController extends Controller
                     }
                 }
             }   
-              $ultimosPartidosPorCategoria = [];
+            
+            $ultimosPartidosPorCategoria = [];
 
 foreach ($HistorialTorneos as $partido) {
-    $categoriaId = $partido['TorneoCategoria']->id;
+    $categoriaId = $partido['TorneoCategoria']['id'];
     if (!isset($ultimosPartidosPorCategoria[$categoriaId]) || strtotime($partido['Periodo']) > strtotime($ultimosPartidosPorCategoria[$categoriaId]['Periodo'])) {
         $ultimosPartidosPorCategoria[$categoriaId] = $partido;
     }
@@ -98,23 +122,21 @@ $ultimosPartidosPorCategoria = array_values($ultimosPartidosPorCategoria);
                 if (!empty($rankings)) {
                     $rankings = $rankings['Rankings'] ?? [];
             
-                    // Convertir rankings a una colecci��n para usar firstWhere
                     $rankingsCollection = collect($rankings);
             
-                    // Filtrar los rankings espec��ficos para los jugadores locales y rivales
                     $rankingByCategoryAndPlayer = $rankingsCollection->firstWhere('id', $request->filter_jugador);
             
-                    // Agregar al arreglo $categoriaSimpleIds si no est�� vac��o
                     if ($rankingByCategoryAndPlayer) {
                         $rankingByCategoryAndPlayerTotal[] = [
                             'id' => $q['id'],
                             'categoria_name' => $q['nombre'],
                             'countRepeat' => $rankingByCategoryAndPlayer['countRepeat'],
                         ];
+                        
                     }
                 }
             }
-            return view('auth' . '.' . $this->viewName . '.ajax.jugador.partialView', [
+          return view('auth' . '.' . $this->viewName . '.ajax.jugador.partialView', [
                 'Jugador' => $Jugador,
                 'HistorialTorneos' => $HistorialTorneos,
                 'categoriasYRankings' => $rankingByCategoryAndPlayerTotal
