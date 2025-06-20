@@ -44,9 +44,9 @@
             padding: 4px;
             text-align: center;
             vertical-align: middle;
-        }
-        th {
-            background-color: #f8f9fa;
+        }        th {
+            background-color: #00b7f1;
+            color: #ffffff;
             font-weight: bold;
             font-size: 8px;
         }
@@ -78,7 +78,7 @@
     </div>
     
     <div class="player-info">
-        <h3>Jugador "{{ $Data['Jugador']->nombre_completo }}"</h3>
+        <h3>Jugador {{ $Data['Jugador']->nombre_completo }}</h3>
     </div>
 
     @if(count($Data['Partidos']->whereNull('fase')) > 0)

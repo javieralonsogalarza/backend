@@ -6,89 +6,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Reporte Completo de Jugador</title>    <link rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css') }}" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <style type="text/css">
+    <title>Reporte Completo de Jugador</title>    <link rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css') }}" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">    <style type="text/css">
         thead th{ background-color: #00b7f1; color: #ffffff; }
         thead th, tbody td{ font-size: 11px !important; padding: 5px !important; text-align: center; }
         h5{ margin-bottom: 20px }
         table > thead:first-of-type > tr:last-child {page-break-after: avoid;}
         .page-break {page-break-before: always;}
         .hidden{ display: none}
-        .player-photo img {
-            width: 130px;
-            height: 130px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid #dee2e6;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
     </style>
 </head>
 <body>
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <h3>Reporte Completo de Jugador: {{ $Jugador->nombre_completo }}</h3>
-        </div>
-    </div>
-    
-    <div class="row mt-2">
-        <div class="col-md-8">
-            <ul style="list-style: none; padding: 0;">
-                <li><strong>Tipo Documento:</strong> {{ $Jugador->tipoDocumento != null ? $Jugador->tipoDocumento->nombre : "-" }}</li>
-                <li><strong>N° Documento:</strong> {{ $Jugador->nro_documento }}</li>
-                <li><strong>Celular:</strong> {{ $Jugador->celular != null && $Jugador->celular != "" ? $Jugador->celular : "-" }}</li>
-                <li><strong>Edad:</strong> {{ $Jugador->edad != null && $Jugador->edad != "" ? $Jugador->edad." años" : "-"}}</li>
-                <li><strong>Altura:</strong> {{ $Jugador->altura != null && $Jugador->altura != "" ? $Jugador->altura."m" : "-"}}</li>
-                <li><strong>Peso:</strong> {{ $Jugador->peso != null && $Jugador->peso != "" ? $Jugador->peso."kg" : "-"}}</li>
-            </ul>
-        </div>
-        <div class="col-md-4 text-center">
-            <div class="player-photo">
-                @php
-                    $fotoJugador = public_path("upload/image/default.png"); // Imagen por defecto
-                    if($Jugador != null) {
-                        // Verificar en storage/app/public/uploads/img/
-                        $rutaStorage = storage_path("app/public/uploads/img/jugador_{$Jugador->id}.png");
-                        if(file_exists($rutaStorage)) {
-                            $fotoJugador = $rutaStorage;
-                        } else {
-                            // Verificar en public/uploads/img/ como alternativa
-                            $rutaPublic = public_path("uploads/img/jugador_{$Jugador->id}.png");
-                            if(file_exists($rutaPublic)) {
-                                $fotoJugador = $rutaPublic;
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h3>Reporte Completo de Jugador: {{ $Jugador->nombre_completo }}</h3>
+            </div>
+        </div>        <table style="width: 100%; margin-top: 15px; border-collapse: collapse;">
+            <tr>
+                <td style="width: 65%; vertical-align: top; text-align: left; padding-left: 0; padding-right: 20px;">
+                    <div style="text-align: left;">
+                        <p style="margin: 5px 0; text-align: left;"><strong>Tipo Documento:</strong> {{ $Jugador->tipoDocumento != null ? $Jugador->tipoDocumento->nombre : "-" }}</p>
+                        <p style="margin: 5px 0; text-align: left;"><strong>N° Documento:</strong> {{ $Jugador->nro_documento }}</p>
+                        <p style="margin: 5px 0; text-align: left;"><strong>Celular:</strong> {{ $Jugador->celular != null && $Jugador->celular != "" ? $Jugador->celular : "-" }}</p>
+                        <p style="margin: 5px 0; text-align: left;"><strong>Edad:</strong> {{ $Jugador->edad != null && $Jugador->edad != "" ? $Jugador->edad." años" : "-"}}</p>
+                        <p style="margin: 5px 0; text-align: left;"><strong>Altura:</strong> {{ $Jugador->altura != null && $Jugador->altura != "" ? $Jugador->altura."m" : "-"}}</p>
+                        <p style="margin: 5px 0; text-align: left;"><strong>Peso:</strong> {{ $Jugador->peso != null && $Jugador->peso != "" ? $Jugador->peso."kg" : "-"}}</p>
+                    </div>
+                </td>
+                <td style="width: 35%; text-align: right; vertical-align: top; padding-left: 20px;">
+                    @php
+                        $fotoJugador = public_path("upload/image/default.png"); // Imagen por defecto
+                        if($Jugador != null) {
+                            // Verificar en storage/app/public/uploads/img/
+                            $rutaStorage = storage_path("app/public/uploads/img/jugador_{$Jugador->id}.png");
+                            if(file_exists($rutaStorage)) {
+                                $fotoJugador = $rutaStorage;
+                            } else {
+                                // Verificar en public/uploads/img/ como alternativa
+                                $rutaPublic = public_path("uploads/img/jugador_{$Jugador->id}.png");
+                                if(file_exists($rutaPublic)) {
+                                    $fotoJugador = $rutaPublic;
+                                }
                             }
                         }
-                    }
-                @endphp
-                <img src="{{ $fotoJugador }}" alt="{{ $Jugador != null ? $Jugador->nombre_completo : 'Jugador' }}">
-            </div>
-        </div>
-    </div>
-
-    @if($HistorialTorneos != null && count($HistorialTorneos) > 0)
-        <div class="mt-3">
-            <h5>Estadísticas Generales - Total de Torneos: {{ count($HistorialTorneos) }}</h5>
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th class="align-middle text-center">Torneo</th>
-                        <th class="align-middle text-center">Periodo</th>
-                        <th class="align-middle text-center">Categoría</th>
-                        <th class="align-middle text-center">Fase</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($HistorialTorneos as $torneo)
+                    @endphp
+                    <img src="{{ $fotoJugador }}" alt="{{ $Jugador != null ? $Jugador->nombre_completo : 'Jugador' }}" style="width: 130px; height: 130px; object-fit: cover; border-radius: 50%; border: 3px solid #dee2e6; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                </td>
+            </tr>
+        </table>@if($HistorialTorneos != null && count($HistorialTorneos) > 0)
+            <div class="mt-3">
+                <h5>Estadísticas Generales - Total de Torneos: {{ count($HistorialTorneos) }}</h5>
+                <table class="table table-bordered table-striped">
+                    <thead>
                         <tr>
-                            <td class="text-center">{{ $torneo['Torneo'] }}</td>
-                            <td class="text-center">{{ $torneo['Periodo'] }}</td>
-                            <td class="text-center">{{ $torneo['Categoria'] }}</td>
-                            <td class="text-center">{{ $torneo['Fase'] }}</td>
+                            <th class="align-middle text-center">Torneo</th>
+                            <th class="align-middle text-center">Periodo</th>
+                            <th class="align-middle text-center">Categoría</th>
+                            <th class="align-middle text-center">Fase</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>        @foreach($TorneoDetalles as $index => $detalle)
+                    </thead>
+                    <tbody>
+                        @foreach($HistorialTorneos as $torneo)
+                            <tr>
+                                <td class="text-center">{{ $torneo['Torneo'] }}</td>
+                                <td class="text-center">{{ $torneo['Periodo'] }}</td>
+                                <td class="text-center">{{ $torneo['Categoria'] }}</td>
+                                <td class="text-center">{{ $torneo['Fase'] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>@foreach($TorneoDetalles as $index => $detalle)
             @if($index > 0)
                 <div class="page-break"></div>
             @endif
@@ -477,13 +465,15 @@
                     No se encontraron partidos para este jugador en este torneo.
                 </div>
             @endif
-        @endforeach
-    @else
-        <div class="text-center mt-4" style="font-style: italic; color: #6c757d;">
-            No se encontraron torneos para este jugador.
+        @endforeach        @else
+            <div class="text-center mt-4" style="font-style: italic; color: #6c757d;">
+                No se encontraron torneos para este jugador.
+            </div>
+        @endif
+
+        <div class="text-center mt-4" style="font-size: 10px; color: #6c757d;">
+            Generado el {{ \Carbon\Carbon::now()->format('d/m/Y H:i:s') }}
         </div>
-    @endif    <div class="text-center mt-4" style="font-size: 10px; color: #6c757d;">
-        Generado el {{ \Carbon\Carbon::now()->format('d/m/Y H:i:s') }}
     </div>
 </body>
 </html>
