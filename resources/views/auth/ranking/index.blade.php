@@ -80,8 +80,8 @@
         </div>
     </div>
 </div>                </div>                <div class="card-footer text-right">
-                    <button type="button" class="btn btn-success mr-2" id="btnAllTen" disabled>
-                        <i class="fa fa-trophy"></i> All Ten
+                    <button type="button" class="btn btn-success mr-2" id="btnAllTen">
+                        <i class="fa fa-user"></i> All Ten
                     </button>
                     <button type="button" class="btn btn-primary pull-right" id="btnBuscar">
                         <i class="fa fa-search"></i> Realizar Búsqueda
@@ -129,17 +129,16 @@
         function validateRankingButtons() {
             const categoriaSeleccionada = $filter_category.val();
             const torneosSeleccionados = $filter_tournaments.val();
-            const jugadorSeleccionado = $filter_jugadores.val();
 
             if (categoriaSeleccionada && torneosSeleccionados && torneosSeleccionados.length > 0) {
-                // Todos los botones se habilitan cuando hay categoría y torneos seleccionados
+                // Top Ten y Lista Ranking se habilitan cuando hay categoría y torneos seleccionados
                 $btnTopTen.removeClass('btn-disabled').prop('disabled', false);
                 $btnListaRanking.removeClass('btn-disabled').prop('disabled', false);
-                $btnAllTen.removeClass('btn-disabled').prop('disabled', false);
+                // All Ten siempre está habilitado, pero valida con toast
             } else {
                 $btnTopTen.addClass('btn-disabled').prop('disabled', true);
                 $btnListaRanking.addClass('btn-disabled').prop('disabled', true);
-                $btnAllTen.addClass('btn-disabled').prop('disabled', true);
+                // All Ten siempre está habilitado, pero valida con toast
             }
         }// Cuando se selecciona una categoría
         $('#filter_category').on('change', function() {
@@ -336,16 +335,30 @@ $tournamentTypeRadio.on('change', function() {
             
             window.open(url, '_blank');
         });
-        
-        $('#btnAllTen').on('click', function() {
+          $('#btnAllTen').on('click', function() {
+            const categoriaSeleccionada = $filter_category.val();
+            const torneosSeleccionados = $filter_tournaments.val();
+              // Validar que se haya seleccionado categoría
+            if (!categoriaSeleccionada) {
+                Toast.fire({icon: 'warning', title: 'Por favor seleccione una categoría'});
+                return;
+            }
+            
+            // Validar que se hayan seleccionado torneos
+            if (!torneosSeleccionados || torneosSeleccionados.length === 0) {
+                Toast.fire({icon: 'warning', title: 'Por favor seleccione al menos un torneo'});
+                return;
+            }
+            
+            // Si todo está validado, proceder con la acción
             var torneos = $filter_tournaments.val();
             var jugadorId = $filter_jugadores.val();
-              var maestros = true;
-         if (!Array.isArray(torneos) && !isNaN(torneos)) {
-        torneos = [torneos];
-        maestros =false;
-        
-    }
+            var maestros = true;
+            
+            if (!Array.isArray(torneos) && !isNaN(torneos)) {
+                torneos = [torneos];
+                maestros = false;
+            }
             
             var url = `/auth/rankings/botones?` + $.param({
                 type: 'top_ten',
@@ -368,8 +381,7 @@ $tournamentTypeRadio.on('change', function() {
                 torneos: torneos
             });
             
-            window.open(url, '_blank');
-        });
+            window.open(url, '_blank');        });
     </script>
     <style>
     .custom-select {
