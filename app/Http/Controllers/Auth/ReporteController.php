@@ -902,7 +902,7 @@ public function jugadorPartialView(Request $request)
 
             );
 
-
+            
             $pdf = Pdf::loadView('auth'.'.'.$this->viewName.'.ajax.torneo.partialView', $Data)->setPaper('a4', 'landscape');
             return $pdf->stream("ReporteTorneo.pdf");
         }
