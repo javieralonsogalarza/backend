@@ -12,10 +12,24 @@
                             <li><strong>Edad:</strong> {{ $Jugador->edad != null && $Jugador->edad != "" ? $Jugador->edad." años" : "-"}}</li>
                             <li><strong>Altura:</strong> {{ $Jugador->altura != null && $Jugador->altura != "" ? $Jugador->altura."m" : "-"}}</li>
                             <li><strong>Peso:</strong> {{ $Jugador->peso != null && $Jugador->peso != "" ? $Jugador->peso."kg" : "-"}}</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4 text-right">
-                        <img src="{{ ($Jugador != null && $Jugador->imagen_path != null && $Jugador->imagen_path != "") ? ('/img/'.$Jugador->imagen_path) : "/upload/image/default.png" }}" style="width: 200px;height: 170px;object-fit: cover" alt="{{ $Jugador->nombre_completo }}">
+                        </ul>                    </div>                    <div class="col-md-4 text-right">
+                        @php
+                            $fotoJugador = "/upload/image/default.png"; // Imagen por defecto
+                            if($Jugador != null) {
+                                // Verificar en storage/app/public/uploads/img/
+                                $rutaStorage = storage_path("app/public/uploads/img/jugador_{$Jugador->id}.png");
+                                if(file_exists($rutaStorage)) {
+                                    $fotoJugador = "/storage/uploads/img/jugador_{$Jugador->id}.png";
+                                } else {
+                                    // Verificar en public/uploads/img/ como alternativa
+                                    $rutaPublic = public_path("uploads/img/jugador_{$Jugador->id}.png");
+                                    if(file_exists($rutaPublic)) {
+                                        $fotoJugador = "/uploads/img/jugador_{$Jugador->id}.png";
+                                    }
+                                }
+                            }
+                        @endphp
+                        <img src="{{ $fotoJugador }}" style="width: 180px;height: 180px;object-fit: cover;border-radius: 50%;" alt="{{ $Jugador != null ? $Jugador->nombre_completo : 'Jugador' }}">
                     </div>
                 </div>                <div class="row">
                     <div class="col-md-12 mt-4">
@@ -86,22 +100,26 @@
                                     @endforeach
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
+                            </div>                        </div>
                           @if($HistorialTorneos != null && count($HistorialTorneos) > 0 && $Jugador != null)
-                          <div style="justify-content: end;
-    margin-right: 1px; display:flex">
-                                <button  type="button" class="btn btn-danger btn-sm" id="btnExportarPdfCompleto" data-jugador="{{ $Jugador->id }}" title="Generar reporte PDF con todos los torneos del jugador">
-                                    <i class="fa fa-file-pdf"></i> Exportar PDF Completo
-                                </button>
-                                </div>
-                            @endif
+                          @endif
                     @else
                         <div class="col-md-12 text-center">
                             <p class="m-0">Este jugador aún no presenta categorías y rankings.</p>
                         </div>
                     @endif
                 </div>
+                @if($HistorialTorneos != null && count($HistorialTorneos) > 0 && $Jugador != null)
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div style="display: flex; justify-content: flex-end;">
+                            <button type="button" class="btn btn-danger btn-sm" id="btnExportarPdfCompleto" data-jugador="{{ $Jugador->id }}" title="Generar reporte PDF con todos los torneos del jugador">
+                                <i class="fa fa-file-pdf"></i> Exportar PDF Completo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @endif
             @else
                 <div class="row">
                     <div class="col-md-12 text-center">
