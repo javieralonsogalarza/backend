@@ -54,7 +54,7 @@
                             <div class="form-group">
                                 <label for="jugador2">Jugador 2:</label>
                                 <select name="jugador2" id="jugador2" class="form-control select2" style="width: 100% !important;">
-                                    <option value="">Seleccione</option>
+                                     <option value="">Seleccione</option>
                                     @foreach($Jugadores as $jugador)
                                     <option value="{{ $jugador->id }}">{{ $jugador->nombre_completo }}</option>
                                     @endforeach

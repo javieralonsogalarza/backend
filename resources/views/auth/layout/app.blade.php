@@ -125,7 +125,7 @@
                             <p>Rankings</p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                     <li class="nav-item">
                         <a href="{{ route('auth.rankings.salon') }}" class="nav-link">
                             <i class="nav-icon fa fa-star"></i>
                             <p>Salón de la fama</p>

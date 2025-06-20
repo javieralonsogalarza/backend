@@ -11,7 +11,7 @@
         {{ $TorneoFaseFinal->TorneoCategoria->multiple ? "height: 30px !important;font-size:11px !important;" : "height: 30px !important;font-size:11px !important;" }}
     }
     .color-default {
-            color: #00000 !important;
+            color: #0000!important;
         }
     @media print {
 
@@ -210,10 +210,8 @@
         padding: 0
     }
 </style>
-<div>{{ $TorneoFaseFinal->TorneoCategoria->torneo->formato_id }}</div>
-<div>{{ $MaxFase }}</div>
-<div> {{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', $MaxFase)->whereNotNull('jugador_local_uno_id')->where('estado_id', $App::$ESTADO_PENDIENTE) }}</div>
-@if(true)
+
+@if(count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', $MaxFase)->whereNotNull('jugador_local_uno_id')->where('estado_id', $App::$ESTADO_PENDIENTE)) > 0 && $TorneoFaseFinal->TorneoCategoria->torneo->formato_id != 8)
     <div class="row mt-3">
         <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
             <li><button type="button" class="btn btn-primary btn-change-player-class">
@@ -2479,6 +2477,9 @@
                                 data-random="{{ $TorneoFaseFinal->TorneoCategoria->aleatorio }}"
                                 data-id="{{ $TorneoFaseFinal->TorneoCategoria->id  }}"><i class="fa fa-image"></i> Descargar
                                 Llaves</button></li>
+                                                        <li class="mr-1"><button type="button" class="btn btn-info btn-reporte-finales"
+                                data-torneo-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}"><i class="fa fa-file-text"></i> Reporte Finales</button></li>
+
                     </ul>
                 </div>
             </div>
@@ -2489,12 +2490,30 @@
 
 <script type="text/javascript">
     $(function () {
+        // Function to refresh the tournament map
+        function refrescarMapa(){
+            invocarVista(`/auth/{{strtolower($ViewName)}}/fase-final/mapa/partialView/{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}/{{ $TorneoFaseFinal->TorneoCategoria->id }}/{{ $landing }}`, function(data){
+                $("#mapaCampeonato{{ $TorneoFaseFinal->TorneoCategoria->id }}").html(data);
+            });
+        }
+
+        // Existing code for player changes
         const $btnChangePlayerClass = $(".btn-change-player-class");
         $btnChangePlayerClass.on("click", function () {
             invocarModal(`/auth/{{strtolower($ViewName)}}/fase-final/players/changes/{{$TorneoFaseFinal->TorneoCategoria->torneo->id}}/{{$TorneoFaseFinal->TorneoCategoria->id}}`,
                 function ($modal) {
                     if ($modal.attr("data-reload") === "true") refrescarMapa();
                 });
+        });
+        
+                // Handle Reporte Finales button click
+        const $btnReporteFinales = $(".btn-reporte-finales");
+        $btnReporteFinales.on("click", function () {
+            const torneoId = $(this).attr("data-torneo-id");
+            const url = `/auth/torneo/getTorneoFinales?torneo_id=${torneoId}`;
+            
+            // Open in a new tab/window
+            window.open(url, '_blank');
         });
     });
 </script>

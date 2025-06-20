@@ -45,6 +45,9 @@ class App
     
     public static $URL_JSON_GROUPS_VS = 'https://laconfraternidaddeltenis.com/septimo_modulo/grupos.php';
     
+    
+    public static $URL_JSON_FINALES_VS = 'https://laconfraternidaddeltenis.com/noveno_modulo/grupos.php';
+    
     public static function ApiServiceCaptcha($recaptcha)
     {
         $message = null; $success = false; $result = null;

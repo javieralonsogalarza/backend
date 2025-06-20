@@ -25,28 +25,28 @@ class ImagenController extends Controller
 
         return $server->getImageResponse($path, $request->all());
     }
-    
-public function uploadImage(Request $request)
-{
+
+    public function uploadImage(Request $request)
+    {
         try {
-    // Validar que la solicitud tenga la imagen y el ID del jugador
-    $request->validate([
-        'image' => 'required|string', // Imagen en base64
-        'jugador_id' => 'required|integer'
-    ]);
+            // Validar que la solicitud tenga la imagen y el ID del jugador
+            $request->validate([
+                'image' => 'required|string', // Imagen en base64
+                'jugador_id' => 'required|integer'
+            ]);
 
-    // Obtener el ID del jugador y la imagen en base64
-    $jugadorId = $request->input('jugador_id');
-    $imageData = $request->input('image');
+            // Obtener el ID del jugador y la imagen en base64
+            $jugadorId = $request->input('jugador_id');
+            $imageData = $request->input('image');
 
-    // Decodificar la imagen base64
-    list($type, $imageData) = explode(';', $imageData);
-    list(, $imageData) = explode(',', $imageData);
-    $imageData = base64_decode($imageData);
+            // Decodificar la imagen base64
+            list($type, $imageData) = explode(';', $imageData);
+            list(, $imageData) = explode(',', $imageData);
+            $imageData = base64_decode($imageData);
 
-    // Crear el nombre del archivo usando el ID del jugador
-    $filename = 'jugador_' . $jugadorId . '.png';
-    $folderPath = 'uploads/img';
+            // Crear el nombre del archivo usando el ID del jugador
+            $filename = 'jugador_' . $jugadorId . '.png';
+            $folderPath = 'uploads/img';
 
             // Asegurarse de que la carpeta exista
             if (!Storage::disk('public')->exists($folderPath)) {
@@ -54,14 +54,14 @@ public function uploadImage(Request $request)
             }
 
             // Guardar la imagen
-    Storage::disk('public')->put($folderPath . '/' . $filename, $imageData);
+            Storage::disk('public')->put($folderPath . '/' . $filename, $imageData);
 
-    // Verificar si el archivo se ha guardado correctamente
-    if (Storage::disk('public')->exists($folderPath . '/' . $filename)) {
-        return response()->json([
-            'status' => 'success',
-            'filepath' => Storage::url($folderPath . '/' . $filename)
-        ]);
+            // Verificar si el archivo se ha guardado correctamente
+            if (Storage::disk('public')->exists($folderPath . '/' . $filename)) {
+                return response()->json([
+                    'status' => 'success',
+                    'filepath' => Storage::url($folderPath . '/' . $filename)
+                ]);
             }
 
             throw new \Exception('No se pudo guardar la imagen.');
@@ -84,7 +84,7 @@ public function uploadImageSegunda(Request $request)
                 'string',
                 function ($attribute, $value, $fail) {
                     if (!str_starts_with($value, 'data:image')) {
-                        $fail('El formato de la imagen no es válido');
+                        $fail('El formato de la imagen no es vÃ¡lido');
                     }
                 },
             ],
@@ -99,23 +99,23 @@ public function uploadImageSegunda(Request $request)
         ], [
             'image.required' => 'La imagen es requerida',
             'image.string' => 'La imagen debe ser una cadena base64',
-            'torneocategoria_id.required' => 'El ID de torneo-categoría es requerido',
-            'torneocategoria_id.integer' => 'El ID de torneo-categoría debe ser un número',
+            'torneocategoria_id.required' => 'El ID de torneo-categorÃ­a es requerido',
+            'torneocategoria_id.integer' => 'El ID de torneo-categorÃ­a debe ser un nÃºmero',
             'torneo.required' => 'El nombre del torneo es requerido',
-            'categoria.required' => 'La categoría es requerida',
+            'categoria.required' => 'La categorÃ­a es requerida',
             'partido.required' => 'El partido es requerido',
             'partido_id.required' => 'El ID del partido es requerido',
-            'partido_id.integer' => 'El ID del partido debe ser un número',
-            'categoria_id.required' => 'El ID de la categoría es requerido',
-            'categoria_id.integer' => 'El ID de la categoría debe ser un número',
+            'partido_id.integer' => 'El ID del partido debe ser un nÃºmero',
+            'categoria_id.required' => 'El ID de la categorÃ­a es requerido',
+            'categoria_id.integer' => 'El ID de la categorÃ­a debe ser un nÃºmero',
             'ronda.required' => 'La ronda es requerida',
-            'ronda.integer' => 'La ronda debe ser un número'
+            'ronda.integer' => 'La ronda debe ser un nÃºmero'
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Error de validación',
+                'message' => 'Error de validaciÃ³n',
                 'errors' => $validator->errors()
             ], 422);
         }
@@ -141,7 +141,7 @@ public function uploadImageSegunda(Request $request)
         $torneoFolder = $this->sanitizeFilename($request->input('torneo')) . '-' . $request->input('torneocategoria_id');
         $categoriaFolder = $this->sanitizeFilename($request->input('categoria')) . '-' . $request->input('categoria_id');
         
-        // Aquí implementamos la lógica para determinar el nombre de la ronda
+        // AquÃ­ implementamos la lÃ³gica para determinar el nombre de la ronda
         $rondaNumero = $request->input('ronda') ? $request->input('ronda') : 0 ;
         $nombreRonda = '';
         
@@ -168,7 +168,7 @@ public function uploadImageSegunda(Request $request)
                 $nombreRonda = 'Fase-de-Grupos';
         }
         
-        // Ahora usamos el nombre descriptivo, pero mantenemos el número para referencia
+        // Ahora usamos el nombre descriptivo, pero mantenemos el nÃºmero para referencia
         $rondaFolder = $nombreRonda . '-' . $rondaNumero;
         
         $grupoFolder = $request->input('grupo') ? '' . $this->sanitizeFilename($request->input('grupo')) : null;
@@ -230,18 +230,18 @@ public function uploadImageSegunda(Request $request)
 
     protected function sanitizeFilename($string)
     {
-        // Convertir a minúsculas
+        // Convertir a minÃºsculas
         $string = strtolower($string);
         
         // Eliminar caracteres especiales y espacios
         $string = preg_replace('/[^a-z0-9\-_]/', '_', $string);
         
-        // Eliminar múltiples guiones bajos consecutivos
+        // Eliminar mÃºltiples guiones bajos consecutivos
         $string = preg_replace('/_+/', '_', $string);
         
         // Eliminar guiones bajos al principio y al final
         $string = trim($string, '_');
-
+        
         // Acortar si es demasiado largo
         return substr($string, 0, 30);
     }
@@ -259,7 +259,7 @@ public function uploadImageSegunda(Request $request)
         ]);
 
         if ($validator->fails()) {
-            $Result->Message = 'ID de partido inválido o no existe';
+            $Result->Message = 'ID de partido invÃ¡lido o no existe';
             return response()->json($Result);
         }
 
@@ -290,8 +290,50 @@ public function uploadImageSegunda(Request $request)
 
 
 
+
+    public function despublicarReporteJsonGenerado(Request $request)
+{
+    $Result = (object)['Success' => false, 'Message' => null];
+
+    try {
+        // Validar que existe el partido_id en el request
+        $validator = Validator::make($request->all(), [
+            'partido_id' => 'required|exists:partidos,id',
+        ]);
+
+        if ($validator->fails()) {
+            $Result->Message = 'ID de partido invÃ¡lido o no existe';
+            return response()->json($Result);
+        }
+
+        // Obtener el partido y actualizar el campo
+        $partido = Partido::findOrFail($request->partido_id);
+        
+        // Verificar que el usuario tiene permiso (opcional, si quieres restringir el acceso)
+        // if ($partido->comunidad_id != Auth::guard('web')->user()->comunidad_id) {
+        //     $Result->Message = 'No tiene permisos para modificar este partido';
+        //     return response()->json($Result);
+        // }
+        
+        $partido->reporte_json_generado = null;
+        
+        if ($partido->save()) {
+            $Result->Success = true;
+            $Result->Message = 'Reporte JSON actualizado correctamente';
+            $Result->fecha = $partido->reporte_json_generado;
+        } else {
+            $Result->Message = 'No se pudo actualizar el registro';
+        }
+    } catch (\Exception $e) {
+        $Result->Message = 'Error: ' . $e->getMessage();
+    }
+
+    return response()->json($Result);
+}
+
+
 /**
- * Verifica si el campo reporte_json_generado está marcado
+ * Verifica si el campo reporte_json_generado estÃ¡ marcado
  *
  * @param int $partido_id
  * @return \Illuminate\Http\JsonResponse
@@ -307,7 +349,7 @@ public function verificarReporteJsonGenerado(Request $request)
         ]);
 
         if ($validator->fails()) {
-            $Result->Message = 'ID de partido inválido o no existe';
+            $Result->Message = 'ID de partido invÃ¡lido o no existe';
             return response()->json($Result);
         }
 

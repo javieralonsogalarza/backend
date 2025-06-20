@@ -399,8 +399,8 @@
                                                                     </thead>
                                                                     <tbody>
                                                                     @foreach($Model->partidos->where('torneo_categoria_id', $q->id)->where('grupo_id', $q4->grupo_id) as $q6)
-                                                                    <tr class="content-tr-{{ $q6->id }} {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disable" : "enable" }} {{ $q6->reporte_json_generado ? "bg-json-generado" : "" }}" data-id="{{ $q6->id }}" data-category="{{ $q->id }}" data-group="{{ $q4->grupo_id }}">                                                                            
-                                                                              <td class="text-center td-jugador-info-h2h" 
+                                                                    <tr class="content-tr-{{ $q6->id }} {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disable" : "enable" }} " data-id="{{ $q6->id }}" data-category="{{ $q->id }}" data-group="{{ $q4->grupo_id }}">                                                                            
+                                                                              <td class="text-center td-jugador-info-h2h {{ $q6->reporte_json_generado ? "bg-json-generado" : "" }}" 
                                                                             data-jugador-local-id="{{ $q6->jugador_local_uno_id }}" 
                                                                             data-jugador-rival-id="{{ $q6->jugador_rival_uno_id }}" 
                                                                             data-torneo-categoria-id="{{ $q->id }}" 
@@ -779,7 +779,7 @@ $(".btn-generate-json-grupo-vs").on("click", function (){
                         let category = $this.closest("tr").attr("data-category");
                         const targetId = $this.attr('data-target');
                         const tab = document.querySelector(targetId);
-
+                  
                              
                     }
                 });

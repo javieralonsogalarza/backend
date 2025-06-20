@@ -134,15 +134,7 @@
 
     @if($HistorialTorneos != null && count($HistorialTorneos) > 0)
         <div class="section-title">Estadísticas Generales</div>
-        <div class="tournament-summary">
-            <ul style="list-style: none; padding: 0; margin: 0;">
-                <li><strong>Total de Torneos:</strong> {{ count($HistorialTorneos) }}</li>
-                <li><strong>Campeonatos:</strong> {{ collect($HistorialTorneos)->where('Fase', 'Campeón')->count() }}</li>
-                <li><strong>Finales:</strong> {{ collect($HistorialTorneos)->where('Fase', 'Finalista')->count() }}</li>
-                <li><strong>Semifinales:</strong> {{ collect($HistorialTorneos)->whereIn('Fase', ['Semifinal'])->count() }}</li>
-            </ul>
-        </div>
-
+        <strong>Total de Torneos:</strong> {{ count($HistorialTorneos) }}
         <div class="section-title">Resumen de Torneos</div>
         <table class="summary-table">
             <thead>
@@ -151,7 +143,6 @@
                     <th>Periodo</th>
                     <th>Categoría</th>
                     <th>Fase</th>
-                    <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
@@ -161,7 +152,6 @@
                         <td>{{ $torneo['Periodo'] }}</td>
                         <td>{{ $torneo['Categoria'] }}</td>
                         <td>{{ $torneo['Fase'] }}</td>
-                        <td>{{ $torneo['Estado'] }}</td>
                     </tr>
                 @endforeach
             </tbody>

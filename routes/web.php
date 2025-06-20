@@ -49,8 +49,9 @@ Route::post('/rankings/update-player-ranking-consideration', [Auth\RakingControl
                 Route::get('ranking/{torneo}/{torneo_categoria_id}/{landing?}', [Auth\TorneoController::class, 'ranking'])->name('ranking');
 
                 Route::get('h2h/{jugador_local_uno_id}/{jugador_rival_uno_id}/{torneo_categoria_id}/{categoria_id}/{torneo_id}/json', [Auth\TorneoController::class, 'h2h'])->name('h2h');
+                
+                Route::get('getTorneoFinales', [Auth\NuevoController::class, 'getTorneoFinales'])->name('getTorneoFinales');
 
-                                            Route::get('getTorneoFinales', [Auth\NuevoController::class, 'getTorneoFinales'])->name('getTorneoFinales');
 
                 Route::get('/zonas-distribucion/{categoria_id}', [Auth\TorneoController::class, 'jugadorZonaDistribution'])->name('jugador.zona.distribution');
                 // Add to your web.php routes
@@ -295,11 +296,14 @@ Route::group(['middleware' => 'auth:web'], function() {
                     });
 
                     Route::prefix('reporte')->group(function (){
-                        Route::name('reporte.')->group(function(){             
+                        Route::name('reporte.')->group(function(){
                             Route::get('jugador', [Auth\ReporteController::class, 'jugador'])->name('jugador');
                             Route::get('jugadorPartialView', [Auth\ReporteController::class, 'jugadorPartialView'])->name('jugadorPartialView');
                             Route::get('jugadorPartidosPartialView', [Auth\ReporteController::class, 'jugadorPartidosPartialView'])->name('jugadorPartidosPartialView');
+
                             Route::get('jugador/partidos/exportar/pdf/{torneo}/{categoria}/{jugador}', [Auth\ReporteController::class, 'jugadorPartidosExportarPdf'])->name('jugadorPartidosExportarPdf');
+                            Route::get('jugador/completo/exportar/pdf/{jugador}', [Auth\ReporteController::class, 'jugadorCompletoExportarPdf'])->name('jugadorCompletoExportarPdf');
+
 
                             Route::get('torneo', [Auth\ReporteController::class, 'torneo'])->name('torneo');
                             Route::get('torneo/exportar/pdf/{torneo}/{categoria}', [Auth\ReporteController::class, 'torneoExportarPdf'])->name('torneoExportarPdf');
@@ -315,7 +319,6 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::get('getJugadoresByTorneo', [Auth\ReporteController::class, 'getJugadoresByTorneo'])->name('getJugadoresByTorneo');
                              
                              
-
                              
                             
                             
@@ -394,6 +397,9 @@ Route::get('torneos/todos', [App\HomeController::class, 'torneoTodos'])->name('t
 
 Route::get('rankings', [App\HomeController::class, 'rankings'])->name('rankings');
 Route::get('rankings/categorias', [App\HomeController::class, 'rankingsCategorias'])->name('rankingsCategorias');
+
+Route::get('/rankings/lista-jugadores', [Auth\RakingController::class, 'listaJugadores'])
+    ->name('rankings.lista-jugadores');
 
 Route::get('/rankings/torneos-por-categoria', [Auth\RakingController::class, 'getTorneosByCategorias'])
     ->name('rankings.torneos-por-categoria');

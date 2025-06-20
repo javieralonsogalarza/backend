@@ -18,6 +18,7 @@
                 <div class="modal-body">
                     <div class="row content-buy-all {{ $Partido->buy_all ? "hidden" : "" }}">
                         <div class="col-md-12">
+                            
                             <label for="jugador_local_id">{{ $TorneoCategoria->multiple ? "Jugadores Locales" : "Jugador Local" }}
                                 <span id="jugador_local_info_id" style="color: red;font-size: 14px;"></span>
                             </label>
@@ -28,6 +29,7 @@
                     <div class="row mt-3">
                         <div class="col-sm-6 mt-1 content-buy-all {{ $Partido->buy_all ? "hidden" : "" }}">
                             <div class="icheck-primary d-inline">
+                                
                                 <input type="checkbox" name="buy" id="buy" value="1" {{ !$Partido->buy_all && $Partido->buy ? "checked" : "" }}>
                                 <label for="buy">
                                     ¿El Jugador Rival es Bye?</label>
@@ -236,13 +238,11 @@
         return jugadoresNoClasificados;
     }
 
-    // Modificar la función de éxito para manejar la validación
-   // Modificar la función de éxito para manejar la validación
+
    window.OnSuccess{{$ViewName}} = function(data) {
     const jugadoresNoClasificados = verificarClasificacionJugadores();
 
     if (jugadoresNoClasificados.length > 0) {
-        // Generar mensaje basado en género y cantidad
         const generarMensaje = () => {
             if (jugadoresNoClasificados.length === 1) {
                 const jugador = jugadoresNoClasificados[0];
@@ -250,7 +250,6 @@
                     ? `La siguiente jugadora no pertenece al cuadro principal:<br>${jugador.nombre}` 
                     : `El siguiente jugador no pertenece al cuadro principal:<br>${jugador.nombre}`;
             } else {
-                // Verificar si hay una mezcla de géneros
                 const tieneHombres = jugadoresNoClasificados.some(j => j.sexo === 'M');
                 const tieneMujeres = jugadoresNoClasificados.some(j => j.sexo === 'F');
 
@@ -276,21 +275,21 @@
             allowOutsideClick: false
         }).then((result) => {
             if (result.isConfirmed) {
-                // Llamar a la función de éxito original
+
                 onSuccessForm(data, $("form#frm{{$ViewName}}"), $modal, function(data){
                     if(data.Repeat != null){  }
                 });
             }
         });
     } else {
-        // Si todos están clasificados, proceder normalmente
+
         onSuccessForm(data, $("form#frm{{$ViewName}}"), $modal, function(data){
             if(data.Repeat != null){  }
         });
     }
 };
 
-// Función para verificar clasificación de jugadores
+
 function verificarClasificacionJugadores() {
     const jugadoresNoClasificados = [];
     

@@ -57,6 +57,11 @@
     background-color: #f8f9fa; /* Fondo para el texto visible al hacer hover */
 }
 
+/* Clase personalizada para un gris más oscuro y notorio */
+.bg-gray-darker {
+    background-color: #d9d9d9 !important; /* Gris más oscuro y notorio */
+}
+
 #tablaDistribucionZonas thead th {
     text-align: center;
     white-space: nowrap;
@@ -89,6 +94,8 @@ function cargarDistribucionZonas(categoriaId) {
             if ((response.Success || response.success) && (response.JugadoresPorZona || response.data)) {
                 // Determinar la fuente de datos correcta
                 let jugadoresPorZona = response.JugadoresPorZona || response.data;
+                // Obtener la configuración max_players del torneo, por defecto 4 si no está definido
+                let maxPlayersGroup = response.max_players || 4;
                 
                 // Verificar si hay datos
                 if (!jugadoresPorZona || jugadoresPorZona.length === 0) {
@@ -133,12 +140,16 @@ function cargarDistribucionZonas(categoriaId) {
                     headerHTML += `<th class="text-center" title="${zona.nombre}">${zona.nombre}</th>`;
                 });
                 headerHTML += '</tr>';
-                $("#headerZonas").html(headerHTML);
-                
-                // Paso 3: Crear las filas de jugadores
+                $("#headerZonas").html(headerHTML);                  // Paso 3: Crear las filas de jugadores
                 let tbodyHTML = '';
-                for (let i = 0; i < maxJugadores; i++) {
-                    tbodyHTML += '<tr>';
+                for (let i = 0; i < maxJugadores; i++) {                // Determinar el grupo de colores actual (cada maxPlayersGroup filas)
+                    const groupIndex = Math.floor(i / maxPlayersGroup);
+                    // Determinar si este grupo es par o impar para aplicar el estilo correspondiente
+                    const isGrayGroup = groupIndex % 2 === 0;
+                    // Clase CSS para filas grises o blancas según el grupo
+                    const rowClass = isGrayGroup ? 'bg-gray-darker' : 'bg-white'; // bg-gray-darker para gris más oscuro, bg-white para blanco
+                    
+                    tbodyHTML += `<tr class="${rowClass}">`;
                     
                     Object.values(zonasMap).forEach(function(zona) {
                         if (i < zona.jugadores.length) {

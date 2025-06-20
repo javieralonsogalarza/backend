@@ -21,8 +21,7 @@
         }
         #main {
             padding-bottom: 70px; /* Adjust based on footer height */
-        }
-        .btn-disabled {
+        }        .btn-disabled {
             opacity: 0.5;
             pointer-events: none;
         }
@@ -54,7 +53,7 @@
                 <div class="form-group mb-0">
                 <div class="custom-control custom-radio">
                         <input type="radio" id="carrera_maestros_radio" name="tournament_type" class="custom-control-input" value="carrera_maestros" checked>
-                        <label class="custom-control-label" for="carrera_maestros_radio">Carrera hacia el torrneo de maestros</label>
+                        <label class="custom-control-label" for="carrera_maestros_radio">Carrera hacia el torneo de maestros</label>
                     </div>
                     <div class="custom-control custom-radio">
                         <input type="radio" id="torneos_radio" name="tournament_type" class="custom-control-input" value="torneos" >
@@ -62,21 +61,28 @@
                     </div>
                    
                 </div>
-            </div>
-           <div class="col-md-8">
+            </div>           <div class="col-md-8">
                  <div class="invalid-feedback">
         Por favor seleccione al menos un torneo
     </div>
     <select name="filter_tournaments[]" id="filter_tournaments" class="form-control" required>
         <option value="">Seleccione un torneo</option>
     </select>
+    
+    <div class="form-group mt-3">
+        <label for="filter_jugadores">Filtrar por Jugador (Opcional):</label>
+        <select name="filter_jugadores" id="filter_jugadores" class="form-control">
+            <option value="">--Todos los jugadores--</option>
+        </select>
+    </div>
   
 </div>
         </div>
     </div>
-</div>
-                </div>
-                <div class="card-footer text-right">
+</div>                </div>                <div class="card-footer text-right">
+                    <button type="button" class="btn btn-success mr-2" id="btnAllTen" disabled>
+                        <i class="fa fa-trophy"></i> All Ten
+                    </button>
                     <button type="button" class="btn btn-primary pull-right" id="btnBuscar">
                         <i class="fa fa-search"></i> Realizar Búsqueda
                     </button>
@@ -97,39 +103,45 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('auth/adminlte3/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('auth/pages/'.strtolower($ViewName).'/index.min.js?v='.\Carbon\Carbon::now()->toDateTimeString()) }}"></script>
-    <script>
-        const $filter_anio = $("#filter_anio"), $filter_torneo = $("#filter_torneo"), $filter_category = $("#filter_category");
+    <script>        const $filter_anio = $("#filter_anio"), $filter_torneo = $("#filter_torneo"), $filter_category = $("#filter_category");
         const $partialView = $("#partialView"), $btnBuscar = $("#btnBuscar");
         const $filter_tournaments = $("#filter_tournaments");
+        const $filter_jugadores = $("#filter_jugadores");
         const $btnTopTen = $("#btnTopTen");
+        const $btnAllTen = $("#btnAllTen");
         const $btnListaRanking = $("#btnListaRanking");
         const $tournamentTypeRadio = $("input[name='tournament_type']");
 
         // Deshabilitar radio buttons al inicio
-        $tournamentTypeRadio.prop('disabled', true);
-
-        // Inicializar select2 para torneos (inicialmente deshabilitado)
+        $tournamentTypeRadio.prop('disabled', true);        // Inicializar select2 para torneos (inicialmente deshabilitado)
         $('#filter_tournaments').select2({
             placeholder: "Primero seleccione una categoría",
             allowClear: true,
             disabled: true
         });
-
-        // Función para validar y habilitar/deshabilitar botones
+        
+        // Inicializar select2 para jugadores (inicialmente deshabilitado)
+        $('#filter_jugadores').select2({
+            placeholder: "Primero seleccione categoría y torneos",
+            allowClear: true,
+            disabled: true
+        });        // Función para validar y habilitar/deshabilitar botones
         function validateRankingButtons() {
             const categoriaSeleccionada = $filter_category.val();
             const torneosSeleccionados = $filter_tournaments.val();
+            const jugadorSeleccionado = $filter_jugadores.val();
 
             if (categoriaSeleccionada && torneosSeleccionados && torneosSeleccionados.length > 0) {
+                // Todos los botones se habilitan cuando hay categoría y torneos seleccionados
                 $btnTopTen.removeClass('btn-disabled').prop('disabled', false);
                 $btnListaRanking.removeClass('btn-disabled').prop('disabled', false);
+                $btnAllTen.removeClass('btn-disabled').prop('disabled', false);
             } else {
                 $btnTopTen.addClass('btn-disabled').prop('disabled', true);
                 $btnListaRanking.addClass('btn-disabled').prop('disabled', true);
+                $btnAllTen.addClass('btn-disabled').prop('disabled', true);
             }
-        }
-
-        // Cuando se selecciona una categoría
+        }// Cuando se selecciona una categoría
         $('#filter_category').on('change', function() {
             var categoriaId = $(this).val();
             
@@ -142,6 +154,12 @@
                     .prop('disabled', false)
                     .val(null)
                     .trigger('change');
+                
+                // Limpiar y deshabilitar select de jugadores
+                $('#filter_jugadores')
+                    .prop('disabled', true)
+                    .val(null)
+                    .trigger('change');
 
                 // Simular cambio de radio button para recargar torneos
                 $tournamentTypeRadio.filter(':checked').trigger('change');
@@ -151,6 +169,12 @@
                 
                 // Deshabilitar select de torneos
                 $('#filter_tournaments')
+                    .prop('disabled', true)
+                    .val(null)
+                    .trigger('change');
+                    
+                // Deshabilitar select de jugadores
+                $('#filter_jugadores')
                     .prop('disabled', true)
                     .val(null)
                     .trigger('change');
@@ -238,12 +262,66 @@ $tournamentTypeRadio.on('change', function() {
             }
         });
     }
-});
-
-
-        // Validar botones cuando cambian categoría o torneos
+});        // Validar botones cuando cambian categoría o torneos
         $filter_category.on('change', validateRankingButtons);
-        $filter_tournaments.on('change', validateRankingButtons);
+        $filter_tournaments.on('change', function() {
+            validateRankingButtons();
+            cargarJugadores();
+        });
+
+        // Función para cargar jugadores
+        function cargarJugadores() {
+            const categoriaId = $filter_category.val();
+            const torneos = $filter_tournaments.val();
+            
+            if (categoriaId && torneos && torneos.length > 0) {
+                // Habilitar select de jugadores y mostrar loading
+                $('#filter_jugadores')
+                    .prop('disabled', false)
+                    .empty()
+                    .append('<option value="">Cargando jugadores...</option>');
+                
+                $.ajax({
+                    url: "{{ route('rankings.lista-jugadores') }}",
+                    method: 'GET',
+                    data: {
+                        filter_categoria: categoriaId,
+                        torneos: torneos
+                    },
+                    success: function(data) {
+                        // Limpiar y popular el select
+                        $('#filter_jugadores').empty();
+                        $('#filter_jugadores').append('<option value="">--Todos los jugadores--</option>');
+                        
+                        if (data.length > 0) {
+                            data.forEach(function(jugador) {
+                                $('#filter_jugadores').append(
+                                    '<option value="' + jugador.id + '">' + 
+                                    jugador.nombre  +
+                                    '</option>'
+                                );
+                            });
+                        } else {
+                            $('#filter_jugadores').append('<option value="">No hay jugadores disponibles</option>');
+                        }
+                    },
+                    error: function() {
+                        $('#filter_jugadores').empty();
+                        $('#filter_jugadores').append('<option value="">Error al cargar jugadores</option>');
+                    }
+                });
+            } else {
+                // Deshabilitar y limpiar select de jugadores
+                $('#filter_jugadores')
+                    .prop('disabled', true)
+                    .val(null)
+                    .trigger('change');            }
+        }
+
+        // Evento change para el select de jugadores
+        $('#filter_jugadores').on('change', function() {
+            validateRankingButtons();
+        });
 
         // Manejadores de eventos para los botones de rankings
         $('#btnTopTen').on('click', function() {
@@ -258,8 +336,29 @@ $tournamentTypeRadio.on('change', function() {
             
             window.open(url, '_blank');
         });
-
-        $('#btnListaRanking').on('click', function() {
+        
+        $('#btnAllTen').on('click', function() {
+            var torneos = $filter_tournaments.val();
+            var jugadorId = $filter_jugadores.val();
+              var maestros = true;
+         if (!Array.isArray(torneos) && !isNaN(torneos)) {
+        torneos = [torneos];
+        maestros =false;
+        
+    }
+            
+            var url = `/auth/rankings/botones?` + $.param({
+                type: 'top_ten',
+                filter_anio: $filter_anio.val(),
+                filter_categoria: $filter_category.val(),
+                torneos: torneos,
+                filter_jugador: jugadorId,
+                all: true,
+                maestros
+            });
+            
+            window.open(url, '_blank');
+        });$('#btnListaRanking').on('click', function() {
             var torneos = $filter_tournaments.val();
             
             var url = `/auth/rankings/botones?` + $.param({

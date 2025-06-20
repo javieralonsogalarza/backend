@@ -17,10 +17,11 @@
                     <div class="col-md-4 text-right">
                         <img src="{{ ($Jugador != null && $Jugador->imagen_path != null && $Jugador->imagen_path != "") ? ('/img/'.$Jugador->imagen_path) : "/upload/image/default.png" }}" style="width: 200px;height: 170px;object-fit: cover" alt="{{ $Jugador->nombre_completo }}">
                     </div>
-                </div>
-                <div class="row">
+                </div>                <div class="row">
                     <div class="col-md-12 mt-4">
-                        <h5>Historial Torneos</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Historial Torneos</h5>                          
+                        </div>
                     </div>
                     @if($HistorialTorneos != null && count($HistorialTorneos) > 0)
                         <div class="col-md-12">
@@ -41,9 +42,16 @@
                                         <td class="text-center">{{ $q['Periodo'] }}</td>
                                         <td class="text-center">{{ $q['Categoria'] }}</td>
                                         <td class="text-center">{{ $q['Fase'] }}</td>
-                                        <td class="text-center btn-view {{ $q['Estado'] == "En transcurso" ? "bg-warning" : ($q['Estado'] == "Cancelado" ? "bg-dander" : ($q['Estado'] == "Finalizado" ? "bg-success" : "")) }}">
-                                            {{ $q['Estado'] }}
-                                        </td>
+                                       <td class="text-center btn-view {{ 
+    $q['Estado'] == 'Inscrito' ? 'bg-info' : 
+    ($q['Estado'] == 'Participación en curso' ? 'bg-primary' : 
+    ($q['Estado'] == 'Participación terminada' ? 'bg-success' : 
+    ($q['Estado'] == 'En transcurso' ? 'bg-warning' : 
+    ($q['Estado'] == 'Cancelado' ? 'bg-danger' : 
+    ($q['Estado'] == 'Finalizado' ? 'bg-success' : ''))))) 
+}}">
+    {{ $q['Estado'] }}
+</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -80,6 +88,14 @@
                                 </table>
                             </div>
                         </div>
+                          @if($HistorialTorneos != null && count($HistorialTorneos) > 0 && $Jugador != null)
+                          <div style="justify-content: end;
+    margin-right: 1px; display:flex">
+                                <button  type="button" class="btn btn-danger btn-sm" id="btnExportarPdfCompleto" data-jugador="{{ $Jugador->id }}" title="Generar reporte PDF con todos los torneos del jugador">
+                                    <i class="fa fa-file-pdf"></i> Exportar PDF Completo
+                                </button>
+                                </div>
+                            @endif
                     @else
                         <div class="col-md-12 text-center">
                             <p class="m-0">Este jugador aún no presenta categorías y rankings.</p>
@@ -90,9 +106,30 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <p class="m-0">No existe información disponible para este jugador.</p>
-                    </div>
-                </div>
+                    </div>                </div>
             @endif
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#btnExportarPdfCompleto").on("click", function() {
+        const $this = $(this);
+        const jugador = $this.attr("data-jugador");
+        
+        // Deshabilitar el botón temporalmente
+        $this.prop('disabled', true);
+        $this.html('<i class="fa fa-spinner fa-spin"></i> Generando PDF...');
+        
+        // Abrir el PDF en una nueva ventana
+        window.open(`/auth/reporte/jugador/completo/exportar/pdf/${jugador}`, '_blank');
+        
+        // Rehabilitar el botón después de un breve momento
+        setTimeout(function() {
+            $this.prop('disabled', false);
+            $this.html('<i class="fa fa-file-pdf"></i> Exportar PDF Completo');
+        }, 2000);
+    });
+});
+</script>

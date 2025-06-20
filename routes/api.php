@@ -25,6 +25,8 @@ Route::post('/upload-image-segunda', [Controllers\ImagenController::class, 'uplo
 
 Route::post('/actualizarReporteJsonGenerado', [Controllers\ImagenController::class, 'actualizarReporteJsonGenerado'])->name('actualizarReporteJsonGenerado');
 
+Route::post('/despublicarReporteJsonGenerado', [Controllers\ImagenController::class, 'despublicarReporteJsonGenerado'])->name('despublicarReporteJsonGenerado');
+
 
 Route::post('/verificarReporteJsonGenerado', [Controllers\ImagenController::class, 'verificarReporteJsonGenerado'])->name('verificarReporteJsonGenerado');
 

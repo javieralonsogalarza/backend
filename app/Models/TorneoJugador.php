@@ -36,4 +36,10 @@ class TorneoJugador extends Model
     {
         return $this->hasMany(TorneoGrupo::class, 'jugador_simple_id', 'jugador_simple_id');
     }
+    
+    public function torneoCategoria()
+    {
+        return $this->belongsTo(TorneoCategoria::class);
+    }
+
 }

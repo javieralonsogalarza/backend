@@ -7,6 +7,7 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
 (count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('estado_id', $App::$ESTADO_PENDIENTE)->whereNotNull('fase')) > 0) ||
 (count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('estado_id', $App::$ESTADO_FINALIZADO)->where('fase', 1)) > 0)
 )
+
 )
     <div class="d-flex justify-content-between align-items-center">
         <div><h5>Jugadores Clasificados</h5></div>

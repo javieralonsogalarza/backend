@@ -27,8 +27,8 @@ class RakingController extends Controller
 
         return view('auth'.'.'.$this->viewName.'.index', ['Anio' => $Anio, 'Torneos' => $Torneos, 'ViewName' => ucfirst($this->viewName)]);
     }
-
-    public function salon()
+    
+     public function salon()
     {
         $Torneos = Torneo::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)->get();
 
@@ -237,5 +237,72 @@ public function updateRankingConsideration(Request $request)
         ], 500);
     }
 }
+
+
+public function listaJugadores(Request $request)
+    {
+        $categoriaId = $request->filter_categoria;
+        $torneoCategoriasIds = $request->torneos; // Estos son IDs de TorneoCategoria, no de Torneo
+        
+        if (!$categoriaId || !$torneoCategoriasIds) {
+            return response()->json([]);
+        }
+        
+        // Convertir a array si no lo es
+        if (!is_array($torneoCategoriasIds)) {
+            $torneoCategoriasIds = [$torneoCategoriasIds];
+        }
+        
+        // Verificar que los TorneoCategoria existen y coinciden con la categoría
+        $torneoCategorias = TorneoCategoria::whereIn('id', $torneoCategoriasIds)
+            ->where(function($query) use ($categoriaId) {
+                $query->where('categoria_simple_id', $categoriaId)
+                      ->orWhere('categoria_dupla_id', $categoriaId);
+            })
+            ->get();
+        
+        $torneoCategoriaIdsFinales = $torneoCategorias->pluck('id');
+        
+        if ($torneoCategoriaIdsFinales->isEmpty()) {
+            return response()->json([]);
+        }
+        
+        // Buscar los rankings que corresponden a estas categorías de torneo
+        $rankings = Ranking::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+            ->whereIn('torneo_categoria_id', $torneoCategoriaIdsFinales)
+            ->get();
+        
+        if ($rankings->isEmpty()) {
+            return response()->json([]);
+        }
+        
+        $rankingIds = $rankings->pluck('id');
+        
+        // Buscar jugadores que tienen registros en ranking_detalles para estos rankings
+        $jugadores = Jugador::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+            ->whereIn('id', function($query) use ($rankingIds) {
+                $query->select('jugador_simple_id')
+                      ->from('ranking_detalles')
+                      ->whereIn('ranking_id', $rankingIds)
+                      ->whereNotNull('jugador_simple_id');
+            })
+            ->orderBy('nombres', 'asc')
+            ->orderBy('apellidos', 'asc')
+            ->get(['id', 'nombres', 'apellidos']);
+        
+        $jugadores = $jugadores->map(function($jugador) use ($rankingIds) {
+            $jugador->nombre = $jugador->nombres . ' ' . $jugador->apellidos;
+            
+            // Contar en cuántos de estos rankings específicos participa
+            $jugador->torneos_count = RankingDetalle::whereIn('ranking_id', $rankingIds)
+                ->where('jugador_simple_id', $jugador->id)
+                ->distinct('ranking_id')
+                ->count('ranking_id');
+                
+            return $jugador;
+        });
+        
+        return response()->json($jugadores);
+    }
 
 }

@@ -2750,6 +2750,7 @@ return response()->json(['data' => $mergedPlayers]);
  }
     }
 
+
     public function faseFinalPrePartidoStore(Request $request)
     {
         $Result = (object)['Success' => false, 'Message' => null, 'Errors' => null, 'Repeat' => null];
@@ -25321,6 +25322,8 @@ public function rankingsPartialViewFama(Request $request)
                 $Object = []; $JugadoresIds = [];
                 $TorneoCategoria = TorneoCategoria::where('categoria_simple_id', $q->id)->get();
 
+                $Object['all'] = $request->all ;
+                $Object['filter_jugador'] = $request->filter_jugador;
                 $Object['categoria_id'] = $q->id;
                 $Object['categoria_name'] = $q->nombre;
                 $Object['multiple'] = $q->dupla;
@@ -25331,6 +25334,7 @@ public function rankingsPartialViewFama(Request $request)
                     $tournamentsForCategory = $Torneos->whereIn('id', $TorneoCategoria->pluck('torneo_id'));
                     $Object['tournament_name'] = $tournamentsForCategory->first()->nombre;
                 }
+
                 foreach ($TorneoCategoria as $q2)
                 {
                     foreach ($Rankings->where('torneo_categoria_id', $q2->id) as $q3)
@@ -25406,6 +25410,7 @@ public function rankingsPartialViewFama(Request $request)
                 $RankingsResult[] = (object)$Object;
             }
 
+  
             $RankingsResultYear = null;
 
             if($request->filter_anio == null)
@@ -25459,7 +25464,7 @@ switch($type) {
             if (isset($categoria->jugadores)) {
                 
             // Obtener jugadores
-            $jugadoresColeccion = collect($categoria->jugadores);
+              $jugadoresColeccion = collect($categoria->jugadores);
 
             // Si es modo carrera, filtrar solo jugadores considerados
             if ($request->maestros === "true") {
@@ -25468,10 +25473,14 @@ switch($type) {
                 });
             }
 
-            // Ordenar primero por puntos de mayor a menor
+
             $jugadoresOrdenados = $jugadoresColeccion
-                ->sortByDesc('puntos')
-                ->take(10);
+                ->sortByDesc('puntos');
+            
+            // Si el parámetro 'all' no es true, limitar a 10 jugadores
+            if ($request->all !== 'true') {
+                $jugadoresOrdenados = $jugadoresOrdenados->take(10);
+            }
 
                 // Convertir a array para poder manipular
                 $jugadoresArray = $jugadoresOrdenados->toArray();
@@ -25534,8 +25543,6 @@ switch($type) {
         if (isset($categoria->jugadores)) {
            // Obtener jugadores
             $jugadoresColeccion = collect($categoria->jugadores);
-
-            return $jugadoresColeccion;
 
             // Si es modo carrera, filtrar solo jugadores considerados
             if ($request->maestros === "true") {
