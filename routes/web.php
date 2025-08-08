@@ -32,6 +32,19 @@ Route::prefix('auth')->group(function (){
             Route::get('rankings/botones', [Auth\TorneoController::class, 'rankingsPartialView'])->name('botones');
                         Route::get('rankings/fama', [Auth\TorneoController::class, 'rankingsPartialViewFama'])->name('fama');
 
+
+// Rutas públicas para imágenes de comunidad (sin autenticación)
+Route::get('/public-imagen/{comunidad_id}/{tipo?}', [Auth\PerfilController::class, 'getImagenComunidad'])
+    ->where(['comunidad_id' => '[0-9]+', 'tipo' => '(imagen|reportes)'])
+    ->name('public.imagen.comunidad');
+
+Route::get('/api/comunidad/{comunidad_id}/imagen-url/{tipo?}', [Auth\PerfilController::class, 'getImagenUrl'])
+    ->where(['comunidad_id' => '[0-9]+', 'tipo' => '(imagen|reportes)'])
+    ->name('api.comunidad.imagen.url');
+
+
+Route::get('/torneo/reporte/partidos/excel/{torneo}/{categoria}', [Auth\ReporteController::class, 'reportePartidosExcel'])->name('torneo.reporte.partidos.excel');
+
 Route::post('/rankings/update-player-ranking-consideration', [Auth\RakingController::class, 'updateRankingConsideration'])
      ->name('update.ranking.consideration');
 

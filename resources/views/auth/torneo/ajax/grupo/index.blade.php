@@ -367,6 +367,14 @@
                                                     </div>
                                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                                         <div><h5>Partidos Programados</h5></div>
+                                                            <div>
+        <button type="button" class="btn btn-success btn-sm btn-reporte-partidos-excel" 
+                data-category="{{ $q->id }}" 
+                data-torneo="{{ $Model->id }}"
+                title="Generar reporte Excel de partidos por grupos">
+            <i class="fa fa-file-excel"></i> Reporte Partidos Excel
+        </button>
+    </div>
                                                     </div>
                                                     <div class="row mt-2">
                                                         <div class="col-md-12">
@@ -1812,6 +1820,16 @@ $btnFinishPlay.on("click", function () {
                 window.open(`/auth/{{strtolower($ViewName)}}/jugador/reporte/localizacion/{{ $Model->id }}/${$this.attr('data-category')}`, `_blank`);
             });
 
+// Agregar después del código del reporte de partidos pendientes
+const $btnReportePartidosExcel = $(".btn-reporte-partidos-excel");
+$btnReportePartidosExcel.on("click", function (){
+    const $this = $(this);
+    const categoryId = $this.attr('data-category');
+    const torneoId = $this.attr('data-torneo');
+    
+    // Abrir la URL para descargar el Excel
+    window.open(`/auth/torneo/reporte/partidos/excel/${torneoId}/${categoryId}`, '_blank');
+});
             const $btnReportePagos = $("button.btnReportePagos");
             $btnReportePagos.on("click", function (){
                 const $this = $(this);
@@ -1868,7 +1886,11 @@ $btnFinishPlay.on("click", function () {
         OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}"));
         OnFailure{{$ViewName}} = () => onFailureForm();
     });
+    // ...existing code...
 
+
+
+// ...existing code...
 
         $(document).ready(function() {
     const editIcons = document.querySelectorAll('.edit-player');
@@ -2076,6 +2098,9 @@ $btnFinishPlay.on("click", function () {
             }
         }
     });
+    
+    
+
 });
 
 </script>

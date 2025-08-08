@@ -19,8 +19,14 @@ use App\Models\Categoria;
 use App\Models\Ranking;
 use App\Models\RankingDetalle;
 use App\Models\TorneoJugador;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PartidosExport;
+use App\Exports\PartidosAtrasadosExport;
 
 
+
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 class ReporteController extends Controller
 {
     protected $viewName = 'reporte';
@@ -1300,6 +1306,158 @@ public function getJugadoresByTorneo(Request $request)
         $pdf = Pdf::loadView('auth'.'.'.$this->viewName.'.ajax.jugador.completo.pdf', $Data)->setPaper('a4', 'landscape');
         return $pdf->stream("ReporteCompletoJugador_{$Jugador->nombre_completo}.pdf");
     }
+
+
+
+public function reportePartidosExcel($torneoId, $categoriaId)
+{
+    $torneo = Torneo::findOrFail($torneoId);
+    $categoria = TorneoCategoria::findOrFail($categoriaId);
+    
+    // Calcular semanas transcurridas desde el inicio del torneo
+    $fechaInicio = \Carbon\Carbon::parse($torneo->fecha_inicio);
+    $fechaActual = \Carbon\Carbon::now();
+    $semanasTranscurridas = $fechaInicio->diffInWeeks($fechaActual);
+    
+    // Si el torneo apenas comenzó, considerar al menos 1 semana
+    if($semanasTranscurridas == 0 && $fechaActual->greaterThan($fechaInicio)) {
+        $semanasTranscurridas = 1;
+    }
+    
+    // Obtener todos los jugadores inscritos en esta categoría del torneo
+    $jugadoresInscritos = TorneoJugador::where('torneo_id', $torneoId)
+        ->where('torneo_categoria_id', $categoriaId)
+        ->with(['jugadorSimple', 'torneoCategoria.categoriaSimple'])
+        ->get();
+    
+    $datos = [];
+    
+    foreach ($jugadoresInscritos as $torneoJugador) {
+        $jugador = $torneoJugador->jugadorSimple;
+        
+        // Obtener el grupo del jugador
+        $torneoGrupo = TorneoGrupo::where('torneo_id', $torneoId)
+            ->where('torneo_categoria_id', $categoriaId)
+            ->where('jugador_simple_id', $jugador->id)
+            ->first();
+            
+        $nombreGrupo = $torneoGrupo ? $torneoGrupo->nombre_grupo : 'Sin grupo';
+        
+        // Contar partidos jugados (finalizados) por el jugador en esta categoría
+        $partidosJugados = Partido::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+            ->where('torneo_id', $torneoId)
+            ->where('torneo_categoria_id', $categoriaId)
+            ->where('estado_id', App::$ESTADO_FINALIZADO)
+            ->where(function ($q) use ($jugador) {
+                $q->where('jugador_local_uno_id', $jugador->id)
+                  ->orWhere('jugador_local_dos_id', $jugador->id)
+                  ->orWhere('jugador_rival_uno_id', $jugador->id)
+                  ->orWhere('jugador_rival_dos_id', $jugador->id);
+            })->count();
+        
+        // Contar partidos pendientes
+        $partidosPendientes = Partido::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+            ->where('torneo_id', $torneoId)
+            ->where('torneo_categoria_id', $categoriaId)
+            ->where('estado_id', App::$ESTADO_PENDIENTE)
+            ->where(function ($q) use ($jugador) {
+                $q->where('jugador_local_uno_id', $jugador->id)
+                  ->orWhere('jugador_local_dos_id', $jugador->id)
+                  ->orWhere('jugador_rival_uno_id', $jugador->id)
+                  ->orWhere('jugador_rival_dos_id', $jugador->id);
+            })->count();
+        
+        // Calcular diferencia y estado
+        $diferencia = $semanasTranscurridas - $partidosJugados;
+        $estado = 'Al día'; // Verde
+        $colorCodigo = 'Verde';
+        
+        if($diferencia == 1) {
+            $estado = 'Atrasado 1 partido';
+            $colorCodigo = 'Amarillo';
+        } elseif($diferencia > 1) {
+            $estado = 'Muy atrasado (' . $diferencia . ' partidos)';
+            $colorCodigo = 'Rojo';
+        }
+        
+        // Solo incluir jugadores que están atrasados (amarillo o rojo)
+        if($colorCodigo != 'Verde') {
+            $datos[] = [
+                'Jugador' => $jugador->nombre_completo,
+                'Categoria' => $torneoJugador->torneoCategoria->categoriaSimple->nombre ?? 'Sin categoría',
+                'Grupo' => $nombreGrupo,
+                'Semanas Transcurridas' => $semanasTranscurridas,
+                'Partidos Jugados' => $partidosJugados,
+                'Partidos Pendientes' => $partidosPendientes,
+                'Partidos Atrasados' => $diferencia,
+                'Estado' => $estado,
+                'Color' => $colorCodigo,
+                'Porcentaje Cumplimiento' => $semanasTranscurridas > 0 ? round(($partidosJugados / $semanasTranscurridas) * 100, 1) . '%' : '0%',
+                'Fecha Inicio Torneo' => $torneo->fecha_inicio_texto
+            ];
+        }
+    }
+    
+    // Ordenar por estado (rojo primero, luego amarillo) y luego por partidos atrasados
+    usort($datos, function($a, $b) {
+        if($a['Color'] == $b['Color']) {
+            return $b['Partidos Atrasados'] - $a['Partidos Atrasados'];
+        }
+        return ($a['Color'] == 'Rojo') ? -1 : 1;
+    });
+    
+    // Si no hay jugadores atrasados, crear un mensaje informativo
+    if (empty($datos)) {
+        $datos[] = [
+            'Jugador' => 'NINGÚN JUGADOR ATRASADO',
+            'Categoria' => $categoria->categoriaSimple->nombre,
+            'Grupo' => '-',
+            'Semanas Transcurridas' => $semanasTranscurridas,
+            'Partidos Jugados' => 'TODOS AL DÍA',
+            'Partidos Pendientes' => '-',
+            'Partidos Atrasados' => 0,
+            'Estado' => 'TODOS LOS JUGADORES ESTÁN AL DÍA CON SUS PARTIDOS',
+            'Color' => 'Verde',
+            'Porcentaje Cumplimiento' => '100%',
+            'Fecha Inicio Torneo' => $torneo->fecha_inicio_texto
+        ];
+    }
+    
+    return Excel::download(
+        new PartidosAtrasadosExport($datos, $torneo->nombre, $categoria->categoriaSimple->nombre), 
+        'jugadores_atrasados_' . Str::slug($torneo->nombre) . '_' . Str::slug($categoria->categoriaSimple->nombre) . '_' . date('Y-m-d') . '.xlsx'
+    );
+}
+
+private function obtenerNombreGanador($partido, $esMultiple)
+{
+    if (!$partido->jugador_ganador_uno_id) return '';
+    
+    if ($esMultiple) {
+        $ganadorUno = Jugador::find($partido->jugador_ganador_uno_id);
+        $ganadorDos = Jugador::find($partido->jugador_ganador_dos_id);
+        return $ganadorUno->nombre_completo . ' + ' . $ganadorDos->nombre_completo;
+    } else {
+        $ganador = Jugador::find($partido->jugador_ganador_uno_id);
+        return $ganador->nombre_completo_temporal;
+    }
+}
+
+private function calcularDiasVencido($partido)
+{
+    if (!$partido->fecha_final || $partido->estado_id == App::$ESTADO_FINALIZADO) {
+        return '';
+    }
+    
+    $fechaFinal = Carbon::parse($partido->fecha_final);
+    $hoy = Carbon::now();
+    
+    if ($hoy->gt($fechaFinal)) {
+        return $hoy->diffInDays($fechaFinal) . ' días';
+    }
+    
+    return '';
+}
 
 
 

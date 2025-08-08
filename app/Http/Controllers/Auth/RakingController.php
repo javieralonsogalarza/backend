@@ -243,6 +243,7 @@ public function listaJugadores(Request $request)
     {
         $categoriaId = $request->filter_categoria;
         $torneoCategoriasIds = $request->torneos; // Estos son IDs de TorneoCategoria, no de Torneo
+        $esMaestros = $request->maestros === 'true';
         
         if (!$categoriaId || !$torneoCategoriasIds) {
             return response()->json([]);
@@ -280,23 +281,34 @@ public function listaJugadores(Request $request)
         
         // Buscar jugadores que tienen registros en ranking_detalles para estos rankings
         $jugadores = Jugador::where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
-            ->whereIn('id', function($query) use ($rankingIds) {
+            ->whereIn('id', function($query) use ($rankingIds, $esMaestros) {
                 $query->select('jugador_simple_id')
                       ->from('ranking_detalles')
                       ->whereIn('ranking_id', $rankingIds)
                       ->whereNotNull('jugador_simple_id');
+                
+                // Si es torneo de maestros, solo considerar jugadores con considerado_ranking = 1
+                if ($esMaestros) {
+                    $query->where('considerado_ranking', 1);
+                }
             })
             ->orderBy('nombres', 'asc')
             ->orderBy('apellidos', 'asc')
             ->get(['id', 'nombres', 'apellidos']);
         
-        $jugadores = $jugadores->map(function($jugador) use ($rankingIds) {
+        $jugadores = $jugadores->map(function($jugador) use ($rankingIds, $esMaestros) {
             $jugador->nombre = $jugador->nombres . ' ' . $jugador->apellidos;
             
             // Contar en cuántos de estos rankings específicos participa
-            $jugador->torneos_count = RankingDetalle::whereIn('ranking_id', $rankingIds)
-                ->where('jugador_simple_id', $jugador->id)
-                ->distinct('ranking_id')
+            $countQuery = RankingDetalle::whereIn('ranking_id', $rankingIds)
+                ->where('jugador_simple_id', $jugador->id);
+            
+            // Si es torneo de maestros, solo contar los que tienen considerado_ranking = 1
+            if ($esMaestros) {
+                $countQuery->where('considerado_ranking', 1);
+            }
+            
+            $jugador->torneos_count = $countQuery->distinct('ranking_id')
                 ->count('ranking_id');
                 
             return $jugador;

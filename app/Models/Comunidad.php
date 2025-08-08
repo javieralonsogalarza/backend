@@ -11,7 +11,7 @@ class Comunidad extends Model
 
     protected $fillable = [
         'imagen_path', 'nombre', 'slug', 'principal', 'color_navegacion', 'color_primario', 'color_secundario', 'color_alternativo', 'titulo_fuente',
-        'parrafo_fuente', 'telefono', 'email', 'facebook', 'twitter', 'instagram', 'user_create_id', 'user_update_id'];
+        'parrafo_fuente', 'telefono', 'email', 'facebook', 'twitter', 'instagram', 'user_create_id', 'user_update_id','imagen_reportes_path'];
 
     protected $appends = ['url'];
 

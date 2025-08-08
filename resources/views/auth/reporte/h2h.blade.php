@@ -271,9 +271,15 @@
             $('#btnBuscar').on('click', function() {
                 var jugador1 = $('#jugador1').val();
                 var jugador2 = $('#jugador2').val();
-                var categoriaTorneoId = $('#torneo').val()? $('#categoria').val() : null ;
+                var categoriaTorneoId = $('#torneo').val()? $('#categoria').val() ? $('#categoria').val() : null  : null ;
                 var categoriaId = $('#categoria').val() ? $('#categoria').val() : null ;
                 var torneoId = $('#torneo').val() ? $('#torneo').val() : null ;
+
+                console.log('Jugador 1:', jugador1);
+                console.log('Jugador 2:', jugador2);
+                console.log('Categoría Torneo ID:', categoriaTorneoId);
+                console.log('Categoría ID:', categoriaId);
+                console.log('Torneo ID:', torneoId);
 
                 if (jugador1 && jugador2) {
                     // Construir la URL con los parámetros

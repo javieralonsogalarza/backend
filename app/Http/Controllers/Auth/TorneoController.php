@@ -826,13 +826,25 @@ class TorneoController extends Controller
 
                     $BuyGenerar = 0;
 
-                    if(!in_array(count($Jugadores), [4, 8, 16, 32]))
-                    {
-                        if(count($Jugadores) < 16) $BuyGenerar = (16 - count($Jugadores));
-                        else if(count($Jugadores) < 32) $BuyGenerar = (32 - count($Jugadores));
+                if(!in_array(count($Jugadores), [4, 8, 16, 32]))
+                {
+                    if(count($Jugadores) == 6) {
+                        // Para 6 jugadores, generar 2 BYEs para formar 4 bloques equilibrados
+                        $BuyGenerar = 2; // 6 + 2 = 8 participantes total
+                    } else if(count($Jugadores) < 16) {
+                        $BuyGenerar = (16 - count($Jugadores));
+                    } else if(count($Jugadores) < 32) {
+                        $BuyGenerar = (32 - count($Jugadores));
                     }
+                }
 
-                    $Bloques = count($Jugadores) == 4 ? 2 : 4;
+                                    if(count($Jugadores) == 4) {
+                    $Bloques = 2;
+                } else if(count($Jugadores) == 6) {
+                    $Bloques = 4; // Mantener 4 bloques para 6 jugadores
+                } else {
+                    $Bloques = 4;
+                }
                     $CantidadPorBloques = (((count($Jugadores)+$BuyGenerar)/2)/$Bloques);
                     $Partidos = [];
 
@@ -1534,7 +1546,7 @@ return $TorneoFaseFinal->JugadoresClasificados;
                         $evaluar = App::multiPropertySort(collect($JugadoresClasificadosMerge), [['column' => 'puntos', 'order' => 'desc'], ['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']]);
 
 
-                    if (count($evaluar) < 32) {
+                    if (count($evaluar) <= 32) {
 
                         if (count($JugadoresClasificadosMerge) > 32) {
                             $JugadoresClasificadosMerge = App::multiPropertySort(collect($JugadoresClasificadosMerge), [['column' => 'puntos', 'order' => 'desc'], ['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->take(32);
@@ -3556,69 +3568,58 @@ return response()->json(['data' => $mergedPlayers]);
         return view('auth'.'.'.$this->viewName.'.ajax.final.partialView', ['Model' => $entity, 'Position' => $position, 'ViewName' => ucfirst($this->viewName)]);
     }
 
-    
     public function rankingsByCategoryId($filter_categoria)
-   {
+{
     $Model = Comunidad::where('principal', true)->first();
 
     $torneos = Torneo::join('torneo_categorias', 'torneos.id', '=', 'torneo_categorias.torneo_id')
-    ->where('torneo_categorias.categoria_simple_id', $filter_categoria)
-   ->where('torneos.fecha_inicio', '<=', Carbon::now()->format('Y-m-d'))
-    ->whereNull('torneos.deleted_at')
-    ->whereNull('torneo_categorias.deleted_at')
-    ->whereIn('torneo_categorias.estado_id', [1, 2])
-    ->where('torneos.rankeado', true)
-    ->select(
-        'torneo_categorias.id', 
-        'torneos.nombre', 
-        'torneos.fecha_inicio', 
-        'torneos.fecha_final',
-        'torneos.carrera'
-    )
-    ->orderBy('torneos.fecha_inicio', 'desc')
-    ->limit(4)
-    ->get();
+        ->where('torneo_categorias.categoria_simple_id', $filter_categoria)
+        ->where('torneos.fecha_inicio', '<=', Carbon::now()->format('Y-m-d'))
+        ->whereNull('torneos.deleted_at')
+        ->whereNull('torneo_categorias.deleted_at')
+        ->whereIn('torneo_categorias.estado_id', [1, 2])
+        ->where('torneos.rankeado', true)
+        ->select(
+            'torneo_categorias.id', 
+            'torneos.nombre', 
+            'torneos.fecha_inicio', 
+            'torneos.fecha_final',
+            'torneos.carrera'
+        )
+        ->orderBy('torneos.fecha_inicio', 'desc')
+        ->limit(4)
+        ->get();
 
-    $request = new \stdClass(); // Initialize $request as an object
+    $request = new \stdClass();
     $request->torneos = $torneos;
     $request->filter_categoria = $filter_categoria;
     $request->carrera = true;
     $request->filter_anio = null;
 
-    
     if($Model != null)
     {
         $Rankings = Ranking::where('comunidad_id', $Model->id)
-        ->where(function ($q) use ($request){
-            // Filter by torneo_categoria_id if provided
-            if(property_exists($request, 'torneos')){
-                $q->whereIn('torneo_categoria_id', $request->torneos->pluck('id')->toArray());
-            }
-        })
-        ->get();
-        
+            ->where(function ($q) use ($request){
+                if(property_exists($request, 'torneos')){
+                    $q->whereIn('torneo_categoria_id', $request->torneos->pluck('id')->toArray());
+                }
+            })
+            ->get();
 
-      
-        
-
-      
         $Torneos = Torneo::whereIn('id', array_values(array_unique(array_filter($Rankings->pluck('torneo_id')->toArray()))))
-        ->where(function ($q) use ($request){
-            if($request->filter_anio){ $q->where(DB::raw('YEAR(fecha_inicio)'), '=', $request->filter_anio); }
-        })->where('rankeado', true)
-        ->orderBy('fecha_final', 'desc')->get();
-
-  
+            ->where(function ($q) use ($request){
+                if($request->filter_anio){ $q->where(DB::raw('YEAR(fecha_inicio)'), '=', $request->filter_anio); }
+            })->where('rankeado', true)
+            ->orderBy('fecha_final', 'desc')->get();
 
         $Anios = $request->filter_anio == null ? array_values(array_unique($Torneos->pluck('fecha_inicio')->map(function ($date){ return Carbon::parse($date)->format('Y'); })->toArray())) : [];
 
         $TorneoCategorias = TorneoCategoria::whereIn('id', array_values(array_unique(array_filter($Rankings->pluck('torneo_categoria_id')->toArray()))))->orderBy('id', 'desc')->get();
         $Categorias = Categoria::whereIn('id', array_values(array_unique(array_filter($TorneoCategorias->pluck('categoria_simple_id')->toArray()))))
-        ->where('visible', true)->where('orden', '>', '0')
-        ->where(function ($q) use ($request){
-            if($request->filter_categoria){ $q->where('id', $request->filter_categoria); }
-        })->orderBy('id', 'desc')->get();
-
+            ->where('visible', true)->where('orden', '>', '0')
+            ->where(function ($q) use ($request){
+                if($request->filter_categoria){ $q->where('id', $request->filter_categoria); }
+            })->orderBy('id', 'desc')->get();
 
         $RankingsResult = [];
         foreach ($Categorias as $q)
@@ -3636,16 +3637,22 @@ return response()->json(['data' => $mergedPlayers]);
                     {
                         foreach ($q3->detalles as $q4)
                         {
-            
-            
-            // Filtrar jugadores con menos de 1000 puntos
-            
+                            // Validar que jugadorSimple existe
+                            if (!$q4->jugadorSimple) {
+                                continue; // Saltar este registro si el jugador simple no existe
+                            }
+
+                            // Para duplas, validar que jugadorDupla existe
+                            if ($q->dupla && !$q4->jugadorDupla) {
+                                continue; // Saltar este registro si es dupla pero jugadorDupla no existe
+                            }
+
                             $Id = $q->dupla ? ($q4->jugadorSimple->id . '-' . $q4->jugadorDupla->id) : $q4->jugadorSimple->id;
                             if (!in_array($Id, $JugadoresIds))
                             {
                                 $ObjectJugador = [];
                                 $Puntos = 0;
-                    $ObjectJugador['considerado_ranking'] = $q4->considerado_ranking;
+                                $ObjectJugador['considerado_ranking'] = $q4->considerado_ranking;
                                 $ObjectJugador['id'] = $Id;
                                 $ObjectJugador['nombre'] = $q->dupla ? ($q4->jugadorSimple->nombre_completo . ' + ' . $q4->jugadorDupla->nombre_completo) : $q4->jugadorSimple->nombre_completo;
 
@@ -3694,7 +3701,6 @@ return response()->json(['data' => $mergedPlayers]);
 
                                 $JugadoresIds[] = $Id;
                             }
-            
                         }
                     }
                 }
@@ -3714,7 +3720,13 @@ return response()->json(['data' => $mergedPlayers]);
                 $ResultYear['categoria_id'] = $q->categoria_id;
                 $ResultYear['multiple'] = $q->multiple;
 
-               
+                // Validar que existe la propiedad jugadores
+                if (!isset($q->jugadores)) {
+                    $ResultYear['jugadores'] = [];
+                    $RankingsResultYear[] = (object)$ResultYear;
+                    continue;
+                }
+
                 foreach ($q->jugadores as $q2)
                 {
                     $ResultYearJugador = []; $Puntos = 0;
@@ -3746,9 +3758,8 @@ return response()->json(['data' => $mergedPlayers]);
                 $RankingsResultYear[] = (object)$ResultYear;
             }
         }
-        
-   
-          // Calcular posiciones en el ranking
+
+        // Calcular posiciones en el ranking
         $result = [];
         
         foreach ($RankingsResultYear as $q2) {
@@ -3756,11 +3767,14 @@ return response()->json(['data' => $mergedPlayers]);
             $countRepeat = 1;
             $pointBefore = 0;
             $next = false;
-    
+
+            // Validar que existe la propiedad jugadores
+            if (!isset($q2->jugadores)) {
+                continue;
+            }
+
             // Ordenar jugadores por puntos descendentes
             $jugadoresOrdenados = App::multiPropertySort(collect($q2->jugadores), [['column' => 'puntos', 'order' => 'desc']]);
-
-            //qquitalre la referencia
 
             foreach ($jugadoresOrdenados as $key => $q3) {
                 if ($q3['puntos'] > 0) {
@@ -3775,19 +3789,15 @@ return response()->json(['data' => $mergedPlayers]);
                         'id' => $q3['id'],
                         'considerado_ranking' => isset($q3['considerado_ranking']) ? $q3['considerado_ranking'] : 1,
                     ];
-    
+
                     // Calcular siguiente posición
                     if (count(collect($jugadoresOrdenados)->where('puntos', '>', '0')) > ($key + 1) ) {
                         if ($q3['puntos'] != $jugadoresOrdenados[$key + 1]['puntos']   ) {
                             $countRepeat += 1;
                             $next = false;
                             \Log::debug(message: 'Calculating next position: current=' . $countRepeat . ', jugador=' . $q3['nombre'] . ', puntos=' . $q3['puntos'] . ', next puntos=' . $jugadoresOrdenados[$key + 1]['puntos'] . $jugadoresOrdenados[$key + 1]['nombre']);
-
-
-                        }                        
-                        else {
+                        } else {
                             \Log::debug('NEXT: current=' . $countRepeat . ', jugador=' . $q3['nombre'] . ', puntos=' . $q3['puntos'] . ', next puntos=' . $jugadoresOrdenados[$key + 1]['puntos'] . $jugadoresOrdenados[$key + 1]['nombre'] );
-
                             $next = true;
                         }
                     }
@@ -3795,107 +3805,92 @@ return response()->json(['data' => $mergedPlayers]);
             }
         }
 
+        // Filtrar los jugadores con considerado_ranking == 1
+        $result = collect($result)->where('considerado_ranking', 1)->values()->all();
 
-        
+        $result = collect($result);
 
-
-          
-
-
-           
-
-           //filtrar los jugadores con considerado_ranking == 1
-              $result = collect($result)->where('considerado_ranking', 1)->values()->all();
-   
-      
-//filtrar los jugadores con considerado_ranking == 1 solo para calcular
-$result = collect($result);
-
-// Si es modo carrera, recalcular el ranking con posiciones correctas
-if (true) {
-    // Primero ordenar por puntos descendentes
-    $jugadoresOrdenados = App::multiPropertySort($result, [['column' => 'puntos', 'order' => 'desc']]);
-    
-    // Variables para cálculo de posiciones
-    $countSingle = 0;
-    $countRepeat = 1;
-    $pointBefore = null;
-    $next = false;
-    
-    // Nuevo array con posiciones recalculadas
-    $resultRecalculado = [];
-    $posicionesConsideradas = [];
-    
-    // Primero, procesar solo los jugadores considerados para el ranking
-    foreach ($jugadoresOrdenados as $key => $jugador) {
-        // Solo calcular posiciones para jugadores considerados
-        if ($jugador['considerado_ranking'] == 1 && $jugador['puntos'] > 0) {
-            $countSingle += 1;
+        // Si es modo carrera, recalcular el ranking con posiciones correctas
+        if (true) {
+            // Primero ordenar por puntos descendentes
+            $jugadoresOrdenados = App::multiPropertySort($result, [['column' => 'puntos', 'order' => 'desc']]);
             
-            // Si cambian los puntos o es el primer jugador
-            if ($pointBefore === null || $pointBefore != $jugador['puntos']) {
-                $countRepeat = $countSingle;
-                $next = false;
+            // Variables para cálculo de posiciones
+            $countSingle = 0;
+            $countRepeat = 1;
+            $pointBefore = null;
+            $next = false;
+            
+            // Nuevo array con posiciones recalculadas
+            $resultRecalculado = [];
+            $posicionesConsideradas = [];
+            
+            // Primero, procesar solo los jugadores considerados para el ranking
+            foreach ($jugadoresOrdenados as $key => $jugador) {
+                // Solo calcular posiciones para jugadores considerados
+                if ($jugador['considerado_ranking'] == 1 && $jugador['puntos'] > 0) {
+                    $countSingle += 1;
+                    
+                    // Si cambian los puntos o es el primer jugador
+                    if ($pointBefore === null || $pointBefore != $jugador['puntos']) {
+                        $countRepeat = $countSingle;
+                        $next = false;
+                    }
+                    
+                    // Guardar la posición para este jugador
+                    $posicionesConsideradas[$jugador['id']] = $next ? $countRepeat : $countSingle;
+                    
+                    // Recordar estos puntos para la siguiente comparación
+                    $pointBefore = $jugador['puntos'];
+                    
+                    // Verificar si el siguiente jugador tiene los mismos puntos (para empates)
+                    if ($key + 1 < count($jugadoresOrdenados)) {
+                        $siguienteJugador = $jugadoresOrdenados[$key + 1];
+                        if ($siguienteJugador['considerado_ranking'] == 1 && $jugador['puntos'] == $siguienteJugador['puntos']) {
+                            $next = true;
+                        } else {
+                            $next = false;
+                        }
+                    }
+                }
             }
             
-            // Guardar la posición para este jugador
-            $posicionesConsideradas[$jugador['id']] = $next ? $countRepeat : $countSingle;
+            // Ahora procesar todos los jugadores, asignando posiciones calculadas
+            foreach ($jugadoresOrdenados as $key => $jugador) {
+                $resultRecalculado[] = [
+                    'countRepeat' => $jugador['considerado_ranking'] == 1 ? ($posicionesConsideradas[$jugador['id']] ?? null) : null,
+                    'nombre' => $jugador['nombre'],
+                    'puntos' => $jugador['puntos'],
+                    'id' => $jugador['id'],
+                    'considerado_ranking' => $jugador['considerado_ranking'],
+                ];
+            }
             
-            // Recordar estos puntos para la siguiente comparación
-            $pointBefore = $jugador['puntos'];
-            
-            // Verificar si el siguiente jugador tiene los mismos puntos (para empates)
-            if ($key + 1 < count($jugadoresOrdenados)) {
-                $siguienteJugador = $jugadoresOrdenados[$key + 1];
-                if ($siguienteJugador['considerado_ranking'] == 1 && $jugador['puntos'] == $siguienteJugador['puntos']) {
-                    $next = true;
-                } else {
-                    $next = false;
+            $result = collect($resultRecalculado);
+        }
+
+        // Actualizar el ranking temporal en los jugadores
+        foreach ($result as $q) {
+            // Solo actualizar el ranking de jugadores considerados
+            if ($q['considerado_ranking'] == 1) {
+                $jugador = Jugador::find($q['id']);
+                if ($jugador) {
+                    $jugador->setNombreCompletoConDatosAdicionales([$q['countRepeat']]);
+                    $jugador->ranking_temporal = $q['countRepeat'];
+                    $jugador->save();
                 }
             }
         }
-    }
-    
-    // Ahora procesar todos los jugadores, asignando posiciones calculadas
-    foreach ($jugadoresOrdenados as $key => $jugador) {
-        $resultRecalculado[] = [
-            'countRepeat' => $jugador['considerado_ranking'] == 1 ? ($posicionesConsideradas[$jugador['id']] ?? null) : null,
-            'nombre' => $jugador['nombre'],
-            'puntos' => $jugador['puntos'],
-            'id' => $jugador['id'],
-            'considerado_ranking' => $jugador['considerado_ranking'],
-        ];
-    }
-    
-    $result = collect($resultRecalculado);
-}
 
-// Actualizar el ranking temporal en los jugadores
-foreach ($result as $q) {
-    // Solo actualizar el ranking de jugadores considerados
-    if ($q['considerado_ranking'] == 1) {
-        $jugador = Jugador::find($q['id']);
-        if ($jugador) {
-            $jugador->setNombreCompletoConDatosAdicionales([$q['countRepeat']]);
-            $jugador->ranking_temporal = $q['countRepeat'];
-            $jugador->save();
-        }
+        return [
+            'Rankings' => collect($result),
+        ];
+
+    } else {
+        abort(404);
     }
 }
-           
-          
-           //devulve solo los jugadores con && $q3['considerado_ranking'] == 1
-            
-   
-           return [
-               'Rankings' => collect( $result),
-   
-           ];
-   
-       } else {
-           abort(404);
-       }
-   }
+    
 
 
 
@@ -6612,7 +6607,7 @@ $TorneoFaseFinal = (object)[
                                                     'fecha_inicio' => $q2['FechaInicio'],
                                                     'fecha_final' => $q2['FechaFinal'],
                                                     'estado_id' => $esTemporal ? App::$ESTADO_FINALIZADO : App::$ESTADO_PENDIENTE,
-                                                    'resultado' => $esTemporal ? '-' : '0-0',
+                                                    'resultado' => $esTemporal ? '-' : null, // Asignar '-' si es temporal, de lo contrario null
                                                     'jugador_local_set' => $esTemporal ? 0 : 0, // Asignar 0 por defecto
                                                     'jugador_local_juego' => $esTemporal ? 0 : 0, // Asignar 0 por defecto
                                                     'jugador_rival_set' => $esTemporal ? 0 : 0, // Asignar 0 por defecto
@@ -7904,6 +7899,7 @@ $TorneoFaseFinal = (object)[
             }
 
             $model = (object)[
+                'comunidad_id' => $Partido->comunidad_id,
                 'titulo' => 'La Confraternidad del Tenis',
                 'torneo' => $Partido->torneoCategoria->torneo->nombre,
                 'formato' => $Partido->torneoCategoria->torneo->formato != null ? $Partido->torneoCategoria->torneo->formato->nombre : null,
@@ -7918,7 +7914,9 @@ $TorneoFaseFinal = (object)[
                 'resultado_rival' => $ResultadoPerdedor,
                 'partido' => $Partido->id,
                 'torneo_categoria_id' => $Partido->torneoCategoria->id,
-                'categoria_id' => $Partido->torneoCategoria->categoriaSimple->id
+                'categoria_id' => $Partido->torneoCategoria->categoriaSimple->id,
+                'imagen_comunidad' => url('/public-imagen/' . $Partido->comunidad_id . '/reportes')
+
             ];
 
             $content = json_encode($model);
@@ -8042,7 +8040,8 @@ public function partidoGenerateJson(Request $request)
                 'partido' => $Partido->id,
                 'torneo_categoria_id' => $Partido->torneoCategoria->id,
                 'categoria_id' => $Partido->torneoCategoria->categoriaSimple->id,
-                'imagen_path' => $imagePath // Agregar la ruta de la imagen
+                'imagen_path' => $imagePath, // Agregar la ruta de la imagen,
+                'imagen_comunidad' => url('/auth/public-imagen/' . $Partido->comunidad_id . '/reportes')
             ];
 
             $content = json_encode($model);
@@ -24381,6 +24380,8 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
     )
     ->where('torneo_categorias.multiple',0)
     ->whereNotNull('partidos.resultado')
+    ->whereNotNull('partidos.jugador_ganador_uno_id')
+    ->where('partidos.resultado', '<>', '0-0')
     ->where(function ($query) {
        $query->whereRaw("LOWER(partidos.resultado) NOT LIKE '%wo%'");
     })   // ->where('torneo_categorias.id',$torneo_categoria_id)
@@ -24419,10 +24420,12 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
 
         
     )
+    ->where('partidos.resultado', '<>', '0-0')
     ->whereNotNull('partidos.resultado')
     ->where(function ($query) {
         $query->whereRaw("LOWER(partidos.resultado) NOT LIKE '%wo%'");
     })
+    ->whereNotNull('partidos.jugador_ganador_uno_id')
     ->where('partidos.multiple',0)
     ->where('resultado', '<>', '-')
     ->whereNull('torneos.deleted_at')
@@ -24470,10 +24473,15 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
         
     )
     ->whereNotNull('partidos.resultado')
+    ->where('partidos.resultado', '<>', '0-0')
     ->where('resultado', '<>', '-')
     ->where('partidos.multiple',0)
     ->where('torneo_categorias.multiple',0)
     ->whereNull('torneos.deleted_at')
+    ->whereNotNull('partidos.jugador_ganador_uno_id')
+    ->where(function ($query) {
+        $query->whereRaw("LOWER(partidos.resultado) NOT LIKE '%wo%'");
+    })
    // ->where('torneo_categorias.id',$torneo_categoria_id)
     ->orderByRaw("IFNULL(partidos.resultado_timestamp, partidos.fecha_final) DESC")
     ->take(3)
@@ -25628,8 +25636,6 @@ switch($type) {
 }
 
 
-
-
 public function resultadoRanking(Request $request)
 {
     $entity = null;
@@ -25744,21 +25750,29 @@ public function resultadoRanking(Request $request)
                 $puntosFinales = $puntosAcumulados[$jugador->jugador_simple_id] ?? 0;
                 \Log::info("Actualizando jugador {$jugador->jugador_simple_id} con puntos finales: $puntosFinales");
 
-                  $existeRanking = RankingDetalle::where('ranking_id', $Ranking->id)
-                 ->where('jugador_simple_id', $jugador->jugador_simple_id)
-                 ->where('puntos', '>', 0)
-                ->exists();
+                // Verificar si ya existe el registro con puntos
+                $existeRanking = RankingDetalle::where('ranking_id', $Ranking->id)
+                    ->where('jugador_simple_id', $jugador->jugador_simple_id)
+                    ->where('puntos', '>', 0)
+                    ->exists();
+
+                // Preparar datos para actualizar
+                $updateData = [
+                    'puntos' => $puntosFinales,
+                    'updated_at' => Carbon::now()
+                ];
+
+                // Solo establecer considerado_ranking si es un registro nuevo
+                if (!$existeRanking) {
+                    $updateData['considerado_ranking'] = true;
+                }
+
                 RankingDetalle::updateOrCreate(
                     [
                         'ranking_id' => $Ranking->id,
                         'jugador_simple_id' => $jugador->jugador_simple_id,
                     ],
-                    [
-                        'puntos' => $puntosFinales,
-                        'considerado_ranking' => $existeRanking ? null : true, // Si es nuevo, establecer como true
-                        'updated_at' => Carbon::now()
-
-                    ]
+                    $updateData
                 );
             }
 
@@ -25776,6 +25790,7 @@ public function resultadoRanking(Request $request)
 
     return response()->json($Result);
 }
+
 
 private function determinarMejorPuesto($jugadorId, $partidos) {
     \Log::info("V1 ID: $jugadorId");

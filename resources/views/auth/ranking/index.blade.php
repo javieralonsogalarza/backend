@@ -218,14 +218,17 @@ $tournamentTypeRadio.on('change', function() {
                     placeholder: "Torneos con carrera",
                     multiple: true,
                     disabled: true
-                });
-
-                // Seleccionar todos los torneos con carrera
+                });                // Seleccionar todos los torneos con carrera
                 const torneoIds = carreraTorneos.map(torneo => torneo.id);
                 $('#filter_tournaments').val(torneoIds).trigger('change');
                 
                 // Validar botones de ranking
                 validateRankingButtons();
+                
+                // Recargar jugadores cuando cambie a carrera de maestros
+                if ($filter_category.val()) {
+                    cargarJugadores();
+                }
             },
             error: function() {
                 console.error('Error al cargar torneos con carrera');
@@ -266,12 +269,12 @@ $tournamentTypeRadio.on('change', function() {
         $filter_tournaments.on('change', function() {
             validateRankingButtons();
             cargarJugadores();
-        });
-
-        // Función para cargar jugadores
+        });        // Función para cargar jugadores
         function cargarJugadores() {
             const categoriaId = $filter_category.val();
             const torneos = $filter_tournaments.val();
+            const tipoTorneo = $tournamentTypeRadio.filter(':checked').val();
+            const esMaestros = tipoTorneo === 'carrera_maestros';
             
             if (categoriaId && torneos && torneos.length > 0) {
                 // Habilitar select de jugadores y mostrar loading
@@ -285,7 +288,8 @@ $tournamentTypeRadio.on('change', function() {
                     method: 'GET',
                     data: {
                         filter_categoria: categoriaId,
-                        torneos: torneos
+                        torneos: torneos,
+                        maestros: esMaestros
                     },
                     success: function(data) {
                         // Limpiar y popular el select

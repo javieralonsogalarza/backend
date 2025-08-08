@@ -12,7 +12,7 @@
             <input type="hidden" id="id" name="id" value="{{ $Model != null ? $Model->id : 0 }}">
             <div class="modal-body">
                 <div class="form-group row row-center-vertical">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="imagen">Logo<span class="text-danger text-small">(185px × 50px)</span></label>
                         <div class="image_preview_content">
                             <div class="image_preview">
@@ -22,7 +22,18 @@
                         <input type="file" class="preview form-control" name="imagen" id="imagen" accept="image/jpeg, image/png">
                         <span data-valmsg-for="imagen_path"></span>
                     </div>
-                    <div class="col-sm-6">
+                             <div class="col-md-4">
+                  <label for="imagen_reportes">Logo para Reportes<span class="text-danger text-small">(185px × 50px)</span></label>
+                        <div class="image_preview_content">
+                            <div class="image_preview">
+                                <img src="{{ ($Model != null && $Model->imagen_reportes_path != null && $Model->imagen_reportes_path != "") ? ('/img/'.$Model->imagen_reportes_path) : "/upload/image/default.png" }}" alt="Logo para Reportes">
+                            </div>
+                        </div>
+                        <input type="file" class="preview form-control" name="imagen_reportes" id="imagen_reportes" accept="image/jpeg, image/png">
+                        <span data-valmsg-for="imagen_reportes_path"></span>
+
+                    </div>
+                    <div class="col-sm-4">
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <label for="nombre">Nombre: <span class="text-danger">(*)</span></label>
@@ -117,6 +128,9 @@
     $(function (){
         const $input_image = $('input#imagen');
         $input_image.change(function(){readImage(this, $(".image_preview > img"));});
+                const $input_image_reportes = $('input#imagen_reportes');
+        $input_image_reportes.change(function(){readImage(this, $(".image_preview > img").eq(1));});
+        
         setTimeout(function (){ $("form").find("input[type=text]").first().focus().select(); }, 500);
 
         const $slug = $("#slug");
