@@ -677,11 +677,8 @@ public function jugadorPartialView(Request $request)
         $pdf = Pdf::loadView('auth' . '.' . $this->viewName . '.ajax.torneo.partialView', $Data)->setPaper('a4', 'landscape');
         return $pdf->stream("ReporteTorneo.pdf");
     }
-
     return null;
-}
-
-
+    }
     public function torneoFaseFinalExportarPdf($torneo, $categoria)
     {
         $TorneoCategoria = TorneoCategoria::where('id', $categoria)->where('torneo_id', $torneo)
@@ -899,142 +896,229 @@ public function jugadorPartialView(Request $request)
         return null;
     }
 
-    public function torneoPartialView(Request $request)
+    public function jugadoresClasificadosExportarPdf($torneo, $categoria)
     {
-        $TorneoCategoria = TorneoCategoria::where('torneo_id', $request->torneo)
-        ->whereHas('torneo', function ($q){$q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);})
-        ->where('categoria_simple_id', $request->categoria)->first();
+        $TorneoCategoria = TorneoCategoria::where('id', $categoria)
+            ->where('torneo_id', $torneo)
+            ->whereHas('torneo', function ($q) {
+                $q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);
+            })->first();
 
-        if($TorneoCategoria != null)
-        {
-            $Partidos = Partido::where('comunidad_id',Auth::guard('web')->user()->comunidad_id)
-            ->where('torneo_id', $request->torneo)->where('torneo_categoria_id', $TorneoCategoria->id)
-            ->get();
-            
-            
+        if ($TorneoCategoria == null) return null;
 
-        $Grupos = TorneoGrupo::where('torneo_categoria_id', $TorneoCategoria->id)
-            ->select(['nombre_grupo', 'grupo_id'])
-            ->groupBy(['nombre_grupo', 'grupo_id'])
-            ->orderBy(DB::raw('LENGTH(nombre_grupo)'))
-            ->orderBy('nombre_grupo')
+        $TorneoGrupos = $TorneoCategoria->torneo->torneoGrupos()
+            ->where('torneo_categoria_id', $TorneoCategoria->id)
+            ->select('grupo_id')
+            ->groupBy('grupo_id')
             ->get();
+
+        $Clasifican = $TorneoCategoria->clasificados;
 
         $TablePositionsPorGrupo = [];
 
-        foreach ($Grupos as $grupo) {
-            $grupo_id = $grupo->grupo_id;
-
-            // JUGADORES DEL GRUPO
-            $Jugadores = TorneoGrupo::where('torneo_categoria_id', $TorneoCategoria->id)
-                ->where('grupo_id', $grupo_id)
+        foreach ($TorneoGrupos as $key => $grupoRow) {
+            // Jugadores del grupo
+            $Jugadores = $TorneoCategoria->torneo->torneoGrupos()
+                ->where('torneo_categoria_id', $TorneoCategoria->id)
+                ->where('grupo_id', $grupoRow->grupo_id)
                 ->get()
                 ->map(function ($q) use ($TorneoCategoria) {
                     return [
                         'jugador_simple_id' => $q->jugadorSimple->id,
                         'jugador_dupla_id' => $TorneoCategoria->multiple ? $q->jugadorDupla->id : null,
-                        'nombres' => $TorneoCategoria->multiple ? ($q->jugadorSimple->nombre_completo . " + " . $q->jugadorDupla->nombre_completo) : $q->jugadorSimple->nombre_completo,
+                        'nombres' => $TorneoCategoria->multiple
+                            ? ($q->jugadorSimple->nombre_completo . ' + ' . $q->jugadorDupla->nombre_completo)
+                            : $q->jugadorSimple->nombre_completo,
+                        'grupo_nombre' => $q->grupo->nombre,
                     ];
                 });
 
-            // JUGADORES POSICIONES
             $TablePositions = [];
 
-            foreach ($Jugadores as $q2) {
-                $PartidosComoLocal = collect($TorneoCategoria->torneo->partidos()
-                    ->where('torneo_categoria_id', $TorneoCategoria->id)
-                    ->where('grupo_id', $grupo_id)
-                    ->where('jugador_local_uno_id', $q2['jugador_simple_id'])
-                    ->when($TorneoCategoria->multiple, function ($query) use ($q2) {
-                        $query->where('jugador_local_dos_id', $q2['jugador_dupla_id']);
-                    })
-                    ->whereNull('fase')
-                    ->get());
+            foreach ($Jugadores as $key2 => $j) {
+                if ($TorneoCategoria->multiple) {
+                    $PartidosComoLocal = collect($TorneoCategoria->torneo->partidos()
+                        ->where('torneo_categoria_id', $TorneoCategoria->id)
+                        ->where('grupo_id', $grupoRow->grupo_id)
+                        ->where('jugador_local_uno_id', $j['jugador_simple_id'])
+                        ->where('jugador_local_dos_id', $j['jugador_dupla_id'])
+                        ->whereNull('fase')->get());
 
-                $PartidosComoRival = collect($TorneoCategoria->torneo->partidos()
-                    ->where('torneo_categoria_id', $TorneoCategoria->id)
-                    ->where('grupo_id', $grupo_id)
-                    ->where('jugador_rival_uno_id', $q2['jugador_simple_id'])
-                    ->when($TorneoCategoria->multiple, function ($query) use ($q2) {
-                        $query->where('jugador_rival_dos_id', $q2['jugador_dupla_id']);
-                    })
-                    ->whereNull('fase')
-                    ->get());
+                    $PartidosComoRival = collect($TorneoCategoria->torneo->partidos()
+                        ->where('torneo_categoria_id', $TorneoCategoria->id)
+                        ->where('grupo_id', $grupoRow->grupo_id)
+                        ->where('jugador_rival_uno_id', $j['jugador_simple_id'])
+                        ->where('jugador_rival_dos_id', $j['jugador_dupla_id'])
+                        ->whereNull('fase')->get());
 
-                $PartidosJugados = 0;
-                $SetsGanados = 0;
-                $SetsPerdidos = 0;
-                $GamesGanados = 0;
-                $GamesPerdidos = 0;
-                $Puntos = 0;
+                    $SetsGanados = 0; $SetsPerdidos = 0; $GamesGanados = 0; $GamesPerdidos = 0; $Puntos = 0;
 
-                // Procesar partidos como local y como rival
-                foreach (array_merge($PartidosComoLocal->toArray(), $PartidosComoRival->toArray()) as $p) {
-                    if ($p['estado_id'] == App::$ESTADO_FINALIZADO) $PartidosJugados += 1;
-
-                    if ($p['jugador_ganador_uno_id'] == $q2['jugador_simple_id']) {
-                        $SetsGanados += $p['jugador_local_set'];
-                        $SetsPerdidos += $p['jugador_rival_set'];
-                        $GamesGanados += $p['jugador_local_juego'];
-                        $GamesPerdidos += $p['jugador_rival_juego'];
-                        $Puntos += ($p['jugador_local_set'] == 0 && $p['jugador_rival_set'] == 0 ? 0 : ($p['jugador_rival_set'] <= 0 ? 5 : 4));
-                    } else {
-                        $SetsGanados += $p['jugador_rival_set'];
-                        $SetsPerdidos += $p['jugador_local_set'];
-                        $GamesGanados += $p['jugador_rival_juego'];
-                        $GamesPerdidos += $p['jugador_local_juego'];
-                        $Puntos += ($p['jugador_local_set'] == 0 && $p['jugador_rival_set'] == 0 ? 0 : ($p['jugador_rival_set'] == 0 ? 1 : 2));
+                    foreach ($PartidosComoLocal as $p) {
+                        if ($p->jugador_ganador_uno_id == $j['jugador_simple_id']) {
+                            $SetsGanados += $p->jugador_local_set; $SetsPerdidos += $p->jugador_rival_set;
+                            $GamesGanados += $p->jugador_local_juego; $GamesPerdidos += $p->jugador_rival_juego;
+                            $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set <= 0 ? 5 : 4));
+                        } else {
+                            $SetsGanados += $p->jugador_rival_set; $SetsPerdidos += $p->jugador_local_set;
+                            $GamesGanados += $p->jugador_rival_juego; $GamesPerdidos += $p->jugador_local_juego;
+                            $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set == 0 ? 1 : 2));
+                        }
                     }
+
+                    foreach ($PartidosComoRival as $p) {
+                        if ($p->jugador_ganador_uno_id == $j['jugador_simple_id']) {
+                            $SetsGanados += $p->jugador_local_set; $SetsPerdidos += $p->jugador_rival_set;
+                            $GamesGanados += $p->jugador_local_juego; $GamesPerdidos += $p->jugador_rival_juego;
+                            $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set <= 0 ? 5 : 4));
+                        } else {
+                            $SetsGanados += $p->jugador_rival_set; $SetsPerdidos += $p->jugador_local_set;
+                            $GamesGanados += $p->jugador_rival_juego; $GamesPerdidos += $p->jugador_local_juego;
+                            $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set == 0 ? 1 : 2));
+                        }
+                    }
+
+                    $TablePositions[] = [
+                        'key' => ($key . '-' . $key2),
+                        'grupo' => $j['grupo_nombre'],
+                        'nombres' => $j['nombres'],
+                        'setsGanados' => $SetsGanados,
+                        'setsPerdidos' => $SetsPerdidos,
+                        'setsDiferencias' => ($SetsGanados - $SetsPerdidos),
+                        'gamesGanados' => $GamesGanados,
+                        'gamesPerdidos' => $GamesPerdidos,
+                        'gamesDiferencias' => ($GamesGanados - $GamesPerdidos),
+                        'puntos' => ($Puntos * $TorneoCategoria->torneo->valor_set),
+                    ];
+                } else {
+                    $PartidosComoLocal = collect($TorneoCategoria->torneo->partidos()
+                        ->where('torneo_categoria_id', $TorneoCategoria->id)
+                        ->where('grupo_id', $grupoRow->grupo_id)
+                        ->where('jugador_local_uno_id', $j['jugador_simple_id'])
+                        ->whereNull('fase')->get());
+
+                    $PartidosComoRival = collect($TorneoCategoria->torneo->partidos()
+                        ->where('torneo_categoria_id', $TorneoCategoria->id)
+                        ->where('grupo_id', $grupoRow->grupo_id)
+                        ->where('jugador_rival_uno_id', $j['jugador_simple_id'])
+                        ->whereNull('fase')->get());
+
+                    $SetsGanados = 0; $SetsPerdidos = 0; $GamesGanados = 0; $GamesPerdidos = 0; $Puntos = 0;
+
+                    foreach ($PartidosComoLocal as $p) {
+                        if ($p->jugador_ganador_uno_id == $j['jugador_simple_id']) {
+                            $SetsGanados += $p->jugador_local_set; $SetsPerdidos += $p->jugador_rival_set;
+                            $GamesGanados += $p->jugador_local_juego; $GamesPerdidos += $p->jugador_rival_juego;
+                            $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set <= 0 ? 5 : 4));
+                        } else {
+                            $SetsGanados += $p->jugador_rival_set; $SetsPerdidos += $p->jugador_local_set;
+                            $GamesGanados += $p->jugador_rival_juego; $GamesPerdidos += $p->jugador_local_juego;
+                            $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set == 0 ? 1 : 2));
+                        }
+                    }
+
+                    foreach ($PartidosComoRival as $p) {
+                        if ($p->jugador_ganador_uno_id == $j['jugador_simple_id']) {
+                            $SetsGanados += $p->jugador_local_set; $SetsPerdidos += $p->jugador_rival_set;
+                            $GamesGanados += $p->jugador_local_juego; $GamesPerdidos += $p->jugador_rival_juego;
+                            $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set <= 0 ? 5 : 4));
+                        } else {
+                            $SetsGanados += $p->jugador_rival_set; $SetsPerdidos += $p->jugador_local_set;
+                            $GamesGanados += $p->jugador_rival_juego; $GamesPerdidos += $p->jugador_local_juego;
+                            $Puntos += ($p->jugador_local_set == 0 && $p->jugador_rival_set == 0 ? 0 : ($p->jugador_rival_set == 0 ? 1 : 2));
+                        }
+                    }
+
+                    $TablePositions[] = [
+                        'key' => ($key . '-' . $key2),
+                        'grupo' => $j['grupo_nombre'],
+                        'nombres' => $j['nombres'],
+                        'setsGanados' => $SetsGanados,
+                        'setsPerdidos' => $SetsPerdidos,
+                        'setsDiferencias' => ($SetsGanados - $SetsPerdidos),
+                        'gamesGanados' => $GamesGanados,
+                        'gamesPerdidos' => $GamesPerdidos,
+                        'gamesDiferencias' => ($GamesGanados - $GamesPerdidos),
+                        'puntos' => ($Puntos * $TorneoCategoria->torneo->valor_set),
+                    ];
                 }
-
-                $SetsDiferencias = $SetsGanados - $SetsPerdidos;
-                $GamesDiferencias = $GamesGanados - $GamesPerdidos;
-                $Puntos *= $TorneoCategoria->torneo->valor_set;
-
-                $TablePositions[] = [
-                    'jugador_simple_id' => $q2['jugador_simple_id'],
-                    'jugador_dupla_id' => $q2['jugador_dupla_id'],
-                    'nombres' => $q2['nombres'],
-                    'partidosJugados' => $PartidosJugados,
-                    'setsGanados' => $SetsGanados,
-                    'setsPerdidos' => $SetsPerdidos,
-                    'setsDiferencias' => $SetsDiferencias,
-                    'gamesGanados' => $GamesGanados,
-                    'gamesPerdidos' => $GamesPerdidos,
-                    'gamesDiferencias' => $GamesDiferencias,
-                    'puntos' => $Puntos,
-                ];
             }
 
-            $TablePositionsPorGrupo[$grupo->nombre_grupo] = App::multiPropertySort(collect($TablePositions), [
+            $Sorted = App::multiPropertySort(collect($TablePositions), [
                 ['column' => 'puntos', 'order' => 'desc'],
                 ['column' => 'setsDiferencias', 'order' => 'desc'],
                 ['column' => 'gamesDiferencias', 'order' => 'desc'],
                 ['column' => 'setsGanados', 'order' => 'desc'],
                 ['column' => 'gamesGanados', 'order' => 'desc']
             ]);
-        }
-            $Data = array(
-                'Torneo' => $TorneoCategoria->torneo,
-                'TorneoCategoria' => $TorneoCategoria,
-                'Categoria' => $TorneoCategoria->categoriaSimple,
-                'Grupos' => TorneoGrupo::where('torneo_categoria_id', $TorneoCategoria->id)->select(['nombre_grupo', 'grupo_id'])->groupBy(['nombre_grupo', 'grupo_id'])
-                ->orderBy(DB::raw('LENGTH(nombre_grupo)'))->orderBy('nombre_grupo')->get(),
-                'Partidos' => $Partidos,
-                'Count' => 0,
-                'TablePositionsPorGrupo' => $TablePositionsPorGrupo,
 
+            $TablePositionsPorGrupo[] = $Sorted;
+        }
+
+        // Clasificación final por reglas actuales
+        $PrimerosLugares = []; $SegundoLugares = []; $TercerosLugares = [];
+        foreach ($TablePositionsPorGrupo as $value) {
+            if ($Clasifican == 1) {
+                $PrimerosLugares[] = $value->first();
+            } elseif ($Clasifican == 2) {
+                $PrimerosLugares[] = $value->first();
+                $SegundoLugares[] = $value->get(1);
+            } else { // 3
+                $PrimerosLugares[] = $value->first();
+                $TercerosLugares[] = $value->get(2);
+            }
+        }
+
+        if ($Clasifican == 3) {
+            $clasificadosKeys = array_merge(
+                collect($PrimerosLugares)->pluck('key')->toArray(),
+                collect($TercerosLugares)->pluck('key')->toArray()
             );
-
-            
-            $pdf = Pdf::loadView('auth'.'.'.$this->viewName.'.ajax.torneo.partialView', $Data)->setPaper('a4', 'landscape');
-            return $pdf->stream("ReporteTorneo.pdf");
+            $SegundoLugares = [];
+            foreach ($TablePositionsPorGrupo as $value) {
+                foreach ($value as $v) {
+                    if (!in_array($v['key'], $clasificadosKeys) && $v === $value->get(1)) {
+                        $SegundoLugares[] = $v;
+                    }
+                }
+            }
+            $TercerosLugares = collect($TercerosLugares)->sortByDesc('puntos')->take($TorneoCategoria->clasificados_terceros)->toArray();
         }
 
-        return null;
+        $PrimerosLugares = collect($PrimerosLugares)->sortByDesc('puntos');
+        $SegundoLugares = collect($SegundoLugares)->sortByDesc('puntos');
+        $TercerosLugares = collect($TercerosLugares)->sortByDesc('puntos');
+
+        $JugadoresClasificadosMerge = $PrimerosLugares->merge($SegundoLugares)->merge($TercerosLugares);
+        $ClasificadosFinal = App::multiPropertySort(collect($JugadoresClasificadosMerge), [
+            ['column' => 'puntos', 'order' => 'desc'],
+            ['column' => 'gamesDiferencias', 'order' => 'desc']
+        ]);
+
+        // No clasificados (todos los que no estén en $ClasificadosFinal)
+        $clasificadosKeys = collect($ClasificadosFinal)->pluck('key')->toArray();
+        $NoClasificados = [];
+        foreach ($TablePositionsPorGrupo as $value) {
+            foreach ($value as $v) {
+                if (!in_array($v['key'], $clasificadosKeys)) $NoClasificados[] = $v;
+            }
+        }
+        $NoClasificados = App::multiPropertySort(collect($NoClasificados), [
+            ['column' => 'puntos', 'order' => 'desc'],
+            ['column' => 'gamesDiferencias', 'order' => 'desc']
+        ]);
+
+        $TorneoFaseFinal = (object) [
+            'TorneoCategoria' => $TorneoCategoria,
+            'JugadoresClasificados' => $ClasificadosFinal,
+            'JugadoresNoClasificados' => $NoClasificados,
+        ];
+
+        $pdf = Pdf::loadView('auth.torneo.ajax.final.jugadores_clasificados_pdf', [
+            'TorneoFaseFinal' => $TorneoFaseFinal
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream('JugadoresClasificadosNoClasificados.pdf');
     }
-
-
 
     public function h2h(Request $request)
     {

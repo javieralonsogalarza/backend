@@ -11,6 +11,13 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
 )
     <div class="d-flex justify-content-between align-items-center">
         <div><h5>Jugadores Clasificados</h5></div>
+        <div>
+            <a class="btn btn-sm btn-primary"
+               href="/auth/reporte/torneo/jugadores-clasificados/exportar/pdf/{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}/{{ $TorneoFaseFinal->TorneoCategoria->id }}"
+               target="_blank">
+                <i class="fa fa-file-pdf"></i> Exportar PDF
+            </a>
+        </div>
     </div>
     <div class="row mt-1">
         <div class="col-md-12">
