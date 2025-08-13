@@ -146,7 +146,7 @@ public function jugadorPartialView(Request $request)
                             'setsDiferencias' => $SetsDiferencias,
                             'gamesGanados' => $GamesGanados,
                             'gamesPerdidos' => $GamesPerdidos,
-                            'gamesDiferencias' => $GamesDiferencias,
+                            'gamesDiferencias' => $GamesDiferidos,
                             'puntos' => $Puntos
                         ];
                     }
@@ -228,7 +228,6 @@ public function jugadorPartialView(Request $request)
                         }
                     }
                 }
-            }
             // Si está inscrito pero no tiene partidos, agregar al historial
             else if($inscrito > 0) {
                 // Obtener las categorías del torneo en las que está inscrito
@@ -648,7 +647,7 @@ public function jugadorPartialView(Request $request)
                     'setsDiferencias' => $SetsDiferencias,
                     'gamesGanados' => $GamesGanados,
                     'gamesPerdidos' => $GamesPerdidos,
-                    'gamesDiferencias' => $GamesDiferencias,
+                    'gamesDiferencias' => $GamesDiferidos,
                     'puntos' => $Puntos,
                 ];
             }
@@ -774,7 +773,7 @@ public function jugadorPartialView(Request $request)
                             'setsDiferencias' => $SetsDiferencias,
                             'gamesGanados' => $GamesGanados,
                             'gamesPerdidos' => $GamesPerdidos,
-                            'gamesDiferencias' => $GamesDiferencias,
+                            'gamesDiferencias' => $GamesDiferidos,
                             'puntos' => $Puntos
                         ];
 
@@ -844,7 +843,7 @@ public function jugadorPartialView(Request $request)
                             'setsDiferencias' => $SetsDiferencias,
                             'gamesGanados' => $GamesGanados,
                             'gamesPerdidos' => $GamesPerdidos,
-                            'gamesDiferencias' => $GamesDiferencias,
+                            'gamesDiferencias' => $GamesDiferidos,
                             'puntos' => $Puntos,
                         ];
                     }
@@ -1050,6 +1049,12 @@ public function jugadorPartialView(Request $request)
                 ['column' => 'setsGanados', 'order' => 'desc'],
                 ['column' => 'gamesGanados', 'order' => 'desc']
             ]);
+
+            // Añadir orden por posición dentro del grupo (1, 2, 3, 4, ...)
+            $Sorted = $Sorted->values()->map(function ($row, $idx) {
+                $row['orden'] = $idx + 1;
+                return $row;
+            });
 
             $TablePositionsPorGrupo[] = $Sorted;
         }

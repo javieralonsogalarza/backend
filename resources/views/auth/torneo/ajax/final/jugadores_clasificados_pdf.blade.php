@@ -31,6 +31,7 @@
             <tr>
                 <th class="align-middle text-center" align="center"></th>
                 <th class="align-middle text-center" align="center">Jugadores</th>
+                <th class="align-middle text-center" align="center">Orden</th>
                 <th class="align-middle text-center" align="center">Set Ganados</th>
                 <th class="align-middle text-center" align="center">Set Perdidos</th>
                 <th class="align-middle text-center bg-blue" align="center">Diferencia Sets</th>
@@ -45,6 +46,7 @@
                 <tr>
                     <td class="align-middle text-center" align="center">{{ $i+1 }}</td>
                     <td class="align-middle text-center" align="center">{{ $q['nombres'] }}</td>
+                    <td class="align-middle text-center" align="center">{{ $q['orden'] ?? '-' }}</td>
                     <td class="align-middle text-center" align="center">{{ $q['setsGanados'] }}</td>
                     <td class="align-middle text-center" align="center">{{ $q['setsPerdidos'] }}</td>
                     <td class="align-middle text-center" align="center">{{ $q['setsDiferencias'] }}</td>
@@ -59,7 +61,7 @@
 
     <div class="page-break"></div>
 
-    <header class="mb-2"></header>
+    <header class="mb-2">
         <h3 class="text-center mb-1">{{ $TorneoFaseFinal->TorneoCategoria->torneo->nombre }}</h3>
         <div class="text-center">
             <strong>Categoría:</strong> {{ $TorneoFaseFinal->TorneoCategoria->categoriaSimple->nombre }}
@@ -74,6 +76,7 @@
             <tr>
                 <th class="align-middle text-center" align="center"></th>
                 <th class="align-middle text-center" align="center">Jugadores</th>
+                <th class="align-middle text-center" align="center">Orden</th>
                 <th class="align-middle text-center" align="center">Set Ganados</th>
                 <th class="align-middle text-center" align="center">Set Perdidos</th>
                 <th class="align-middle text-center bg-blue" align="center">Diferencia Sets</th>
@@ -88,6 +91,7 @@
                 <tr>
                     <td class="align-middle text-center" align="center">{{ $i+1 }}</td>
                     <td class="align-middle text-center" align="center">{{ $q['nombres'] }}</td>
+                    <td class="align-middle text-center" align="center">{{ $q['orden'] ?? '-' }}</td>
                     <td class="align-middle text-center" align="center">{{ $q['setsGanados'] }}</td>
                     <td class="align-middle text-center" align="center">{{ $q['setsPerdidos'] }}</td>
                     <td class="align-middle text-center" align="center">{{ $q['setsDiferencias'] }}</td>

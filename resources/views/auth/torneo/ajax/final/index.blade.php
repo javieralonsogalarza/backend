@@ -26,6 +26,7 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
                     <thead>
                     <tr>
                         <th class="align-middle text-center" align="center"></th>
+                        <th class="align-middle text-center" align="center">Orden</th>
                         <th class="align-middle text-center" align="center">Jugadores</th>
                         <th class="align-middle text-center" align="center">Set Ganados</th>
                         <th class="align-middle text-center" align="center">Set Perdidos</th>
@@ -40,6 +41,7 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
                     @foreach($TorneoFaseFinal->JugadoresClasificados as $key => $q)
                         <tr>
                             <td class="align-middle text-center" align="center">{{ ($key + 1) }}</td>
+                            <td class="align-middle text-center" align="center">{{ $q['orden'] ?? '' }}</td>
                             <td class="align-middle text-center" align="center">{{ $q['nombres'] }}</td>
                             <td class="align-middle text-center" align="center">{{ $q['setsGanados'] }}</td>
                             <td class="align-middle text-center" align="center">{{ $q['setsPerdidos'] }}</td>

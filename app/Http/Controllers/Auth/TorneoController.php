@@ -1072,7 +1072,22 @@ class TorneoController extends Controller
                         ];
                     }
                 }
-                $JugadoresClasificados[] = ['Grupo' => $q->grupo->nombre, 'Clasificados' => App::multiPropertySort(collect($TablePositions), [ ['column' => 'puntos', 'order' => 'desc'],['column' => 'setsDiferencias', 'order' => 'desc'], ['column' => 'gamesDiferencias', 'order' => 'desc'], ['column' => 'setsGanados', 'order' => 'desc'], ['column' => 'gamesGanados', 'order' => 'desc']])->take($Clasifican)];
+                // Ordenar por criterios y anotar el orden (1, 2, 3, 4, ...)
+                $posicionesOrdenadas = App::multiPropertySort(collect($TablePositions), [
+                    ['column' => 'puntos', 'order' => 'desc'],
+                    ['column' => 'setsDiferencias', 'order' => 'desc'],
+                    ['column' => 'gamesDiferencias', 'order' => 'desc'],
+                    ['column' => 'setsGanados', 'order' => 'desc'],
+                    ['column' => 'gamesGanados', 'order' => 'desc']
+                ])->values()->map(function ($row, $idx) {
+                    $row['orden'] = $idx + 1;
+                    return $row;
+                });
+
+                $JugadoresClasificados[] = [
+                    'Grupo' => $q->grupo->nombre,
+                    'Clasificados' => $posicionesOrdenadas->take($Clasifican)
+                ];
             }
 $PrimerosLugares = [];
 $SegundoLugares = [];
