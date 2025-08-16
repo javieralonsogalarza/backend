@@ -4116,12 +4116,23 @@ return response()->json(['data' => $mergedPlayers]);
                                     }
     
                                     $PartidoNext->comunidad_id = Auth::guard('web')->user()->comunidad_id;
+                                    
+                                    // Solo asignar jugadores si NO es doble WO y las posiciones están realmente vacías para evitar duplicados
+                                    if($request->resultado !== '-') {
+                                       
                                     if($request->position == 1) {
-                                        $PartidoNext->jugador_local_uno_id = $Partido->jugador_ganador_uno_id;
-                                        $PartidoNext->jugador_local_dos_id = $Partido->jugador_ganador_dos_id;
+                                        // Verificar que la posición local esté vacía antes de asignar
+                                        if($PartidoNext->jugador_local_uno_id == null && $PartidoNext->jugador_local_dos_id == null) {
+                                            $PartidoNext->jugador_local_uno_id = $Partido->jugador_ganador_uno_id;
+                                            $PartidoNext->jugador_local_dos_id = $Partido->jugador_ganador_dos_id;
+                                        }
                                     } else {
-                                        $PartidoNext->jugador_rival_uno_id = $Partido->jugador_ganador_uno_id;
-                                        $PartidoNext->jugador_rival_dos_id = $Partido->jugador_ganador_dos_id;
+                                        // Verificar que la posición rival esté vacía antes de asignar
+                                        if($PartidoNext->jugador_rival_uno_id == null && $PartidoNext->jugador_rival_dos_id == null) {
+                                            $PartidoNext->jugador_rival_uno_id = $Partido->jugador_ganador_uno_id;
+                                            $PartidoNext->jugador_rival_dos_id = $Partido->jugador_ganador_dos_id;
+                                        }
+                                    }
                                     }
     
                                     if($PartidoNext->buy) $PartidoNextWiouthBuy = $PartidoNext;
@@ -4187,27 +4198,126 @@ return response()->json(['data' => $mergedPlayers]);
                                                 // Asignar el ganador del BYE a la siguiente ronda  
                                                 // Determinar posición basada en bloque y fase
                                                 if($PartidoNext->fase == 2) {
-                                                     if($PartidoNext->jugador_local_uno_id != null) {
+                                                    // En semifinal a final: posicionamiento basado en estructura del bracket
+                                                    // Bloque 1 = semifinal superior izquierda → posición local (arriba)
+                                                    // Bloque 2 = semifinal inferior derecha → posición rival (abajo)
+                                                    if($PartidoNext->bloque == 1) {
                                                         $PartidoNextBye->jugador_local_uno_id = $PartidoNext->jugador_ganador_uno_id;
                                                         $PartidoNextBye->jugador_local_dos_id = $PartidoNext->jugador_ganador_dos_id;
-                                                    } else {
+                                                        // NO marcar BYE en la final - solo colocar al ganador del lado izquierdo
+                                                    } else { // bloque 2
                                                         $PartidoNextBye->jugador_rival_uno_id = $PartidoNext->jugador_ganador_uno_id;
                                                         $PartidoNextBye->jugador_rival_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                        // NO marcar BYE en la final - solo colocar al ganador del lado derecho
                                                     }
                                                    
                                                 } else {
-                                                    // Para otras fases: usar posición 1 si bloque es impar, posición 2 si bloque es par
-                                                    // En semifinal: bloques 1,2 van a posición 1 (arriba), bloques 3,4 van a posición 2 (abajo)
+                                                    // Para otras fases: colocar al ganador sin marcar BYE automáticamente
+                                                    // El BYE se marcará solo si realmente no hay oponente
                                                     if(in_array($PartidoNext->bloque, [1, 2])) {
                                                         $PartidoNextBye->jugador_local_uno_id = $PartidoNext->jugador_ganador_uno_id;
                                                         $PartidoNextBye->jugador_local_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                        // NO marcar BYE automáticamente - solo colocar al ganador
                                                     } else {
                                                         $PartidoNextBye->jugador_rival_uno_id = $PartidoNext->jugador_ganador_uno_id;
                                                         $PartidoNextBye->jugador_rival_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                        // NO marcar BYE automáticamente - solo colocar al ganador
                                                     }
                                                 }
                                                 
                                                 $PartidoNextBye->save();
+                                                
+                                                // Verificar si el partido creado también necesita cascada de BYE
+                                                if($PartidoNextBye->buy || $PartidoNextBye->buy_all) {
+                                                    // Si el partido que acabamos de crear también tiene BYE, continuar la cascada
+                                                    if(($PartidoNextBye->jugador_local_uno_id != null && $PartidoNextBye->jugador_rival_uno_id == null) ||
+                                                       ($PartidoNextBye->jugador_local_uno_id == null && $PartidoNextBye->jugador_rival_uno_id != null)) {
+                                                        
+                                                        // Finalizar automáticamente este partido también
+                                                        $PartidoNextBye->estado_id = App::$ESTADO_FINALIZADO;
+                                                        $PartidoNextBye->resultado = "-";
+                                                        $PartidoNextBye->fecha_inicio = Carbon::now()->toDateString();
+                                                        $PartidoNextBye->fecha_final = Carbon::now()->toDateString();
+                                                        
+                                                        // Establecer al jugador presente como ganador
+                                                        if($PartidoNextBye->jugador_local_uno_id != null) {
+                                                            $PartidoNextBye->jugador_ganador_uno_id = $PartidoNextBye->jugador_local_uno_id;
+                                                            $PartidoNextBye->jugador_ganador_dos_id = $PartidoNextBye->jugador_local_dos_id;
+                                                            $PartidoNextBye->jugador_local_set = 2;
+                                                            $PartidoNextBye->jugador_local_juego = 12;
+                                                            $PartidoNextBye->jugador_rival_set = 0;
+                                                            $PartidoNextBye->jugador_rival_juego = 0;
+                                                        } else {
+                                                            $PartidoNextBye->jugador_ganador_uno_id = $PartidoNextBye->jugador_rival_uno_id;
+                                                            $PartidoNextBye->jugador_ganador_dos_id = $PartidoNextBye->jugador_rival_dos_id;
+                                                            $PartidoNextBye->jugador_local_set = 0;
+                                                            $PartidoNextBye->jugador_local_juego = 0;
+                                                            $PartidoNextBye->jugador_rival_set = 2;
+                                                            $PartidoNextBye->jugador_rival_juego = 12;
+                                                        }
+                                                        
+                                                        $PartidoNextBye->save();
+                                                        
+                                                        // Continuar la cascada al siguiente nivel si es necesario
+                                                        if($PartidoNextBye->fase > 1) {
+                                                            $SiguienteFaseCascada = ($PartidoNextBye->fase/2);
+                                                            
+                                                            $PartidoNextCascada = Partido::where('torneo_id', $PartidoNextBye->torneo_id)
+                                                                ->where('torneo_categoria_id', $PartidoNextBye->torneo_categoria_id)
+                                                                ->where('fase', $SiguienteFaseCascada)
+                                                                ->whereIn('bloque', $SiguienteFaseCascada == 1 ? [1] : ($SiguienteFaseCascada == 2 ? (in_array($PartidoNextBye->bloque, [1, 3]) ? [1] : [2]) : [$PartidoNextBye->bloque]))
+                                                                ->where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+                                                                ->first();
+                                                            
+                                                            if($PartidoNextCascada == null) {
+                                                                $PartidoNextCascada = new Partido();
+                                                                $PartidoNextCascada->torneo_id = $PartidoNextBye->torneo_id;
+                                                                $PartidoNextCascada->torneo_categoria_id = $PartidoNextBye->torneo_categoria_id;
+                                                                $PartidoNextCascada->estado_id = App::$ESTADO_PENDIENTE;
+                                                                $PartidoNextCascada->multiple = $PartidoNextBye->multiple;
+                                                                $PartidoNextCascada->fecha_inicio = Carbon::parse($PartidoNextBye->fecha_final)->addDays(1);
+                                                                $PartidoNextCascada->fecha_final = Carbon::parse($PartidoNextBye->fecha_final)->addDays(7);
+                                                                $PartidoNextCascada->user_create_id = Auth::guard('web')->user()->id;
+                                                                $PartidoNextCascada->fase = $SiguienteFaseCascada;
+                                                                if($PartidoNextBye->fase == 16){
+                                                                    $PartidoNextCascada->position = $PartidoNextBye->bracket == 'upper' ? 1 : 2;
+                                                                }else{
+                                                                    $PartidoNextCascada->position = $PartidoNextBye->position;
+                                                                }
+                                                                $PartidoNextCascada->bloque = $SiguienteFaseCascada == 1 ? 1 : (in_array($PartidoNextBye->fase, [16, 8]) ? $PartidoNextBye->bloque : (in_array($PartidoNextBye->bloque, [1, 3]) ? 1 : 2));
+                                                                $PartidoNextCascada->comunidad_id = Auth::guard('web')->user()->comunidad_id;
+                                                            }
+                                                            
+                                                            // Asignar el ganador a la siguiente ronda usando la misma lógica de posición
+                                                            if($PartidoNextBye->fase == 2) {
+                                                                // En semifinal a final: posicionamiento basado en estructura del bracket
+                                                                // Bloque 1 = semifinal superior izquierda → posición local (arriba)
+                                                                // Bloque 2 = semifinal inferior derecha → posición rival (abajo)
+                                                                if($PartidoNextBye->bloque == 1) {
+                                                                    $PartidoNextCascada->jugador_local_uno_id = $PartidoNextBye->jugador_ganador_uno_id;
+                                                                    $PartidoNextCascada->jugador_local_dos_id = $PartidoNextBye->jugador_ganador_dos_id;
+                                                                    // NO marcar BYE en la final - solo colocar al ganador del lado izquierdo
+                                                                } else { // bloque 2
+                                                                    $PartidoNextCascada->jugador_rival_uno_id = $PartidoNextBye->jugador_ganador_uno_id;
+                                                                    $PartidoNextCascada->jugador_rival_dos_id = $PartidoNextBye->jugador_ganador_dos_id;
+                                                                    // NO marcar BYE en la final - solo colocar al ganador del lado derecho
+                                                                }
+                                                            } else {
+                                                                if(in_array($PartidoNextBye->bloque, [1, 2])) {
+                                                                    $PartidoNextCascada->jugador_local_uno_id = $PartidoNextBye->jugador_ganador_uno_id;
+                                                                    $PartidoNextCascada->jugador_local_dos_id = $PartidoNextBye->jugador_ganador_dos_id;
+                                                                    // NO marcar BYE automáticamente - solo colocar al ganador
+                                                                } else {
+                                                                    $PartidoNextCascada->jugador_rival_uno_id = $PartidoNextBye->jugador_ganador_uno_id;
+                                                                    $PartidoNextCascada->jugador_rival_dos_id = $PartidoNextBye->jugador_ganador_dos_id;
+                                                                    // NO marcar BYE automáticamente - solo colocar al ganador
+                                                                }
+                                                            }
+                                                            
+                                                            $PartidoNextCascada->save();
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                         
@@ -4247,15 +4357,79 @@ return response()->json(['data' => $mergedPlayers]);
                                             $PartidoNext2->bloque = $SiguienteFase == 1 ? 1 : (in_array($PartidoNextWiouthBuy->fase, [16, 8]) ? $PartidoNextWiouthBuy->bloque : (in_array($PartidoNextWiouthBuy->bloque, [1, 3]) ? 1 : 2));
                                             $PartidoNext2->comunidad_id = Auth::guard('web')->user()->comunidad_id;
     
-                                            if($PartidoNext2->jugador_local_uno_id != null) {
-                                                $PartidoNext2->jugador_rival_uno_id = $PartidoNextWiouthBuy->jugador_local_uno_id;
-                                                $PartidoNext2->jugador_rival_dos_id = $PartidoNextWiouthBuy->jugador_local_dos_id;
-                                            } else {
-                                                $PartidoNext2->jugador_local_uno_id = $PartidoNextWiouthBuy->jugador_local_uno_id;
-                                                $PartidoNext2->jugador_local_dos_id = $PartidoNextWiouthBuy->jugador_local_dos_id;
-                                            }
+                                            // Solo asignar jugadores a posiciones que estén realmente vacías para evitar duplicados
+                                            // Y solo si el partido con BYE realmente tiene un jugador presente
+                                 
+                                            // Si no hay jugador presente en el BYE o ambas posiciones están ocupadas, no asignar
     
                                             if($PartidoNext2->save()) {
+                                                // Verificar si el partido creado tiene BYE en ambas posiciones (doble BYE)
+                                                if($PartidoNext2->buy && $PartidoNext2->buy_all) {
+                                                    // Si ambas posiciones son BYE, finalizar automáticamente y crear BYE en siguiente nivel
+                                                    $PartidoNext2->estado_id = App::$ESTADO_FINALIZADO;
+                                                    $PartidoNext2->resultado = "-";
+                                                    $PartidoNext2->fecha_inicio = Carbon::now()->toDateString();
+                                                    $PartidoNext2->fecha_final = Carbon::now()->toDateString();
+                                                    $PartidoNext2->jugador_ganador_uno_id = null;
+                                                    $PartidoNext2->jugador_ganador_dos_id = null;
+                                                    $PartidoNext2->jugador_local_set = 0;
+                                                    $PartidoNext2->jugador_local_juego = 0;
+                                                    $PartidoNext2->jugador_rival_set = 0;
+                                                    $PartidoNext2->jugador_rival_juego = 0;
+                                                    $PartidoNext2->save();
+                                                    
+                                                    // Crear BYE en el siguiente nivel si no es la final
+                                                    if($PartidoNext2->fase > 1) {
+                                                        $SiguienteFaseDoubleBye = ($PartidoNext2->fase/2);
+                                                        
+                                                        $PartidoNextDoubleBye = Partido::where('torneo_id', $PartidoNext2->torneo_id)
+                                                            ->where('torneo_categoria_id', $PartidoNext2->torneo_categoria_id)
+                                                            ->where('fase', $SiguienteFaseDoubleBye)
+                                                            ->whereIn('bloque', $SiguienteFaseDoubleBye == 1 ? [1] : ($SiguienteFaseDoubleBye == 2 ? (in_array($PartidoNext2->bloque, [1, 3]) ? [1] : [2]) : [$PartidoNext2->bloque]))
+                                                            ->where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+                                                            ->first();
+                                                        
+                                                        if($PartidoNextDoubleBye == null) {
+                                                            $PartidoNextDoubleBye = new Partido();
+                                                            $PartidoNextDoubleBye->torneo_id = $PartidoNext2->torneo_id;
+                                                            $PartidoNextDoubleBye->torneo_categoria_id = $PartidoNext2->torneo_categoria_id;
+                                                            $PartidoNextDoubleBye->estado_id = App::$ESTADO_PENDIENTE;
+                                                            $PartidoNextDoubleBye->multiple = $PartidoNext2->multiple;
+                                                            $PartidoNextDoubleBye->fecha_inicio = Carbon::parse($PartidoNext2->fecha_final)->addDays(1);
+                                                            $PartidoNextDoubleBye->fecha_final = Carbon::parse($PartidoNext2->fecha_final)->addDays(7);
+                                                            $PartidoNextDoubleBye->user_create_id = Auth::guard('web')->user()->id;
+                                                            $PartidoNextDoubleBye->fase = $SiguienteFaseDoubleBye;
+                                                            $PartidoNextDoubleBye->position = $PartidoNext2->position;
+                                                            $PartidoNextDoubleBye->bloque = $SiguienteFaseDoubleBye == 1 ? 1 : (in_array($PartidoNext2->fase, [16, 8]) ? $PartidoNext2->bloque : (in_array($PartidoNext2->bloque, [1, 3]) ? 1 : 2));
+                                                            $PartidoNextDoubleBye->comunidad_id = Auth::guard('web')->user()->comunidad_id;
+                                                        }
+                                                        
+                                                        // Marcar como doble BYE - ambas posiciones vacías
+                                                        if($PartidoNext2->fase == 2) {
+                                                            // En semifinal: crear BYE en ambas posiciones para la final
+                                                            $PartidoNextDoubleBye->jugador_local_uno_id = null;
+                                                            $PartidoNextDoubleBye->jugador_local_dos_id = null;
+                                                            $PartidoNextDoubleBye->jugador_rival_uno_id = null;
+                                                            $PartidoNextDoubleBye->jugador_rival_dos_id = null;
+                                                            $PartidoNextDoubleBye->buy = true;
+                                                            $PartidoNextDoubleBye->buy_all = true;
+                                                        } else {
+                                                            // Para otras fases: crear BYE en la posición correspondiente según el bloque
+                                                            if(in_array($PartidoNext2->bloque, [1, 2])) {
+                                                                $PartidoNextDoubleBye->jugador_local_uno_id = null;
+                                                                $PartidoNextDoubleBye->jugador_local_dos_id = null;
+                                                                $PartidoNextDoubleBye->buy_all = true;
+                                                            } else {
+                                                                $PartidoNextDoubleBye->jugador_rival_uno_id = null;
+                                                                $PartidoNextDoubleBye->jugador_rival_dos_id = null;
+                                                                $PartidoNextDoubleBye->buy = true;
+                                                            }
+                                                        }
+                                                        
+                                                        $PartidoNextDoubleBye->save();
+                                                    }
+                                                }
+                                                
                                                 DB::commit();
                                                 $Result->Success = true;
                                             }
@@ -4345,8 +4519,74 @@ return response()->json(['data' => $mergedPlayers]);
         
                                 $PartidoNext->save();
                                 
-                                // Verificar si el partido creado necesita ser finalizado automáticamente por BYE
-                                if($PartidoNext->buy || $PartidoNext->buy_all) {
+                                // Verificar si el partido creado tiene BYE en ambas posiciones (doble BYE - caso doble WO)
+                                if($PartidoNext->buy && $PartidoNext->buy_all) {
+                                    // Si ambas posiciones son BYE, finalizar automáticamente y crear BYE en siguiente nivel
+                                    $PartidoNext->estado_id = App::$ESTADO_FINALIZADO;
+                                    $PartidoNext->resultado = "-";
+                                    $PartidoNext->fecha_inicio = Carbon::now()->toDateString();
+                                    $PartidoNext->fecha_final = Carbon::now()->toDateString();
+                                    $PartidoNext->jugador_ganador_uno_id = null;
+                                    $PartidoNext->jugador_ganador_dos_id = null;
+                                    $PartidoNext->jugador_local_set = 0;
+                                    $PartidoNext->jugador_local_juego = 0;
+                                    $PartidoNext->jugador_rival_set = 0;
+                                    $PartidoNext->jugador_rival_juego = 0;
+                                    $PartidoNext->save();
+                                    
+                                    // Crear BYE en el siguiente nivel si no es la final
+                                    if($PartidoNext->fase > 1) {
+                                        $SiguienteFaseDobleByeWO = ($PartidoNext->fase/2);
+                                        
+                                        $PartidoNextDobleByeWO = Partido::where('torneo_id', $PartidoNext->torneo_id)
+                                            ->where('torneo_categoria_id', $PartidoNext->torneo_categoria_id)
+                                            ->where('fase', $SiguienteFaseDobleByeWO)
+                                            ->whereIn('bloque', $SiguienteFaseDobleByeWO == 1 ? [1] : ($SiguienteFaseDobleByeWO == 2 ? (in_array($PartidoNext->bloque, [1, 3]) ? [1] : [2]) : [$PartidoNext->bloque]))
+                                            ->where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+                                            ->first();
+                                        
+                                        if($PartidoNextDobleByeWO == null) {
+                                            $PartidoNextDobleByeWO = new Partido();
+                                            $PartidoNextDobleByeWO->torneo_id = $PartidoNext->torneo_id;
+                                            $PartidoNextDobleByeWO->torneo_categoria_id = $PartidoNext->torneo_categoria_id;
+                                            $PartidoNextDobleByeWO->estado_id = App::$ESTADO_PENDIENTE;
+                                            $PartidoNextDobleByeWO->multiple = $PartidoNext->multiple;
+                                            $PartidoNextDobleByeWO->fecha_inicio = Carbon::parse($PartidoNext->fecha_final)->addDays(1);
+                                            $PartidoNextDobleByeWO->fecha_final = Carbon::parse($PartidoNext->fecha_final)->addDays(7);
+                                            $PartidoNextDobleByeWO->user_create_id = Auth::guard('web')->user()->id;
+                                            $PartidoNextDobleByeWO->fase = $SiguienteFaseDobleByeWO;
+                                            $PartidoNextDobleByeWO->position = $PartidoNext->position;
+                                            $PartidoNextDobleByeWO->bloque = $SiguienteFaseDobleByeWO == 1 ? 1 : (in_array($PartidoNext->fase, [16, 8]) ? $PartidoNext->bloque : (in_array($PartidoNext->bloque, [1, 3]) ? 1 : 2));
+                                            $PartidoNextDobleByeWO->comunidad_id = Auth::guard('web')->user()->comunidad_id;
+                                        }
+                                        
+                                        // Marcar como doble BYE - ambas posiciones vacías
+                                        if($PartidoNext->fase == 2) {
+                                            // En semifinal: crear BYE en ambas posiciones para la final
+                                            $PartidoNextDobleByeWO->jugador_local_uno_id = null;
+                                            $PartidoNextDobleByeWO->jugador_local_dos_id = null;
+                                            $PartidoNextDobleByeWO->jugador_rival_uno_id = null;
+                                            $PartidoNextDobleByeWO->jugador_rival_dos_id = null;
+                                            $PartidoNextDobleByeWO->buy = true;
+                                            $PartidoNextDobleByeWO->buy_all = true;
+                                        } else {
+                                            // Para otras fases: crear BYE en la posición correspondiente según el bloque
+                                            if(in_array($PartidoNext->bloque, [1, 2])) {
+                                                $PartidoNextDobleByeWO->jugador_local_uno_id = null;
+                                                $PartidoNextDobleByeWO->jugador_local_dos_id = null;
+                                                $PartidoNextDobleByeWO->buy_all = true;
+                                            } else {
+                                                $PartidoNextDobleByeWO->jugador_rival_uno_id = null;
+                                                $PartidoNextDobleByeWO->jugador_rival_dos_id = null;
+                                                $PartidoNextDobleByeWO->buy = true;
+                                            }
+                                        }
+                                        
+                                        $PartidoNextDobleByeWO->save();
+                                    }
+                                }
+                                // Si no es doble BYE, verificar cascada normal
+                                else if($PartidoNext->buy || $PartidoNext->buy_all) {
                                     // Si el partido que se acaba de crear tiene el otro jugador presente, finalizarlo automáticamente
                                     if(($PartidoNext->jugador_local_uno_id != null && $PartidoNext->jugador_rival_uno_id == null) ||
                                        ($PartidoNext->jugador_local_uno_id == null && $PartidoNext->jugador_rival_uno_id != null)) {
@@ -4408,27 +4648,124 @@ return response()->json(['data' => $mergedPlayers]);
                                             // Asignar el ganador del BYE a la siguiente ronda
                                             // Determinar posición basada en bloque y fase
                                             if($PartidoNext->fase == 2) {
-                                                // En semifinal: bloques 1,2 van a posición 1 (arriba), bloques 3,4 van a posición 2 (abajo)
-                                   
-                                                           // Para otras fases: usar posición 1 si bloque es impar, posición 2 si bloque es par
-                                                if($PartidoNext->jugador_local_uno_id != null) {
+                                                // En semifinal a final: posicionamiento basado en estructura del bracket
+                                                // Bloque 1 = semifinal superior izquierda → posición local (arriba)
+                                                // Bloque 2 = semifinal inferior derecha → posición rival (abajo)
+                                                if($PartidoNext->bloque == 1) {
                                                     $PartidoNextDobleWO->jugador_local_uno_id = $PartidoNext->jugador_ganador_uno_id;
                                                     $PartidoNextDobleWO->jugador_local_dos_id = $PartidoNext->jugador_ganador_dos_id;
-                                                } else {
+                                                    // NO marcar BYE en la final - solo colocar al ganador del lado izquierdo
+                                                } else { // bloque 2
                                                     $PartidoNextDobleWO->jugador_rival_uno_id = $PartidoNext->jugador_ganador_uno_id;
                                                     $PartidoNextDobleWO->jugador_rival_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                    // NO marcar BYE en la final - solo colocar al ganador del lado derecho
                                                 }
                                             } else {
-                                                  if(in_array($PartidoNext->bloque, [1, 2])) {
+                                                // Para otras fases: colocar al ganador sin marcar BYE automáticamente
+                                                if(in_array($PartidoNext->bloque, [1, 2])) {
                                                     $PartidoNextDobleWO->jugador_local_uno_id = $PartidoNext->jugador_ganador_uno_id;
                                                     $PartidoNextDobleWO->jugador_local_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                    // NO marcar BYE automáticamente - solo colocar al ganador
                                                 } else {
                                                     $PartidoNextDobleWO->jugador_rival_uno_id = $PartidoNext->jugador_ganador_uno_id;
                                                     $PartidoNextDobleWO->jugador_rival_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                    // NO marcar BYE automáticamente - solo colocar al ganador
                                                 }
                                             }
                                             
                                             $PartidoNextDobleWO->save();
+                                            
+                                            // Verificar si el partido creado también necesita cascada de BYE (caso doble WO)
+                                            if($PartidoNextDobleWO->buy || $PartidoNextDobleWO->buy_all) {
+                                                // Si el partido que acabamos de crear también tiene BYE, continuar la cascada
+                                                if(($PartidoNextDobleWO->jugador_local_uno_id != null && $PartidoNextDobleWO->jugador_rival_uno_id == null) ||
+                                                   ($PartidoNextDobleWO->jugador_local_uno_id == null && $PartidoNextDobleWO->jugador_rival_uno_id != null)) {
+                                                    
+                                                    // Finalizar automáticamente este partido también
+                                                    $PartidoNextDobleWO->estado_id = App::$ESTADO_FINALIZADO;
+                                                    $PartidoNextDobleWO->resultado = "-";
+                                                    $PartidoNextDobleWO->fecha_inicio = Carbon::now()->toDateString();
+                                                    $PartidoNextDobleWO->fecha_final = Carbon::now()->toDateString();
+                                                    
+                                                    // Establecer al jugador presente como ganador
+                                                    if($PartidoNextDobleWO->jugador_local_uno_id != null) {
+                                                        $PartidoNextDobleWO->jugador_ganador_uno_id = $PartidoNextDobleWO->jugador_local_uno_id;
+                                                        $PartidoNextDobleWO->jugador_ganador_dos_id = $PartidoNextDobleWO->jugador_local_dos_id;
+                                                        $PartidoNextDobleWO->jugador_local_set = 2;
+                                                        $PartidoNextDobleWO->jugador_local_juego = 12;
+                                                        $PartidoNextDobleWO->jugador_rival_set = 0;
+                                                        $PartidoNextDobleWO->jugador_rival_juego = 0;
+                                                    } else {
+                                                        $PartidoNextDobleWO->jugador_ganador_uno_id = $PartidoNextDobleWO->jugador_rival_uno_id;
+                                                        $PartidoNextDobleWO->jugador_ganador_dos_id = $PartidoNextDobleWO->jugador_rival_dos_id;
+                                                        $PartidoNextDobleWO->jugador_local_set = 0;
+                                                        $PartidoNextDobleWO->jugador_local_juego = 0;
+                                                        $PartidoNextDobleWO->jugador_rival_set = 2;
+                                                        $PartidoNextDobleWO->jugador_rival_juego = 12;
+                                                    }
+                                                    
+                                                    $PartidoNextDobleWO->save();
+                                                    
+                                                    // Continuar la cascada al siguiente nivel si es necesario
+                                                    if($PartidoNextDobleWO->fase > 1) {
+                                                        $SiguienteFaseCascadaDobleWO = ($PartidoNextDobleWO->fase/2);
+                                                        
+                                                        $PartidoNextCascadaDobleWO = Partido::where('torneo_id', $PartidoNextDobleWO->torneo_id)
+                                                            ->where('torneo_categoria_id', $PartidoNextDobleWO->torneo_categoria_id)
+                                                            ->where('fase', $SiguienteFaseCascadaDobleWO)
+                                                            ->whereIn('bloque', $SiguienteFaseCascadaDobleWO == 1 ? [1] : ($SiguienteFaseCascadaDobleWO == 2 ? (in_array($PartidoNextDobleWO->bloque, [1, 3]) ? [1] : [2]) : [$PartidoNextDobleWO->bloque]))
+                                                            ->where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+                                                            ->first();
+                                                        
+                                                        if($PartidoNextCascadaDobleWO == null) {
+                                                            $PartidoNextCascadaDobleWO = new Partido();
+                                                            $PartidoNextCascadaDobleWO->torneo_id = $PartidoNextDobleWO->torneo_id;
+                                                            $PartidoNextCascadaDobleWO->torneo_categoria_id = $PartidoNextDobleWO->torneo_categoria_id;
+                                                            $PartidoNextCascadaDobleWO->estado_id = App::$ESTADO_PENDIENTE;
+                                                            $PartidoNextCascadaDobleWO->multiple = $PartidoNextDobleWO->multiple;
+                                                            $PartidoNextCascadaDobleWO->fecha_inicio = Carbon::parse($PartidoNextDobleWO->fecha_final)->addDays(1);
+                                                            $PartidoNextCascadaDobleWO->fecha_final = Carbon::parse($PartidoNextDobleWO->fecha_final)->addDays(7);
+                                                            $PartidoNextCascadaDobleWO->user_create_id = Auth::guard('web')->user()->id;
+                                                            $PartidoNextCascadaDobleWO->fase = $SiguienteFaseCascadaDobleWO;
+                                                            if($PartidoNextDobleWO->fase == 16){
+                                                                $PartidoNextCascadaDobleWO->position = $PartidoNextDobleWO->bracket == 'upper' ? 1 : 2;
+                                                            }else{
+                                                                $PartidoNextCascadaDobleWO->position = $PartidoNextDobleWO->position;
+                                                            }
+                                                            $PartidoNextCascadaDobleWO->bloque = $SiguienteFaseCascadaDobleWO == 1 ? 1 : (in_array($PartidoNextDobleWO->fase, [16, 8]) ? $PartidoNextDobleWO->bloque : (in_array($PartidoNextDobleWO->bloque, [1, 3]) ? 1 : 2));
+                                                            $PartidoNextCascadaDobleWO->comunidad_id = Auth::guard('web')->user()->comunidad_id;
+                                                        }
+                                                        
+                                                        // Asignar el ganador a la siguiente ronda usando la misma lógica de posición
+                                                        if($PartidoNextDobleWO->fase == 2) {
+                                                            // En semifinal a final: posicionamiento basado en estructura del bracket
+                                                            // Bloque 1 = semifinal superior izquierda → posición local (arriba)
+                                                            // Bloque 2 = semifinal inferior derecha → posición rival (abajo)
+                                                            if($PartidoNextDobleWO->bloque == 1) {
+                                                                $PartidoNextCascadaDobleWO->jugador_local_uno_id = $PartidoNextDobleWO->jugador_ganador_uno_id;
+                                                                $PartidoNextCascadaDobleWO->jugador_local_dos_id = $PartidoNextDobleWO->jugador_ganador_dos_id;
+                                                                // NO marcar BYE en la final - solo colocar al ganador del lado izquierdo
+                                                            } else { // bloque 2
+                                                                $PartidoNextCascadaDobleWO->jugador_rival_uno_id = $PartidoNextDobleWO->jugador_ganador_uno_id;
+                                                                $PartidoNextCascadaDobleWO->jugador_rival_dos_id = $PartidoNextDobleWO->jugador_ganador_dos_id;
+                                                                // NO marcar BYE en la final - solo colocar al ganador del lado derecho
+                                                            }
+                                                        } else {
+                                                            if(in_array($PartidoNextDobleWO->bloque, [1, 2])) {
+                                                                $PartidoNextCascadaDobleWO->jugador_local_uno_id = $PartidoNextDobleWO->jugador_ganador_uno_id;
+                                                                $PartidoNextCascadaDobleWO->jugador_local_dos_id = $PartidoNextDobleWO->jugador_ganador_dos_id;
+                                                                // NO marcar BYE automáticamente - solo colocar al ganador
+                                                            } else {
+                                                                $PartidoNextCascadaDobleWO->jugador_rival_uno_id = $PartidoNextDobleWO->jugador_ganador_uno_id;
+                                                                $PartidoNextCascadaDobleWO->jugador_rival_dos_id = $PartidoNextDobleWO->jugador_ganador_dos_id;
+                                                                // NO marcar BYE automáticamente - solo colocar al ganador
+                                                            }
+                                                        }
+                                                        
+                                                        $PartidoNextCascadaDobleWO->save();
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
