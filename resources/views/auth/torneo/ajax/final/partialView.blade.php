@@ -15,7 +15,7 @@
                 <input type="hidden" id="id" name="id" value="{{ $Model != null ? $Model->id : 0 }}" readonly>
                 <input type="hidden" id="estado_id" name="estado_id" value="{{ $Model->estado_id }}" readonly>
                 <input type="hidden" id="position" name="position" value="{{ $Position }}" readonly>
-                <input type="hidden" value="{{ $Model->fase }}">
+                <input type="hidden" id="fase" name="fase" value="{{ $Model->fase }}" readonly>
                 <div class="modal-body">
                     <div class="form-group row">
                         <div class="col-sm-4">
@@ -142,12 +142,21 @@
 
         $resultado.on("change", function (){
             const $this = $(this);
+            const fase = parseInt($("#fase").val());
+            
             if(["wo", "w.o", "WO", "W.O"].includes($this.val())){
                 $jugador_local_set.val(2);
                 $jugador_local_juego.val(12);
                 $jugador_rival_set.val(0);
                 $jugador_rival_juego.val(0);
             }else if(["-"].includes($this.val())){
+                // Verificar si estamos en la final (fase = 1)
+                if(fase === 1) {
+                    alert("No se permite doble WO en la final. Por favor, ingrese un resultado válido.");
+                    $this.val(""); // Limpiar el campo
+                    return;
+                }
+                
                 // Remover validaciones requeridas cuando el resultado es "-" (doble WO)
                 $("#jugador_local_id, #jugador_rival_id, #jugador_local_set, #jugador_local_juego, #jugador_rival_set, #jugador_rival_juego").removeAttr("required");
                 
@@ -160,10 +169,8 @@
                 // Limpiar selección de ganadores ya que es doble WO
                 $("#jugador_local_id, #jugador_rival_id").val("");
                 
-                // Mostrar mensaje informativo sobre doble WO
-                if(!$(".doble-wo-info").length) {
-                    $("#resultado").after('<div class="doble-wo-info alert alert-info mt-2"><small><i class="fa fa-info-circle"></i> Doble WO: Ningún jugador se presentó. El siguiente partido será marcado como BYE.</small></div>');
-                }
+                // Deshabilitar los campos para que no se puedan seleccionar
+                $("#jugador_local_id, #jugador_rival_id, #jugador_local_set, #jugador_local_juego, #jugador_rival_set, #jugador_rival_juego").prop("disabled", true);
             }else if(["0"].includes($this.val())){
                 const formData = new FormData();
                 formData.append('_token', $("meta[name=csrf-token]").attr("content"));
@@ -222,8 +229,8 @@
                 // Restaurar validaciones requeridas para cualquier otro valor
                 $("#jugador_local_id, #jugador_rival_id, #jugador_local_set, #jugador_local_juego, #jugador_rival_set, #jugador_rival_juego").attr("required", "required");
                 
-                // Remover mensaje de doble WO si existe
-                $(".doble-wo-info").remove();
+                // Habilitar los campos nuevamente
+                $("#jugador_local_id, #jugador_rival_id, #jugador_local_set, #jugador_local_juego, #jugador_rival_set, #jugador_rival_juego").prop("disabled", false);
                 
                 const sets = $this.val().split('/');
                 if(sets.length > 0){

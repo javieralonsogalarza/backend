@@ -3915,6 +3915,19 @@ return response()->json(['data' => $mergedPlayers]);
     
         try {
             DB::beginTransaction();
+            
+            // Validar que no se permita doble WO en la final
+            if ($request->resultado === '-') {
+                $Partido = Partido::where('id', $request->id)
+                    ->where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
+                    ->first();
+                
+                if ($Partido && $Partido->fase == 1) {
+                    $Result->Message = "No se permite doble WO en la final. Por favor, ingrese un resultado válido.";
+                    DB::rollBack();
+                    return response()->json($Result);
+                }
+            }
     
         $request->merge([
             'fecha_actual' => Carbon::now()->toDateString(),
@@ -4172,12 +4185,26 @@ return response()->json(['data' => $mergedPlayers]);
                                                 }
                                                 
                                                 // Asignar el ganador del BYE a la siguiente ronda  
-                                                if($PartidoNext->jugador_local_uno_id != null) {
-                                                    $PartidoNextBye->jugador_local_uno_id = $PartidoNext->jugador_ganador_uno_id;
-                                                    $PartidoNextBye->jugador_local_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                // Determinar posición basada en bloque y fase
+                                                if($PartidoNext->fase == 2) {
+                                                     if($PartidoNext->jugador_local_uno_id != null) {
+                                                        $PartidoNextBye->jugador_local_uno_id = $PartidoNext->jugador_ganador_uno_id;
+                                                        $PartidoNextBye->jugador_local_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                    } else {
+                                                        $PartidoNextBye->jugador_rival_uno_id = $PartidoNext->jugador_ganador_uno_id;
+                                                        $PartidoNextBye->jugador_rival_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                    }
+                                                   
                                                 } else {
-                                                    $PartidoNextBye->jugador_rival_uno_id = $PartidoNext->jugador_ganador_uno_id;
-                                                    $PartidoNextBye->jugador_rival_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                    // Para otras fases: usar posición 1 si bloque es impar, posición 2 si bloque es par
+                                                    // En semifinal: bloques 1,2 van a posición 1 (arriba), bloques 3,4 van a posición 2 (abajo)
+                                                    if(in_array($PartidoNext->bloque, [1, 2])) {
+                                                        $PartidoNextBye->jugador_local_uno_id = $PartidoNext->jugador_ganador_uno_id;
+                                                        $PartidoNextBye->jugador_local_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                    } else {
+                                                        $PartidoNextBye->jugador_rival_uno_id = $PartidoNext->jugador_ganador_uno_id;
+                                                        $PartidoNextBye->jugador_rival_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                    }
                                                 }
                                                 
                                                 $PartidoNextBye->save();
@@ -4379,12 +4406,26 @@ return response()->json(['data' => $mergedPlayers]);
                                             }
                                             
                                             // Asignar el ganador del BYE a la siguiente ronda
-                                            if( $PartidoNext->jugador_local_uno_id != null) {
-                                                $PartidoNextDobleWO->jugador_local_uno_id = $PartidoNext->jugador_ganador_uno_id;
-                                                $PartidoNextDobleWO->jugador_local_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                            // Determinar posición basada en bloque y fase
+                                            if($PartidoNext->fase == 2) {
+                                                // En semifinal: bloques 1,2 van a posición 1 (arriba), bloques 3,4 van a posición 2 (abajo)
+                                   
+                                                           // Para otras fases: usar posición 1 si bloque es impar, posición 2 si bloque es par
+                                                if($PartidoNext->jugador_local_uno_id != null) {
+                                                    $PartidoNextDobleWO->jugador_local_uno_id = $PartidoNext->jugador_ganador_uno_id;
+                                                    $PartidoNextDobleWO->jugador_local_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                } else {
+                                                    $PartidoNextDobleWO->jugador_rival_uno_id = $PartidoNext->jugador_ganador_uno_id;
+                                                    $PartidoNextDobleWO->jugador_rival_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                }
                                             } else {
-                                                $PartidoNextDobleWO->jugador_rival_uno_id = $PartidoNext->jugador_ganador_uno_id;
-                                                $PartidoNextDobleWO->jugador_rival_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                  if(in_array($PartidoNext->bloque, [1, 2])) {
+                                                    $PartidoNextDobleWO->jugador_local_uno_id = $PartidoNext->jugador_ganador_uno_id;
+                                                    $PartidoNextDobleWO->jugador_local_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                } else {
+                                                    $PartidoNextDobleWO->jugador_rival_uno_id = $PartidoNext->jugador_ganador_uno_id;
+                                                    $PartidoNextDobleWO->jugador_rival_dos_id = $PartidoNext->jugador_ganador_dos_id;
+                                                }
                                             }
                                             
                                             $PartidoNextDobleWO->save();
