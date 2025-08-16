@@ -147,6 +147,23 @@
                 $jugador_local_juego.val(12);
                 $jugador_rival_set.val(0);
                 $jugador_rival_juego.val(0);
+            }else if(["-"].includes($this.val())){
+                // Remover validaciones requeridas cuando el resultado es "-" (doble WO)
+                $("#jugador_local_id, #jugador_rival_id, #jugador_local_set, #jugador_local_juego, #jugador_rival_set, #jugador_rival_juego").removeAttr("required");
+                
+                // Para doble WO, establecer valores en 0 para ambos jugadores
+                $jugador_local_set.val("0");
+                $jugador_local_juego.val("0");
+                $jugador_rival_set.val("0");
+                $jugador_rival_juego.val("0");
+                
+                // Limpiar selección de ganadores ya que es doble WO
+                $("#jugador_local_id, #jugador_rival_id").val("");
+                
+                // Mostrar mensaje informativo sobre doble WO
+                if(!$(".doble-wo-info").length) {
+                    $("#resultado").after('<div class="doble-wo-info alert alert-info mt-2"><small><i class="fa fa-info-circle"></i> Doble WO: Ningún jugador se presentó. El siguiente partido será marcado como BYE.</small></div>');
+                }
             }else if(["0"].includes($this.val())){
                 const formData = new FormData();
                 formData.append('_token', $("meta[name=csrf-token]").attr("content"));
@@ -202,6 +219,12 @@
             }
             
             else {
+                // Restaurar validaciones requeridas para cualquier otro valor
+                $("#jugador_local_id, #jugador_rival_id, #jugador_local_set, #jugador_local_juego, #jugador_rival_set, #jugador_rival_juego").attr("required", "required");
+                
+                // Remover mensaje de doble WO si existe
+                $(".doble-wo-info").remove();
+                
                 const sets = $this.val().split('/');
                 if(sets.length > 0){
                     let setsLocal = 0; let gamesLocal = 0; let setsRival = 0; let gamesRival = 0;
