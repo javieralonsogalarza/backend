@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Date Edit Feature</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { padding: 8px; width: 100%; max-width: 300px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin-top: 20px; padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; }
+    </style>
+</head>
+<body>
+    <h1>Test: Flexible Date Editing Feature</h1>
+    
+    <h2>Feature Requirements Test:</h2>
+    <ul>
+        <li>✅ Date inputs are editable in the match table</li>
+        <li>✅ Modal appears when date is changed asking for scope</li>
+        <li>✅ Two options: "Solo este partido" or "Toda la categoría"</li>
+        <li>✅ Only applies to matches without results</li>
+        <li>✅ Only affects round robin phase (fase 1)</li>
+    </ul>
+    
+    <h2>Implementation Details:</h2>
+    <div class="result">
+        <h3>Frontend Changes:</h3>
+        <ul>
+            <li>✅ Modified date inputs to include additional data attributes</li>
+            <li>✅ Added classes for date editing: <code>date-input-editable</code></li>
+            <li>✅ Added condition to disable inputs when matches have results</li>
+            <li>✅ Created modal for scope selection: <code>dateEditModal</code></li>
+            <li>✅ Implemented JavaScript event handlers for date changes</li>
+        </ul>
+        
+        <h3>Backend Changes:</h3>
+        <ul>
+            <li>✅ Created new controller method: <code>updateMatchDates()</code></li>
+            <li>✅ Added route: <code>POST /auth/torneo/partido/update-dates</code></li>
+            <li>✅ Implemented validation and security checks</li>
+            <li>✅ Support for both single match and category-wide updates</li>
+        </ul>
+        
+        <h3>Key Features:</h3>
+        <ul>
+            <li>✅ <strong>Flexible Scope:</strong> User can choose between single match or entire category</li>
+            <li>✅ <strong>Result Protection:</strong> Only matches without results can be modified</li>
+            <li>✅ <strong>Phase Restriction:</strong> Category-wide updates only affect round robin phase (fase 1)</li>
+            <li>✅ <strong>Security:</strong> Validates user permissions and tournament ownership</li>
+            <li>✅ <strong>User Experience:</strong> Clear modal with explanatory text</li>
+        </ul>
+        
+        <h3>Code Structure:</h3>
+        <ul>
+            <li>✅ <strong>View:</strong> Modified <code>index.blade.php</code> with enhanced date inputs</li>
+            <li>✅ <strong>JavaScript:</strong> Event handlers for date changes and modal interactions</li>
+            <li>✅ <strong>Controller:</strong> New method in <code>TorneoController</code></li>
+            <li>✅ <strong>Route:</strong> Added to web.php with proper middleware</li>
+        </ul>
+    </div>
+    
+    <h2>Testing Scenarios:</h2>
+    <div class="result">
+        <h3>Scenario 1: Single Match Date Edit</h3>
+        <p>1. User changes a date in a match without result</p>
+        <p>2. Modal appears with scope options</p>
+        <p>3. User selects "Solo este partido"</p>
+        <p>4. Only that specific match date is updated</p>
+        
+        <h3>Scenario 2: Category-wide Date Edit</h3>
+        <p>1. User changes a date in any match</p>
+        <p>2. Modal appears with scope options</p>
+        <p>3. User selects "Toda la categoría"</p>
+        <p>4. All matches in the category (round robin, no results) are updated</p>
+        
+        <h3>Scenario 3: Protected Match</h3>
+        <p>1. Match with result has date input disabled</p>
+        <p>2. Cannot be modified</p>
+        
+        <h3>Scenario 4: Validation</h3>
+        <p>1. Invalid requests are rejected with error messages</p>
+        <p>2. User permissions are validated</p>
+    </div>
+    
+    <h2>Usage Instructions:</h2>
+    <div class="result">
+        <ol>
+            <li>Navigate to tournament group view with scheduled matches</li>
+            <li>Find the "Partidos Programados" section</li>
+            <li>Change any date in the "Fecha Inicio" or "Fecha Final" columns</li>
+            <li>Modal will appear asking for scope</li>
+            <li>Choose "Solo este partido" for single match or "Toda la categoría" for all matches</li>
+            <li>Dates will be updated according to selection</li>
+        </ol>
+        
+        <p><strong>Note:</strong> Only matches without results (empty, "-", or null) can have their dates modified.</p>
+    </div>
+</body>
+</html>

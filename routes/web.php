@@ -168,6 +168,7 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::post('partido/store', [Auth\TorneoController::class, 'partidoStore'])->name('partido.store');
                             Route::post('partido/reset', [Auth\TorneoController::class, 'partidoReset'])->name('partido.reset');
                             Route::post('partido/storeMultiple', [Auth\TorneoController::class, 'partidoStoreMultiple'])->name('partido.store.multiple');
+                            Route::post('partido/update-dates', [Auth\TorneoController::class, 'updateMatchDates'])->name('partido.update.dates');
 
                             Route::get('partido/export/json', [Auth\TorneoController::class, 'partidoGenerateJson'])->name('partido.generate.json');
 
@@ -321,7 +322,8 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::get('torneo', [Auth\ReporteController::class, 'torneo'])->name('torneo');
                             Route::get('torneo/exportar/pdf/{torneo}/{categoria}', [Auth\ReporteController::class, 'torneoExportarPdf'])->name('torneoExportarPdf');
                             Route::get('torneo/fase-final/exportar/pdf/{torneo}/{categoria}', [Auth\ReporteController::class, 'torneoFaseFinalExportarPdf'])->name('torneoFaseFinalExportarPdf');
-                            Route::get('torneo/jugadores-clasificados/exportar/pdf/{torneo}/{categoria}', [Auth\ReporteController::class, 'jugadoresClasificadosExportarPdf'])->name('jugadoresClasificadosExportarPdf');
+                                                        Route::get('torneo/jugadores-clasificados/exportar/pdf/{torneo}/{categoria}', [Auth\ReporteController::class, 'jugadoresClasificadosExportarPdf'])->name('jugadoresClasificadosExportarPdf');
+
                             Route::get('torneoPartialView', [Auth\ReporteController::class, 'torneoPartialView'])->name('torneoPartialView');
                             
                             Route::get('h2h', [Auth\ReporteController::class, 'h2h'])->name('h2h');

@@ -226,7 +226,9 @@ public function getTorneoFinales(Request $request)
           $Result->Success = true;
         $Result->Data = [
             'titulo' => $torneo->nombre,
-            'finales' => $finales
+            'finales' => $finales,
+                        'imagen_comunidad' => url('auth/public-imagen/' . Auth::guard('web')->user()->comunidad_id . '/reportes')
+
         ];
         
         // Statistics

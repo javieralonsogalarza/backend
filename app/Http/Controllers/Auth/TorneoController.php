@@ -910,7 +910,7 @@ class TorneoController extends Controller
     }
 
     /*TORNEO FASE FINAL*/
-    public function faseFinal($torneo, $torneo_categoria_id, $landing=false, $vista = true)
+  public function faseFinal($torneo, $torneo_categoria_id, $landing=false, $vista = true)
     {
         $ComunidadId = $landing ? Comunidad::where('principal', true)->first()->id : Auth::guard('web')->user()->comunidad_id;
 
@@ -7930,7 +7930,7 @@ $TorneoFaseFinal = (object)[
                 'partido' => $Partido->id,
                 'torneo_categoria_id' => $Partido->torneoCategoria->id,
                 'categoria_id' => $Partido->torneoCategoria->categoriaSimple->id,
-                'imagen_comunidad' => url('/public-imagen/' . $Partido->comunidad_id . '/reportes')
+                'imagen_comunidad' => url('auth/public-imagen/' . $Partido->comunidad_id . '/reportes')
 
             ];
 
@@ -8056,7 +8056,7 @@ public function partidoGenerateJson(Request $request)
                 'torneo_categoria_id' => $Partido->torneoCategoria->id,
                 'categoria_id' => $Partido->torneoCategoria->categoriaSimple->id,
                 'imagen_path' => $imagePath, // Agregar la ruta de la imagen,
-                'imagen_comunidad' => url('/auth/public-imagen/' . $Partido->comunidad_id . '/reportes')
+                'imagen_comunidad' => url('auth/public-imagen/' . $Partido->comunidad_id . '/reportes')
             ];
 
             $content = json_encode($model);
@@ -23904,7 +23904,9 @@ public function exportMapaJsonFiguras(Request $request)
                     'categoria' => $TorneoCategoria->multiple && ($TorneoCategoria->categoriaSimple->id !== $TorneoCategoria->categoriaDupla->id) ? ($TorneoCategoria->categoriaSimple->nombre . " + " . $TorneoCategoria->categoriaDupla->nombre) : ($TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoCategoria->multiple ? "" : ""),
                     'fecha_inicio' => Carbon::parse($TorneoCategoria->torneo->fecha_inicio)->format('Y-m-d'),
                     'fecha_final' => Carbon::parse($TorneoCategoria->torneo->fecha_final)->format('Y-m-d'),
-                    'jugadores' => []
+                    'jugadores' => [],
+                    'imagen_comunidad' => url(path: 'auth/public-imagen/' . Auth::guard('web')->user()->comunidad_id . '/reportes')
+
                 ];
 
             $jugadoresConNumero = [];
@@ -24130,7 +24132,9 @@ public function exportMapaJsonFiguras(Request $request)
             'grupo' => [
                 'nombre' => $grupo->nombre_grupo,
                 'partidos' => $partidos
-            ]
+            ],
+            'imagen_comunidad' => url(path: 'auth/public-imagen/' . Auth::guard('web')->user()->comunidad_id . '/reportes')
+
         ];
 
         // Generar contenido JSON
@@ -24187,7 +24191,9 @@ public function exportMapaJsonFiguras(Request $request)
                     'categoria' => $TorneoCategoria->multiple && ($TorneoCategoria->categoriaSimple->id !== $TorneoCategoria->categoriaDupla->id) ? ($TorneoCategoria->categoriaSimple->nombre . " + " . $TorneoCategoria->categoriaDupla->nombre) : ($TorneoCategoria->categoriaSimple->nombre) . "" . ($TorneoCategoria->multiple ? "" : ""),
                     'fecha_inicio' => Carbon::parse($TorneoCategoria->torneo->fecha_inicio)->format('Y-m-d'),
                     'fecha_final' => Carbon::parse($TorneoCategoria->torneo->fecha_final)->format('Y-m-d'),
-                    'grupos' => []
+                    'grupos' => [],
+                    'imagen_comunidad' => url(path: 'auth/public-imagen/' . Auth::guard('web')->user()->comunidad_id . '/reportes')
+
                 ];
 
                 $TorneoGrupos = TorneoGrupo::where('torneo_categoria_id', $request->categoria)->where('torneo_id', $request->torneo)
@@ -24602,6 +24608,8 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
                     'jugador_local_tamano' => $partido->tamano_local,
                     'jugador_rival_tamano' => $partido->tamano_rival,
                     'resultado_time' => $partido->resultado_timestamp,
+                    'imagen_comunidad' => url(path: 'auth/public-imagen/' . Auth::guard('web')->user()->comunidad_id . '/reportes')
+
 
                 ];
         
@@ -24638,6 +24646,8 @@ if ($categoria_simple_id == null || $categoria_simple_id == 'null') {
                 'partidos_rival' => $resultados_rival ? $resultados_rival : [],
                 'partido_vs' => $resultados_vs ?  $resultados_vs : [],
                 'nombre_categoria' => $nombre_categoria,
+                                    'imagen_comunidad' => url(path: 'auth/public-imagen/' . Auth::guard('web')->user()->comunidad_id . '/reportes')
+
 
             ];
         }
@@ -25131,7 +25141,9 @@ public function rankingsPartialViewFama(Request $request)
             ->orderBy('id', 'desc')
             ->get() as $categoria)
         {
-            $Object = ['categoria_id' => $categoria->id, 'categoria_name' => $categoria->nombre, 'multiple' => $categoria->dupla, 'jugadores' => []];
+            $Object = ['categoria_id' => $categoria->id, 'categoria_name' => $categoria->nombre, 'multiple' => $categoria->dupla, 'jugadores' => [], 
+                        'imagen_comunidad' => url('auth/public-imagen/' . Auth::guard('web')->user()->comunidad_id . '/reportes') 
+];
             
             // Obtener rankings para esta categoría
             $rankingsCategorias = $Rankings->filter(function($ranking) use ($categoria) {
@@ -25164,6 +25176,7 @@ public function rankingsPartialViewFama(Request $request)
                             'nombre' => $categoria->dupla 
                                 ? ($campeon->jugadorSimple->nombre_completo . ' + ' . $campeon->jugadorDupla->nombre_completo) 
                                 : $campeon->jugadorSimple->nombre_completo,
+                                                    'imagen_comunidad' => url(path: 'auth/public-imagen/' . Auth::guard('web')->user()->comunidad_id . '/reportes'),
                             'torneos' => [
                                 [
                                     'id' => $ranking->torneo_id,
@@ -25191,7 +25204,9 @@ public function rankingsPartialViewFama(Request $request)
                                     'puntos' => $campeon->puntos,
                                     'torneo_categoria_id' => $ranking->torneo_categoria_id
                                 ]
-                            ]
+                                ],
+                                'imagen_comunidad' => url(path: 'auth/public-imagen/' . Auth::guard('web')->user()->comunidad_id . '/reportes')
+
                         ];
                         $campeones[$indice]['puntos'] += $campeon->puntos;
                     }
@@ -25344,7 +25359,7 @@ public function rankingsPartialViewFama(Request $request)
             {
                 $Object = []; $JugadoresIds = [];
                 $TorneoCategoria = TorneoCategoria::where('categoria_simple_id', $q->id)->get();
-
+                $Object['imagen_comunidad'] = url('auth/public-imagen/' . Auth::guard('web')->user()->comunidad_id . '/reportes') ;
                 $Object['all'] = $request->all ;
                 $Object['filter_jugador'] = $request->filter_jugador;
                 $Object['categoria_id'] = $q->id;
@@ -25967,6 +25982,106 @@ public function grupoDeleteUnique(Request $request)
 
     } catch (\Exception $e) {
         $Result->Message = $e->getMessage();
+        DB::rollBack();
+    }
+
+    return response()->json($Result);
+}
+
+public function updateMatchDates(Request $request)
+{
+    $Result = (object)['Success' => false, 'Message' => null, 'success' => false];
+
+    try {
+        DB::beginTransaction();
+
+        $validator = Validator::make($request->all(), [
+            'match_id' => 'required|integer',
+            'field' => 'required|in:fecha_inicio,fecha_final',
+            'new_value' => 'required|date',
+            'scope' => 'required|in:single,category',
+            'torneo_id' => 'required|integer',
+            'category_id' => 'required_if:scope,category|integer'
+        ]);
+
+        if ($validator->fails()) {
+            $Result->Message = 'Datos de entrada no válidos';
+            return response()->json($Result);
+        }
+
+        // Verificar que el partido existe y pertenece al torneo de la comunidad del usuario
+        $partido = Partido::where('id', $request->match_id)
+            ->where('torneo_id', $request->torneo_id)
+            ->whereHas('torneo', function ($q) {
+                $q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);
+            })
+            ->first();
+
+        if (!$partido) {
+            $Result->Message = 'El partido especificado no existe o no tiene permisos para modificarlo';
+            return response()->json($Result);
+        }
+
+        // Verificar que el partido no tenga resultado (está en fase 1 - round robin)
+        if (!empty($partido->resultado) && trim($partido->resultado) !== '-') {
+            $Result->Message = 'No se puede modificar la fecha de un partido que ya tiene resultado';
+            return response()->json($Result);
+        }
+
+        $field = $request->field;
+        $newValue = $request->new_value;
+        $updatedCount = 0;
+
+        if ($request->scope === 'single') {
+            // Actualizar solo el partido específico
+            $partido->$field = $newValue;
+            $partido->save();
+            $updatedCount = 1;
+            
+            $Result->Message = 'Fecha del partido actualizada correctamente';
+        } else {
+            // Actualizar toda la categoría en fase 1 (round robin)
+            $categoryId = $request->category_id;
+            
+            // Verificar que la categoría existe y pertenece al torneo
+            $torneoCategoria = TorneoCategoria::where('id', $categoryId)
+                ->where('torneo_id', $request->torneo_id)
+                ->whereHas('torneo', function ($q) {
+                    $q->where('comunidad_id', Auth::guard('web')->user()->comunidad_id);
+                })
+                ->first();
+
+            if (!$torneoCategoria) {
+                $Result->Message = 'La categoría especificada no existe o no tiene permisos para modificarla';
+                return response()->json($Result);
+            }
+
+            // Obtener el valor original de la fecha del partido específico
+            $originalValue = $partido->$field;
+
+            // Actualizar solo los partidos de la categoría que tengan la misma fecha original y no tengan resultado (fase 1)
+            $updatedCount = Partido::where('torneo_id', $request->torneo_id)
+                ->where('torneo_categoria_id', $categoryId)
+                ->where($field, $originalValue) // Solo partidos con la misma fecha original
+                ->whereNull('fase') // Solo fase 1 (round robin)
+                ->where(function($q) {
+                    $q->whereNull('resultado')
+                      ->orWhere('resultado', '')
+                      ->orWhere('resultado', '-');
+                })
+                ->update([$field => $newValue]);
+
+            $fieldLabel = $field === 'fecha_inicio' ? 'fecha de inicio' : 'fecha final';
+            $Result->Message = "Se actualizó la {$fieldLabel} de {$updatedCount} partidos de la categoría";
+        }
+
+        DB::commit();
+        $Result->Success = true;
+        $Result->success = true;
+        $Result->updated_count = $updatedCount;
+
+    } catch (\Exception $e) {
+        $Result->Message = "Error al actualizar las fechas: " . $e->getMessage();
         DB::rollBack();
     }
 

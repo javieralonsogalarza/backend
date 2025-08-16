@@ -418,8 +418,8 @@
                                                                             {{ $q->multiple ? $q6->jugadorRivalUno->nombre_completo.' + '.$q6->jugadorRivalDos->nombre_completo : $q6->jugadorRivalUno->nombre_completo_temporal }}
                                                                         </td>  
                                                                             
-                                                                            <td><input type="date" value="{{ \Carbon\Carbon::parse($q6->fecha_inicio)->format('Y-m-d') }}" class="form-input" id="fecha_inicio_{{$q6->id}}" name="fecha_inicio_{{$q6->id}}" {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disabled" : "" }}></td>
-                                                                            <td><input type="date" value="{{ \Carbon\Carbon::parse($q6->fecha_final)->format('Y-m-d') }}" class="form-input" id="fecha_final_{{$q6->id}}" name="fecha_final_{{$q6->id}}" {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disabled" : "" }}></td>
+                                                                            <td><input type="date" value="{{ \Carbon\Carbon::parse($q6->fecha_inicio)->format('Y-m-d') }}" class="form-input date-input-editable" id="fecha_inicio_{{$q6->id}}" name="fecha_inicio_{{$q6->id}}" data-match-id="{{ $q6->id }}" data-category-id="{{ $q->id }}" data-group-id="{{ $q4->grupo_id }}" data-field="fecha_inicio" data-original-value="{{ \Carbon\Carbon::parse($q6->fecha_inicio)->format('Y-m-d') }}" {{ $q6->estado_id == $App::$ESTADO_FINALIZADO || !empty($q6->resultado) && trim($q6->resultado) !== '-' ? "disabled" : "" }}></td>
+                                                                            <td><input type="date" value="{{ \Carbon\Carbon::parse($q6->fecha_final)->format('Y-m-d') }}" class="form-input date-input-editable" id="fecha_final_{{$q6->id}}" name="fecha_final_{{$q6->id}}" data-match-id="{{ $q6->id }}" data-category-id="{{ $q->id }}" data-group-id="{{ $q4->grupo_id }}" data-field="fecha_final" data-original-value="{{ \Carbon\Carbon::parse($q6->fecha_final)->format('Y-m-d') }}" {{ $q6->estado_id == $App::$ESTADO_FINALIZADO || !empty($q6->resultado) && trim($q6->resultado) !== '-' ? "disabled" : "" }}></td>
                                                                             <td width="100"><input value="{{ $q6->resultado }}" type="text" id="resultado_{{$q6->id}}" name="resultado_{{$q6->id}}" class="form-input result-input" {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disabled" : "" }} data-category="{{ $q->id }}" data-target="#custom-tabs-grupo-{{ $q->id }}-{{ $q4->grupo_id }}"  data-local="{{$q6->jugadorLocalUno->id}}" data-rival="{{$q6->jugadorRivalUno->id}}"  data-multiple="{{$q->multiple}}"></td>
                                                                             <td>
                                                                                 <select id="jugador_local_id_{{$q6->id}}" name="jugador_local_id_{{$q6->id}}" class="form-input" {{ $q6->estado_id == $App::$ESTADO_FINALIZADO ? "disabled" : "" }}>
@@ -519,6 +519,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="editPlayerModal" role="dialog" tabindex="-1" data-backdrop="static" aria-labelledby="editPlayerModalLabel">
     <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -2102,6 +2103,164 @@ $btnReportePartidosExcel.on("click", function (){
     
 
 });
+
+// Date editing functionality wrapped in IIFE to avoid variable conflicts
+(function() {
+    // Variables para el manejo de fechas (scoped to this function)
+    let currentDateInput = null;
+    let originalDateValue = null;
+    let newDateValue = null;
+
+    // Only initialize if not already initialized
+    if (typeof window.dateEditingInitialized === 'undefined') {
+        window.dateEditingInitialized = true;
+
+        // Manejo de cambios en fechas
+        $(document).on('change', '.date-input-editable', function() {
+            const $input = $(this);
+            currentDateInput = $input;
+            originalDateValue = $input.data('original-value');
+            newDateValue = $input.val();
+            
+            // Si el valor no cambió, no hacer nada
+            if (originalDateValue === newDateValue) {
+                return;
+            }
+            
+            const fieldType = $input.data('field') === 'fecha_inicio' ? 'fecha de inicio' : 'fecha final';
+            const questionText = `¿Desea cambiar la ${fieldType} de ${originalDateValue} a ${newDateValue}?`;
+            
+            // Usar SweetAlert para la confirmación
+            Swal.fire({
+                icon: 'question',
+                title: "Editar Fecha",
+                html: `${questionText}<br><br><small style="color: #666;">Nota: Solo se aplicará a partidos que no tengan resultado definido.</small>`,
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#dc3545',
+                confirmButtonText: 'Solo este partido',
+                cancelButtonText: 'Cancelar',
+                showDenyButton: true,
+                denyButtonColor: '#17a2b8',
+                denyButtonText: 'Toda la categoría',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Aplicar solo a este partido
+                    updateMatchDate($input.data('match-id'), $input.data('field'), newDateValue, 'single', null, $input, originalDateValue);
+                } else if (result.isDenied) {
+                    // Aplicar a toda la categoría
+                    updateMatchDate(
+                        $input.data('match-id'), 
+                        $input.data('field'), 
+                        newDateValue, 
+                        'category',
+                        $input.data('category-id'),
+                        $input,
+                        originalDateValue
+                    );
+                } else {
+                    // Cancelado - revertir el valor
+                    $input.val(originalDateValue);
+                }
+            });
+        });
+
+    }
+
+    // Función para actualizar fechas (global scope so it can be called from event handlers)
+    window.updateMatchDate = function(matchId, field, newValue, scope, categoryId = null, inputRef = null, originalValue = null) {
+        // Conservar referencias locales para evitar problemas con variables globales
+        const currentInput = inputRef || currentDateInput;
+        const originalVal = originalValue || originalDateValue;
+        const formData = new FormData();
+        formData.append('_token', $("meta[name=csrf-token]").attr("content"));
+        formData.append('match_id', matchId);
+        formData.append('field', field);
+        formData.append('new_value', newValue);
+        formData.append('scope', scope);
+        formData.append('torneo_id', {{ $Model->id }});
+        
+        if (categoryId) {
+            formData.append('category_id', categoryId);
+        }
+        
+        // Mostrar loading
+        const loadingToast = Swal.fire({
+            title: 'Actualizando fechas...',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        $.ajax({
+            url: '/auth/torneo/partido/update-dates',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                loadingToast.close();
+                
+                if (response && response.success) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: response.Message || response.message || 'Fechas actualizadas correctamente'
+                    });
+                    
+                    // Verificar que tenemos una referencia válida al input antes de acceder a sus propiedades
+                    if (currentInput && currentInput.length > 0) {
+                        const categoryId = currentInput.data('category-id');
+                        if (categoryId) {
+                            invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $Model->id }}/${categoryId}`, function(data){
+                                $("#main").addClass("hidden");
+                                $("#info").removeClass("hidden").html("").append(data);
+                            });
+                        }
+                    } else {
+                        // Si no tenemos referencia al input, recargar la página
+                        location.reload();
+                    }
+                } else {
+                    // Revertir el cambio en caso de error
+                    if (currentInput && currentInput.length > 0 && originalVal) {
+                        currentInput.val(originalVal);
+                    }
+                    Toast.fire({
+                        icon: 'error',
+                        title: (response && (response.Message || response.message)) || 'Error al actualizar las fechas'
+                    });
+                }
+            },
+            error: function(xhr) {
+                loadingToast.close();
+                
+                // Revertir el cambio en caso de error
+                if (currentInput && currentInput.length > 0 && originalVal) {
+                    currentInput.val(originalVal);
+                }
+                
+                let errorMessage = 'Error al actualizar las fechas';
+                if (xhr && xhr.responseJSON) {
+                    if (xhr.responseJSON.Message) {
+                        errorMessage = xhr.responseJSON.Message;
+                    } else if (xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                }
+                
+                Toast.fire({
+                    icon: 'error',
+                    title: errorMessage
+                });
+            }
+        });
+    };
+
+})(); // End of IIFE
 
 </script>
 
