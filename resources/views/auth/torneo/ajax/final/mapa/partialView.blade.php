@@ -266,7 +266,7 @@
                                     style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                     data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes numero-1">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -274,7 +274,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes numero-2">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -301,7 +301,7 @@
                                     style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                     data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes numero-3">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -309,7 +309,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes numero-4">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -336,7 +336,7 @@
                                     style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                     data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes numero-5">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -344,7 +344,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes numero-6">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -371,7 +371,7 @@
                                     style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                     data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes numero-7">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -379,7 +379,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes numero-8">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -414,7 +414,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-9">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -422,7 +422,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-10">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -443,10 +443,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-11">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-12">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -467,7 +467,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-13">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -475,7 +475,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-14">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -495,10 +495,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-15">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-16">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -519,7 +519,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-17">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -527,7 +527,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-18">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -546,10 +546,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-19">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-20">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -570,7 +570,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-21">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -578,7 +578,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-22">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -598,10 +598,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes b">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes c">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -613,22 +613,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes d">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
-                                    </tr>
-                                </table>
-                        </div>
-                            </div>
-                        <div style="display: grid;align-items: center; height: 100%;position: relative;top: 10px;">
-                        <div class="text-center position-relative">
-                                <table class="table table-bordered table-striped mb-0">
-                                    <tr>
-                                        <td class="text-center color-participantes">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes e">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -637,10 +625,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes f">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes g">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -649,10 +637,22 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes h">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes i">-</td>
+                                    </tr>
+                                </table>
+                        </div>
+                            </div>
+                        <div style="display: grid;align-items: center; height: 100%;position: relative;top: 10px;">
+                        <div class="text-center position-relative">
+                                <table class="table table-bordered table-striped mb-0">
+                                    <tr>
+                                        <td class="text-center color-participantes j">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center color-participantes k">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -673,7 +673,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-23">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -681,7 +681,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-24">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -700,10 +700,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-25">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-26">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -724,7 +724,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-27">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -732,7 +732,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-28">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -751,10 +751,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-29">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-30">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -774,7 +774,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-31">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -782,7 +782,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes numero-32">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -800,10 +800,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-33">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes numero-34">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -825,7 +825,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes 11">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -833,7 +833,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes 12">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -853,10 +853,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes 13">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes 14">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -869,22 +869,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes 15">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
-                                    </tr>
-                                </table>
-                        </div>
-                            </div>
-                            <div style="display: grid;align-items: center; height: 100%;position: relative;top: 10px;">
-                        <div class="text-center position-relative">
-                                <table class="table table-bordered table-striped mb-0">
-                                    <tr>
-                                        <td class="text-center color-participantes">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes 16">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -893,10 +881,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes 17">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes 18">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -905,10 +893,22 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes 19">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwqw">-</td>
+                                    </tr>
+                                </table>
+                        </div>
+                            </div>
+                            <div style="display: grid;align-items: center; height: 100%;position: relative;top: 10px;">
+                        <div class="text-center position-relative">
+                                <table class="table table-bordered table-striped mb-0">
+                                    <tr>
+                                        <td class="text-center color-participantes qwqww">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center color-participantes qwdqww">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -929,7 +929,7 @@
                                         data-manual="{{ $TorneoFaseFinal->TorneoCategoria->manual }}" data-position="1"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
 
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_local_uno_id != null)
@@ -938,7 +938,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwsdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -958,10 +958,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwscdsqww">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwsecdsqww">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -973,7 +973,7 @@
                                         data-manual="{{ $TorneoFaseFinal->TorneoCategoria->manual }}" data-position="2"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwscecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -982,7 +982,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwsccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
 
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_rival_uno_id != null)
@@ -1003,10 +1003,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwsdccecdsqww">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwsddccecdsqww">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -1015,20 +1015,20 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwvsddccecdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwrvsddccecdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwrvbsddccecdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwrvcbsddccecdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1044,7 +1044,7 @@
                                         data-position="1"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwrvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1052,7 +1052,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwxrvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-")  }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1071,10 +1071,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwxarvvcbsddccecdsqww">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwxbarvvcbsddccecdsqww">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -1087,7 +1087,7 @@
                                         data-position="2"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwcxbarvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1095,7 +1095,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwwcxbarvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1114,10 +1114,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwwccxbarvvcbsddccecdsqww">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwwnccxbarvvcbsddccecdsqww">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -1126,20 +1126,20 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwewdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qweqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1159,7 +1159,7 @@
                                     data-position="1"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwvecqwdnccxbarvvcbsddccecdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1167,7 +1167,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwdvecqwdnccxbarvvcbsddccecdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1186,10 +1186,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwdwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1204,7 +1204,7 @@
                                     data-position="2"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwdddwvecqwdnccxbarvvcbsddccecdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1212,7 +1212,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwddddwvecqwdnccxbarvvcbsddccecdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1231,10 +1231,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwdddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1254,7 +1254,7 @@
                                     data-position="1"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwdddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1262,7 +1262,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwddddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1281,10 +1281,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwddcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwcddcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1310,7 +1310,7 @@
                                     style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                     data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwcdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1318,7 +1318,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwcadvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1345,7 +1345,7 @@
                                     style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                     data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwcaAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1353,7 +1353,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwcaDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1382,7 +1382,7 @@
                                         data-manual="{{ $TorneoFaseFinal->TorneoCategoria->manual }}" data-position="1"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwcaEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
 
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_local_uno_id != null)
@@ -1391,7 +1391,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwcaCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 1)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1411,10 +1411,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwcaCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwcCaCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -1426,7 +1426,7 @@
                                         data-manual="{{ $TorneoFaseFinal->TorneoCategoria->manual }}" data-position="2"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwcCCaCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1435,7 +1435,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwcCC2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
 
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 1)->where('position', 2)->first()->jugador_rival_uno_id != null)
@@ -1456,10 +1456,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwcCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwcCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -1468,20 +1468,20 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwcCDCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwcCDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwcCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwcSCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1497,7 +1497,7 @@
                                         data-position="1"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwcSFCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1505,7 +1505,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwcSDFCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-")  }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 1)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1524,10 +1524,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwcSDSFCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwcSDSDFCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -1540,7 +1540,7 @@
                                         data-position="2"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwcSDDSDFCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1548,7 +1548,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qwcSDDDSDFCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 3)->where('position', 2)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1567,10 +1567,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwcSDDDDSDFCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwcSDDDDDSDFCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -1579,20 +1579,20 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwcSDDDDDDSDFCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwcSDSDDDDDSDFCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwcSDDSDDDDDSDFCSDCCCD2aCCEDAdvdcddddddwvecqwdnccxbarvvcbsddccecdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes Qcdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1612,7 +1612,7 @@
                                     data-position="1"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1620,7 +1620,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1639,10 +1639,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWERcdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWERTcdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1657,7 +1657,7 @@
                                     data-position="2"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWERTYcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1665,7 +1665,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWERTYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1684,10 +1684,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWERTIYUcdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWERTIOYUcdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1707,7 +1707,7 @@
                                     data-position="1"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWERTPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1715,7 +1715,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEQRTPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1734,10 +1734,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEQRTSPIOYUcdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEQRTASPIOYUcdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1759,7 +1759,7 @@
                                     style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                     data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEQRDTASPIOYUcdsqww">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1767,7 +1767,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEQRDQTASPIOYUcdsqww">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1792,7 +1792,7 @@
                                     style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                     data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEQWRDQTASPIOYUcdsqww">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1800,7 +1800,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEQWWRDQTASPIOYUcdsqww">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1827,7 +1827,7 @@
                                     data-position="1"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEQQWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1835,7 +1835,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEQQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1854,10 +1854,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEQcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEsQcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1872,7 +1872,7 @@
                                     data-position="2"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEsQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1880,7 +1880,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEsdQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1899,10 +1899,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEsdsQwcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEsdssQwcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1922,7 +1922,7 @@
                                     style="cursor: pointer"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEsdsssQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1930,7 +1930,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEsdssssQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1949,10 +1949,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEsdsssssQwcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEsdssssssQwcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -1972,7 +1972,7 @@
                                     data-position="1"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->id  }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEsdsssssssQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->whereNotNull('fase')->first()->multiple ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos != null ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : "-") : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno != null ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal : "-")) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1980,7 +1980,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEsdssssssssQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->whereNotNull('fase')->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-")  }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 1)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -1999,10 +1999,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEsdsssssssssQwcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -2018,7 +2018,7 @@
                                     data-position="2"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->id  }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEsssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->whereNotNull('fase')->first()->multiple ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos != null ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalDos->nombre_completo : "-") : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno != null ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorLocalUno->nombre_completo_temporal : "-")) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2026,7 +2026,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEssssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->whereNotNull('fase')->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalDos->nombre_completo_temporal : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugadorRivalUno->nombre_completo_temporal) : "-")  }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 3)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2045,10 +2045,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEsssssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEscssssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -2068,7 +2068,7 @@
                                     style="cursor: pointer"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEsccssssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2076,7 +2076,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEscccssssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2095,10 +2095,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEsccccssssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEscccccssssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -2119,7 +2119,7 @@
                                     style="cursor: pointer"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEsccscccssssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2127,7 +2127,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes QWEscccscccssssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 1)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2146,10 +2146,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes QWEsvzcccscccssssdsssssssssQwcQFWWRDQTASPIOYUcdsqww">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes 21">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -2208,7 +2208,7 @@
                                 style="cursor: pointer"
                                 data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->id }}">
                                 <tr>
-                                    <td class="text-center color-participantes">
+                                    <td class="text-center color-participantes a">
                                         {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                         @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugador_local_uno_id != null)
                                             <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2216,7 +2216,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center color-participantes">
+                                    <td class="text-center color-participantes asd">
                                         {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                         @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 1)->first()->jugador_rival_uno_id != null)
                                             <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2233,10 +2233,10 @@
                         @else
                             <table class="table table-bordered table-striped mb-0">
                                 <tr>
-                                    <td class="text-center color-participantes">-</td>
+                                    <td class="text-center color-participantes ccc">-</td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center color-participantes">-</td>
+                                    <td class="text-center color-participantes ccsc">-</td>
                                 </tr>
                             </table>
                         @endif
@@ -2272,7 +2272,7 @@
                                     data-position="2"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes cccsc">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2280,7 +2280,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes csccsc">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2299,10 +2299,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qcsccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qcssccsc">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -2321,7 +2321,7 @@
                                     data-position="1"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qccssccsc">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2329,7 +2329,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qcscssccsc">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2348,10 +2348,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qacscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qascscssccsc">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -2366,7 +2366,7 @@
                                     data-position="2"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qsascscssccsc">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2374,7 +2374,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qsaascscssccsc">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2393,10 +2393,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qssaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -2416,7 +2416,7 @@
                                         data-position="1"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qsassaascscssccsc">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2424,7 +2424,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qsaassaascscssccsc">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2443,10 +2443,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qssaassaascscssccsc">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qsscaassaascscssccsc">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -2459,7 +2459,7 @@
                                         data-position="2"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qssscaassaascscssccsc">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2467,7 +2467,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qscsscaassaascscssccsc">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2486,10 +2486,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qsscsscaassaascscssccsc">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qcsscsscaassaascscssccsc">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -2498,20 +2498,20 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qcwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qcqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                             </div>
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qcsqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qcsqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -2527,7 +2527,7 @@
                                         data-position="1"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qcsdqqwsscsscaassaascscssccsc">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2535,7 +2535,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qcsdcqqwsscsscaassaascscssccsc">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2554,10 +2554,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qcsdvcqqwsscsscaassaascscssccsc">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qcsdzvcqqwsscsscaassaascscssccsc">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -2570,7 +2570,7 @@
                                         data-position="2"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qcsdszvcqqwsscsscaassaascscssccsc">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2578,7 +2578,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes qqcsdszvcqqwsscsscaassaascscssccsc">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2597,10 +2597,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qqwcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes qwqwcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -2609,20 +2609,20 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwqswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwqwswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                             </div>
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwqqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -2647,7 +2647,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2655,7 +2655,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwzqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2676,10 +2676,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwzwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwszwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -2700,7 +2700,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2708,7 +2708,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsfrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2728,10 +2728,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsfrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -2752,7 +2752,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2760,7 +2760,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2779,10 +2779,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -2803,7 +2803,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2811,7 +2811,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2831,10 +2831,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsfrrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -2846,22 +2846,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsdfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
-                                    </tr>
-                                </table>
-                        </div>
-                            </div>
-                        <div style="display: grid;align-items: center; height: 100%;position: relative;top: 10px;">
-                        <div class="text-center position-relative">
-                                <table class="table table-bordered table-striped mb-0">
-                                    <tr>
-                                        <td class="text-center color-participantes">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsrdfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -2870,10 +2858,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsrddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -2882,10 +2870,22 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwdssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
+                                    </tr>
+                                </table>
+                        </div>
+                            </div>
+                        <div style="display: grid;align-items: center; height: 100%;position: relative;top: 10px;">
+                        <div class="text-center position-relative">
+                                <table class="table table-bordered table-striped mb-0">
+                                    <tr>
+                                        <td class="text-center color-participantes qwsdssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center color-participantes qwsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -2906,7 +2906,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwssddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2914,7 +2914,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsdsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2933,10 +2933,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsvddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -2957,7 +2957,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsvxddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2965,7 +2965,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsvaxddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -2984,10 +2984,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsvaexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsvasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -3007,7 +3007,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsvaasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3015,7 +3015,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsvasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3033,10 +3033,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -3058,7 +3058,7 @@
                                             style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                             data-id="{{ $q->id }}">
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3066,7 +3066,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="text-center color-participantes">
+                                                <td class="text-center color-participantes qwsaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                                     {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                                     @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                         <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3086,10 +3086,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -3102,22 +3102,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
-                                    </tr>
-                                </table>
-                        </div>
-                            </div>
-                            <div style="display: grid;align-items: center; height: 100%;position: relative;top: 10px;">
-                        <div class="text-center position-relative">
-                                <table class="table table-bordered table-striped mb-0">
-                                    <tr>
-                                        <td class="text-center color-participantes">-</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -3126,10 +3114,10 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -3138,10 +3126,22 @@
                         <div class="text-center position-relative">
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsaaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes qwsaaaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
+                                    </tr>
+                                </table>
+                        </div>
+                            </div>
+                            <div style="display: grid;align-items: center; height: 100%;position: relative;top: 10px;">
+                        <div class="text-center position-relative">
+                                <table class="table table-bordered table-striped mb-0">
+                                    <tr>
+                                        <td class="text-center color-participantes qwsaaaaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center color-participantes qwsaawaaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">-</td>
                                     </tr>
                                 </table>
                         </div>
@@ -3164,7 +3164,7 @@
                                     data-position="{{ ($bloque2A++ % 2) == 0 ? "1" : "2"  }}"
                                     data-bracket="{{ in_array($bloque2A, [2, 3]) ? "upper" : "lower" }}" data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwsaaswaaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                         @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3172,7 +3172,7 @@
                                             </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qwsasaswaaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3200,7 +3200,7 @@
                                     data-position="{{ ($bloque4A++ % 2) == 0 ? "2" : "1"  }}"
                                     data-bracket="{{ in_array($bloque4A, [2, 3]) ? "upper" : "lower" }}" data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qswsasaswaaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                         @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3208,7 +3208,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qsawsasaswaaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3236,7 +3236,7 @@
                                     data-position="{{ ($bloque6A++ % 2) == 0 ? "2" : "1"  }}"
                                     data-bracket="{{ in_array($bloque6A, [2, 3]) ? "upper" : "lower" }}" data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qsaawsasaswaaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                         @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3244,7 +3244,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qsaawasasaswaaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3272,7 +3272,7 @@
                                     data-position="{{ ($bloque8A++ % 2) == 0 ? "2" : "1"  }}"
                                     data-bracket="{{ in_array($bloque8A, [2, 3]) ? "upper" : "lower" }}" data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes qsaacwasasaswaaaaaaaaaavasasexddsddssrdddfrfrrrrrfrrrazwqcqswswcsdszvcqqwsscsscaassaascscssccsc">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3311,7 +3311,7 @@
                                     data-position="2"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes m">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3319,7 +3319,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mm">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3338,10 +3338,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mmm">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mmmm">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -3360,7 +3360,7 @@
                                     data-position="1"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mmmnm">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3368,7 +3368,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mmbmnm">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3387,10 +3387,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mbmbmnm">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mbmvbmnm">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -3405,7 +3405,7 @@
                                     data-position="2"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mbmbvbmnm">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3413,7 +3413,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mbvmbvbmnm">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3432,10 +3432,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mbvbmbvbmnm">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mbvbvmbvbmnm">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -3455,7 +3455,7 @@
                                         data-position="1"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes mbvhbvmbvbmnm">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3463,7 +3463,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes mbvghbvmbvbmnm">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 1)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3482,10 +3482,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes mfbvghbvmbvbmnm">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes mfbtvghbvmbvbmnm">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -3498,7 +3498,7 @@
                                         data-position="2"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes mfbdtvghbvmbvbmnm">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3506,7 +3506,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes mfbcvdtvghbvmbvbmnm">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 2)->where('position', 2)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3525,10 +3525,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes mfbvcvdtvghbvmbvbmnm">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes mfbvvcvdtvghbvmbvbmnm">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -3537,20 +3537,20 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfbvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfbvvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                 </table>
                             </div>
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfbvvvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfbvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -3566,7 +3566,7 @@
                                         data-position="1"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes mfbgvvcvvvcvdtvghbvmbvbmnm">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3574,7 +3574,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes mfbxgvvcvvvcvdtvghbvmbvbmnm">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 1)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3593,10 +3593,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes mfbxgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes mfbxcgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -3609,7 +3609,7 @@
                                         data-position="2"
                                         data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->id }}">
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes mfbxacgzvvcvvvcvdtvghbvmbvbmnm">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_local_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3617,7 +3617,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">
+                                            <td class="text-center color-participantes mfbxxacgzvvcvvvcvdtvghbvmbvbmnm">
                                                 {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                                 @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 8)->where('bloque', 4)->where('position', 2)->first()->jugador_rival_uno_id != null)
                                                     <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3636,10 +3636,10 @@
                                 <div>
                                     <table class="table table-bordered table-striped mb-0">
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes mfbxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                         </tr>
                                         <tr>
-                                            <td class="text-center color-participantes">-</td>
+                                            <td class="text-center color-participantes mfbxzxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -3648,20 +3648,20 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfbxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfbaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                 </table>
                             </div>
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfbxaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfbxaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -3682,7 +3682,7 @@
                                     data-position="{{ ($bloque2A++ % 2) == 0 ? "2" : "1"  }}"
                                     data-bracket="{{ in_array($bloque2A, [2, 3]) ? "upper" : "lower" }}" data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfbexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                         @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3690,7 +3690,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfbqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3718,7 +3718,7 @@
                                     data-position="{{ ($bloque4A++ % 2) == 0 ? "2" : "1"  }}"
                                     data-bracket="{{ in_array($bloque4A, [2, 3]) ? "upper" : "lower" }}" data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfsbqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3726,7 +3726,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfsbxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3757,7 +3757,7 @@
                                     style="cursor: pointer"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfsbzxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3765,7 +3765,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfsbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3784,10 +3784,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfcsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -3806,7 +3806,7 @@
                                     data-position="1"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfczsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3814,7 +3814,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfczvsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($q->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-")  }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3834,10 +3834,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfczevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfczzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -3853,7 +3853,7 @@
                                     data-position="2"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfczxzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3861,7 +3861,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfcazxzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($q->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-")  }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3880,10 +3880,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfcazaxzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfcaazaxzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -3903,7 +3903,7 @@
                                     style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                     data-position="{{ ($bloque2A++ % 2) == 0 ? "2" : "1"  }}" data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfcasazaxzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3911,7 +3911,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfcasdazaxzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3936,7 +3936,7 @@
                                     style="cursor: {{ $q->buy && !$TorneoFaseFinal->TorneoCategoria->manual ? "auto" : "pointer" }}"
                                     data-position="{{ ($bloque4A++ % 2) == 0 ? "2" : "1"  }}" data-id="{{ $q->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfcarsdazaxzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ $q->jugadorLocalUno != null ? ($q->multiple ? ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo : "-") . ' + ' . ($q->jugadorLocalDos != null ? $q->jugadorLocalDos->nombre_completo : "-") : ($q->jugadorLocalUno != null ? $q->jugadorLocalUno->nombre_completo_temporal : "-")) : ($q->buy_all ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_local_uno_id && $q->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3944,7 +3944,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfcasrsdazaxzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ $q->jugadorRivalUno != null ? (!$TorneoFaseFinal->TorneoCategoria->manual && $q->buy ? "BYE" : ($q->multiple ? ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo : "-") . ' + ' . ($q->jugadorRivalDos != null ? $q->jugadorRivalDos->nombre_completo : "-") : ($q->jugadorRivalUno != null ? $q->jugadorRivalUno->nombre_completo_temporal : "-"))) : ($q->buy ? "BYE" : "-") }}
                                             @if($q->jugador_ganador_uno_id == $q->jugador_rival_uno_id && $q->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3974,7 +3974,7 @@
                                     style="cursor: pointer"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfcasxrsdazaxzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -3982,7 +3982,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes mfcaszxrsdazaxzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">
                                             {{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -4001,10 +4001,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes mfcavszxrsdazaxzevsxbazxqexaaxzxxzacgzvvcvvvcvdtvghbvmbvbmnm">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes zz">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -4023,7 +4023,7 @@
                                     style="cursor: pointer"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes zxz">
                                             {{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -4031,7 +4031,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes zxdz">
                                             {{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->whereNotNull('fase')->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 2)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -4051,10 +4051,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes zxsdz">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes zxesdz">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -4070,7 +4070,7 @@
                                     style="cursor: pointer"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes zxxesdz">
                                             {{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -4078,7 +4078,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes zcxxesdz">
                                             {{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->whereNotNull('fase')->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugadorRivalUno->nombre_completo_temporal) : "-")  }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 4)->where('bloque', 4)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -4097,10 +4097,10 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes zcxxxesdz">-</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes zcvxxxesdz">-</td>
                                     </tr>
                                 </table>
                             </div>
@@ -4121,7 +4121,7 @@
                                     style="cursor: pointer"
                                     data-id="{{ $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->id }}">
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes zcfvxxxesdz">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy_all ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorLocalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_local_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -4129,7 +4129,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-center color-participantes">
+                                        <td class="text-center color-participantes zcxfvxxxesdz">
                                             {{ !$TorneoFaseFinal->TorneoCategoria->manual && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->buy ? "BYE" : ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno != null ? ($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->multiple ? $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo . ' + ' . $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalDos->nombre_completo : $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugadorRivalUno->nombre_completo_temporal) : "-") }}
                                             @if($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_ganador_uno_id == $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id && $TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('fase', 2)->where('bloque', 2)->first()->jugador_rival_uno_id != null)
                                                 <i class="fas fa-check text-success" style="margin-left: 9px;"></i>
@@ -4149,7 +4149,7 @@
                             <div>
                                 <table class="table table-bordered table-striped mb-0">
                                     <tr>
-                                        <td class="text-center color-participantes">-</td>
+                                        <td class="text-center color-participantes zfcxfvxxxesdz">-</td>
                                     </tr>
                                     <tr>
                                         <td class="text-center color-participantes">-</td>
