@@ -3979,7 +3979,7 @@ return response()->json(['data' => $mergedPlayers]);
                             $Partido->resultado = $request->resultado;
                             $Partido->estado_id = $request->estado_id;
                             $Partido->user_update_id = Auth::guard('web')->user()->id;
-    
+                     
                             if ($Partido->save()) {
                                 if($Partido->estado_id == App::$ESTADO_FINALIZADO && $Partido->fase > 1) {
                                     $PartidoNextWiouthBuy = null;
@@ -4093,6 +4093,8 @@ return response()->json(['data' => $mergedPlayers]);
                                             }
                                         })
                                         ->where('comunidad_id', Auth::guard('web')->user()->comunidad_id)->first();
+
+                                     
     
                                         if($PartidoNext == null) {
                                             $PartidoNext = new Partido();
@@ -4118,7 +4120,7 @@ return response()->json(['data' => $mergedPlayers]);
                                     $PartidoNext->comunidad_id = Auth::guard('web')->user()->comunidad_id;
                                     
                                     // Solo asignar jugadores si NO es doble WO y las posiciones están realmente vacías para evitar duplicados
-                                    if($request->resultado !== '-') {
+                                    
                                        
                                     if($request->position == 1) {
                                         // Verificar que la posición local esté vacía antes de asignar
@@ -4133,9 +4135,11 @@ return response()->json(['data' => $mergedPlayers]);
                                             $PartidoNext->jugador_rival_dos_id = $Partido->jugador_ganador_dos_id;
                                         }
                                     }
-                                    }
+                                    
     
                                     if($PartidoNext->buy) $PartidoNextWiouthBuy = $PartidoNext;
+
+                 
     
                                     if($PartidoNext->save()) {
                                         // Verificar si el partido tiene BYE y finalizarlo automáticamente
@@ -4359,7 +4363,21 @@ return response()->json(['data' => $mergedPlayers]);
     
                                             // Solo asignar jugadores a posiciones que estén realmente vacías para evitar duplicados
                                             // Y solo si el partido con BYE realmente tiene un jugador presente
-                                 
+                                            if($PartidoNextWiouthBuy->jugador_local_uno_id != null || $PartidoNextWiouthBuy->jugador_rival_uno_id != null) {
+                                                // Determinar qué jugador está presente en el partido con BYE
+                                                $jugadorPresenteId = $PartidoNextWiouthBuy->jugador_local_uno_id ?? $PartidoNextWiouthBuy->jugador_rival_uno_id;
+                                                $jugadorPresenteDosId = $PartidoNextWiouthBuy->jugador_local_dos_id ?? $PartidoNextWiouthBuy->jugador_rival_dos_id;
+                                                
+                                                if($PartidoNext2->jugador_local_uno_id == null && $PartidoNext2->jugador_local_dos_id == null) {
+                                                    // Posición local está vacía, asignar aquí
+                                                    $PartidoNext2->jugador_local_uno_id = $jugadorPresenteId;
+                                                    $PartidoNext2->jugador_local_dos_id = $jugadorPresenteDosId;
+                                                } else if($PartidoNext2->jugador_rival_uno_id == null && $PartidoNext2->jugador_rival_dos_id == null) {
+                                                    // Posición rival está vacía, asignar aquí
+                                                    $PartidoNext2->jugador_rival_uno_id = $jugadorPresenteId;
+                                                    $PartidoNext2->jugador_rival_dos_id = $jugadorPresenteDosId;
+                                                }
+                                            }
                                             // Si no hay jugador presente en el BYE o ambas posiciones están ocupadas, no asignar
     
                                             if($PartidoNext2->save()) {
@@ -4488,20 +4506,29 @@ return response()->json(['data' => $mergedPlayers]);
                                     ->where('comunidad_id', Auth::guard('web')->user()->comunidad_id)
                                     ->first();
 
+                                
+
                                 if($PartidoNext == null) {
-                                    $PartidoNext = new Partido();
-                                    $PartidoNext->torneo_id = $Partido->torneo_id;
-                                    $PartidoNext->torneo_categoria_id = $Partido->torneo_categoria_id;
-                                    $PartidoNext->estado_id = App::$ESTADO_PENDIENTE;
-                                    $PartidoNext->multiple = $Partido->multiple;
-                                    $PartidoNext->fecha_inicio = Carbon::parse($Partido->fecha_final)->addDays(1);
-                                    $PartidoNext->fecha_final = Carbon::parse($Partido->fecha_final)->addDays(7);
-                                    $PartidoNext->user_create_id = Auth::guard('web')->user()->id;
-                                    $PartidoNext->fase = $SiguienteFase;
-                                    $PartidoNext->position = $Partido->position;
-                                    $PartidoNext->bloque = $SiguienteFase == 1 ? 1 : (in_array($Partido->fase, [16, 8]) ? $Partido->bloque : (in_array($Partido->bloque, [1, 3]) ? 1 : 2));
-                                    $PartidoNext->comunidad_id = Auth::guard('web')->user()->comunidad_id;
-                                }
+                                                                        if($PartidoNext == null) {
+                                            $PartidoNext = new Partido();
+                                            $PartidoNext->torneo_id = $Partido->torneo_id;
+                                            $PartidoNext->torneo_categoria_id = $Partido->torneo_categoria_id;
+                                            $PartidoNext->estado_id = App::$ESTADO_PENDIENTE;
+                                            $PartidoNext->multiple = $Partido->multiple;
+                                            $PartidoNext->fecha_inicio = Carbon::parse($Partido->fecha_final)->addDay(1);
+                                            $PartidoNext->fecha_final = Carbon::parse($Partido->fecha_final)->addDay(6);
+                                            $PartidoNext->user_create_id = Auth::guard('web')->user()->id;
+                                            $PartidoNext->fase = $SiguienteFase;
+                                            $PartidoNext->comunidad_id = Auth::guard('web')->user()->comunidad_id;
+                                            if($Partido->fase == 16){
+                                                $PartidoNext->position = $Partido->bracket == "upper" ? 1 : 2;
+                                            }else{
+                                                $PartidoNext->position = $Partido->position;
+                                            }
+                                            $PartidoNext->bloque = $SiguienteFase == 1 ? 1 : (in_array($Partido->fase, [16, 8]) ? $Partido->bloque : (in_array($Partido->bloque, [1, 3]) ? 1 : 2));
+                                        } else {
+                                            $PartidoNext->user_update_id = Auth::guard('web')->user()->id;
+                                        }                         }
 
                                 // Establecer BYE en la posición correspondiente para simular que nadie avanza
                                 if($request->position == 1) {
