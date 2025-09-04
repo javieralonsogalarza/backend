@@ -1,0 +1,62 @@
+.buttons-container {
+    margin-bottom: 10px;
+}
+
+#publicationMessages {
+    min-height: 30px;
+    margin-top: 10px;
+}
+
+.success-message, .unpublish-message {
+    background-color: #27ae60;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-family: "Anton";
+    margin-bottom: 10px;
+}
+
+.error-message {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-family: "Anton";
+    margin-bottom: 10px;
+}
+
+.report_social_media {
+    width: 140px;
+    border: 2px solid black;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    text-transform: uppercase;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 10px;
+    background: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.report_social_media > * {
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.report_social_media svg {
+    max-width: 20px;
+}
+
+.report_social_media:is(:hover, :focus) {
+    background: black;
+    color: white;
+}
+
+.report_social_media:is(:hover, :focus) svg {
+    fill: white;
+}

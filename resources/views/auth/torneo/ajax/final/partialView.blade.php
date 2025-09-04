@@ -40,10 +40,10 @@
                             <select name="jugador_local_id" id="jugador_local_id" class="form-control">
                                 <option value="" {{ $Model->estado_id == $App::$ESTADO_PENDIENTE ? "selected" : "" }}>Seleccione</option>
                                 @if($Model->jugadorLocalUno != null)
-                                <option value="{{ $Model->multiple ? ($Model->jugadorLocalUno->id.'-'.$Model->jugadorLocalDos->id) : $Model->jugadorLocalUno->id }}" {{ $Model->estado_id == $App::$ESTADO_PENDIENTE ? "" : ($Model->multiple ? (($Model->jugador_local_uno_id.'-'.$Model->jugador_local_dos_id) == ($Model->jugador_ganador_uno_id.'-'.$Model->jugador_ganador_dos_id) ? "selected" : "") : ($Model->jugador_local_uno_id == $Model->jugador_ganador_uno_id ? "selected" : "")) }}>{{ $Model->multiple ? ($Model->jugadorLocalUno->nombre_completo.' + '.$Model->jugadorLocalDos->nombre_completo) : $Model->jugadorLocalUno->nombre_completo }}</option>
+                                <option value="{{ $Model->multiple ? ($Model->jugadorLocalUno->id.'-'.$Model->jugadorLocalDos->id) : $Model->jugadorLocalUno->id }}" {{ $Model->estado_id == $App::$ESTADO_PENDIENTE ? "" : ($Model->multiple ? (($Model->jugador_local_uno_id.'-'.$Model->jugador_local_dos_id) == ($Model->jugador_ganador_uno_id.'-'.$Model->jugador_ganador_dos_id) ? "selected" : "") : ($Model->jugador_local_uno_id == $Model->jugador_ganador_uno_id ? "selected" : "")) }}>{{ $Model->multiple ? ($Model->jugadorLocalUno->nombre_completo.' + '.$Model->jugadorLocalDos->nombre_completo) : $Model->jugadorLocalUno->nombre_completo_temporal }}</option>
                                 @endif
                                 @if($Model->jugadorRivalUno != null)
-                                <option value="{{ $Model->multiple ? ($Model->jugadorRivalUno->id.'-'.$Model->jugadorRivalDos->id) : $Model->jugadorRivalUno->id }}" {{ $Model->estado_id == $App::$ESTADO_PENDIENTE ? "" : ($Model->multiple ? (($Model->jugador_rival_uno_id.'-'.$Model->jugador_rival_dos_id) == ($Model->jugador_ganador_uno_id.'-'.$Model->jugador_ganador_dos_id) ? "selected" : "") : ($Model->jugador_rival_uno_id == $Model->jugador_ganador_uno_id ? "selected" : "")) }}>{{ $Model->multiple ? ($Model->jugadorRivalUno->nombre_completo.' + '.$Model->jugadorRivalDos->nombre_completo) : $Model->jugadorRivalUno->nombre_completo }}</option>
+                                <option value="{{ $Model->multiple ? ($Model->jugadorRivalUno->id.'-'.$Model->jugadorRivalDos->id) : $Model->jugadorRivalUno->id }}" {{ $Model->estado_id == $App::$ESTADO_PENDIENTE ? "" : ($Model->multiple ? (($Model->jugador_rival_uno_id.'-'.$Model->jugador_rival_dos_id) == ($Model->jugador_ganador_uno_id.'-'.$Model->jugador_ganador_dos_id) ? "selected" : "") : ($Model->jugador_rival_uno_id == $Model->jugador_ganador_uno_id ? "selected" : "")) }}>{{ $Model->multiple ? ($Model->jugadorRivalUno->nombre_completo.' + '.$Model->jugadorRivalDos->nombre_completo) : $Model->jugadorRivalUno->nombre_completo_temporal }}</option>
                                 @endif
                             </select>
                             <span data-valmsg-for="jugador_local_id"></span>
@@ -65,10 +65,10 @@
                             <select name="jugador_rival_id" id="jugador_rival_id" class="form-control">
                                 <option value="" {{ $Model->estado_id == $App::$ESTADO_PENDIENTE ? "selected" : "" }}>Seleccione</option>
                                 @if($Model->jugadorLocalUno != null)
-                                <option value="{{ $Model->multiple ? ($Model->jugadorLocalUno->id.'-'.$Model->jugadorLocalDos->id) : $Model->jugadorLocalUno->id }}" {{ $Model->estado_id == $App::$ESTADO_PENDIENTE ? "" : ($Model->multiple ? (($Model->jugador_local_uno_id.'-'.$Model->jugador_local_dos_id) != ($Model->jugador_ganador_uno_id.'-'.$Model->jugador_ganador_dos_id) ? "selected" : "") : ($Model->jugador_local_uno_id != $Model->jugador_ganador_uno_id ? "selected" : "")) }}>{{ $Model->multiple ? ($Model->jugadorLocalUno->nombre_completo.' + '.$Model->jugadorLocalDos->nombre_completo) : $Model->jugadorLocalUno->nombre_completo }}</option>
+                                <option value="{{ $Model->multiple ? ($Model->jugadorLocalUno->id.'-'.$Model->jugadorLocalDos->id) : $Model->jugadorLocalUno->id }}" {{ $Model->estado_id == $App::$ESTADO_PENDIENTE ? "" : ($Model->multiple ? (($Model->jugador_local_uno_id.'-'.$Model->jugador_local_dos_id) != ($Model->jugador_ganador_uno_id.'-'.$Model->jugador_ganador_dos_id) ? "selected" : "") : ($Model->jugador_local_uno_id != $Model->jugador_ganador_uno_id ? "selected" : "")) }}>{{ $Model->multiple ? ($Model->jugadorLocalUno->nombre_completo.' + '.$Model->jugadorLocalDos->nombre_completo) : $Model->jugadorLocalUno->nombre_completo_temporal }}</option>
                                 @endif
                                 @if($Model->jugadorRivalUno != null)
-                                <option value="{{ $Model->multiple ? ($Model->jugadorRivalUno->id.'-'.$Model->jugadorRivalDos->id) : $Model->jugadorRivalUno->id }}" {{ $Model->estado_id == $App::$ESTADO_PENDIENTE ? "" : ($Model->multiple ? (($Model->jugador_rival_uno_id.'-'.$Model->jugador_rival_dos_id) != ($Model->jugador_ganador_uno_id.'-'.$Model->jugador_ganador_dos_id) ? "selected" : "") : ($Model->jugador_rival_uno_id != $Model->jugador_ganador_uno_id ? "selected" : "")) }}>{{ $Model->multiple ? ($Model->jugadorRivalUno->nombre_completo.' + '.$Model->jugadorRivalDos->nombre_completo) : $Model->jugadorRivalUno->nombre_completo }}</option>
+                                <option value="{{ $Model->multiple ? ($Model->jugadorRivalUno->id.'-'.$Model->jugadorRivalDos->id) : $Model->jugadorRivalUno->id }}" {{ $Model->estado_id == $App::$ESTADO_PENDIENTE ? "" : ($Model->multiple ? (($Model->jugador_rival_uno_id.'-'.$Model->jugador_rival_dos_id) != ($Model->jugador_ganador_uno_id.'-'.$Model->jugador_ganador_dos_id) ? "selected" : "") : ($Model->jugador_rival_uno_id != $Model->jugador_ganador_uno_id ? "selected" : "")) }}>{{ $Model->multiple ? ($Model->jugadorRivalUno->nombre_completo.' + '.$Model->jugadorRivalDos->nombre_completo) : $Model->jugadorRivalUno->nombre_completo_temporal }}</option>
                                 @endif
                             </select>
                             <span data-valmsg-for="jugador_rival_id"></span>
@@ -86,6 +86,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-generate-json-h2h pull-right">Descargar Reporte H2H</button>
                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
                     @if($Model->estado_id == $App::$ESTADO_PENDIENTE)
                         <button type="submit" class="btn btn-primary pull-right" data-id="{{ $App::$ESTADO_FINALIZADO }}">Finalizar</button>
@@ -96,6 +97,7 @@
                     @if($Model->estado_id == $App::$ESTADO_FINALIZADO)
                         <button type="button" class="btn btn-primary btn-generate-json pull-right">Generar Json</button>
                     @endif
+                     
                 </div>
             </form>
         </div>
@@ -120,6 +122,23 @@
         $(".btn-generate-json").on("click", function (){
             window.open(`/auth/{{strtolower($ViewName)}}/partido/export/json?id={{ $Model->id }}`);
         })
+        
+        $(".btn-generate-json-h2h").on("click", function (event) {
+            event.preventDefault(); // Prevenir la acción por defecto del enlace
+        
+            // Obtener los valores de los elementos de entrada
+            var jugadorLocalId = "{{ $Model->jugadorLocalUno->id }}";
+            var jugadorRivalId = "{{ $Model->jugadorRivalUno->id }}";
+        
+            // Asegúrate de que $Model esté disponible en el contexto adecuado
+            var torneoCategoriaId = "{{ $Model->TorneoCategoria->id }}";
+        
+            // Construir la URL con los parámetros
+            var url = `/auth/torneo/h2h/${jugadorLocalId}/${jugadorRivalId}/${torneoCategoriaId}/null/null/json`;
+        
+            // Redirigir a la URL
+            window.open(url, '_blank');
+        });
 
         $resultado.on("change", function (){
             const $this = $(this);
@@ -142,7 +161,47 @@
                         $modal.modal("hide");
                     }
                 });
-            }else {
+            }
+            
+            else if ($this.val().toLowerCase().includes("ret")) {
+                console.log("aa", $this.val().toLowerCase().replace(/(\(ret\)|ret)/gi, "").trim())
+                const cleanedValue = $this.val().toLowerCase().replace(/(\(ret\)|ret)/gi, "").trim();
+                const sets = cleanedValue.split('/');
+                let setsLocalnew = 0; let gamesLocal = 0; let setsRivalew = 0; let gamesRival = 0;
+
+                if(sets.length > 0){
+                    $.each(sets, function (i, v){
+                        const games = v.split('-');
+                        let $GameLeft = parseInt(games[0].match(/\d+/)[0]);
+                        let $GameRight = parseInt(games[1].match(/\d+/)[0]);
+                        if(i <= 1){
+                            console.log("sets.length",sets.length)
+                            if(i == 1 && sets.length != 3){
+                            if (games.includes('6')) 
+                            {
+                                console.log("entro",games)
+                                $GameLeft = 7
+                            }else{
+                                $GameLeft = 6
+                            }
+                              
+                            }
+                            gamesLocal += $GameLeft;
+                            gamesRival += $GameRight;
+
+                           
+                        }
+                        if($GameLeft > $GameRight) setsLocalnew+=1;
+                        else if($GameRight > $GameLeft)  setsRivalew+=1;
+                    });
+                  
+
+                }
+                $jugador_local_set.val(setsLocalnew); $jugador_local_juego.val(gamesLocal);
+                $jugador_rival_set.val(setsRivalew); $jugador_rival_juego.val(gamesRival);
+            }
+            
+            else {
                 const sets = $this.val().split('/');
                 if(sets.length > 0){
                     let setsLocal = 0; let gamesLocal = 0; let setsRival = 0; let gamesRival = 0;
@@ -163,9 +222,64 @@
             }
         });
 
+
+
+        $("#jugador_local_id").on("change", function () {
+            const selectedValue = $(this).val();
+            $("#jugador_rival_id option").each(function () {
+                if ($(this).val() !== selectedValue) {
+                    $(this).prop("selected", true);
+                } else {
+                    $(this).prop("selected", false);
+                }
+            });
+        });
+
+        $("#jugador_rival_id").on("change", function () {
+            const selectedValue = $(this).val();
+            $("#jugador_local_id option").each(function () {
+                if ($(this).val() !== selectedValue) {
+                    $(this).prop("selected", true);
+                } else {
+                    $(this).prop("selected", false);
+                }
+            });
+        });
+
         $("button[type=submit]").on("click", function (){ const $this = $(this); $("#estado_id").val($this.attr("data-id"));  })
 
-        OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}FinalPartido"), $modal);
-        OnFailure{{$ViewName}} = () => onFailureForm();
+        OnSuccess{{$ViewName}} = (data) => {
+    // Primero ejecuta la función original
+    onSuccessForm(data, $("form#frm{{$ViewName}}FinalPartido"), $modal);
+    
+    // Obtener el ID del partido desde los datos de respuesta o de un elemento
+    const partidoId = {{ $Model->id }} // Ajusta esto según tu estructura de datos
+    
+    // Después ejecuta la llamada AJAX
+    $.ajax({
+        url: '/auth/resultadoranking',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            partido_id: partidoId,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        },
+        success: function(response) {
+            if (response.Success) {
+                console.log('Ranking actualizado correctamente');
+            } else {
+                console.error('Error al actualizar ranking:', response.Message);
+            }
+        }
+    });
+};
+
+OnFailure{{$ViewName}} = () => onFailureForm();
     })
 </script>
+

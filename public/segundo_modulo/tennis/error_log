@@ -1,0 +1,798 @@
+[09-Dec-2024 01:09:51 UTC] PHP Warning:  file_get_contents(http://localhost/storage/public/uploads/matches/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 44
+[15-Dec-2024 07:47:39 UTC] PHP Warning:  file_get_contents(http://localhost/storage/public/uploads/matches/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 44
+[15-Dec-2024 07:47:47 UTC] PHP Warning:  file_get_contents(http://localhost/storage/public/uploads/matches/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 44
+[15-Dec-2024 07:47:54 UTC] PHP Warning:  file_get_contents(http://localhost/storage/public/uploads/matches/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 44
+[15-Dec-2024 07:48:10 UTC] PHP Warning:  file_get_contents(http://localhost/storage/public/uploads/matches/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 44
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 08:58:32 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 08:58:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 08:59:15 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 09:01:30 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 16
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 17
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 18
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 19
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Undefined variable $datos in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 09:01:31 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Undefined variable $jsonData in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 8
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 31
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 32
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 33
+[21-Feb-2025 09:06:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 34
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Undefined variable $jsonData in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 8
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 31
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 32
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 33
+[21-Feb-2025 09:06:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 34
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Undefined variable $jsonData in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 8
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 31
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 32
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 33
+[21-Feb-2025 09:06:46 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 34
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Undefined variable $jsonData in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 8
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 20
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 21
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 22
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 23
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 31
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 32
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 33
+[21-Feb-2025 09:06:47 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 34
+[21-Feb-2025 09:09:03 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 09:09:03 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 09:09:03 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 09:10:58 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 09:10:58 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 09:10:58 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 09:15:45 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 09:15:45 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 09:15:45 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 09:18:04 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 09:18:04 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 09:18:04 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 09:21:24 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 09:21:24 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 09:21:24 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 09:24:04 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 09:24:04 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 09:24:04 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 09:29:22 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 09:29:22 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 09:29:22 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 09:31:04 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 09:31:04 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 09:31:04 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:35:54 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:35:54 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:35:54 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:35:57 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:35:57 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:35:57 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:37:02 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:37:02 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:37:02 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:38:00 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:38:00 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:38:00 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:39:33 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:39:33 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:39:33 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:40:40 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:40:40 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:40:40 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:42:53 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:42:53 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:42:53 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:43:12 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:43:12 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:43:12 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:43:31 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:43:31 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:43:31 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:44:02 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:44:02 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:44:02 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:46:21 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:46:21 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:46:21 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:46:24 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:46:24 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:46:24 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:56:19 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:56:19 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:56:19 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:57:57 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:57:57 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:57:57 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 19:58:01 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 19:58:01 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 19:58:01 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:01:03 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:01:03 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:01:03 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:02:11 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:02:11 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:02:11 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:04:13 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:04:13 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:04:13 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:05:30 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:05:30 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:05:30 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:09:27 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:09:27 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:09:27 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:23:04 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:23:04 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:23:04 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:25:10 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:25:10 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:25:10 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:25:32 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:25:32 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:25:32 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:25:41 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:25:41 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:25:41 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:25:44 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:25:44 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:25:44 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:26:53 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:26:53 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:26:53 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:27:09 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:27:09 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:27:09 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:30:13 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:30:13 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:30:13 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:42:12 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:42:12 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:42:12 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:42:15 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:42:15 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:42:15 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:48:48 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:48:48 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:48:48 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:48:51 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:48:51 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:48:51 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:52:19 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:52:19 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:52:19 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:52:47 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:52:47 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:52:47 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:54:28 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:54:28 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:54:28 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:54:47 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:54:47 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:54:47 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:55:09 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:55:09 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:55:09 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 20:55:15 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 20:55:15 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 20:55:15 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[21-Feb-2025 21:39:30 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[21-Feb-2025 21:39:30 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[21-Feb-2025 21:39:30 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[25-Feb-2025 01:01:05 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[25-Feb-2025 01:01:05 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[25-Feb-2025 01:01:05 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[25-Feb-2025 01:01:09 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[25-Feb-2025 01:01:09 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[25-Feb-2025 01:01:09 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[25-Feb-2025 01:44:16 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[25-Feb-2025 01:44:16 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[25-Feb-2025 01:44:16 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[27-Feb-2025 05:31:54 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[27-Feb-2025 05:31:54 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[27-Feb-2025 05:31:54 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[27-Feb-2025 05:32:17 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[27-Feb-2025 05:32:17 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[27-Feb-2025 05:32:17 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[27-Feb-2025 05:41:31 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[27-Feb-2025 05:41:31 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[27-Feb-2025 05:41:31 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[15-Mar-2025 16:21:37 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[15-Mar-2025 16:21:37 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[15-Mar-2025 16:21:37 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[15-Mar-2025 16:22:48 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[15-Mar-2025 16:22:48 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[15-Mar-2025 16:22:48 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[15-Mar-2025 16:35:09 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[15-Mar-2025 16:35:09 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[15-Mar-2025 16:35:09 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[15-Mar-2025 16:35:51 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[15-Mar-2025 16:35:51 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[15-Mar-2025 16:35:51 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[24-Mar-2025 00:33:56 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[24-Mar-2025 00:33:56 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[24-Mar-2025 00:33:56 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[24-Mar-2025 00:34:29 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[24-Mar-2025 00:34:29 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[24-Mar-2025 00:34:29 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:16:17 UTC] PHP Warning:  file_get_contents(http://localhost/storage/public/uploads/matches/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 10
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 24
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 25
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 26
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 27
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 28
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 29
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 30
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 31
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 32
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 33
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 34
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 35
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:16:17 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:32:10 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:32:10 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:32:10 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:43:12 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:43:12 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:43:12 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:43:35 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:43:35 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:43:35 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:43:50 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:43:50 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:43:50 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:44:22 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:44:22 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:44:22 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:44:26 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:44:26 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:44:26 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:45:17 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:45:17 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:45:17 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:45:41 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:45:41 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:45:41 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:48:20 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:48:20 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:48:20 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:49:08 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:49:08 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:49:08 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:49:33 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:49:33 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:49:33 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:49:43 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:49:43 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:49:43 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:49:51 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:49:51 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:49:51 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:51:58 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:51:58 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:51:58 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:54:06 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:54:06 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:54:06 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:54:55 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:54:55 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:54:55 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:57:31 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:57:31 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:57:31 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 00:58:50 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 00:58:50 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 00:58:50 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 01:00:35 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 01:00:35 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 01:00:35 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[13-May-2025 01:01:07 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[13-May-2025 01:01:07 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[13-May-2025 01:01:07 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[14-May-2025 05:20:29 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[14-May-2025 05:20:29 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[14-May-2025 05:20:29 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 338
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 344
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 355
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 362
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 363
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 364
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 376
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 377
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 378
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 386
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 393
+[16-May-2025 02:03:40 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 393
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 453
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 472
+[16-May-2025 02:03:40 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 472
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 524
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 543
+[16-May-2025 02:03:40 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 543
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 621
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 622
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 776
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 838
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 839
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 840
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 842
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 843
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 844
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 881
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 882
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 900
+[16-May-2025 02:03:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 908
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 338
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 344
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 355
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 362
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 363
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 364
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 376
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 377
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 378
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 386
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 393
+[16-May-2025 02:03:41 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 393
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 453
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 472
+[16-May-2025 02:03:41 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 472
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 524
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 543
+[16-May-2025 02:03:41 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 543
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 621
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 622
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 776
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 838
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 839
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 840
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 842
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 843
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 844
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 881
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 882
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 900
+[16-May-2025 02:03:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 908
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 338
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 344
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 355
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 362
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 363
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 364
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 376
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 377
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 378
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 386
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 393
+[16-May-2025 02:04:02 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 393
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 453
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 472
+[16-May-2025 02:04:02 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 472
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 524
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 543
+[16-May-2025 02:04:02 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 543
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 621
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 622
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 776
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 838
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 839
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 840
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 842
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 843
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 844
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 881
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 882
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 900
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 908
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 338
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 344
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 355
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 362
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 363
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 364
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 376
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 377
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 378
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 386
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 393
+[16-May-2025 02:04:02 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 393
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 453
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 472
+[16-May-2025 02:04:02 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 472
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 524
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 543
+[16-May-2025 02:04:02 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 543
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 621
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 622
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 776
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 838
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 839
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 840
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 842
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 843
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 844
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 881
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 882
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 900
+[16-May-2025 02:04:02 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 908
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 338
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 344
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 355
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 362
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 363
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 364
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 376
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 377
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 378
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 386
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 393
+[16-May-2025 02:04:06 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 393
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 453
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 472
+[16-May-2025 02:04:06 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 472
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 524
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 543
+[16-May-2025 02:04:06 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 543
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 621
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 622
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 776
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 838
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 839
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 840
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 842
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 843
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 844
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 881
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 882
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 900
+[16-May-2025 02:04:06 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 908
+[16-May-2025 02:04:38 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:04:38 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:04:38 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:04:52 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:04:52 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:04:52 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:06:20 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:06:20 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:06:20 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:15:59 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:15:59 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:15:59 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:24:18 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:24:18 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:24:18 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 39
+[16-May-2025 02:24:29 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:24:29 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:24:29 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 39
+[16-May-2025 02:24:49 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:24:49 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:24:49 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 39
+[16-May-2025 02:25:15 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:25:15 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:25:15 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:25:28 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:25:28 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:25:28 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:25:44 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:25:44 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:25:44 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:25:57 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:25:57 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:25:57 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:28:34 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:28:34 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:28:34 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:36:41 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:36:41 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:36:41 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:36:44 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:36:44 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:36:44 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:37:52 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:37:52 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:37:52 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:39:19 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:39:19 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:39:19 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 02:39:26 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 02:39:26 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 02:39:26 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:17:53 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:17:53 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:17:53 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:20:16 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:20:16 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:20:16 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:21:37 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:21:37 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:21:37 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:22:35 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:22:35 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:22:35 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:22:51 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:22:51 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:22:51 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:23:02 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:23:02 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:23:02 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:23:04 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:23:04 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:23:04 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:23:28 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:23:28 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:23:28 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:23:56 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:23:56 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:23:56 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:24:00 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:24:00 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:24:00 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:24:03 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:24:03 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:24:03 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:24:05 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:24:05 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:24:05 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:26:43 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:26:43 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:26:43 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:28:12 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:28:12 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:28:12 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:30:30 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:30:30 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:30:30 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:39:09 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:39:09 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:39:09 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:39:41 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:39:41 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:39:41 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:41:54 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:41:54 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:41:54 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:47:04 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:47:04 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:47:04 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:47:14 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:47:14 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:47:14 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:47:22 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:47:22 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:47:22 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:50:32 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:50:32 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:50:32 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[16-May-2025 05:56:40 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[16-May-2025 05:56:40 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[16-May-2025 05:56:40 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[07-Jun-2025 21:30:29 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[07-Jun-2025 21:30:29 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[07-Jun-2025 21:30:29 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[07-Jun-2025 21:31:24 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[07-Jun-2025 21:31:24 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[07-Jun-2025 21:31:24 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[07-Jun-2025 21:32:34 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[07-Jun-2025 21:32:34 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[07-Jun-2025 21:32:34 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38
+[07-Jun-2025 21:34:59 UTC] PHP Warning:  Undefined array key "partido" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 36
+[07-Jun-2025 21:34:59 UTC] PHP Warning:  Undefined array key "torneo_categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 37
+[07-Jun-2025 21:34:59 UTC] PHP Warning:  Undefined array key "categoria_id" in /home/wg9rnre7ez7n/public_html/segundo_modulo/tennis/index.php on line 38

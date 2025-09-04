@@ -12,4 +12,8 @@ class Zona extends Model
     protected $fillable = ['comunidad_id', 'nombre'];
     protected $dates = ['deleted_at'];
 
+    public function torneoJugadores()
+    {
+        return $this->belongsToMany(TorneoJugador::class, 'torneo_jugador_zona');
+    }
 }

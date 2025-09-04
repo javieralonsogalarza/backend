@@ -1,0 +1,11 @@
+{
+    "titulo":"La Confraternidad del Tenis",
+    "torneo":"Copa de La Confraternidad - Damas",
+    "formato":"Round Robin Flexible",
+    "ronda":16,
+    "multiple":true,
+    "damas":true,
+    "categoria":"Dobles 5ta Damas (Doble) ",
+    "fecha_inicio":"2024-07-01",
+    "fecha_final":"2024-08-11",
+    "ganador":null,"llaves":{"octavos":{"bloque_uno":[{"jugador_local":"Gabriela Toledo + Margot Rua","jugador_rival":"Silvana Grados + Angela Panta","resultado":"wo"},{"jugador_local":"Tamara Ruiz + Betty Burgos","jugador_rival":"Harianne Mar\u00edn + Honira Mar\u00edn","resultado":"wo"}],"bloque_dos":[{"jugador_local":"Varinia Moreno + Stephanie Melendez","jugador_rival":"Alexandra Bueno + Vanessa Bueno","resultado":"6-1\/6-0"},{"jugador_local":"Katherine Cornejo + Cinthia Navarro","jugador_rival":"Milagros Taquiri + Susan Romero","resultado":"6-0\/6-0"}],"bloque_tres":[{"jugador_local":"Candy Acero + Silvia de la Mata","jugador_rival":"Lisset Contreras + Milagros Morales","resultado":"2-6\/6-2\/10-8"},{"jugador_local":"Natalia Torres + Katya Torres","jugador_rival":"Marieta Loza + Claudia Malar\u00edn","resultado":"6-3\/6-3"}],"bloque_cuatro":[{"jugador_local":"Ruth Campoverde + Fiorella Godoy","jugador_rival":"Valeria Muro + Colleen Gifford","resultado":"7-5\/6-1"},{"jugador_local":"Elizabeth Orbegoso + Bertha Fernandez","jugador_rival":"Maggie Zignago + Heirol Lee","resultado":"wo"}]},"cuartos":{"bloque_uno":[{"jugador_local":"Gabriela Toledo + Margot Rua","jugador_rival":"Tamara Ruiz + Betty Burgos","resultado":null}],"bloque_dos":[{"jugador_local":"Varinia Moreno + Stephanie Melendez","jugador_rival":"Milagros Taquiri + Susan Romero","resultado":null}],"bloque_tres":[{"jugador_local":"Lisset Contreras + Milagros Morales","jugador_rival":"Natalia Torres + Katya Torres","resultado":null}],"bloque_cuatro":[{"jugador_local":"Ruth Campoverde + Fiorella Godoy","jugador_rival":"Elizabeth Orbegoso + Bertha Fernandez","resultado":null}]},"semifinal":{"bloque_uno":null,"bloque_dos":null},"final":null}}

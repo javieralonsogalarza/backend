@@ -7,9 +7,17 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
 (count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('estado_id', $App::$ESTADO_PENDIENTE)->whereNotNull('fase')) > 0) ||
 (count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('estado_id', $App::$ESTADO_FINALIZADO)->where('fase', 1)) > 0)
 )
+
 )
     <div class="d-flex justify-content-between align-items-center">
         <div><h5>Jugadores Clasificados</h5></div>
+        <div>
+            <a class="btn btn-sm btn-primary"
+               href="/auth/reporte/torneo/jugadores-clasificados/exportar/pdf/{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}/{{ $TorneoFaseFinal->TorneoCategoria->id }}"
+               target="_blank">
+                <i class="fa fa-file-pdf"></i> Exportar PDF
+            </a>
+        </div>
     </div>
     <div class="row mt-1">
         <div class="col-md-12">
@@ -18,6 +26,7 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
                     <thead>
                     <tr>
                         <th class="align-middle text-center" align="center"></th>
+                        <th class="align-middle text-center" align="center">Orden</th>
                         <th class="align-middle text-center" align="center">Jugadores</th>
                         <th class="align-middle text-center" align="center">Set Ganados</th>
                         <th class="align-middle text-center" align="center">Set Perdidos</th>
@@ -32,6 +41,7 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
                     @foreach($TorneoFaseFinal->JugadoresClasificados as $key => $q)
                         <tr>
                             <td class="align-middle text-center" align="center">{{ ($key + 1) }}</td>
+                            <td class="align-middle text-center" align="center">{{ $q['orden'] ?? '' }}</td>
                             <td class="align-middle text-center" align="center">{{ $q['nombres'] }}</td>
                             <td class="align-middle text-center" align="center">{{ $q['setsGanados'] }}</td>
                             <td class="align-middle text-center" align="center">{{ $q['setsPerdidos'] }}</td>
@@ -51,10 +61,11 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
     @if(!$landing)
         @if(
         count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->where('estado_id', $App::$ESTADO_PENDIENTE)) == 0 &&
-        count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->whereNotNull('fase')) == 0)
+        count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categoria_id', $TorneoFaseFinal->TorneoCategoria->id)->whereNotNull('fase')->whereNull('deleted_at')) == 0)
             <div class="row mt-3">
                 <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
                     <li class="mr-1"><button type="button" class="btn btn-primary btn-add-three-players-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="0"><i class="fa fa-users"></i> ¿Agregar Mejores 3ros?</button></li>
+                    <li class="mr-1"><button type="button" class="btn btn-primary btn-add-four-players-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="0"><i class="fa fa-users"></i> ¿Agregar Mejores 4tos?</button></li>
                     <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-manual-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="0"><i class="fa fa-key"></i> Generar llaves</button></li>
                     <!--<li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-random-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}"><i class="fa fa-key"></i> Keys aleatorias</button></li>
                     <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}"><i class="fa fa-key"></i> Keys por puesto</button></li>-->
@@ -64,6 +75,7 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
             <div class="row mt-3">
                 <ul class="w-100 d-flex align-content-center justify-content-end list-unstyled p-0">
                     <li class="mr-1"><button type="button" class="btn btn-primary btn-add-three-players-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="0"><i class="fa fa-users"></i> ¿Agregar Mejores 3ros?</button></li>
+                    <li class="mr-1"><button type="button" class="btn btn-primary btn-add-four-players-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="0"><i class="fa fa-users"></i> ¿Agregar Mejores 4tos?</button></li>
                     <li class="mr-1"><button type="button" class="btn btn-primary btn-generate-keys-manual-final" data-id="{{ $TorneoFaseFinal->TorneoCategoria->id }}" data-reload="1"><i class="fa fa-sync"></i> Volver a generar llaves</button></li>
                 </ul>
             </div>
@@ -167,6 +179,21 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
             });
         });
 
+        const $btnAddFourPlayersFinal = $(".btn-add-four-players-final");
+        $btnAddFourPlayersFinal.on("click", function (){
+            invocarModal(`/auth/{{strtolower($ViewName)}}/fase-final/players/cuartos/{{$TorneoFaseFinal->TorneoCategoria->torneo->id}}/{{$TorneoFaseFinal->TorneoCategoria->id}}`,
+                function ($modal) {
+                if ($modal.attr("data-reload") === "true"){
+                    invocarVista(`/auth/{{strtolower($ViewName)}}/grupo/{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}/{{ $TorneoFaseFinal->TorneoCategoria->id }}/2`, function(data){
+                        $("#main").addClass("hidden");$("#info").removeClass("hidden").html("").append(data);
+                        invocarVista(`/auth/{{strtolower($ViewName)}}/fase-final-final/{{ $TorneoFaseFinal->TorneoCategoria->torneo->id }}/{{ $TorneoFaseFinal->TorneoCategoria->id }}`, function(data){
+                            $("#partialViewFinal{{ $TorneoFaseFinal->TorneoCategoria->id }}").html("").append(data);
+                        });
+                    });
+                }
+            });
+        });
+
         const $btnGenerateKeysManualFinal = $(".btn-generate-keys-manual-final");
         $btnGenerateKeysManualFinal.on("click", function (){
             const $this = $(this);
@@ -206,6 +233,10 @@ count($TorneoFaseFinal->TorneoCategoria->torneo->partidos->where('torneo_categor
 
         $("#mapaCampeonato{{ $TorneoFaseFinal->TorneoCategoria->id }}").on("click", ".btn-download-cup", function (){
             window.open(`/auth/{{strtolower($ViewName)}}/export/mapa/json?type=full&torneo={{ $TorneoFaseFinal->TorneoCategoria->torneo->id  }}&categoria={{ $TorneoFaseFinal->TorneoCategoria->id }}`);
+        });
+        
+         $("#mapaCampeonato{{ $TorneoFaseFinal->TorneoCategoria->id }}").on("click", ".btn-download-cup-cuartos", function (){
+            window.open(`/auth/{{strtolower($ViewName)}}/export/mapa/figuras/json?type=full&torneo={{ $TorneoFaseFinal->TorneoCategoria->torneo->id  }}&categoria={{ $TorneoFaseFinal->TorneoCategoria->id }}`);
         });
 
         $("#mapaCampeonato{{ $TorneoFaseFinal->TorneoCategoria->id }}").on("click", ".btn-export-pdf-cup-left", function (){

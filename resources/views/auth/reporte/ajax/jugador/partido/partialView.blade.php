@@ -18,11 +18,15 @@
             <div class="modal-body">
                 <div class="form-group row">
                     <div class="col-md-12 text-center">
-                        <h5>Jugador "{{ $Data->Jugador->nombre_completo }}"</h5>
+                        @if($Data != null)
+                            <h5>Jugador "{{ $Data->Jugador->nombre_completo }}"</h5>
+                        @else
+                            <h5>Jugador no encontrado</h5>
+                        @endif
                     </div>
                 </div>
 
-                @if(count($Data->Partidos->whereNull('fase')) > 0)
+                @if($Data != null && count($Data->Partidos->whereNull('fase')) > 0)
                 <div class="form-group row">
                     <div class="col-md-12">
                         <h5 class="text-md">Fase de Grupos</h5>
@@ -93,7 +97,7 @@
                 </div>
                 @endif
 
-                @if(count($Data->Partidos->where('fase', 16)) > 0)
+                @if($Data != null && count($Data->Partidos->where('fase', 16)) > 0)
                     <div class="mt-3">
                         <h5 class="text-md">Ronda 32</h5>
                         <table class="table table-bordered table-striped mb-3">
@@ -158,7 +162,7 @@
                     </div>
                 @endif
 
-                @if(count($Data->Partidos->where('fase', 8)) > 0)
+                @if($Data != null && count($Data->Partidos->where('fase', 8)) > 0)
                     <div class="mt-3">
                         <h5 class="text-md">Octavos de final</h5>
                         <table class="table table-bordered table-striped mb-3">
@@ -223,7 +227,7 @@
                     </div>
                 @endif
 
-                @if(count($Data->Partidos->where('fase', 4)) > 0)
+                @if($Data != null && count($Data->Partidos->where('fase', 4)) > 0)
                     <div class="mt-3">
                         <h5 class="text-md">Cuartos de final</h5>
                         <table class="table table-bordered table-striped mb-3">
@@ -288,7 +292,7 @@
                     </div>
                 @endif
 
-                @if(count($Data->Partidos->where('fase', 2)) > 0)
+                @if($Data != null && count($Data->Partidos->where('fase', 2)) > 0)
                     <div class="mt-3">
                         <h5 class="text-md">Semifinal</h5>
                         <table class="table table-bordered table-striped mb-3">
@@ -353,7 +357,7 @@
                     </div>
                 @endif
 
-                @if(count($Data->Partidos->where('fase', 1)) > 0)
+                @if($Data != null && count($Data->Partidos->where('fase', 1)) > 0)
                     <div class="mt-3">
                         <h5 class="text-md">Final</h5>
                         <table class="table table-bordered table-striped mb-3">
@@ -420,7 +424,28 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                @if($Data != null)
+                <button type="button" class="btn btn-danger" id="btnExportarPdf" 
+                        data-torneo="{{ $Data->Torneo->id }}" 
+                        data-categoria="{{ $Data->TorneoCategoria->id }}" 
+                        data-jugador="{{ $Data->Jugador->id }}">
+                    <i class="fa fa-file-pdf"></i> Exportar PDF
+                </button>
+                @endif
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#btnExportarPdf").on("click", function() {
+        const $this = $(this);
+        const torneo = $this.attr("data-torneo");
+        const categoria = $this.attr("data-categoria"); 
+        const jugador = $this.attr("data-jugador");
+        
+        window.open(`/auth/reporte/jugador/partidos/exportar/pdf/${torneo}/${categoria}/${jugador}`, '_blank');
+    });
+});
+</script>

@@ -1,0 +1,58 @@
+{
+    "torneo": "Dynamo Tennis Cup 2024",
+    "formato": "Round Robin Flexible",
+    "ronda": 8,
+    "categoria": "5ta B",
+    "fecha_inicio": "2024-01-08",
+    "fecha_final": "2024-03-03",
+    "ganador": "Joseph Araujo",
+    "llaves": {
+        "cuartos": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Renato Bailly",
+                    "jugador_rival": "Miguel Lopez Torres",
+                    "resultado": "WO"
+                },
+                {
+                    "jugador_local": "Eduardo Andia",
+                    "jugador_rival": "Max Salamanca",
+                    "resultado": "7-6/7-6"
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Joseph Araujo",
+                    "jugador_rival": "Kevin Gave",
+                    "resultado": "6-3/6-1"
+                },
+                {
+                    "jugador_local": "Carlos Desposorio",
+                    "jugador_rival": "Carlos Euscate",
+                    "resultado": "6-0/6-2"
+                }
+            ]
+        },
+        "semifinal": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Renato Bailly",
+                    "jugador_rival": "Eduardo Andia",
+                    "resultado": "6-3/6-2"
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Joseph Araujo",
+                    "jugador_rival": "Carlos Desposorio",
+                    "resultado": "6-2/6-2"
+                }
+            ]
+        },
+        "final": {
+            "jugador_local": "Renato Bailly",
+            "jugador_rival": "Joseph Araujo",
+            "resultado": "6-0/6-2"
+        }
+    }
+}

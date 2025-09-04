@@ -55,6 +55,14 @@ class JugadorController extends Controller
             if($request->filter_sexo){ $q->where('sexo', $request->filter_sexo); }
         })
         ->whereNotIn('id', $JugadoresNoDisponibles)
+        ->select('jugadors.*', DB::raw('
+        (SELECT COUNT(*) 
+         FROM torneo_jugadors 
+         WHERE torneo_jugadors.jugador_simple_id = jugadors.id 
+            OR torneo_jugadors.jugador_dupla_id = jugadors.id
+            and torneo_jugadors.deleted_at IS NULL
+        ) as en_torneo_jugadors
+        '))
         ->get();
 
         return response()->json(['data' => $data]);
@@ -125,7 +133,7 @@ class JugadorController extends Controller
 
                     if($entity != null) {
                         $request->merge(['user_update_id' =>  Auth::guard('web')->user()->id]);
-                        $entity->update($request->only('categoria_id', 'imagen_path', 'nombres', 'apellidos', 'tipo_documento_id', 'nro_documento', 'edad', 'sexo', 'telefono', 'celular', 'altura', 'peso'));
+                        $entity->update($request->only('categoria_id', 'imagen_path', 'nombres', 'apellidos', 'tipo_documento_id', 'nro_documento', 'sexo', 'altura', 'peso', 'mano_habil', 'fecha_nacimiento', 'marca_raqueta'));
                     }else{
                         $request->merge(['email' => $request->isAccount ? $request->email : null,  'user_create_id' =>  Auth::guard('web')->user()->id]);
                         Jugador::create($request->all());

@@ -1,0 +1,32 @@
+[23-May-2025 05:09:26 UTC] PHP Warning:  file_get_contents(https://laconfraternidaddeltenis.com/storage/public/uploads/finales_vs/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 20
+[23-May-2025 05:10:18 UTC] PHP Warning:  file_get_contents(https://laconfraternidaddeltenis.com/storage/public/uploads/finales_vs/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 20
+[23-May-2025 05:11:36 UTC] PHP Warning:  file_get_contents(https://laconfraternidaddeltenis.com/storage/public/uploads/finales_vs/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 20
+[04-Jun-2025 05:07:42 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[04-Jun-2025 05:07:42 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 02:24:12 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 02:24:12 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 02:24:12 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 02:24:12 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 02:24:12 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 02:24:12 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 02:26:27 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 02:26:27 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 02:26:27 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 02:26:27 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 02:26:27 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 02:26:27 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 18:28:54 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 18:28:54 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 18:28:54 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 18:28:54 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 18:28:54 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 18:28:54 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 18:33:37 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 18:33:37 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 18:33:37 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 18:33:37 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407
+[12-Jun-2025 18:33:37 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 370
+[12-Jun-2025 18:33:37 UTC] PHP Warning:  Undefined array key "ganador" in /home/wg9rnre7ez7n/public_html/noveno_modulo/grupos.php on line 407

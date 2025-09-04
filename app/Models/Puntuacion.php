@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Puntuacion extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['comunidad_id', 'nombre', 'puntos'];
+    protected $fillable = ['comunidad_id', 'nombre', 'puntos', 'type'];
     protected $dates = ['deleted_at'];
 }

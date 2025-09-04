@@ -1,0 +1,23 @@
+{
+  "titulo": "Copa Level Up 2024",
+  "modalidad": "Dobles Libre",
+  "ronda": "1/8 de final",
+  "jugadores": {
+    "equipo1": ["Arturo", "Boris"],
+    "equipo2": ["Juan I.", "Juan V."]
+  },
+  "resultados": [
+    {
+      "ronda1": {
+        "equipo1": 1,
+        "equipo2": 1
+      }
+    },
+    {
+      "ronda2": {
+        "equipo1": 2,
+        "equipo2": 2
+      }
+    }
+  ]
+}

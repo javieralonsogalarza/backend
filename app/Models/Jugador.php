@@ -12,7 +12,8 @@ class Jugador extends Authenticatable
     protected $guard = 'players';
 
     protected $fillable = ['comunidad_id', 'categoria_id', 'imagen_path', 'nombres', 'apellidos', 'tipo_documento_id', 'nro_documento',
-    'email', 'password', 'isAccount', 'isFirstSession', 'edad', 'sexo', 'telefono', 'celular', 'altura', 'peso', 'user_create_id', 'user_update_id'];
+    'email', 'password', 'isAccount', 'isFirstSession', 'edad', 'sexo', 'telefono', 'celular', 'altura', 'peso', 'user_create_id', 'user_update_id','nombre_completo_temporal'
+    , 'mano_habil', 'fecha_nacimiento', 'marca_raqueta','ranking_temporal','temporal'];
 
     protected $appends = ['nombre_completo', 'sexo_completo'];
 
@@ -37,6 +38,29 @@ class Jugador extends Authenticatable
     {
         return $this->sexo != null ? ($this->sexo == "F" ? "Femenino" : "Masculino") : "Ninguno";
     }
+    // Mutador para nombre_completo
+    public function setNombreCompletoAttribute($value)
+    {
+        $names = explode(' ', $value, 2);
+        $this->attributes['nombres'] = $names[0];
+        $this->attributes['apellidos'] = isset($names[1]) ? $names[1] : '';
+    }
+
+   // M�todo adicional para construir el nombre completo con datos adicionales sin modificar la base de datos
+   public function setNombreCompletoConDatosAdicionales($datosAdicionales = [])
+   {
+       $this->attributes['nombre_completo_temporal'] = $this->nombres . " " . $this->apellidos;
+
+       foreach ($datosAdicionales as $dato) {
+           $this->attributes['nombre_completo_temporal'] .= " ({$dato})";
+       }
+   }
+
+   // Accesor para nombre_completo_temporal
+   public function getNombreCompletoTemporalAttribute()
+   {
+       return $this->attributes['nombre_completo_temporal'] ?? $this->nombre_completo;
+   }
 
     public function comunidad()
     {
@@ -53,4 +77,8 @@ class Jugador extends Authenticatable
         return $this->belongsTo(Categoria::class);
     }
 
+    public function torneoJugadors()
+    {
+        return $this->hasMany(TorneoJugador::class, 'jugador_simple_id', 'id');
+    }
 }

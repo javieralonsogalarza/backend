@@ -18,10 +18,35 @@ use App\Http\Controllers;
 
 
 Route::get('/img/{path}', [Controllers\ImagenController::class, 'show'])->where('path', '.*')->name('image');
+//Route::post('/upload-image', [Controllers\ImagenController::class, 'uploadImage'])->where('path', '.*')->name('uploadImage');
 
+
+
+//Route::post('auth/upload-image', [Auth\TorneoController::class, 'uploadImage'])->withoutMiddleware([\App\Http\Middleware\Authenticate::class, \App\Http\Middleware\VerifyCsrfToken::class])->name('uploadImage');
 //AUTH
+
 Route::prefix('auth')->group(function (){
     Route::name('auth.')->group(function(){
+
+        Route::post('resultadoranking', [Auth\TorneoController::class, 'resultadoRanking'])->name('torneo.ranking.finish');
+            Route::get('rankings/botones', [Auth\TorneoController::class, 'rankingsPartialView'])->name('botones');
+                        Route::get('rankings/fama', [Auth\TorneoController::class, 'rankingsPartialViewFama'])->name('fama');
+
+
+// Rutas públicas para imágenes de comunidad (sin autenticación)
+Route::get('/public-imagen/{comunidad_id}/{tipo?}', [Auth\PerfilController::class, 'getImagenComunidad'])
+    ->where(['comunidad_id' => '[0-9]+', 'tipo' => '(imagen|reportes)'])
+    ->name('public.imagen.comunidad');
+
+Route::get('/api/comunidad/{comunidad_id}/imagen-url/{tipo?}', [Auth\PerfilController::class, 'getImagenUrl'])
+    ->where(['comunidad_id' => '[0-9]+', 'tipo' => '(imagen|reportes)'])
+    ->name('api.comunidad.imagen.url');
+
+
+Route::get('/torneo/reporte/partidos/excel/{torneo}/{categoria}', [Auth\ReporteController::class, 'reportePartidosExcel'])->name('torneo.reporte.partidos.excel');
+
+Route::post('/rankings/update-player-ranking-consideration', [Auth\RakingController::class, 'updateRankingConsideration'])
+     ->name('update.ranking.consideration');
 
         Route::prefix('torneo')->group(function () {
             Route::name('torneo.')->group(function () {
@@ -35,6 +60,17 @@ Route::prefix('auth')->group(function (){
                 Route::get('fase-final-final/{torneo}/{torneo_categoria_id}/{landing?}', [Auth\TorneoController::class, 'faseFinal'])->name('faseFinal');
 
                 Route::get('ranking/{torneo}/{torneo_categoria_id}/{landing?}', [Auth\TorneoController::class, 'ranking'])->name('ranking');
+
+                Route::get('h2h/{jugador_local_uno_id}/{jugador_rival_uno_id}/{torneo_categoria_id}/{categoria_id}/{torneo_id}/json', [Auth\TorneoController::class, 'h2h'])->name('h2h');
+                
+                Route::get('getTorneoFinales', [Auth\NuevoController::class, 'getTorneoFinales'])->name('getTorneoFinales');
+
+
+                Route::get('/zonas-distribucion/{categoria_id}', [Auth\TorneoController::class, 'jugadorZonaDistribution'])->name('jugador.zona.distribution');
+                // Add to your web.php routes
+                Route::get('/get-distribution-modal', function () {
+                    return view('auth.torneo.ajax.zona.distribucionModal');
+                })->name('torneo.get-distribution-modal')->middleware(['auth', 'verified']);
             });
         });
     });
@@ -44,6 +80,7 @@ Route::group(['middleware' => 'auth:web'], function() {
 
     Route::prefix('auth')->group(function (){
         Route::name('auth.')->group(function(){
+            Route::get('rankings/botones', [Auth\TorneoController::class, 'rankingsPartialView'])->name('botones');
 
             Route::group(['roles' => ['Comunidad']], function () {
                 Route::middleware('auth.route.access')->group(function () {
@@ -51,6 +88,7 @@ Route::group(['middleware' => 'auth:web'], function() {
                     Route::prefix('rankings')->group(function (){
                         Route::name('rankings.')->group(function(){
                             Route::get('/', [Auth\RakingController::class, 'index'])->name('index');
+                            Route::get('/salon', [Auth\RakingController::class, 'salon'])->name('salon');
                             Route::get('partialView', [Auth\RakingController::class, 'partialView'])->name('partialView');
                         });
                     });
@@ -83,8 +121,9 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::get('grupos/agregar/partialView/{torneo_id}/{categoria_id}', [Auth\TorneoController::class, 'grupoAgregarPartialView'])->name('grupo.agregarPartialView');
 
                             Route::get('grupos/export/json', [Auth\TorneoController::class, 'exportGrupoJson'])->name('exportGrupoJson');
-
+                            Route::get('grupos/vs/export/json', [Auth\TorneoController::class, 'exportGrupoJsonVs'])->name('exportGrupoJsonVs');
                             Route::get('export/mapa/json', [Auth\TorneoController::class, 'exportMapaJson'])->name('exportMapaJson');
+                            Route::get('export/mapa/figuras/json', [Auth\TorneoController::class, 'exportMapaJsonFiguras'])->name('exportMapaJsonFiguras');
 
                             /*Route::get('grupo/partialView/{id}/{torneo_categoria_id?}', [Auth\TorneoController::class, 'grupoPartialView'])->name('grupo.partialView');
                             Route::post('grupo/store', [Auth\TorneoController::class, 'grupoStore'])->name('grupo.store');
@@ -92,8 +131,13 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::get('jugador/export/json', [Auth\TorneoController::class, 'exportJugadorJson'])->name('exportJugadorJson');
 
                             Route::get('jugador/list-json', [Auth\TorneoController::class, 'jugadorListJson'])->name('jugadorListJson');
+                            Route::get('jugador/list-json-validate', [Auth\TorneoController::class, 'jugadorListJsonValidate'])->name('jugadorListJsonValidate');
                             Route::get('jugador/partialView/{torneo_categoria}', [Auth\TorneoController::class, 'jugadorPartialView'])->name('jugador.partialView');
                             Route::get('jugador/available/list-json', [Auth\TorneoController::class, 'jugadorAvailableListJson'])->name('jugadorAvailableListJson');
+                            Route::get('jugador/available/list-json-all', [Auth\TorneoController::class, 'jugadorAvailableListJsonAll'])->name('jugadorAvailableListJsonAll');
+
+                            Route::post('update-jugador-simple', [Auth\TorneoController::class, 'updateJugadorSimpleId'])->name('updateJugadorSimpleId');
+
                             Route::get('jugador/available/classification/list-json', [Auth\TorneoController::class, 'jugadorAvailableClassificationListJson'])->name('jugadorAvailableClassificationListJson');
                             Route::get('jugador/available/not-classification/list-json', [Auth\TorneoController::class, 'jugadorAvailableNotClassificationListJson'])->name('jugadorAvailableNotClassificationListJson');
 
@@ -115,12 +159,16 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::post('grupo/store', [Auth\TorneoController::class, 'grupoStore'])->name('grupo.store');
                             Route::post('grupo/delete', [Auth\TorneoController::class, 'grupoDelete'])->name('grupo.delete');
 
+
+                            Route::post('grupo/unique/delete', [Auth\TorneoController::class, 'grupoDeleteUnique'])->name('grupo.unique.delete');
+
                             Route::get('grupo/partido/partialView/{id}/{torneo_categoria_id}/{torneo_grupo_id}', [Auth\TorneoController::class, 'grupoPartidoPartialView'])->name('grupo.partido.partialView');
                             Route::post('grupo/partido/store', [Auth\TorneoController::class, 'grupoPartidoStore'])->name('grupo.partido.store');
 
                             Route::post('partido/store', [Auth\TorneoController::class, 'partidoStore'])->name('partido.store');
                             Route::post('partido/reset', [Auth\TorneoController::class, 'partidoReset'])->name('partido.reset');
                             Route::post('partido/storeMultiple', [Auth\TorneoController::class, 'partidoStoreMultiple'])->name('partido.store.multiple');
+                            Route::post('partido/update-dates', [Auth\TorneoController::class, 'updateMatchDates'])->name('partido.update.dates');
 
                             Route::get('partido/export/json', [Auth\TorneoController::class, 'partidoGenerateJson'])->name('partido.generate.json');
 
@@ -128,6 +176,11 @@ Route::group(['middleware' => 'auth:web'], function() {
 
                             Route::get('fase-final/players/terceros/{torneo}/{torneo_categoria_id}', [Auth\TorneoController::class, 'faseFinalPlayerTerceros'])->name('faseFinalPlayerTerceros');
                             Route::post('fase-final/players/terceros', [Auth\TorneoController::class, 'faseFinalPlayerTercerosStore'])->name('faseFinalPlayerTercerosStore');
+
+
+                            Route::get('fase-final/players/cuartos/{torneo}/{torneo_categoria_id}', [Auth\TorneoController::class, 'faseFinalPlayerCuartos'])->name('faseFinalPlayerCuartos');
+                            Route::post('fase-final/players/cuartos', [Auth\TorneoController::class, 'faseFinalPlayerCuartosStore'])->name('faseFinalPlayerCuartosStore');
+
 
                             Route::get('fase-final/players/changes/{torneo}/{torneo_categoria_id}', [Auth\TorneoController::class, 'faseFinalPlayersChanges'])->name('faseFinalPlayersChanges');
 
@@ -262,10 +315,30 @@ Route::group(['middleware' => 'auth:web'], function() {
                             Route::get('jugadorPartialView', [Auth\ReporteController::class, 'jugadorPartialView'])->name('jugadorPartialView');
                             Route::get('jugadorPartidosPartialView', [Auth\ReporteController::class, 'jugadorPartidosPartialView'])->name('jugadorPartidosPartialView');
 
+                            Route::get('jugador/partidos/exportar/pdf/{torneo}/{categoria}/{jugador}', [Auth\ReporteController::class, 'jugadorPartidosExportarPdf'])->name('jugadorPartidosExportarPdf');
+                            Route::get('jugador/completo/exportar/pdf/{jugador}', [Auth\ReporteController::class, 'jugadorCompletoExportarPdf'])->name('jugadorCompletoExportarPdf');
+
+
                             Route::get('torneo', [Auth\ReporteController::class, 'torneo'])->name('torneo');
                             Route::get('torneo/exportar/pdf/{torneo}/{categoria}', [Auth\ReporteController::class, 'torneoExportarPdf'])->name('torneoExportarPdf');
                             Route::get('torneo/fase-final/exportar/pdf/{torneo}/{categoria}', [Auth\ReporteController::class, 'torneoFaseFinalExportarPdf'])->name('torneoFaseFinalExportarPdf');
+                                                        Route::get('torneo/jugadores-clasificados/exportar/pdf/{torneo}/{categoria}', [Auth\ReporteController::class, 'jugadoresClasificadosExportarPdf'])->name('jugadoresClasificadosExportarPdf');
+
                             Route::get('torneoPartialView', [Auth\ReporteController::class, 'torneoPartialView'])->name('torneoPartialView');
+                            
+                            Route::get('h2h', [Auth\ReporteController::class, 'h2h'])->name('h2h');
+                            Route::get('getCategoriasByTorneo', [Auth\ReporteController::class, 'getCategoriasByTorneo'])->name('getCategoriasByTorneo');
+                            Route::get('getJugadoresByTorneoCategoria', [Auth\ReporteController::class, 'getJugadoresByTorneoCategoria'])->name('getJugadoresByTorneoCategoria');
+                            Route::get('getCategorias', [Auth\ReporteController::class, 'getCategorias'])->name('getCategorias');
+                            Route::get('getJugadoresActivos', [Auth\ReporteController::class, 'getJugadoresActivos'])->name('getJugadoresActivos');
+                            Route::get('getJugadoresByCategoria', [Auth\ReporteController::class, 'getJugadoresByCategoria'])->name('getJugadoresByCategoria');
+                            Route::get('getJugadoresByTorneo', [Auth\ReporteController::class, 'getJugadoresByTorneo'])->name('getJugadoresByTorneo');
+                             
+                             
+                             
+                            
+                            
+ 
                         });
                     });
 
@@ -341,8 +414,20 @@ Route::get('torneos/todos', [App\HomeController::class, 'torneoTodos'])->name('t
 Route::get('rankings', [App\HomeController::class, 'rankings'])->name('rankings');
 Route::get('rankings/categorias', [App\HomeController::class, 'rankingsCategorias'])->name('rankingsCategorias');
 
+Route::get('/rankings/lista-jugadores', [Auth\RakingController::class, 'listaJugadores'])
+    ->name('rankings.lista-jugadores');
+
+Route::get('/rankings/torneos-por-categoria', [Auth\RakingController::class, 'getTorneosByCategorias'])
+    ->name('rankings.torneos-por-categoria');
+
 Route::get('rankings/partialView', [App\HomeController::class, 'rankingsPartialView'])->name('rankingsPartialView');
+Route::get('rankings/partialViewSalon', [App\HomeController::class, 'rankingsPartialViewSalon'])->name('rankingsPartialViewSalon');
 Route::get('jugadores', [App\HomeController::class, 'jugadores'])->name('jugadores');
 Route::get('jugadorPartialView', [App\HomeController::class, 'jugadorPartialView'])->name('jugadorPartialView');
 Route::get('jugadorPartidosPartialView', [App\HomeController::class, 'jugadorPartidosPartialView'])->name('jugadorPartidosPartialView');
 Route::post('contactanos', [App\HomeController::class, 'contactanos'])->name('contactanos');
+Route::post('actualizarReporteJsonGenerado', [App\HomeController::class, 'actualizarReporteJsonGenerado'])->name('actualizarReporteJsonGenerado');
+
+
+Route::post('verificarReporteJsonGenerado', [App\HomeController::class, 'verificarReporteJsonGenerado'])->name('verificarReporteJsonGenerado');
+

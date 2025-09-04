@@ -18,6 +18,7 @@
                 <div class="modal-body">
                     <div class="row content-buy-all {{ $Partido->buy_all ? "hidden" : "" }}">
                         <div class="col-md-12">
+                            
                             <label for="jugador_local_id">{{ $TorneoCategoria->multiple ? "Jugadores Locales" : "Jugador Local" }}
                                 <span id="jugador_local_info_id" style="color: red;font-size: 14px;"></span>
                             </label>
@@ -28,8 +29,10 @@
                     <div class="row mt-3">
                         <div class="col-sm-6 mt-1 content-buy-all {{ $Partido->buy_all ? "hidden" : "" }}">
                             <div class="icheck-primary d-inline">
+                                
                                 <input type="checkbox" name="buy" id="buy" value="1" {{ !$Partido->buy_all && $Partido->buy ? "checked" : "" }}>
-                                <label for="buy">¿El Jugador Rival es Bye?</label>
+                                <label for="buy">
+                                    ¿El Jugador Rival es Bye?</label>
                             </div>
                         </div>
                         <div class="col-sm-6 mt-1">
@@ -206,7 +209,7 @@
             formData.append('partido_id', {{ $Partido->id }});
             formData.append('torneo_id', {{ $TorneoCategoria->torneo->id }});
             formData.append('torneo_categoria_id', {{ $TorneoCategoria->id }});
-            confirmAjax(`/auth/{{strtolower($ViewName)}}/fase-final/prepartido/delete`, formData, `POST`, `¿Está seguro de eliminar la llave generada ?`, null, function (data){
+            confirmAjax(`/auth/{{strtolower($ViewName)}}/fase-final/prepartido/delete`, formData, `POST`, `¿Estás seguro de eliminar la llave generada ?`, null, function (data){
                 if(data.Success){
                     $modal.attr("data-reload", "true");
                     $modal.modal("hide");
@@ -215,9 +218,101 @@
         });
 
         OnSuccess{{$ViewName}} = (data) => onSuccessForm(data, $("form#frm{{$ViewName}}"), $modal, function (data){
-            if(data.Repeat != null){ Swal.fire({icon: 'warning', title: 'Los jugadores que acaba de asignar ya se enfrentaron con anterioridad.'}); }
+            if(data.Repeat != null){  }
         });
         OnFailure{{$ViewName}} = () => onFailureForm();
-    })
+        function verificarClasificacionJugadores() {
+        const jugadoresNoClasificados = [];
+        
+        // Verificar jugador local
+        const localOption = $jugador_local_id.select2('data')[0];
+        if (localOption && localOption.clasificado === false) {
+            jugadoresNoClasificados.push(localOption.text);
+        }
+
+        // Verificar jugador rival
+        const rivalOption = $jugador_rival_id.select2('data')[0];
+        if (rivalOption && rivalOption.clasificado === false) {
+            jugadoresNoClasificados.push(rivalOption.text);        }
+
+        return jugadoresNoClasificados;
+    }
+
+
+   window.OnSuccess{{$ViewName}} = function(data) {
+    const jugadoresNoClasificados = verificarClasificacionJugadores();
+
+    if (jugadoresNoClasificados.length > 0) {
+        const generarMensaje = () => {
+            if (jugadoresNoClasificados.length === 1) {
+                const jugador = jugadoresNoClasificados[0];
+                return jugador.sexo === 'F' 
+                    ? `La siguiente jugadora no pertenece al cuadro principal:<br>${jugador.nombre}` 
+                    : `El siguiente jugador no pertenece al cuadro principal:<br>${jugador.nombre}`;
+            } else {
+                const tieneHombres = jugadoresNoClasificados.some(j => j.sexo === 'M');
+                const tieneMujeres = jugadoresNoClasificados.some(j => j.sexo === 'F');
+
+                if (tieneHombres && tieneMujeres) {
+                    return `Los siguientes jugadores no pertenecen al cuadro principal:<br>${jugadoresNoClasificados.map(j => j.nombre).join('<br>')}`;
+                } else if (jugadoresNoClasificados.every(j => j.sexo === 'F')) {
+                    return `Las siguientes jugadoras no pertenecen al cuadro principal:<br>${jugadoresNoClasificados.map(j => j.nombre).join('<br>')}`;
+                } else {
+                    return `Los siguientes jugadores no pertenecen al cuadro principal:<br>${jugadoresNoClasificados.map(j => j.nombre).join('<br>')}`;
+                }
+            }
+        };
+
+        Swal.fire({
+            title: "Confirmación",
+            html: generarMensaje(),
+            icon: 'warning',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Si, Confirmar',
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                onSuccessForm(data, $("form#frm{{$ViewName}}"), $modal, function(data){
+                    if(data.Repeat != null){  }
+                });
+            }
+        });
+    } else {
+
+        onSuccessForm(data, $("form#frm{{$ViewName}}"), $modal, function(data){
+            if(data.Repeat != null){  }
+        });
+    }
+};
+
+
+function verificarClasificacionJugadores() {
+    const jugadoresNoClasificados = [];
+    
+    // Verificar jugador local
+    const localOption = $jugador_local_id.select2('data')[0];
+    if (localOption && localOption.clasificado === false) {
+        jugadoresNoClasificados.push({
+            nombre: localOption.text,
+            sexo: localOption.sexo // Asumiendo que viene en el objeto
+        });
+    }
+
+    // Verificar jugador rival
+    const rivalOption = $jugador_rival_id.select2('data')[0];
+    if (rivalOption && rivalOption.clasificado === false) {
+        jugadoresNoClasificados.push({
+            nombre: rivalOption.text,
+            sexo: rivalOption.sexo // Asumiendo que viene en el objeto
+        });
+    }
+
+    return jugadoresNoClasificados;
+}
+});
 </script>
 

@@ -65,7 +65,7 @@
                             Bienvenido, {{ $Auth::guard('web')->user()->nombre }}.
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="javascript:void(0);" onclick="event.preventDefault();localStorage.setItem('cliente_id','');document.getElementById('logout-form').submit();" class="dropdown-item dropdown-footer"><i class="fa fa-power-off"></i> {{ __('Cerrar Sesión') }}</a>
+                            <a href="javascript:void(0);" onclick="event.preventDefault();localStorage.setItem('cliente_id','');localStorage.clear();document.getElementById('logout-form').submit();" class="dropdown-item dropdown-footer"><i class="fa fa-power-off"></i> {{ __('Cerrar Sesión') }}</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
@@ -77,7 +77,7 @@
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0);" onclick="event.preventDefault();localStorage.setItem('cliente_id','');document.getElementById('logout-form').submit();">
+                <a class="nav-link" href="javascript:void(0);" onclick="event.preventDefault();localStorage.setItem('cliente_id','');localStorage.clear();document.getElementById('logout-form').submit();">
                 <i class="fa fa-door-open"></i> {{ __('Cerrar sesión') }}</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
@@ -121,8 +121,14 @@
                     @if($Auth::guard('web')->user()->perfil_id == $App::$PERFIL_COMUNIDAD)
                     <li class="nav-item">
                         <a href="{{ route('auth.rankings.index') }}" class="nav-link">
-                            <i class="nav-icon fa fa-star"></i>
+                            <i class="nav-icon fa fa-medal"></i>
                             <p>Rankings</p>
+                        </a>
+                    </li>
+                     <li class="nav-item">
+                        <a href="{{ route('auth.rankings.salon') }}" class="nav-link">
+                            <i class="nav-icon fa fa-star"></i>
+                            <p>Salón de la fama</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -182,6 +188,11 @@
                         <li class="nav-item">
                             <a href="{{ route('auth.reporte.jugador') }}" class="nav-link">
                                 <i class="fa fa-address-card nav-icon"></i> <p>Jugador</p>
+                            </a>
+                        </li>
+                         <li class="nav-item">
+                            <a href="{{ route('auth.reporte.h2h') }}" class="nav-link">
+                                <i class="fa fa-address-card nav-icon"></i> <p>H2H</p>
                             </a>
                         </li>
                         <li class="nav-header">PÁGINA WEB</li>

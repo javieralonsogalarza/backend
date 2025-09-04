@@ -1,0 +1,41 @@
+{
+  "titulo": "La Confraternidad del Tenis",
+  "torneo": "Level Up Tennis Cup 2024",
+  "formato": "Round Robin Flexible",
+  "multiple": false,
+  "categoria": "Sta Principiante",
+  "fecha_inicio": "2024-06-03",
+  "fecha_final": "2024-07-28",
+  "jugadores": [
+    {
+      "nombresv1": "Renzo",
+      "apellidosv1": "León Velarde",
+      "nombresv2": null,
+      "apellidosv2": null
+    },
+    {
+      "nombresv1": "Victor",
+      "apellidosv1": "Arteaga",
+      "nombresv2": null,
+      "apellidosv2": null
+    },
+    {
+      "nombresv1": "Eddy",
+      "apellidosv1": "Cerrillo",
+      "nombresv2": null,
+      "apellidosv2": null
+    },
+    {
+      "nombresv1": "Beatriz",
+      "apellidosv1": "Camacho",
+      "nombresv2": null,
+      "apellidosv2": null
+    },
+    {
+      "nombresv1": "Miguel",
+      "apellidosv1": "Brocos",
+      "nombresv2": null,
+      "apellidosv2": null
+    }
+  ]
+}

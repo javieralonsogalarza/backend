@@ -7,13 +7,15 @@ use App\Models\App;
 use App\Models\Categoria;
 use App\Models\Comunidad;
 use App\Models\Jugador;
+use App\Models\User;
 use App\Models\TipoDocumento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use App\Notifications\DatosCambiados;
+use Illuminate\Support\Facades\Notification;
 class PerfilController extends Controller
 {
     protected $viewName = 'perfil';
@@ -73,6 +75,8 @@ class PerfilController extends Controller
 
     public function store(Request $request)
     {
+       
+    
         $imagen_path = null;
 
         $Result = (object)['Success' => false, 'Message' => null, 'Errors' => null];
@@ -121,9 +125,31 @@ class PerfilController extends Controller
                     ]);
 
                     if($entity != null) {
-                        $entity->update($request->only('categoria_id',  'imagen_path', 'nombres', 'apellidos', 'tipo_documento_id', 'nro_documento', 'edad', 'sexo', 'telefono', 'celular', 'altura', 'peso', 'password'));
-                    }
+                        $cambios = [];
+                        $campos = ['categoria_id', 'imagen_path', 'nombres', 'apellidos', 'tipo_documento_id', 'nro_documento', 'sexo', 'altura', 'peso', 'password', 'mano_habil', 'fecha_nacimiento', 'marca_raqueta'];
+    
+                        foreach ($campos as $campo) {
+                            if ($entity->$campo != $request->$campo) {
+                                $cambios[$campo] = [
+                                    'old' => $entity->$campo,
+                                    'new' => $request->$campo
+                                ];
+                            }
+                        }
+    
+                  
+    
+                        if (!empty($cambios)) {
+                          //  $entity->update(attributes: $request->only($campos));
+                            // Enviar notificación al administrador
 
+                            $admin = User::where('id', 6)->first();
+                            Notification::send($admin, new DatosCambiados($entity, $cambios));
+                        }
+                        $Result->Message = 'La solicitud de actualización ha sido enviada correctamente y está pendiente de validación por parte del Administrador.';
+
+                    }
+    
                     DB::commit();
 
                     $Result->Success = true;

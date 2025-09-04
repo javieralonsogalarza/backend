@@ -1,0 +1,11 @@
+{
+    "titulo":"La Confraternidad del Tenis",
+    "torneo":"Copa de La Confraternidad - Damas",
+    "formato":"Round Robin Flexible",
+    "ronda":4,
+    "multiple":true,
+    "damas":true,
+    "categoria":"Dobles 5ta Damas (Doble) ",
+    "fecha_inicio":"2024-07-01",
+    "fecha_final":"2024-08-11",
+    "ganador":null,"llaves":{"semifinal":{"bloque_uno":[{"jugador_local":"Gabriela Toledo + Margot Rua","jugador_rival":"Tamara Ruiz + Betty Burgos","resultado":null}],"bloque_dos":[{"jugador_local":"Varinia Moreno + Stephanie Melendez","jugador_rival":"Milagros Taquiri + Susan Romero","resultado":null}]},"final":null}}

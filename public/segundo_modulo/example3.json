@@ -1,0 +1,14 @@
+{
+    "titulo": "La Confraternidad del Tenis",
+    "torneo": "Torneo Top Spin Tennis Cup 2024",
+    "formato": "Round Robin Flexible",
+    "categoria": "5ta Principiante",
+    "grupo": "Grupo Ejemplo Tennis",
+    "ronda": "1/8 de final",
+    "jugador_ganador_uno": "Jorge Tello",
+    "jugador_ganador_dos": "Mario Casas",
+    "jugador_rival_uno": "Jose García",
+    "jugador_rival_dos": "Pedro Pinto",
+    "resultado_ganador": "6/6/8",
+    "resultado_rival": "2/3/1"
+}
