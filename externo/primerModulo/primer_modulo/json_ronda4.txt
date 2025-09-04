@@ -1,0 +1,32 @@
+{
+    "torneo": "Torneo de Semifinales 2024",
+    "formato": "Semifinales 2024",
+    "ronda": 4,
+    "categoria": "5ta B",
+    "fecha_inicio": "2024-01-08",
+    "fecha_final": "2024-03-03",
+    "ganador": "Ejemplo Ganador",
+    "llaves": {
+        "semifinal": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Jugador A",
+                    "jugador_rival": "Jugador B",
+                    "resultado": "6-0/6-2"
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Jugador C",
+                    "jugador_rival": "Jugador D",
+                    "resultado": "6-4/6-3"
+                }
+            ]
+        },
+        "final": {
+            "jugador_local": "Jugador A",
+            "jugador_rival": "Jugador C",
+            "resultado": "7-5/6-4"
+        }
+    }
+}

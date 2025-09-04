@@ -1,0 +1,202 @@
+{
+    "torneo": "La Confraternidad de Tenis",
+    "formato": "Copa Level Up 2024",
+    "ronda": 32,
+    "categoria": "5ta B",
+    "fecha_inicio": "2024-01-08",
+    "fecha_final": "2024-03-03",
+    "ganador": "Joseph Araujo",
+    "llaves": {
+        "ronda32": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Renato Bailly",
+                    "jugador_rival": "José Luis Fernandez",
+                    "resultado": "6-0/6-3"
+                },
+                {
+                    "jugador_local": "Miguel Lopez Torres",
+                    "jugador_rival": "Joshua Gave",
+                    "resultado": "6-3/6-2"
+                },
+                {
+                    "jugador_local": "Eduardo Andia",
+                    "jugador_rival": "Isabel Mundaca",
+                    "resultado": "6-3/6-2"
+                },
+                {
+                    "jugador_local": "Max Salamanca",
+                    "jugador_rival": "Carlos Higa",
+                    "resultado": "7-5/7-6"
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Joseph Araujo",
+                    "jugador_rival": "Diego Lara",
+                    "resultado": "6-3/6-4"
+                },
+                {
+                    "jugador_local": "Victor Monteverde",
+                    "jugador_rival": "Kevin Gave",
+                    "resultado": "6-3/6-3"
+                },
+                {
+                    "jugador_local": "Carlos Desposorio",
+                    "jugador_rival": "Salvador Linares",
+                    "resultado": "6-3/2-6/10-3"
+                },
+                {
+                    "jugador_local": "Carlos Euscate",
+                    "jugador_rival": "Roberto Sarmiento",
+                    "resultado": "6-3/6-0"
+                }
+            ],
+            "bloque_tres": [
+                {
+                    "jugador_local": "José Lopez Lizarzaburu",
+                    "jugador_rival": "José Magallanes",
+                    "resultado": "6-0/6-1"
+                },
+                {
+                    "jugador_local": "Klaus Talaverano",
+                    "jugador_rival": "José Escriba",
+                    "resultado": "6-1/6-2"
+                },
+                {
+                    "jugador_local": "Diego Cruz",
+                    "jugador_rival": "Jesús Diestra",
+                    "resultado": "6-2/6-0"
+                },
+                {
+                    "jugador_local": "Antonio Cruz",
+                    "jugador_rival": "Santiago Elias",
+                    "resultado": "6-4/6-2"
+                }
+            ],
+            "bloque_cuatro": [
+                {
+                    "jugador_local": "Walter Huanaco",
+                    "jugador_rival": "Leonardo Castro",
+                    "resultado": "WO"
+                },
+                {
+                    "jugador_local": "Iván Álvarez",
+                    "jugador_rival": "Anthony Lino",
+                    "resultado": "6-3/6-4"
+                },
+                {
+                    "jugador_local": "Eduardo Aramburú",
+                    "jugador_rival": "Christian Tinoco",
+                    "resultado": "6-3/6-3"
+                },
+                {
+                    "jugador_local": "Luis Enrique Pastor",
+                    "jugador_rival": "Pablo Chirinos",
+                    "resultado": "6-7/7-6/10-6"
+                }
+            ]
+        },
+        "octavos": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Renato Bailly",
+                    "jugador_rival": "Miguel Lopez Torres",
+                    "resultado": "WO"
+                },
+                {
+                    "jugador_local": "Eduardo Andia",
+                    "jugador_rival": "Max Salamanca",
+                    "resultado": "7-6/7-6"
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Joseph Araujo",
+                    "jugador_rival": "Kevin Gave",
+                    "resultado": "6-3/6-1"
+                },
+                {
+                    "jugador_local": "Carlos Desposorio",
+                    "jugador_rival": "Carlos Euscate",
+                    "resultado": "6-0/6-2"
+                }
+            ],
+            "bloque_tres": [
+                {
+                    "jugador_local": "José Lopez Lizarzaburu",
+                    "jugador_rival": "Klaus Talaverano",
+                    "resultado": "6-3/6-1"
+                },
+                {
+                    "jugador_local": "Diego Cruz",
+                    "jugador_rival": "Antonio Cruz",
+                    "resultado": "4-6/6-3/10-8"
+                }
+            ],
+            "bloque_cuatro": [
+                {
+                    "jugador_local": "Leonardo Castro",
+                    "jugador_rival": "Anthony Lino",
+                    "resultado": "WO"
+                },
+                {
+                    "jugador_local": "Christian Tinoco",
+                    "jugador_rival": "Pablo Chirinos",
+                    "resultado": "6-0/6-0"
+                }
+            ]
+        },
+        "cuartos": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Miguel Lopez Torres",
+                    "jugador_rival": "Eduardo Andia",
+                    "resultado": "6-2/6-2"
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Joseph Araujo",
+                    "jugador_rival": "Carlos Euscate",
+                    "resultado": "6-2/6-2"
+                }
+            ],
+            "bloque_tres": [
+                {
+                    "jugador_local": "Klaus Talaverano",
+                    "jugador_rival": "Antonio Cruz",
+                    "resultado": "WO"
+                }
+            ],
+            "bloque_cuatro": [
+                {
+                    "jugador_local": "Anthony Lino",
+                    "jugador_rival": "Pablo Chirinos",
+                    "resultado": "WO"
+                }
+            ]
+        },
+        "semifinal": {
+            "bloque_uno": [
+                {
+                    "jugador_local": "Eduardo Andia",
+                    "jugador_rival": "Antonio Cruz",
+                    "resultado": "6-0/6-4"
+                }
+            ],
+            "bloque_dos": [
+                {
+                    "jugador_local": "Joseph Araujo",
+                    "jugador_rival": "Pablo Chirinos",
+                    "resultado": "6-2/6-3"
+                }
+            ]
+        },
+        "final": {
+            "jugador_local": "Eduardo Andia",
+            "jugador_rival": "Joseph Araujo",
+            "resultado": "6-0/6-2"
+        }
+    }
+}

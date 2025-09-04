@@ -1,0 +1,26 @@
+{
+    "titulo": "La Confraternidad del Tenis",
+    "torneo": "Copa de La Confraternidad 2024",
+    "formato": "Round Robin Flexible",
+    "multiple": false,
+    "categoria": "5ta Principiante",
+    "fecha_inicio": "2024-09-02",
+    "fecha_final": "2024-10-27",
+    "jugadores": [
+        {"nombres": "Mario", "apellidos": "Arcasi"},
+        {"nombres": "Carlos", "apellidos": "Guerra"},
+        {"nombres": "Pedro", "apellidos": "Siesquen"},
+        {"nombres": "Ronald", "apellidos": "Porlles"},
+        {"nombres": "Josué", "apellidos": "Marca"},
+        {"nombres": "Daniel", "apellidos": "Oyola"},
+        {"nombres": "Luis", "apellidos": "Guerra"},
+        {"nombres": "Pierre", "apellidos": "Peña"},
+        {"nombres": "Jorvin", "apellidos": "Silva"},
+        {"nombres": "Ricardo", "apellidos": "Ugarte"},
+        {"nombres": "Norberto", "apellidos": "Lanchipa"},
+        {"nombres": "Victor", "apellidos": "Gómez"},
+        {"nombres": "Miguel", "apellidos": "Brocos"},
+        {"nombres": "Andrea", "apellidos": "Zerpa"},
+        {"nombres": "Lisset", "apellidos": "Contreras"}
+    ]
+}

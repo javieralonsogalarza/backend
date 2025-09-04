@@ -77,8 +77,12 @@
             <div class="container">
                 <div>
                     <a href="{{ route('index', ['landing' => $Model->slug]) }}" title="{{ str_replace("_", " ", env('APP_NAME')) }} Logo">
-                        <img src="{{ asset('/img/'.$Model->imagen_path) }}" width="250" class="logo" alt="{{ $Model->nombre }} Logo">
-                    </a>
+                       
+                    <img src="{{ asset('/img/'.$Model->imagen_path) }}" width="250" class="logo" alt="{{ $Model->nombre }} Logo">
+                 <!--    
+                    <img src="{{ asset('/img/public/logo-confraternidad.png') }}" width="250" class="logo" alt="{{ $Model->nombre }} Logo">
+                -->
+                </a>
                 </div>
                 <nav class="navigation">
                     <ul>
