@@ -3939,7 +3939,7 @@ return response()->json(['data' => $mergedPlayers]);
             'fecha_final' => 'required|date|date_format:Y-m-d|after_or_equal:fecha_inicio',
             'resultado' => 'required',
         ];
-
+ 
         // Si el resultado no es "-", agregar validaciones adicionales
         if ($request->resultado !== '-') {
             $validationRules = array_merge($validationRules, [
@@ -4215,10 +4215,13 @@ return response()->json(['data' => $mergedPlayers]);
                                                         // NO marcar BYE en la final - solo colocar al ganador del lado derecho
                                                     }
                                                    
-                                                } else {
+                                                }
+                                                
+                                                else {
                                                     // Para otras fases: colocar al ganador sin marcar BYE automáticamente
                                                     // El BYE se marcará solo si realmente no hay oponente
                                                     if(in_array($PartidoNext->bloque, [1, 2])) {
+                                                        
                                                         $PartidoNextBye->jugador_local_uno_id = $PartidoNext->jugador_ganador_uno_id;
                                                         $PartidoNextBye->jugador_local_dos_id = $PartidoNext->jugador_ganador_dos_id;
                                                         // NO marcar BYE automáticamente - solo colocar al ganador
@@ -4307,6 +4310,7 @@ return response()->json(['data' => $mergedPlayers]);
                                                                     // NO marcar BYE en la final - solo colocar al ganador del lado derecho
                                                                 }
                                                             } else {
+                                                                
                                                                 if(in_array($PartidoNextBye->bloque, [1, 2])) {
                                                                     $PartidoNextCascada->jugador_local_uno_id = $PartidoNextBye->jugador_ganador_uno_id;
                                                                     $PartidoNextCascada->jugador_local_dos_id = $PartidoNextBye->jugador_ganador_dos_id;
@@ -4357,9 +4361,24 @@ return response()->json(['data' => $mergedPlayers]);
                                             $PartidoNext2->fecha_final = Carbon::parse($PartidoNextWiouthBuy->fecha_final)->addDay(6);
                                             $PartidoNext2->user_create_id = Auth::guard('web')->user()->id;
                                             $PartidoNext2->fase = $SiguienteFase;
-                                            $PartidoNext2->position = $PartidoNextWiouthBuy->position;
+                                            
+                                            // Determinar posición correcta basada en el flujo del torneo
+                                            if($PartidoNextWiouthBuy->fase == 16){
+                                                $PartidoNext2->position = $PartidoNextWiouthBuy->bracket == "upper" ? 1 : 2;
+                                            } else {
+                                                // Para otras fases, usar lógica de bloque para determinar posición
+                                                if($SiguienteFase == 1) {
+                                                    $PartidoNext2->position = 1; // Final siempre posición 1
+                                                } else {
+                                                    // Determinar posición basada en de dónde viene el jugador
+                                                    $PartidoNext2->position = in_array($PartidoNextWiouthBuy->bloque, [1, 2]) ? 1 : 2;
+                                                }
+                                            }
+                                            
                                             $PartidoNext2->bloque = $SiguienteFase == 1 ? 1 : (in_array($PartidoNextWiouthBuy->fase, [16, 8]) ? $PartidoNextWiouthBuy->bloque : (in_array($PartidoNextWiouthBuy->bloque, [1, 3]) ? 1 : 2));
                                             $PartidoNext2->comunidad_id = Auth::guard('web')->user()->comunidad_id;
+
+                                           
     
                                             // Solo asignar jugadores a posiciones que estén realmente vacías para evitar duplicados
                                             // Y solo si el partido con BYE realmente tiene un jugador presente
@@ -4368,14 +4387,19 @@ return response()->json(['data' => $mergedPlayers]);
                                                 $jugadorPresenteId = $PartidoNextWiouthBuy->jugador_local_uno_id ?? $PartidoNextWiouthBuy->jugador_rival_uno_id;
                                                 $jugadorPresenteDosId = $PartidoNextWiouthBuy->jugador_local_dos_id ?? $PartidoNextWiouthBuy->jugador_rival_dos_id;
                                                 
-                                                if($PartidoNext2->jugador_local_uno_id == null && $PartidoNext2->jugador_local_dos_id == null) {
-                                                    // Posición local está vacía, asignar aquí
-                                                    $PartidoNext2->jugador_local_uno_id = $jugadorPresenteId;
-                                                    $PartidoNext2->jugador_local_dos_id = $jugadorPresenteDosId;
-                                                } else if($PartidoNext2->jugador_rival_uno_id == null && $PartidoNext2->jugador_rival_dos_id == null) {
-                                                    // Posición rival está vacía, asignar aquí
-                                                    $PartidoNext2->jugador_rival_uno_id = $jugadorPresenteId;
-                                                    $PartidoNext2->jugador_rival_dos_id = $jugadorPresenteDosId;
+                                                // Asignar basado en la posición determinada anteriormente
+                                                if($PartidoNext2->position == 1) {
+                                                    // Este jugador va en posición local (arriba)
+                                                    if($PartidoNext2->jugador_local_uno_id == null && $PartidoNext2->jugador_local_dos_id == null) {
+                                                        $PartidoNext2->jugador_local_uno_id = $jugadorPresenteId;
+                                                        $PartidoNext2->jugador_local_dos_id = $jugadorPresenteDosId;
+                                                    }
+                                                } else {
+                                                    // Este jugador va en posición rival (abajo)
+                                                    if($PartidoNext2->jugador_rival_uno_id == null && $PartidoNext2->jugador_rival_dos_id == null) {
+                                                        $PartidoNext2->jugador_rival_uno_id = $jugadorPresenteId;
+                                                        $PartidoNext2->jugador_rival_dos_id = $jugadorPresenteDosId;
+                                                    }
                                                 }
                                             }
                                             // Si no hay jugador presente en el BYE o ambas posiciones están ocupadas, no asignar
@@ -4542,6 +4566,7 @@ return response()->json(['data' => $mergedPlayers]);
                                     $PartidoNext->jugador_rival_dos_id = null;
                                     $PartidoNext->buy = true;
                                 }
+                               
 
         
                                 $PartidoNext->save();
@@ -4674,6 +4699,7 @@ return response()->json(['data' => $mergedPlayers]);
                                             
                                             // Asignar el ganador del BYE a la siguiente ronda
                                             // Determinar posición basada en bloque y fase
+                                            
                                             if($PartidoNext->fase == 2) {
                                                 // En semifinal a final: posicionamiento basado en estructura del bracket
                                                 // Bloque 1 = semifinal superior izquierda → posición local (arriba)

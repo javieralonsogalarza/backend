@@ -202,7 +202,7 @@ Route::group(['middleware' => 'auth:web'], function() {
 
                             Route::post('fase-final/partido/validate/partialView', [Auth\TorneoController::class, 'faseFinalPartidoValidatePartialView'])->name('faseFinal.partido.validatePartialView');
                             Route::get('fase-final/partido/partialView/{id}/{position}', [Auth\TorneoController::class, 'faseFinalPartidoPartialView'])->name('faseFinal.partido.partialView');
-                            Route::post('fase-final/partido/store', [Auth\TorneoController::class, 'faseFinalPartidoStore'])->name('faseFinal.partido.store');
+                            Route::post('fase-final/partido/store', [Auth\NuevoController::class, 'faseFinalPartidoStore'])->name('faseFinal.partido.store');
 
                             //Route::get('ranking/{torneo}/{torneo_categoria_id}/{landing?}', [Auth\TorneoController::class, 'ranking'])->name('ranking');
                         });
