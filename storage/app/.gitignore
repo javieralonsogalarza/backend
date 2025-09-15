@@ -1,3 +1,8 @@
 *
 !public/
 !.gitignore
+# Solo permitir estructura de carpetas, no los backups reales
+!.glide-cache/
+!.glide-cache/**
+# Mantener backups ignorados por seguridad
+backups/**
