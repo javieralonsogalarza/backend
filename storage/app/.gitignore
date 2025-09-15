@@ -1,5 +1,6 @@
 *
 !public/
+!public/**
 !.gitignore
 # Solo permitir estructura de carpetas, no los backups reales
 !.glide-cache/
