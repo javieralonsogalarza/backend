@@ -237,6 +237,38 @@ confirmAjax = function(url, parameters, type, msg, msgSuccess, onSuccess, onErro
     });
 }
 
+actionAjax = function(url, parameters, type, onSuccess, isToConfirm, msgSuccess, onErrors) {
+    $.ajax({
+        url: url,
+        data: parameters,
+        type: type != null ? type : "POST",
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            if (isToConfirm === true) {
+                if (data.Success === true) {
+                    Toast.fire({icon: 'success', title: msgSuccess ? msgSuccess : 'Proceso realizado Correctamente'});
+                    if (onSuccess) onSuccess(data);
+                } else {
+                    if (onErrors) onErrors(data);
+                    else Toast.fire({icon: 'error', title: data.Message});
+                }
+            } else {
+                if (onSuccess) onSuccess(data);
+            }
+        },
+        beforeSend: function () {
+            $("#loading").show();
+            //if (isToConfirm !== true) $("#loading").show();
+        },
+        complete: function () {
+            $("#loading").hide();
+            //if (isToConfirm !== true) $("#loading").hide();
+        }
+    });
+}
+
 actionAjaxEspecial = function(url, parameters, type, onSuccess, isToConfirm, msgSuccess, onErrors) {
     $.ajax({
         url: url,
@@ -320,37 +352,6 @@ actionAjaxEspecial = function(url, parameters, type, onSuccess, isToConfirm, msg
     });
 }
 
-actionAjax = function(url, parameters, type, onSuccess, isToConfirm, msgSuccess, onErrors) {
-    $.ajax({
-        url: url,
-        data: parameters,
-        type: type != null ? type : "POST",
-        cache: false,
-        processData: false,
-        contentType: false,
-        success: function (data) {
-            if (isToConfirm === true) {
-                if (data.Success === true) {
-                    Toast.fire({icon: 'success', title: msgSuccess ? msgSuccess : 'Proceso realizado Correctamente'});
-                    if (onSuccess) onSuccess(data);
-                } else {
-                    if (onErrors) onErrors(data);
-                    else Toast.fire({icon: 'error', title: data.Message});
-                }
-            } else {
-                if (onSuccess) onSuccess(data);
-            }
-        },
-        beforeSend: function () {
-            $("#loading").show();
-            //if (isToConfirm !== true) $("#loading").show();
-        },
-        complete: function () {
-            $("#loading").hide();
-            //if (isToConfirm !== true) $("#loading").hide();
-        }
-    });
-}
 
 function createModal(title, body, onHidden) {
     const template = `<div id="myModal" class="modal fade" role="dialog">

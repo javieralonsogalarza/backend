@@ -611,3 +611,64 @@ Stack trace:
 [20-Jun-2025 23:58:28 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
 [20-Jun-2025 23:58:39 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
 [20-Jun-2025 23:58:39 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:27:58 UTC] PHP Warning:  Undefined array key 0 in /home/wg9rnre7ez7n/public_html/sexto_modulo/jugadores.php on line 147
+[13-Aug-2025 23:28:39 UTC] PHP Warning:  file_get_contents(http://localhost/storage/public/uploads/parcial_ranking/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/sexto_modulo/salon_fama.php on line 19
+[13-Aug-2025 23:28:39 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/sexto_modulo/salon_fama.php on line 22
+[13-Aug-2025 23:28:39 UTC] PHP Warning:  Undefined variable $cols in /home/wg9rnre7ez7n/public_html/sexto_modulo/salon_fama.php on line 192
+[13-Aug-2025 23:28:52 UTC] PHP Warning:  file_get_contents(http://localhost/storage/public/uploads/parcial_ranking/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/sexto_modulo/jugadores.php on line 144
+[13-Aug-2025 23:28:52 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/sexto_modulo/jugadores.php on line 147
+[13-Aug-2025 23:29:02 UTC] PHP Warning:  file_get_contents(http://localhost/storage/public/uploads/parcial_ranking/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/sexto_modulo/jugadores.php on line 144
+[13-Aug-2025 23:29:02 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/sexto_modulo/jugadores.php on line 147
+[13-Aug-2025 23:30:58 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:30:58 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:49 UTC] PHP Warning:  Undefined array key "tournament_name" in /home/wg9rnre7ez7n/public_html/sexto_modulo/jugadores.php on line 413
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "tournament_name" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 356
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[13-Aug-2025 23:38:59 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[14-Aug-2025 00:05:08 UTC] PHP Warning:  file_get_contents(http://localhost/storage/public/uploads/parcial_ranking/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 19
+[14-Aug-2025 00:05:08 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 22
+[14-Aug-2025 00:05:08 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 297
+[14-Aug-2025 00:05:08 UTC] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php:306
+Stack trace:
+#0 {main}
+  thrown in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 306
+[14-Aug-2025 00:05:21 UTC] PHP Warning:  file_get_contents(http://localhost/storage/public/uploads/parcial_ranking/json.txt): Failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found
+ in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 19
+[14-Aug-2025 00:05:21 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 22
+[14-Aug-2025 00:05:21 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 297
+[14-Aug-2025 00:05:21 UTC] PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, null given in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php:306
+Stack trace:
+#0 {main}
+  thrown in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 306
+[14-Aug-2025 00:05:35 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[14-Aug-2025 00:05:35 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 376
+[14-Aug-2025 00:07:08 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 416
+[14-Aug-2025 00:07:08 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 416
+[14-Aug-2025 00:57:15 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 416
+[14-Aug-2025 00:57:15 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 416
+[14-Aug-2025 00:57:37 UTC] PHP Warning:  Undefined array key "imagen_comunidad" in /home/wg9rnre7ez7n/public_html/sexto_modulo/salon_fama.php on line 148
+[14-Aug-2025 00:57:38 UTC] PHP Warning:  Undefined array key "imagen_comunidad" in /home/wg9rnre7ez7n/public_html/sexto_modulo/salon_fama.php on line 148
+[14-Aug-2025 00:59:37 UTC] PHP Warning:  Undefined array key "imagen_comunidad" in /home/wg9rnre7ez7n/public_html/sexto_modulo/salon_fama.php on line 148
+[14-Aug-2025 00:59:40 UTC] PHP Warning:  Undefined array key "imagen_comunidad" in /home/wg9rnre7ez7n/public_html/sexto_modulo/salon_fama.php on line 148
+[14-Aug-2025 00:59:47 UTC] PHP Warning:  Undefined array key "imagen_comunidad" in /home/wg9rnre7ez7n/public_html/sexto_modulo/salon_fama.php on line 148
+[26-Aug-2025 06:43:47 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 416
+[05-Sep-2025 06:58:31 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 416
+[05-Sep-2025 06:58:31 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 416
+[05-Sep-2025 06:58:31 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 416
+[05-Sep-2025 06:58:31 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 416
+[05-Sep-2025 06:58:31 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 416
+[05-Sep-2025 06:58:31 UTC] PHP Warning:  Undefined array key "nombres" in /home/wg9rnre7ez7n/public_html/sexto_modulo/grupos.php on line 416

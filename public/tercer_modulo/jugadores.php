@@ -15,13 +15,27 @@
         <span class="loader"></span>
     </div>
 
-    <?php
-    // Leer el archivo JSON desde el archivo .txt
-    $rutaArchivo = $_GET['json'] ?? './example/players/6.json';
-    $jsonData = file_get_contents($rutaArchivo);
-    $datos = json_decode($jsonData, true);
+<?php
+// En la sección PHP del head, reemplaza la lógica de fondos existente con esto:
 
-    $validation = 0;
+// 1. Define la ruta a la carpeta de fondos
+$directorioFondos = 'images/bg/';
+
+// 2. Busca todos los archivos que terminen en .jpeg o .jpg dentro de esa carpeta
+$archivosFondos = array_merge(
+    glob($directorioFondos . '*.jpeg'),
+    glob($directorioFondos . '*.jpg')
+);
+
+// 3. Cuenta cuántos archivos se encontraron
+$numeroDeFondos = count($archivosFondos);
+
+// Resto del código existente...
+$rutaArchivo = $_GET['json'] ?? './example/players/6.json';
+$jsonData = file_get_contents($rutaArchivo);
+$datos = json_decode($jsonData, true);
+$validation = 0;
+
 
     function numeroAleatorio() {
         return rand(1, 8);
@@ -267,6 +281,35 @@ function cortarNombreApellido($nombreCompleto, $nombrePila, $maxCaracteres = 16,
                             </svg>
                         </button>
                     </div>
+    <div class="background-selector-container">
+    <h4 style="text-align: center; width: 100%; margin-bottom: 15px;">Selecciona un fondo:</h4>
+    <div class="background-options">
+
+        <!-- PRIMERA OPCIÓN: Randomizador con ? -->
+        <div class="bg-option randomizer active" data-bg="random" title="Fondo Aleatorio">
+            <span style="font-size: 24px; font-weight: bold; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">?</span>
+        </div>
+
+        <!-- Luego los fondos normales -->
+        <?php 
+        $bgCounter = 1;
+        foreach ($archivosFondos as $archivoFondo): 
+            $nombreArchivo = basename($archivoFondo);
+            $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION);
+        ?>
+            <div 
+                class="bg-option" 
+                data-bg="bg<?php echo $bgCounter; ?>" 
+                data-extension="<?php echo $extension; ?>"
+                style="background-image: url('<?php echo $archivoFondo; ?>');">
+            </div>
+        <?php 
+            $bgCounter++;
+        endforeach; 
+        ?>
+
+    </div>
+</div>
                     <button id="generate">Generar</button>
                 <?php endif; ?>
 
@@ -314,7 +357,7 @@ if (isset($datos) && !empty($datos)):
     <div class="canvas_scroll w-100 <?php if(isset($datosGrupo['multiple']) && $datosGrupo['multiple'] == true){echo 'is_multiple';} ?>">
         <div class="canvas canvas-full bg<?php echo $fondoAleatorio; ?>">
             <img src="images/topbar.png" class="canvas_topbar">
-            <img src="images/flag.png" class="canvas_flag">
+            <img src="<?php echo $datos['imagen_comunidad']; ?>" alt="Logo" class="canvas_flag">
             <div class="canvas_head">
                 <div>
                     <h1>ENTRY LIST</h1>
@@ -365,7 +408,187 @@ if (isset($datos) && !empty($datos)):
     endforeach; 
 endif; 
 ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const bgOptionsContainer = document.querySelector('.background-options');
+    const allCanvases = document.querySelectorAll('.canvas');
+    
+    // Número total de fondos disponibles (sin contar el randomizador)
+    const totalBackgrounds = <?php echo $numeroDeFondos; ?>;
+    
+    // Array con las rutas exactas de los fondos para sincronización
+    const backgroundPaths = [
+        <?php 
+        foreach ($archivosFondos as $archivoFondo): 
+            echo "'" . $archivoFondo . "'";
+            if ($archivoFondo !== end($archivosFondos)) echo ", ";
+        endforeach; 
+        ?>
+    ];
+    
+    // Colores aleatorios para el modo random
+    const randomColors = [
+        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+        'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+        'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+        'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+        'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+        'linear-gradient(135deg, #ff8a80 0%, #ea80fc 100%)',
+        'linear-gradient(135deg, #82b1ff 0%, #b388ff 100%)',
+        'linear-gradient(135deg, #84ffff 0%, #18ffff 100%)',
+        'linear-gradient(135deg, #b9f6ca 0%, #69f0ae 100%)',
+        'linear-gradient(135deg, #fff59d 0%, #ffeb3b 100%)',
+        'linear-gradient(135deg, #ffcc80 0%, #ff9800 100%)',
+        'linear-gradient(135deg, #ffab91 0%, #ff5722 100%)'
+    ];
 
+    if (bgOptionsContainer && allCanvases.length > 0) {
+        bgOptionsContainer.addEventListener('click', function(e) {
+            const selectedOption = e.target.closest('.bg-option');
+            if (!selectedOption) return;
+
+            const bgClass = selectedOption.dataset.bg;
+
+            if (bgClass === 'random') {
+                handleRandomBackground();
+            } else {
+                // Para fondos específicos, usar directamente la imagen del selector
+                applySpecificBackgroundByImage(selectedOption);
+            }
+        });
+    }
+
+    function handleRandomBackground() {
+        // Decidir aleatoriamente si usar una imagen de fondo o un color
+        const useImageBackground = Math.random() > 0.3; // 70% probabilidad de usar imagen
+        
+        if (useImageBackground && totalBackgrounds > 0) {
+            // Usar una imagen de fondo aleatoria
+            const randomIndex = Math.floor(Math.random() * backgroundPaths.length);
+            const randomImagePath = backgroundPaths[randomIndex];
+            
+            allCanvases.forEach(canvas => {
+                // Limpiar estilos y clases
+                canvas.style.background = '';
+                canvas.style.backgroundImage = '';
+                canvas.className = canvas.className.replace(/bg\d+/g, '').trim();
+                
+                // Aplicar imagen aleatoria directamente
+                canvas.style.backgroundImage = `url('${randomImagePath}')`;
+                canvas.style.backgroundSize = 'cover';
+                canvas.style.backgroundPosition = 'center';
+                canvas.style.backgroundRepeat = 'no-repeat';
+            });
+            
+        } else {
+            // Usar un color/gradiente aleatorio
+            const randomColor = randomColors[Math.floor(Math.random() * randomColors.length)];
+            
+            allCanvases.forEach(canvas => {
+                // Quitar todas las clases de fondo existentes
+                canvas.className = canvas.className.replace(/bg\d+/g, '').trim();
+                canvas.style.backgroundImage = '';
+                
+                // Aplicar el color/gradiente aleatorio
+                canvas.style.background = randomColor;
+            });
+        }
+
+        // Actualizar estado visual del selector
+        document.querySelectorAll('.bg-option').forEach(opt => opt.classList.remove('active'));
+        document.querySelector('[data-bg="random"]').classList.add('active');
+    }
+
+    function applySpecificBackgroundByImage(selectedOption) {
+        // Obtener la imagen de fondo del selector mismo
+        const computedStyle = window.getComputedStyle(selectedOption);
+        const backgroundImage = computedStyle.backgroundImage;
+        
+        if (backgroundImage && backgroundImage !== 'none') {
+            allCanvases.forEach(canvas => {
+                // Limpiar estilos y clases previas
+                canvas.style.background = '';
+                canvas.className = canvas.className.replace(/bg\d+/g, '').trim();
+                
+                // Aplicar la misma imagen que se ve en el selector
+                canvas.style.backgroundImage = backgroundImage;
+                canvas.style.backgroundSize = 'cover';
+                canvas.style.backgroundPosition = 'center';
+                canvas.style.backgroundRepeat = 'no-repeat';
+            });
+        }
+
+        // Actualizar estado visual del selector
+        document.querySelectorAll('.bg-option').forEach(opt => opt.classList.remove('active'));
+        selectedOption.classList.add('active');
+    }
+
+    // Manejar carga de fondo personalizado
+    const imageUpload = document.getElementById('imageUpload');
+    const heroViewInput = document.querySelector('.view_hero-input');
+    
+    if (imageUpload && heroViewInput) {
+        imageUpload.addEventListener('change', function(event) {
+            const files = event.target.files;
+            
+            if (files && files[0]) {
+                const newBgFile = files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const imageUrl = e.target.result;
+
+                    allCanvases.forEach(canvas => {
+                        // Quitar clases de fondo y limpiar estilos
+                        canvas.className = canvas.className.replace(/bg\d+/g, '').trim();
+                        canvas.style.background = '';
+                        
+                        // Aplicar fondo personalizado
+                        canvas.style.backgroundImage = `url(${imageUrl})`;
+                        canvas.style.backgroundSize = 'cover';
+                        canvas.style.backgroundPosition = 'center';
+                        canvas.style.backgroundRepeat = 'no-repeat';
+                    });
+
+                    // Mostrar previsualización
+                    heroViewInput.style.background = `url(${imageUrl}) no-repeat center center`;
+                    heroViewInput.style.backgroundSize = 'cover';
+                    
+                    if (!heroViewInput.classList.contains('with_preview')) {
+                        heroViewInput.classList.add('with_preview');
+                    }
+
+                    // Desactivar todas las opciones del selector
+                    document.querySelectorAll('.bg-option').forEach(opt => opt.classList.remove('active'));
+                };
+
+                reader.readAsDataURL(newBgFile);
+            }
+        });
+    }
+
+    // Manejar el botón de eliminar preview
+    const deleteButton = document.querySelector('.delete_preview');
+    if (deleteButton && heroViewInput) {
+        deleteButton.addEventListener('click', function() {
+            if (imageUpload) {
+                imageUpload.value = '';
+            }
+            
+            heroViewInput.style.background = '';
+            heroViewInput.classList.remove('with_preview');
+            
+            handleRandomBackground();
+        });
+    }
+
+    // Aplicar un fondo aleatorio al cargar la página
+    handleRandomBackground();
+});
+</script>
     <script src="js/html2canvas.min.js"></script>
     <script src="js/bg.js"></script>
     <script src="js/main.js"></script>

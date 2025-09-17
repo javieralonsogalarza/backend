@@ -44,17 +44,11 @@ $(function(){
         }
     });
 
-    $btnBuscar.on("click", function() {
-        var torneos = $filter_tournaments.val();
-        
+    $btnBuscar.on("click", function()
+    {
         $.ajax({
-            url: `/rankings/partialView`,
+            url: `/rankings/partialView?filter_anio=${$filter_anio.val()}&filter_categoria=${$filter_category.val()}`,
             type: "GET",
-            data: {
-                filter_anio: $filter_anio.val(),
-                filter_categoria: $filter_category.val(),
-                torneos: torneos
-            },
             dataType: "html",
             cache: false,
             success: function (data) {

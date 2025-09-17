@@ -3117,3 +3117,421 @@ Stack trace:
  in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 139
 [23-May-2025 04:45:20 UTC] PHP Warning:  Undefined array key 1 in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 421
 [16-Jun-2025 23:01:21 UTC] PHP Warning:  Undefined array key 1 in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 421
+[10-Jul-2025 00:36:43 UTC] PHP Warning:  Undefined array key 1 in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 421
+[10-Jul-2025 00:37:16 UTC] PHP Warning:  Undefined array key 1 in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 421
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 338
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 344
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 355
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 364
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 378
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 386
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 453
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 524
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 622
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 776
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 840
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 844
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 882
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 900
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 908
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 338
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 344
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 355
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 364
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 378
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 386
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 453
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 524
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 622
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 776
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 840
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 844
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 882
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 900
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 908
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 338
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 344
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 355
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 364
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 378
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 386
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 453
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 524
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 622
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 776
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 840
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 844
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 882
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 900
+[13-Jul-2025 04:57:16 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 908
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 338
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 344
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 355
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 364
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 378
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 386
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 453
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 524
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 622
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 776
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 840
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 844
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 882
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 900
+[14-Jul-2025 04:03:17 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 908
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 338
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 344
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 355
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 364
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 378
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 386
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 453
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 524
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 622
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 776
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 840
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 844
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 882
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 900
+[14-Jul-2025 04:03:18 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 908
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 338
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 344
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 355
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 364
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 378
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 386
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 453
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 524
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 622
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 776
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 840
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 844
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 882
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 900
+[13-Aug-2025 23:27:25 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 908
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 338
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 344
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 355
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 364
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 378
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 386
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 453
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 524
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 622
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 776
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 840
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 844
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 882
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 900
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 908
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 338
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 344
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 355
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 364
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 378
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 386
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 453
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 524
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 622
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 776
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 840
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 844
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 882
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 900
+[13-Aug-2025 23:27:28 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 908
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 338
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 344
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 355
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 364
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 378
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 386
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 393
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 453
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 472
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 524
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 543
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 622
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 776
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 840
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 844
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 882
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 900
+[13-Aug-2025 23:27:29 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 908
+[14-Aug-2025 00:41:37 UTC] PHP Warning:  Undefined array key "imagen_comunidad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 316
+[14-Aug-2025 00:41:39 UTC] PHP Warning:  Undefined array key "imagen_comunidad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 316
+[02-Sep-2025 04:19:52 UTC] PHP Warning:  Undefined array key 1 in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 564
+[07-Sep-2025 19:39:32 UTC] PHP Warning:  file_get_contents(): Peer certificate CN=`*.prod.phx3.secureserver.net' did not match expected CN=`torneos-tenis.ddev.site' in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 15
+[07-Sep-2025 19:39:32 UTC] PHP Warning:  file_get_contents(): Failed to enable crypto in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 15
+[07-Sep-2025 19:39:32 UTC] PHP Warning:  file_get_contents(https://torneos-tenis.ddev.site/storage/public/uploads/h2h/json.txt): Failed to open stream: operation failed in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 15
+[07-Sep-2025 19:39:32 UTC] PHP Warning:  file_get_contents(): Peer certificate CN=`*.prod.phx3.secureserver.net' did not match expected CN=`torneos-tenis.ddev.site' in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 139
+[07-Sep-2025 19:39:32 UTC] PHP Warning:  file_get_contents(): Failed to enable crypto in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 139
+[07-Sep-2025 19:39:32 UTC] PHP Warning:  file_get_contents(https://torneos-tenis.ddev.site/storage/public/uploads/h2h/json.txt): Failed to open stream: operation failed in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 139
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "imagen_comunidad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 316
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 337
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 343
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 354
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 361
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 375
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 385
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 392
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 392
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 452
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 471
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 471
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 523
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 542
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 542
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 620
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 775
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 837
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 841
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 880
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 899
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 907
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "imagen_comunidad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 316
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 337
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 343
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 354
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 361
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 375
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 385
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 392
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 392
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 452
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 471
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 471
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 523
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 542
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 542
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 620
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 775
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 837
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 841
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 880
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 899
+[08-Sep-2025 17:32:40 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 907
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "imagen_comunidad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 316
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 337
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 343
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 354
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 361
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 375
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 385
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 392
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 392
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 452
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 471
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 471
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 523
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 542
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 542
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 620
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 775
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 837
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 841
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 880
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 899
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 907
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "imagen_comunidad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 316
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "victorias_local_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 337
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "victorias_rival_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 343
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 354
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 361
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 362
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 363
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_edad" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 375
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_tamano" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 376
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_peso" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 377
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 385
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "partido_vs" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 392
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 392
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 452
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "partidos_local" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 471
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 471
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 523
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "partidos_rival" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 542
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  foreach() argument must be of type array|object, null given in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 542
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 620
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 621
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "nombre_categoria" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 775
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 837
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 838
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 839
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_imagen" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 841
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_sexo" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 842
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 843
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 880
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 881
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_rival_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 899
+[08-Sep-2025 17:32:41 UTC] PHP Warning:  Undefined array key "jugador_local_id" in /home/wg9rnre7ez7n/public_html/cuarto_modulo/tennis/index.php on line 907

@@ -5,6 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php
+    // AHORA (Reemplaza la línea anterior con esto)
+
+// 1. Define la ruta a la carpeta de fondos
+$directorioFondos = 'images/bg/';
+
+// 2. Busca todos los archivos que terminen en .jpeg dentro de esa carpeta
+$archivosFondos = glob($directorioFondos . '*.jpeg');
+
+// 3. Cuenta cuántos archivos se encontraron
+$numeroDeFondos = count($archivosFondos);
     // Leer el archivo JSON desde el archivo .txt
     $rutaArchivo = $_GET['json'] ?? '../example1.json';
     $jsonData = file_get_contents($rutaArchivo);
@@ -262,6 +272,27 @@
             </div> -->
 
             <canvas id="canvas" style="display:none;"></canvas>
+<div class="background-selector-container">
+    <h4 style="text-align: center; width: 100%; margin-bottom: 15px;">Selecciona un fondo:</h4>
+    <div class="background-options">
+
+        <!-- PRIMERA OPCIÓN: Randomizador con ? -->
+        <div class="bg-option randomizer active" data-bg="random" title="Fondo Aleatorio">
+            <span style="font-size: 24px; font-weight: bold; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">?</span>
+        </div>
+
+        <!-- Luego los fondos normales -->
+        <?php for ($i = 1; $i <= $numeroDeFondos; $i++): ?>
+            <div 
+                class="bg-option" 
+                data-bg="bg<?php echo $i; ?>" 
+                style="background-image: url('images/bg/bg<?php echo $i; ?>.jpeg');">
+            </div>
+        <?php endfor; ?>
+
+    </div>
+</div>
+
             <div class="buttons-container" style="display: flex; flex-direction: row; gap: 10px; flex-wrap: wrap; justify-content: center;">
                 
                 
@@ -332,7 +363,8 @@
 			?>
                     	</p>
 
-                    <img src="images/flag.png" alt="Logo" class="canvas_flag">
+                   <img src="<?php echo $datos['imagen_comunidad']; ?>" alt="Logo" class="canvas_flag">
+
                     <div class="canvas_top-title">
                         <p><?php echo htmlspecialchars($datos['torneo'] ?? ''); ?></p>
                         <h1>Resultado del partido</h1>
@@ -916,6 +948,106 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+});
+</script>
+
+<script>
+// Reemplaza tu JavaScript actual de selección de fondos con esto:
+document.addEventListener('DOMContentLoaded', function() {
+    const bgOptionsContainer = document.querySelector('.background-options');
+    const mainCanvas = document.querySelector('.general_canvas');
+    
+    // Número total de fondos disponibles (sin contar el randomizador)
+    const totalBackgrounds = <?php echo $numeroDeFondos; ?>;
+    
+    // Colores aleatorios para cuando no hay imagen de fondo
+    const randomColors = [
+        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+        'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+        'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+        'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+        'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+        'linear-gradient(135deg, #ff8a80 0%, #ea80fc 100%)',
+        'linear-gradient(135deg, #82b1ff 0%, #b388ff 100%)',
+        'linear-gradient(135deg, #84ffff 0%, #18ffff 100%)',
+        'linear-gradient(135deg, #b9f6ca 0%, #69f0ae 100%)',
+        'linear-gradient(135deg, #fff59d 0%, #ffeb3b 100%)',
+        'linear-gradient(135deg, #ffcc80 0%, #ff9800 100%)',
+        'linear-gradient(135deg, #ffab91 0%, #ff5722 100%)'
+    ];
+
+    if (bgOptionsContainer && mainCanvas) {
+        bgOptionsContainer.addEventListener('click', function(e) {
+            const selectedOption = e.target.closest('.bg-option');
+            if (!selectedOption) return;
+
+            // Obtiene la clase de fondo del atributo data
+            const bgClass = selectedOption.dataset.bg;
+
+            if (bgClass === 'random') {
+                // Si se seleccionó el randomizador
+                handleRandomBackground();
+            } else {
+                // Si se seleccionó un fondo específico
+                applySpecificBackground(bgClass, selectedOption);
+            }
+        });
+    }
+
+    function handleRandomBackground() {
+        // Decidir aleatoriamente si usar una imagen de fondo o un color
+        const useImageBackground = Math.random() > 0.3; // 70% probabilidad de usar imagen
+        
+        if (useImageBackground && totalBackgrounds > 0) {
+            // Usar una imagen de fondo aleatoria
+            const randomNumber = Math.floor(Math.random() * totalBackgrounds) + 1;
+            const randomBgClass = `bg${randomNumber}`;
+            
+            // 1. Quita todas las clases de fondo existentes
+            mainCanvas.className = mainCanvas.className.replace(/bg\d+/g, '').trim();
+            
+            // 2. Quita cualquier fondo personalizado que se haya subido
+            mainCanvas.style.background = '';
+            
+            // 3. Añade la nueva clase de fondo
+            mainCanvas.classList.add(randomBgClass);
+            
+        } else {
+            // Usar un color/gradiente aleatorio
+            const randomColor = randomColors[Math.floor(Math.random() * randomColors.length)];
+            
+            // 1. Quita todas las clases de fondo existentes
+            mainCanvas.className = mainCanvas.className.replace(/bg\d+/g, '').trim();
+            
+            // 2. Aplica el color/gradiente aleatorio
+            mainCanvas.style.background = randomColor;
+        }
+
+        // 4. Actualizar el estado visual del selector - mantener el randomizador como activo
+        document.querySelectorAll('.bg-option').forEach(opt => opt.classList.remove('active'));
+        document.querySelector('[data-bg="random"]').classList.add('active');
+    }
+
+    function applySpecificBackground(bgClass, selectedOption) {
+        // 1. Quita todas las clases de fondo existentes
+        mainCanvas.className = mainCanvas.className.replace(/bg\d+/g, '').trim();
+        
+        // 2. Quita cualquier fondo personalizado que se haya subido
+        mainCanvas.style.background = '';
+        
+        // 3. Añade la nueva clase de fondo
+        mainCanvas.classList.add(bgClass);
+
+        // 4. Actualiza el estado visual del selector
+        document.querySelectorAll('.bg-option').forEach(opt => opt.classList.remove('active'));
+        selectedOption.classList.add('active');
+    }
+
+    // Aplicar un fondo aleatorio al cargar la página ya que el randomizador está activo por defecto
+    handleRandomBackground();
 });
 </script>
 

@@ -32,7 +32,7 @@ $(function(){
                 },
                 orderable: false,
             },
-            { title: "Nombre Completo", data: null, className: "text-left", render: function(data){
+            { title: "Nombre Completo", data: "nombre_completo", className: "text-left", render: function(data){
                 return  (data.isAccount ? '<i class="fa fa-user"></i> ' : '') + data.nombre_completo;
             } },
             { title: "Categoría", data: "categoria", className: "text-left", render: function(data){
@@ -117,34 +117,39 @@ $(function(){
     });
 
     $btnEliminarMasivo.on("click", function () {
-        const ids = [];
-        const nombres = [];
-        const validadores = [];
-        $dataTable.rows().nodes().to$().find('input[type="checkbox"]:checked').each(function (i) {
-            const rowData = $dataTable.row($(this).parents("tr")).data();
-            ids[i] = parseInt($(this).val());
-            nombres[i] = rowData.nombre_completo;
-            validadores[i] = rowData.en_torneo_jugadors;
-        });
+    const ids = [];
+    const nombres = [];
+    const validadores = [];
+    const nombresNoEliminables = [];
     
-        if (ids.length > 0) {
-            // Verificar si alguno de los jugadores tiene registros en torneos
-            const tieneRegistros = validadores.some(validador => validador);
-    
-            if (tieneRegistros) {
-                Toast.fire({icon: 'error', title: 'No se puede eliminar uno o más jugadores, ya que tienen registros en torneos.'});
-                return;
-            }
-    
-            const formData = new FormData();
-            formData.append('_token', $("meta[name=csrf-token]").attr("content"));
-            formData.append('ids', JSON.stringify(ids));
-            confirmAjax(`/auth/${$viewName}/delete/masivo`, formData, "POST", `¿Está seguro de eliminar los jugadores seleccionados?`, null, function () {
-                $dataTable.ajax.reload(null, false);
-            });
-        } else {
-            Toast.fire({icon: 'error', title: 'No se ha seleccionado ningún jugador a eliminar.'});
+    $dataTable.rows().nodes().to$().find('input[type="checkbox"]:checked').each(function (i) {
+        const rowData = $dataTable.row($(this).parents("tr")).data();
+        ids[i] = parseInt($(this).val());
+        nombres[i] = rowData.nombre_completo;
+        validadores[i] = rowData.en_torneo_jugadors;
+        
+        if (rowData.en_torneo_jugadors) {
+            nombresNoEliminables.push(rowData.nombre_completo);
         }
+    });
+
+    if (ids.length > 0) {
+        // Verificar si alguno de los jugadores tiene registros en torneos
+        if (nombresNoEliminables.length > 0) {
+            const nombresStr = nombresNoEliminables.join(', ');
+            Toast.fire({icon: 'error', title: `No se puede eliminar los siguientes jugadores, ya que tienen registros en torneos: ${nombresStr}`});
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('_token', $("meta[name=csrf-token]").attr("content"));
+        formData.append('ids', JSON.stringify(ids));
+        confirmAjax(`/auth/${$viewName}/delete/masivo`, formData, "POST", `¿Está seguro de eliminar los jugadores seleccionados?`, null, function () {
+            $dataTable.ajax.reload(null, false);
+        });
+    } else {
+        Toast.fire({icon: 'error', title: 'No se ha seleccionado ningún jugador a eliminar.'});
+    }
     });
 
     $table.on("click", ".btn-delete", function () {

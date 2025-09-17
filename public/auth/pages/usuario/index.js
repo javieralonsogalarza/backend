@@ -48,7 +48,6 @@ $(function(){
     
 
     $table.on("click", ".btn-delete", function () {
-        console.log("click");
         const id = $dataTable.row($(this).parents("tr")).data().id;
         const nombre = $dataTable.row($(this).parents("tr")).data().nombre;
         const formData = new FormData();

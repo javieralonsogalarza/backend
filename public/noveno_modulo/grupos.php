@@ -334,7 +334,7 @@
     <div class="canvas_scroll w-100">
         <div class="canvas canvas-full bg<?php echo numeroAleatorio(); ?>">
             <img src="images/topbar.png" class="canvas_topbar">
-            <img src="images/flag.png" class="canvas_flag">
+                 <img src="<?php echo $datos['imagen_comunidad']; ?>" alt="Logo" class="canvas_flag">            
             <div class="canvas_head for_group">
                 <div>
                     <h1><?php echo isset($datos['grupo']['nombre']) ? $datos['grupo']['nombre'] : 'Finales'; ?></h1>

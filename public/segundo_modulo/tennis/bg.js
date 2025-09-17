@@ -3,69 +3,71 @@
     const diagramForBg = document.querySelector('.general_canvas'), 
         inputBg = document.querySelector('#putBg');
 
-    inputBg.addEventListener('change', function(event){
-        const file = event.target.files[0];
-        if(file){
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imageUrl = e.target.result;
-                console.log(imageUrl)
+    if (inputBg) {
+        inputBg.addEventListener('change', function(event){
+            const file = event.target.files[0];
+            if(file){
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageUrl = e.target.result;
 
-                if(diagramForBg.classList.contains('bg1')){
-                    diagramForBg.classList.remove('bg1');
-                }
-                if(diagramForBg.classList.contains('bg2')){
-                    diagramForBg.classList.remove('bg2');
-                }
-                if(diagramForBg.classList.contains('bg3')){
-                    diagramForBg.classList.remove('bg3');
-                }
-                if(diagramForBg.classList.contains('bg4')){
-                    diagramForBg.classList.remove('bg4');
-                }
-                if(diagramForBg.classList.contains('bg5')){
-                    diagramForBg.classList.remove('bg5');
-                }
-                if(diagramForBg.classList.contains('bg6')){
-                    diagramForBg.classList.remove('bg6');
-                }
+                    // Quitar todas las clases de fondo predefinidas
+                    diagramForBg.className = diagramForBg.className.replace(/bg\d+/g, '').trim();
 
-                diagramForBg.style.background = `url(${imageUrl}) no-repeat`;
+                    // Aplicar el fondo personalizado
+                    diagramForBg.style.background = `url(${imageUrl}) no-repeat`;
+                    diagramForBg.style.backgroundSize = 'cover'; // Asegurar que cubra bien
 
-                // preview
-                if(!inputBg.parentElement.classList.contains('with_preview')){
-                    inputBg.parentElement.classList.add('with_preview');
+                    // ACTUALIZADO: Desactivar cualquier selector de fondo predefinido
+                    document.querySelectorAll('.bg-option').forEach(opt => opt.classList.remove('active'));
+
+                    // preview
+                    if(!inputBg.parentElement.classList.contains('with_preview')){
+                        inputBg.parentElement.classList.add('with_preview');
+                    }
+                    inputBg.parentElement.style.background = `url(${imageUrl})`;
+
                 }
-                inputBg.parentElement.style.background = `url(${imageUrl})`;
-
+                reader.readAsDataURL(file);
+            } else {
+                resetToDefaultImage();
             }
-            reader.readAsDataURL(file);
-        } else {
+        });
+    }
+
+    const deleteButton = document.querySelector('.delete_preview[data-id="2"]');
+    if (deleteButton) {
+        deleteButton.addEventListener('click', (e)=>{
+            e.preventDefault();
+
+            // preview
+            inputBg.parentElement.style.background = ``;
+            if(inputBg.parentElement.classList.contains('with_preview')){
+                inputBg.parentElement.classList.remove('with_preview');
+            }
+            
+            inputBg.value = ''; // Limpiar el input
+
             resetToDefaultImage();
-        }
-
-    })
-
-    document.querySelector(`.delete_preview[data-id="2"]`).addEventListener('click', (e)=>{
-        e.preventDefault();
-
-        // preview
-        inputBg.parentElement.style.background = ``;
-        if(inputBg.parentElement.classList.contains('with_preview')){
-            inputBg.parentElement.classList.remove('with_preview');
-        }
-
-        resetToDefaultImage();
-    })
-
-    function obtenerNumeroAleatorio() {
-        return Math.floor(Math.random() * 6) + 1;
+        });
     }
 
     function resetToDefaultImage(){
+        // Quitar fondo personalizado en línea
         diagramForBg.style.background = ``;
-        diagramForBg.classList.add(`bg${obtenerNumeroAleatorio()}`);
-    }
 
+        // Quitar cualquier clase de fondo existente para evitar duplicados
+        diagramForBg.className = diagramForBg.className.replace(/bg\d+/g, '').trim();
+        
+        // ACTUALIZADO: Volver al fondo por defecto 'bg1' en lugar de uno aleatorio
+        diagramForBg.classList.add(`bg1`);
+
+        // ACTUALIZADO: Marcar el selector 'bg1' como activo en la UI
+        document.querySelectorAll('.bg-option').forEach(opt => opt.classList.remove('active'));
+        const defaultOption = document.querySelector('.bg-option[data-bg="bg1"]');
+        if (defaultOption) {
+            defaultOption.classList.add('active');
+        }
+    }
 
 }());
